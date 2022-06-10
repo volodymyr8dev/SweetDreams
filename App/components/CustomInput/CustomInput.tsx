@@ -1,14 +1,30 @@
-import React from 'react';
-import {View, TextInput, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import eye from '../../assets/images/eye.png';
 
 interface Props {
   text: string;
   styling?: object;
+  hidden?: boolean;
+  value: string;
+  onChangeText: any;
+  secure?:boolean;
 }
 
-export const CustomInput = ({text, styling}: Props) => {
-
-
+export const CustomInput = ({
+  text,
+  styling,
+  hidden,
+  value,
+  onChangeText,
+  secure,
+}: Props) => {
   const container = {
     backgroundColor: '#2371AB',
     width: 270,
@@ -18,15 +34,30 @@ export const CustomInput = ({text, styling}: Props) => {
     borderRadius: 40,
     marginBottom: 11,
     fontSize: 19,
-    
-    ...styling
+    ...styling,
   };
+  const [showPassword, setShowPassword] = useState(false);
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <View>
       <TextInput
         placeholderTextColor="#22436F"
         placeholder={text}
-        style={container}></TextInput>
+        value={value}
+        onChangeText={onChangeText}
+        secureTextEntry={showPassword || secure}
+        style={container}
+      />
+      {hidden && (
+        <TouchableOpacity style={styles.hide} onPress={handleShowPassword}>
+          <View>
+            <Image style={{width: 28, height: 18}} source={eye} />
+          </View>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -40,5 +71,10 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginBottom: 11,
     fontSize: 19,
+  },
+  hide: {
+    position: 'absolute',
+    top: 18,
+    right: 0,
   },
 });

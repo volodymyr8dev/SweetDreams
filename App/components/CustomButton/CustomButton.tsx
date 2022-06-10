@@ -3,17 +3,8 @@ import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import {Button} from 'react-native-paper';
 
-export const CustomButton = ({text, handleOnSubmit}) => {
-  return (
-    <TouchableOpacity onPress={handleOnSubmit}>
-      <View style={styles.container}>
-        <Text style={{color: 'white', fontSize: 20}}>{text}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-};
-const styles = StyleSheet.create({
-  container: {
+export const CustomButton = ({text, handleOnSubmit, styles}) => {
+  const container = {
     width: 270,
     backgroundColor: '#2371AB',
     alignItems: 'center',
@@ -21,5 +12,16 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     height: 54,
     marginBottom: 11,
-  },
+    ...styles
+  };
+  return (
+    <TouchableOpacity onPress={handleOnSubmit}>
+      <View style={container}>
+        <Text style={{color: 'white', fontSize: 20}}>{text}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+const styles = StyleSheet.create({
+
 });
