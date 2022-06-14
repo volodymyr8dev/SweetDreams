@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Alert} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, Alert,Platform} from 'react-native';
 import BouncyCheckboxGroup from 'react-native-bouncy-checkbox-group';
 import DatePicker from 'react-native-date-picker';
 import StepIndicator from 'react-native-step-indicator';
@@ -74,7 +74,7 @@ export const Step4 = () => {
         Alert.alert('Please, choose a correct date of birth');
       }
     } else {
-      Alert.alert('Incorrect name');
+      Alert.alert(`Please, enter the baby's name`);
     }
   };
 
@@ -116,7 +116,7 @@ export const Step4 = () => {
               }}>
               {visibleData
                 ? moment(date).format('DD-MM-YYYY')
-                : 'Baby`s Date of Birth'}
+                : 'Baby`s Date of birth'}
             </Text>
           </View>
           <Text style={{color: '#fff', fontSize: 17}}>DD MM YYYY</Text>
@@ -127,7 +127,7 @@ export const Step4 = () => {
         maximumDate={new Date()}
         mode="date"
         theme="dark"
-        textColor="#fff"
+        textColor={Platform.OS==='ios'?"#fff":"#000"}
         modal
         open={open}
         date={date}

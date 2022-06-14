@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   Button,
+  Platform,
   // TextInput,
 } from 'react-native';
 import BouncyCheckboxGroup from 'react-native-bouncy-checkbox-group';
@@ -63,10 +64,22 @@ export const Step3 = () => {
   const isFocused = useIsFocused();
 
   const handleGoTo4 = () => {
-    if (!Validation('date', date)) {
-      navigation.navigate('step3');
-    }else {
-      Alert.alert(Validation('date', date))
+    // if (Validation('name', name)) {
+    let nameRegex = /^[a-zA-Z\-]+$/;
+    if (name.length > 2 && nameRegex.test(name) == true) {
+      if (!Validation('date', date)) {
+        if (gender !== null) {
+          console.log('fine', date);
+          // navigation.navigate('step4');
+          navigation.navigate('step3');
+        } else {
+          Alert.alert('Please, choose gender');
+        }
+      } else {
+        Alert.alert(Validation('date', date));
+      }
+    } else {
+      Alert.alert('Please, enter a valid name');
     }
   };
 
@@ -117,7 +130,7 @@ export const Step3 = () => {
                 }}>
                 {visibleData
                   ? moment(date).format('DD-MM-YYYY')
-                  : 'Baby`s Date of Birth'}
+                  : 'Your Date of Birth'}
               </Text>
             </View>
             <Text style={{color: '#fff', fontSize: 17}}>DD MM YYYY</Text>
@@ -128,7 +141,7 @@ export const Step3 = () => {
           maximumDate={new Date()}
           mode="date"
           theme="dark"
-          textColor="#fff"
+          textColor={Platform.OS ==='ios'?"#fff":"#000"}
           modal
           open={open}
           date={date}

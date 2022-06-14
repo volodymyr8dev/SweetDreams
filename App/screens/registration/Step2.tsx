@@ -56,7 +56,6 @@ export const Step2 = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     paddingTop: 10,

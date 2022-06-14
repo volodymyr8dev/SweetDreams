@@ -7,25 +7,38 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
-import serialNumber from '../../assets/images/misty-serial-number.png';
+import serialNumberImage from '../../assets/images/misty-serial-number.png';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 
 type Nav = {
   navigate: (value: string) => void;
 };
 
-
 export const ConnectionStep2 = () => {
   const [currentPosition, setCurrentPosition] = useState(1);
+  const [serialNumber, setSerialNumber] = useState('');
 
   const navigation = useNavigation<Nav>();
-  const isFocused = useIsFocused();
+  // const isFocused = useIsFocused();
 
   const handleGoToStep2 = () => {
-    navigation.navigate('conectionStep3');
+      // setLoader(true);
+      setTimeout(() => {
+        // setLoader(false);
+      }, 1000);
+    if (!serialNumber) {
+      Alert.alert('Serial Number is required');
+    } else {
+      // if (serialNumber.length === 12) {
+        navigation.navigate('conectionStep3');
+      // } else {
+        // Alert.alert('Serial Number is invalid');
+      // }
+    }
   };
 
   return (
@@ -48,22 +61,38 @@ export const ConnectionStep2 = () => {
               Please Enter you misty serial number
             </Text>
           </View>
-          <CustomInput styling={styles.input} text={'Serial Number'} />
-          <View style={{marginTop:15}}>
+          <CustomInput
+            styling={styles.input}
+            text={'Serial Number'}
+            value={serialNumber}
+            onChangeText={number => setSerialNumber(number)}
+          />
+          <View style={{marginTop: 15}}>
             <Text style={styles.answer}>
               <Text style={{color: '#CA57E7'}}>*</Text>{' '}
               <Text style={{fontWeight: 'bold'}}>Serial number </Text> is case
               sensitive and can be found on a sticker on the base of the unit.
             </Text>
           </View>
-          <View style={{alignItems: 'center',marginTop: 32}}>
-            <Image style={{width:236,height:236}} source={serialNumber} />
+          <View style={{alignItems: 'center', marginTop: 32}}>
+            <Image
+              style={{width: 236, height: 236}}
+              source={serialNumberImage}
+            />
           </View>
         </View>
+      
       </ScrollView>
+
       <TouchableOpacity onPress={handleGoToStep2} style={styles.buttonDown}>
         <View>
-          <Text style={{color: '#fff', fontSize: 19, textAlign: 'center',fontWeight: 'bold'}}>
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 19,
+              textAlign: 'center',
+              fontWeight: 'bold',
+            }}>
             next
           </Text>
         </View>

@@ -61,7 +61,7 @@ const navigationOptions = navigation => ({
                   !params.terms ||
                   !params.privacy
                 ) {
-                  Alert.alert('Please, fill all field');
+                  Alert.alert('Please, fill in all the required fields');
                 }
                 // let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
                 // if (reg.test(params?.email) == true) {

@@ -5,7 +5,6 @@ import {getData} from './actions';
 export const initialState = {
   offerData: {},
 };
-
 export default (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
@@ -19,7 +18,6 @@ export default (state = initialState, action) =>
         draft.offerData = data;
         break;
       }
-
       default: {
         break;
       }

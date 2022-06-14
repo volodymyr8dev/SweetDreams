@@ -1,17 +1,15 @@
-import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
+import React, {useEffect} from 'react';
+import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 
-  View,
-} from 'react-native';
+import {store} from './App/redux/configureStore';
+import {Provider} from 'react-redux';
+import MyStack from './App/navigation/index';
+import SplashScreen from 'react-native-splash-screen';
 
-import {store} from './App/redux/configureStore'
-import {Provider} from 'react-redux'
-import MyStack from './App/navigation/index'
 const App = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
   return (
     <Provider store={store}>
       <MyStack />

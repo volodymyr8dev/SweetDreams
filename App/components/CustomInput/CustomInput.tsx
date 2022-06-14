@@ -14,7 +14,8 @@ interface Props {
   hidden?: boolean;
   value: string;
   onChangeText: any;
-  secure?:boolean;
+  secure?: boolean;
+  colorOfText?: string;
 }
 
 export const CustomInput = ({
@@ -23,10 +24,11 @@ export const CustomInput = ({
   hidden,
   value,
   onChangeText,
+  colorOfText = '#2371AB',
   secure,
 }: Props) => {
   const container = {
-    backgroundColor: '#2371AB',
+    backgroundColor: '#213358',
     width: 270,
     height: 54,
     color: '#FFF',
@@ -37,6 +39,7 @@ export const CustomInput = ({
     ...styling,
   };
   const [showPassword, setShowPassword] = useState(false);
+ 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -44,11 +47,11 @@ export const CustomInput = ({
   return (
     <View>
       <TextInput
-        placeholderTextColor="#22436F"
+        placeholderTextColor={colorOfText}
         placeholder={text}
         value={value}
         onChangeText={onChangeText}
-        secureTextEntry={showPassword || secure}
+        secureTextEntry={secure}
         style={container}
       />
       {hidden && (
@@ -78,3 +81,6 @@ const styles = StyleSheet.create({
     right: 0,
   },
 });
+function useEffect(arg0: () => void, arg1: never[]) {
+  throw new Error('Function not implemented.');
+}

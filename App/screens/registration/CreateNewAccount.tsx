@@ -167,7 +167,7 @@ export const CreateNewAccount = () => {
                   setEmail(name);
                 }}
                 styling={styles.input}
-                text={'Your email Addrees'}
+                text={'Your email address'}
               />
               {/* {errors.email && (
                 <Text style={{color: 'red'}}>dddfsfsdfdsdsd </Text>
@@ -201,7 +201,7 @@ export const CreateNewAccount = () => {
                     fontSize: 19,
                     color: '#2371AB',
                   }}>
-                  Eu Citizen
+                  EU citizen
                 </Text>
                 <View style={{display: 'flex', flexDirection: 'row'}}>
                   <BouncyCheckboxGroup

@@ -1,26 +1,59 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   View,
   StyleSheet,
   Text,
   ScrollView,
   TouchableOpacity,
+  Alert
 } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
 // import serialNumber from '../../images/images/misty-serial-number.png';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 import {Loader} from '../../components/Loader/Loader';
+import NetInfo from '@react-native-community/netinfo';
+// import WifiManager from 'react-native-wifi-reborn';
 
 export const ConnectionStep3 = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
   const [loader, setLoader] = useState(false);
+  const [wifiName, setWifiName] = useState('');
+  const [wifiPassword, setWififPassword] = useState('');
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
+  // useEffect(() => {
+  //   NetInfo.fetch().then(res => {
+  //     console.log(res);
+  //     Alert.alert('You are connected ');
+  //   });
+  // }, []);
+  const ConnectToNetwork = async () => {
+    // try {
+    //   WifiManager.connectToProtectedSSID(wifiName, wifiPassword, false)
+    //     .then(
+    //       () => {
+    //         console.log('connectToProtectedSSID successfully!');
+    //       },
+    //       reason => {
+    //         console.log('connectToProtectedSSID failed!');
+    //         console.log(reason);
+    //       },
+    //     )
+    //     .catch(err => console.log('WIFI ERROR', err));
+    // } catch (err) {
+    //   console.log('ERR', err);
+    // }
+  };
+
   const handleGoToStep2 = () => {
+    setLoader(true);
+    setTimeout(() => {
+      setLoader(false);
+    }, 1000);
     navigation.navigate('account');
   };
 
@@ -48,11 +81,18 @@ export const ConnectionStep3 = () => {
             </Text>
           </View>
 
-          <CustomInput styling={styles.input} text={'Wifi name'} />
           <CustomInput
             styling={styles.input}
-            text={'Your Wifi password'}
+            text={'Wi-Fi name'}
+            value={wifiName}
+            onChangeText={name => setWifiName(name)}
+          />
+          <CustomInput
+            styling={styles.input}
+            text={'Your Wi-Fi password'}
             hidden={true}
+            value={wifiPassword}
+            onChangeText={password => setWififPassword(password)}
           />
           <View style={{marginTop: 15}}>
             <Text style={styles.answer}>
@@ -63,10 +103,15 @@ export const ConnectionStep3 = () => {
               misty unit.
             </Text>
           </View>
+          <TouchableOpacity
+            onPress={ConnectToNetwork}
+            style={{marginLeft: 100, width: 80, height: 20, marginBottom: 10}}>
+            <Text style={{color: '#fff'}}>1010100101010100</Text>
+          </TouchableOpacity>
         </View>
 
-        <TouchableOpacity onPress={handleGoToStep2} >
-          <Text>next</Text>
+        <TouchableOpacity onPress={handleGoToStep2}>
+          <Text style={{color: '#fff'}}>adasdasdasdads</Text>
         </TouchableOpacity>
       </ScrollView>
 
