@@ -23,6 +23,7 @@ export const Login = () => {
   const navigation = useNavigation<Nav>();
   const goToCreateAccount = () => {
     navigation.navigate('CreateNewAccount');
+    // navigation.navigate('account');
   };
   const handleForgotPassword = () => {};
   return (

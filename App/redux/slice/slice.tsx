@@ -1,17 +1,21 @@
-import React from 'react'
+import React from 'react';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 const messageSlice = createSlice({
-  name: 'message',
+  name: 'account',
   initialState: {
-    message: 'Initial message',
+    email: '',
+    loader: false,
   },
   reducers: {
-    setMessage(state, action: PayloadAction<string>) {
-      state.message = action.payload;
+    setEmail(state, action: PayloadAction<string>) {
+      state.email = action.payload;
+    },
+    setLoader(state, action: PayloadAction<boolean>) {
+      state.loader = action.payload;
     },
   },
 });
 
-export const {setMessage} = messageSlice.actions;
+export const {setEmail,setLoader} = messageSlice.actions;
 export default messageSlice.reducer;

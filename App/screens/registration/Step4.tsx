@@ -5,6 +5,7 @@ import {View, StyleSheet, Text, TouchableOpacity, Alert,Platform} from 'react-na
 import BouncyCheckboxGroup from 'react-native-bouncy-checkbox-group';
 import DatePicker from 'react-native-date-picker';
 import StepIndicator from 'react-native-step-indicator';
+import { PostChild } from '../../api/CreateAccount/CreateAccount';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
 
@@ -57,16 +58,20 @@ export const Step4 = () => {
   //   }, [currentPosition]);
 
   const handleGoTo5 = () => {
+            navigation.navigate('step4');
+
     let nameRegex = /^[a-zA-Z\-]+$/;
     if (name.length > 2 && nameRegex.test(name) == true) {
       if (
         moment(date).format('DD-MM-YYYY') !==
         moment(new Date()).format('DD-MM-YYYY')
       ) {
-        console.log(gender)
         if (gender !== null) {
-          console.log('fine', date);
-          navigation.navigate('step4');
+          PostChild(name,date,gender).then((data)=>{
+            console.log(data)
+          }).catch((err)=>{
+            Alert.alert("Something went wrong")
+          });
         } else {
           Alert.alert('Please, choose gender');
         }

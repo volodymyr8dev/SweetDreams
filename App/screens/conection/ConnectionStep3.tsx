@@ -106,7 +106,7 @@ export const ConnectionStep3 = () => {
           <TouchableOpacity
             onPress={ConnectToNetwork}
             style={{marginLeft: 100, width: 80, height: 20, marginBottom: 10}}>
-            <Text style={{color: '#fff'}}>1010100101010100</Text>
+            {/* <Text style={{color: '#fff'}}>1010100101010100</Text> */}
           </TouchableOpacity>
         </View>
 

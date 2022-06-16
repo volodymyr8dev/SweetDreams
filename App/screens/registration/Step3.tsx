@@ -20,6 +20,10 @@ import {customStyles} from '../../components/StepIndicator/StepIndicator';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import {Validation} from '../../components/validation/Validation';
+import {CreateAccount} from '../../api/CreateAccount/CreateAccount';
+import {setLoader} from '../../redux/slice/slice';
+import {useDispatch, useSelector} from 'react-redux';
+import { Loader } from '../../components/Loader/Loader';
 
 export const Step3 = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
@@ -28,6 +32,7 @@ export const Step3 = () => {
   const [name, setName] = useState('');
   const [visibleData, setVisibleData] = useState(false);
   const [gender, setGender] = useState(null);
+  const global = useSelector(({account}) => account);
 
   const navigation = useNavigation();
 
@@ -62,16 +67,29 @@ export const Step3 = () => {
   ];
 
   const isFocused = useIsFocused();
-
+  const dispatch = useDispatch();
   const handleGoTo4 = () => {
-    // if (Validation('name', name)) {
     let nameRegex = /^[a-zA-Z\-]+$/;
     if (name.length > 2 && nameRegex.test(name) == true) {
       if (!Validation('date', date)) {
         if (gender !== null) {
-          console.log('fine', date);
-          // navigation.navigate('step4');
-          navigation.navigate('step3');
+          dispatch(setLoader(true));
+          setTimeout(() => {
+            dispatch(setLoader(false));
+            navigation.navigate('step3');
+          }, 2000);
+          // CreateAccount(name, date, gender)
+          //   .then(data => {
+          //     console.log('data', data);
+          //     dispatch(setLoader(false));
+
+          //     navigation.navigate('step3');
+          //   })
+          //   .catch(err => {
+          //     console.log('Error', err);
+          //     Alert.alert('Something went wrong');
+          //     dispatch(setLoader(false));
+          //   });
         } else {
           Alert.alert('Please, choose gender');
         }
@@ -91,8 +109,8 @@ export const Step3 = () => {
   }, [currentPosition, isFocused]);
 
   return (
-    <View style={styles.container}>
-      <>
+    <>
+      <View style={styles.container}>
         <StepIndicator
           customStyles={customStyles}
           currentPosition={currentPosition}
@@ -141,7 +159,7 @@ export const Step3 = () => {
           maximumDate={new Date()}
           mode="date"
           theme="dark"
-          textColor={Platform.OS ==='ios'?"#fff":"#000"}
+          textColor={Platform.OS === 'ios' ? '#fff' : '#000'}
           modal
           open={open}
           date={date}
@@ -182,8 +200,9 @@ export const Step3 = () => {
             </Text>
           </View>
         </TouchableOpacity>
-      </>
-    </View>
+      </View>
+      {global?.loader && <Loader text={'Please wait ...'} />}
+    </>
   );
 };
 

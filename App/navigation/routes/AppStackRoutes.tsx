@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Login} from '../../screens/registration/Login';
@@ -14,7 +14,29 @@ import {ConnectionStep1} from '../../screens/conection/ConnectionStep1';
 import {ConnectionStep2} from '../../screens/conection/ConnectionStep2';
 import {ConnectionStep3} from '../../screens/conection/ConnectionStep3';
 import {Account} from '../../screens/Account/Account';
+import {MyTabs} from './BottomTabRoutes';
+import {
+  RegistrationUser,
+  VerifyEmail,
+} from '../../api/CreateAccount/CreateAccount';
+import {setEmail, setLoader} from '../../redux/slice/slice';
 
+const customTabBarStyle = {
+  activeTintColor: '#0091EA',
+  inactiveTintColor: 'gray',
+  style: {backgroundColor: '#000'},
+};
+const navigationOptionAccount = () => ({
+  // headerShown: true,
+  tabBarColor: '#ddd',
+  tabBarLabel: '',
+  headerTintColor: '#000',
+  style: {
+    backgroundColor: '#000',
+  },
+  tabBarOptions: {customTabBarStyle},
+});
+// const dispatch = useDispatch()
 const navigationOptions = navigation => ({
   title: 'My App',
   headerShown: true,
@@ -52,8 +74,31 @@ const navigationOptions = navigation => ({
                   params.terms &&
                   params.privacy
                 ) {
-                  params.setPosition(params.position + 1);
-                  navigation.navigation.navigate(`step${params.position + 1}`);
+                  params.dispatch(setLoader(true));
+                  setTimeout(() => {
+                    params.dispatch(setLoader(false));
+                    navigation.navigation.navigate(
+                      `step${params.position + 1}`,
+                      {
+                        email: params.email,
+                      },
+                    );
+                  }, 1000);
+                  RegistrationUser({...params})
+                    .then(data => {
+                      params.dispatch(setLoader(false));
+                      params.setPosition(params.position + 1);
+
+                      navigation.navigation.navigate(
+                        `step${params.position + 1}`,
+                        {
+                          email: params.email,
+                        },
+                      );
+                    })
+                    .catch(err => {
+                      console.log('err', err);
+                    });
                 } else if (
                   !params.email ||
                   !params.password ||
@@ -63,31 +108,6 @@ const navigationOptions = navigation => ({
                 ) {
                   Alert.alert('Please, fill in all the required fields');
                 }
-                // let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-                // if (reg.test(params?.email) == true) {
-                //   if (params?.password.length >= 8) {
-                //     if (params?.citizen !== null) {
-                //       if (params?.terms) {
-                //         if (params?.privacy) {
-                //           params.setPosition(params.position + 1);
-                //           navigation.navigation.navigate(
-                //             `step${params.position + 1}`,
-                //           );
-                //         } else {
-                //           Alert.alert('Please, agree with Privacy Policy');
-                //         }
-                //       } else {
-                //         Alert.alert('Please, agree with Terms & Conditions');
-                //       }
-                //     } else {
-                //       Alert.alert('Please, choose citizenship');
-                //     }
-                //   } else {
-                //     Alert.alert('Incorect Password');
-                //   }
-                // } else {
-                //   Alert.alert('Email Incorect');
-                // }
               } else {
                 params.setPosition(params.position + 1);
                 navigation.navigation.navigate(`step${params.position + 1}`);
@@ -161,8 +181,8 @@ const AppStackRoutes = () => {
       />
       <Stack.Screen
         name="account"
-        component={Account}
-        options={navigationOptions}
+        component={MyTabs}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );

@@ -16,7 +16,7 @@ export const Connection = () => {
   }, []);
 
   const handleConnect = () => {
-
+navigation.navigate('conectionStep1');
   };
 
   return (

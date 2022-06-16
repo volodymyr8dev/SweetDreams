@@ -13,6 +13,7 @@ import StepIndicator from 'react-native-step-indicator';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
 import serialNumberImage from '../../assets/images/misty-serial-number.png';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
+import {Loader} from '../../components/Loader/Loader';
 
 type Nav = {
   navigate: (value: string) => void;
@@ -21,24 +22,22 @@ type Nav = {
 export const ConnectionStep2 = () => {
   const [currentPosition, setCurrentPosition] = useState(1);
   const [serialNumber, setSerialNumber] = useState('');
-
+  const [loader, setLoader] = useState(false);
   const navigation = useNavigation<Nav>();
   // const isFocused = useIsFocused();
 
-  const handleGoToStep2 = () => {
-      // setLoader(true);
-      setTimeout(() => {
-        // setLoader(false);
-      }, 1000);
-    if (!serialNumber) {
-      Alert.alert('Serial Number is required');
-    } else {
-      // if (serialNumber.length === 12) {
-        navigation.navigate('conectionStep3');
-      // } else {
-        // Alert.alert('Serial Number is invalid');
-      // }
-    }
+  const handleGoToStep3 = () => {
+      if (!serialNumber) {
+        Alert.alert('Serial Number is required');
+      } else{
+        setLoader(true);
+         setTimeout(() => {
+           setLoader(false);
+           navigation.navigate('conectionStep3');
+         }, 1000);
+      }
+
+ 
   };
 
   return (
@@ -81,10 +80,9 @@ export const ConnectionStep2 = () => {
             />
           </View>
         </View>
-      
       </ScrollView>
 
-      <TouchableOpacity onPress={handleGoToStep2} style={styles.buttonDown}>
+      <TouchableOpacity onPress={handleGoToStep3} style={styles.buttonDown}>
         <View>
           <Text
             style={{
@@ -97,6 +95,9 @@ export const ConnectionStep2 = () => {
           </Text>
         </View>
       </TouchableOpacity>
+      {loader && (
+        <Loader text={`connecting your phone ${'\n'}to your misty unit`} />
+      )}
     </>
   );
 };

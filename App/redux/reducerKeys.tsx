@@ -1,4 +1,4 @@
 const REDUCER_KEY = {
-    LOGIN_REDUCER:'login_reducer'
+    LOGIN_REDUCER:'account'
 }
 export default REDUCER_KEY;

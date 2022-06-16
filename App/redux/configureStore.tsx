@@ -1,12 +1,8 @@
 import {createStore, combineReducers} from 'redux';
-import configureReducers from './reducers'
-
-
+import configureReducers from './reducers';
 
 const configureStore = () => {
-
-
-    const reducer = configureReducers()
+  const reducer = configureReducers();
   return createStore(reducer);
 };
 
