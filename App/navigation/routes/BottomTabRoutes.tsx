@@ -7,7 +7,8 @@ import childIcon from '../../assets/images/homeIcon/child.png';
 import personIcon from '../../assets/images/homeIcon/person.png';
 import graphic from '../../assets/images/homeIcon/graphic2.png';
 import document from '../../assets/images/homeIcon/document.png';
-import documentActive from '../../assets/images/homeIcon/docActive.png';
+import documentActive from '../../assets/images/documentActive.png';
+import location from '../../assets/images/homeIcon/location.png';
 import {Graphics} from '../../screens/Account/Graphics';
 import {Document} from '../../screens/Account/Document';
 import {Location} from '../../screens/Account/Location';
@@ -20,37 +21,36 @@ const customTabBarStyle = {
   tabStyle: {
     paddingTop: 25,
   },
-  labelStyle: {
-  },
+  labelStyle: {},
 
-  style: {backgroundColor: '#707070', },
+  style: {backgroundColor: '#707070'},
 };
 export const MyTabs = () => {
   return (
     <Tab.Navigator activeColor="#707070" tabBarOptions={customTabBarStyle}>
       <Tab.Screen
-        name="Settings"
-        component={Settings}
+        name="graphics"
+        component={Graphics}
         options={{
+          headerShown: false,
           tabBarLabel: '',
           tabBarStyle: {
             backgroundColor: '#707070',
           },
-
           tabBarIcon: ({color, focused}) => <Image source={graphic} />,
         }}
       />
       <Tab.Screen
-        name="graphics"
-        component={Graphics}
+        name="document"
+        component={Document}
         options={{
+          headerShown: false,
           tabBarLabel: '',
           tabBarStyle: {
             backgroundColor: '#707070',
           },
-
           tabBarIcon: ({color, focused}) => (
-            <Image source={focused ? documentActive : document} />
+            <Image source={ document} />
           ),
         }}
       />
@@ -58,35 +58,35 @@ export const MyTabs = () => {
         name="account"
         component={Account}
         options={{
+          headerShown: false,
           tabBarLabel: '',
           tabBarStyle: {
             backgroundColor: '#707070',
           },
-
           tabBarIcon: ({color}) => <Image source={childIcon} />,
-        }}
-      />
-      <Tab.Screen
-        name="document"
-        component={Document}
-        options={{
-          tabBarLabel: '',
-          tabBarStyle: {
-            backgroundColor: '#707070',
-          },
-
-          tabBarIcon: ({color}) => <Image source={personIcon} />,
         }}
       />
       <Tab.Screen
         name="location"
         component={Location}
         options={{
+          headerShown: false,
           tabBarLabel: '',
           tabBarStyle: {
             backgroundColor: '#707070',
           },
-
+          tabBarIcon: ({color}) => <Image source={location} />,
+        }}
+      />
+      <Tab.Screen
+        name="settings"
+        component={Settings}
+        options={{
+          headerShown: false,
+          tabBarLabel: '',
+          tabBarStyle: {
+            backgroundColor: '#707070',
+          },
           tabBarIcon: ({color}) => <Image source={personIcon} />,
         }}
       />

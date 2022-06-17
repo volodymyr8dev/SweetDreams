@@ -15,6 +15,7 @@ import {ConnectionStep2} from '../../screens/conection/ConnectionStep2';
 import {ConnectionStep3} from '../../screens/conection/ConnectionStep3';
 import {Account} from '../../screens/Account/Account';
 import {MyTabs} from './BottomTabRoutes';
+import {SettingsAccount} from '../../screens/Account/SettingsAccount'
 import {
   RegistrationUser,
   VerifyEmail,
@@ -177,6 +178,11 @@ const AppStackRoutes = () => {
       <Stack.Screen
         name="conectionStep3"
         component={ConnectionStep3}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="settingsAccount"
+        component={SettingsAccount}
         options={navigationOptions}
       />
       <Stack.Screen

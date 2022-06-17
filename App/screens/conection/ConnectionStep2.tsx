@@ -27,17 +27,15 @@ export const ConnectionStep2 = () => {
   // const isFocused = useIsFocused();
 
   const handleGoToStep3 = () => {
-      if (!serialNumber) {
-        Alert.alert('Serial Number is required');
-      } else{
-        setLoader(true);
-         setTimeout(() => {
-           setLoader(false);
-           navigation.navigate('conectionStep3');
-         }, 1000);
-      }
-
- 
+    if (!serialNumber) {
+      Alert.alert('Serial Number is required');
+    } else {
+      setLoader(true);
+      setTimeout(() => {
+        setLoader(false);
+        navigation.navigate('conectio6nStep3');
+      }, 1000);
+    }
   };
 
   return (

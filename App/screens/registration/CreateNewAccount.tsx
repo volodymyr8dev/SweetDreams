@@ -6,6 +6,7 @@ import {
   ScrollView,
   Alert,
   TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
@@ -21,6 +22,7 @@ import {Validation} from '../../components/validation/Validation';
 import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
+import back from '../../assets/images/homeIcon/bacgroundHome.png';
 type Nav = {
   navigate: (value: string) => void;
   setParams(value: any);
@@ -117,132 +119,133 @@ export const CreateNewAccount = () => {
   }, [privacy]);
 
   return (
-    // <LinearGradient
-    //   colors={['#4c669f', '#3b5998', '#192f6a']}
-    //   style={styles.linearGradient}>
     <>
-      <ScrollView style={{backgroundColor: '#272755'}}>
-        <View style={styles.container}>
-          <StepIndicator
-            customStyles={customStyles}
-            currentPosition={currentPosition}
-            onPress={() => setCurrentPosition(prev => prev + 1)}
-          />
-          <View style={{marginTop: 20}}>
-            <View style={{marginBottom: 7}}>
-              <Text style={{fontSize: 19, color: '#244676'}}>
-                Create a Sweet Dreamers Account
-              </Text>
-            </View>
-            <View>
-              <Text style={{fontSize: 16, marginBottom: 15, color: '#244676'}}>
-                A sweetDreamers account is necessary for using the App
-                services.Fill out the boxes below and select the 'done' button
-                when you're finished
-              </Text>
-            </View>
-            <CustomInput
-              value={email}
-              onChangeText={name => {
-                console.log('name', name);
-                setEmail(name);
-              }}
-              styling={styles.input}
-              text={'Your email address'}
+      <ImageBackground source={back} style={{flex: 1}}>
+        <ScrollView>
+          <View style={styles.container}>
+            <StepIndicator
+              customStyles={customStyles}
+              currentPosition={currentPosition}
             />
-
-            <CustomInput
-              value={password}
-              onChangeText={name => setPassword(name)}
-              styling={styles.input}
-              text={'Password'}
-              secure={true}
-            />
-            <View>
+            <View style={{marginTop: 20}}>
+              <View style={{marginBottom: 7}}>
+                <Text style={{fontSize: 19, color: '#244676'}}>
+                  Create a Sweet Dreamers Account
+                </Text>
+              </View>
               <View>
-                <Text style={{color: '#244676'}}>Accept Terms</Text>
-              </View>
-              <View style={{marginBottom: 9}}>
-                <Text style={{color: '#244676'}}>
-                  To use the SweetDreamers service you need to agree to the
-                  terms and conditions by selecting the checkbox.You can see the
-                  terms and conditions by selecting the checkbox. You can see
-                  the terms and conditions by selecting the show button.
-                  {'\n'}EU (European Union) are applicable to General Data
-                  Protection Regulation(GDPR){'\n'}
-                  (*)is required agreement
+                <Text
+                  style={{fontSize: 16, marginBottom: 15, color: '#244676'}}>
+                  A sweetDreamers account is necessary for using the App
+                  services.Fill out the boxes below and select the 'done' button
+                  when you're finished
                 </Text>
               </View>
-            </View>
-            <View style={styles.citizen}>
-              <Text
-                style={{
-                  fontSize: 19,
-                  color: '#2371AB',
-                }}>
-                EU citizen
-              </Text>
-              <View style={{display: 'flex', flexDirection: 'row'}}>
-                <BouncyCheckboxGroup
-                  fillColor="red"
-                  data={verticalStaticData}
-                  style={{flexDirection: 'row'}}
-                  onChange={(selectedItem: ICheckboxButton) => {
-                    selectedItem.id == 0 ? setCitizen(true) : setCitizen(false);
-                    console.log('SelectedItem: ', JSON.stringify(selectedItem));
-                  }}
-                  textStyle={{
-                    textDecorationLine: 'none',
-                  }}
-                />
+              <CustomInput
+                value={email}
+                onChangeText={name => {
+                  console.log('name', name);
+                  setEmail(name);
+                }}
+                styling={styles.input}
+                text={'Your email address'}
+              />
+
+              <CustomInput
+                value={password}
+                onChangeText={name => setPassword(name)}
+                styling={styles.input}
+                text={'Password'}
+                secure={true}
+              />
+              <View>
+                <View>
+                  <Text style={{color: '#244676'}}>Accept Terms</Text>
+                </View>
+                <View style={{marginBottom: 9}}>
+                  <Text style={{color: '#244676'}}>
+                    To use the SweetDreamers service you need to agree to the
+                    terms and conditions by selecting the checkbox.You can see
+                    the terms and conditions by selecting the checkbox. You can
+                    see the terms and conditions by selecting the show button.
+                    {'\n'}EU (European Union) are applicable to General Data
+                    Protection Regulation(GDPR){'\n'}
+                    (*)is required agreement
+                  </Text>
+                </View>
               </View>
-            </View>
-            <View style={styles.citizen}>
-              <View style={{flexDirection: 'row'}}>
-                <CheckBox
-                  value={terms}
-                  setValue={value => setTerms(value)}
-                  text=""
-                />
+              <View style={styles.citizen}>
                 <Text
                   style={{
                     fontSize: 19,
                     color: '#2371AB',
                   }}>
-                  <Text style={{color: 'red'}}>*</Text>Terms & Conditions
+                  EU citizen
                 </Text>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                  <BouncyCheckboxGroup
+                    fillColor="red"
+                    data={verticalStaticData}
+                    style={{flexDirection: 'row'}}
+                    onChange={(selectedItem: ICheckboxButton) => {
+                      selectedItem.id == 0
+                        ? setCitizen(true)
+                        : setCitizen(false);
+                      console.log(
+                        'SelectedItem: ',
+                        JSON.stringify(selectedItem),
+                      );
+                    }}
+                    textStyle={{
+                      textDecorationLine: 'none',
+                    }}
+                  />
+                </View>
               </View>
-              <TouchableOpacity>
-                <Text style={{color: '#fff', fontSize: 17}}>show</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.citizen}>
-              <View style={{flexDirection: 'row'}}>
-                <CheckBox
-                  value={privacy}
-                  setValue={value => setPrivacy(value)}
-                  text=""
-                />
-                <Text
-                  style={{
-                    fontSize: 19,
-                    color: '#2371AB',
-                  }}>
-                  <Text style={{color: 'red'}}>*</Text> Privacy Policy
-                </Text>
+              <View style={styles.citizen}>
+                <View style={{flexDirection: 'row'}}>
+                  <CheckBox
+                    value={terms}
+                    setValue={value => setTerms(value)}
+                    text=""
+                  />
+                  <Text
+                    style={{
+                      fontSize: 19,
+                      color: '#2371AB',
+                    }}>
+                    <Text style={{color: 'red'}}>*</Text>Terms & Conditions
+                  </Text>
+                </View>
+                <TouchableOpacity>
+                  <Text style={{color: '#fff', fontSize: 17}}>show</Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity>
-                <Text style={{color: '#fff', fontSize: 17}}>show</Text>
-              </TouchableOpacity>
+              <View style={styles.citizen}>
+                <View style={{flexDirection: 'row'}}>
+                  <CheckBox
+                    value={privacy}
+                    setValue={value => setPrivacy(value)}
+                    text=""
+                  />
+                  <Text
+                    style={{
+                      fontSize: 19,
+                      color: '#2371AB',
+                    }}>
+                    <Text style={{color: 'red'}}>*</Text> Privacy Policy
+                  </Text>
+                </View>
+                <TouchableOpacity>
+                  <Text style={{color: '#fff', fontSize: 17}}>show</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
-      </ScrollView>
-      {state.loader && (
-        <Loader text={`connecting your phone ${'\n'}to your misty unit`} />
-      )}
+        </ScrollView>
+        {state.loader && <Loader text={`Please wait...`} />}
+      </ImageBackground>
     </>
-    // </LinearGradient>
   );
 };
 
