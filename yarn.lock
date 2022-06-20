@@ -1261,6 +1261,11 @@
   "resolved" "https://registry.npmjs.org/@react-native-community/netinfo/-/netinfo-9.0.0.tgz"
   "version" "9.0.0"
 
+"@react-native-community/slider@^4.2.3":
+  "integrity" "sha512-qPkrAy883tSPoRWgGZjqL5tYnd4AmNLYNtjvtD9G6JMYtImxK4ITa/W8zOEgR8UOrPde/t+VN0MMxL63HZZK1Q=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/slider/-/slider-4.2.3.tgz"
+  "version" "4.2.3"
+
 "@react-native/assets@1.0.0":
   "integrity" "sha512-KrwSpS1tKI70wuKl68DwJZYEvXktDHdZMG0k2AXD/rJVSlB23/X2CB2cutVR0HwNMJIal9HOUOBB2rVfa6UGtQ=="
   "resolved" "https://registry.npmjs.org/@react-native/assets/-/assets-1.0.0.tgz"
@@ -1526,10 +1531,10 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
-"@types/react-native@*", "@types/react-native@^0.67.8":
-  "integrity" "sha512-xA8rYiTHvO6RoZv/LFnmEeqRuhA2y34mGB8zX3bGHe/pCt9jEStUPyUO4q1KcDc9GiGIOBD8ArfRtThprAjSfQ=="
-  "resolved" "https://registry.npmjs.org/@types/react-native/-/react-native-0.67.8.tgz"
-  "version" "0.67.8"
+"@types/react-native@*", "@types/react-native@^0.67.9":
+  "integrity" "sha512-8s0v539mHd2qPIDp1rL0ChVvQh+QYUANSQhhccFbaI/D9E/b43L9lWBXItjGpSo1Jqkkcaahlrj9Ls6JiXGm7Q=="
+  "resolved" "https://registry.npmjs.org/@types/react-native/-/react-native-0.67.9.tgz"
+  "version" "0.67.9"
   dependencies:
     "@types/react" "*"
 
@@ -1543,10 +1548,10 @@
     "hoist-non-react-statics" "^3.3.0"
     "redux" "^4.0.0"
 
-"@types/react@*", "@types/react@^16.8 || ^17.0 || ^18.0", "@types/react@^18.0.13":
-  "integrity" "sha512-psqptIYQxGUFuGYwP3KCFVtPTkMpIcrqFmtKblWEUQhLuYLpHBwJkXhjp6eHfDM5IbyskY4x7qQpLedEsPkHlA=="
-  "resolved" "https://registry.npmjs.org/@types/react/-/react-18.0.13.tgz"
-  "version" "18.0.13"
+"@types/react@*", "@types/react@^16.8 || ^17.0 || ^18.0", "@types/react@^18.0.14":
+  "integrity" "sha512-x4gGuASSiWmo0xjDLpm5mPb52syZHJx02VKbqUKdLmKtAwIh63XClGsiTI1K6DO5q7ox4xAsQrU+Gl3+gGXF9Q=="
+  "resolved" "https://registry.npmjs.org/@types/react/-/react-18.0.14.tgz"
+  "version" "18.0.14"
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"

@@ -15,12 +15,14 @@ import {ConnectionStep2} from '../../screens/conection/ConnectionStep2';
 import {ConnectionStep3} from '../../screens/conection/ConnectionStep3';
 import {Account} from '../../screens/Account/Account';
 import {MyTabs} from './BottomTabRoutes';
-import {SettingsAccount} from '../../screens/Account/SettingsAccount'
+import {SettingsAccount} from '../../screens/Account/Settings/SettingsAccount'
 import {
   RegistrationUser,
   VerifyEmail,
 } from '../../api/CreateAccount/CreateAccount';
 import {setEmail, setLoader} from '../../redux/slice/slice';
+import SettingsRoutes from './Settings/SettingsRoutes';
+import { SettingsTemperature } from '../../screens/Account/Settings/SettingsTemperature';
 
 const customTabBarStyle = {
   activeTintColor: '#0091EA',
@@ -38,7 +40,7 @@ const navigationOptionAccount = () => ({
   tabBarOptions: {customTabBarStyle},
 });
 // const dispatch = useDispatch()
-const navigationOptions = navigation => ({
+export const navigationOptions = navigation => ({
   title: 'My App',
   headerShown: true,
   headerTintColor: '#fff',
@@ -185,11 +187,17 @@ const AppStackRoutes = () => {
         component={SettingsAccount}
         options={navigationOptions}
       />
+      {/* <Stack.Screen
+        name="settingstemperature"
+        component={SettingsTemperature}
+        options={navigationOptions}
+      /> */}
       <Stack.Screen
         name="account"
         component={MyTabs}
         options={{headerShown: false}}
       />
+      {SettingsRoutes()}
     </Stack.Navigator>
   );
 };

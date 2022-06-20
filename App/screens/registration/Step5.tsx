@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity,Platform} from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
 

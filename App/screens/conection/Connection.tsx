@@ -1,22 +1,22 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import React, {useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {CustomButton} from '../../components/CustomButton/CustomButton';
 
 export const Connection = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const isFocused = useIsFocused();
 
   useEffect(() => {
     navigation.setParams({
-      connectionStep:0,
+      connectionStep: 0,
       show: true,
-      title:'connection'
+      title: 'connection',
     });
   }, []);
 
   const handleConnect = () => {
-navigation.navigate('conectionStep1');
+    navigation.navigate('conectionStep1');
   };
 
   return (
@@ -34,13 +34,16 @@ navigation.navigate('conectionStep1');
           </Text>
         </View>
         <View>
-          <CustomButton styles={styles.button} handleOnSubmit={handleConnect} text="connect" />
+          <CustomButton
+            styles={styles.button}
+            handleOnSubmit={handleConnect}
+            text="connect"
+          />
         </View>
       </View>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -54,14 +57,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#36365D',
     borderRadius: 13,
     alignItems: 'center',
-    justifyContent:'center',
-    height:206
+    justifyContent: 'center',
+    height: 206,
   },
-  button:{
-    width:200,
-    backgroundColor:'opacity',
-    borderWidth:1,
-    borderColor:'#2A70AA'
+  button: {
+    width: 200,
+    backgroundColor: 'opacity',
+    borderWidth: 1,
+    borderColor: '#2A70AA',
   },
   content: {
     height: '80%',

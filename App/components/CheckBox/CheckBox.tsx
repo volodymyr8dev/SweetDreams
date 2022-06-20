@@ -1,7 +1,13 @@
-import React from 'react';
+import React , {FC} from 'react';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
-export const CheckBox = ({text, value, setValue}) => {
+interface PropsCheckBox {
+  text : string;
+  value : boolean; 
+  setValue: Function;
+}
+
+export const CheckBox: FC<PropsCheckBox> = ({text, value, setValue}) => {
   return (
     <BouncyCheckbox
       size={25}
@@ -17,6 +23,7 @@ export const CheckBox = ({text, value, setValue}) => {
       }}
       isChecked={value}
       onPress={setValue}
+      
     />
   );
 };

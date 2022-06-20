@@ -15,7 +15,7 @@ import StepIndicator from 'react-native-step-indicator';
 import {useDispatch, useSelector} from 'react-redux';
 import {PostChild} from '../../api/CreateAccount/CreateAccount';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
-import { Loader } from '../../components/Loader/Loader';
+import {Loader} from '../../components/Loader/Loader';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
 import {setLoader} from '../../redux/slice/slice';
 
