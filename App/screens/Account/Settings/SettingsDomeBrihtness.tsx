@@ -14,6 +14,7 @@ import {useSelector} from 'react-redux';
 import Slider from '@react-native-community/slider';
 import DomeBrignessBig from '../../../assets/images/settings/DomeBrignessBig.png';
 import DomeBrignessSmal from '../../../assets/images/settings/DomeBrignessSmal.png';
+import {SliderComp} from '../../../components/Slider/SliderComp';
 
 export const SettingsDomeBrihtness = () => {
   const [value, setValue] = useState();
@@ -30,19 +31,29 @@ export const SettingsDomeBrihtness = () => {
           source={DomeBrignessBig}
           style={{width: 25, height: 25, marginRight: 5}}
         />
-        <Slider
+        <View style={{justifyContent:'center',width:'75%'}}>
+          <SliderComp
+            brightness={brightness}
+            value={value}
+            setValue={setValue}
+          />
+        </View>
+        {/* <Slider
           style={{width: '75%', height: 40}}
           value={brightness}
           minimumValue={0}
           maximumValue={1}
           minimumTrackTintColor={COLORS.text}
           maximumTrackTintColor="#292C62"
-          onValueChange={value => {
+          onSlidingComplete={value => {
             dispatch(setBrightness(value));
+            console.log(value);
+          }}
+          onValueChange={value => {
             setValue(value);
             console.log(value);
           }}
-        />
+        /> */}
         <Image
           style={{width: 30, height: 30, marginLeft: 5}}
           source={DomeBrignessSmal}

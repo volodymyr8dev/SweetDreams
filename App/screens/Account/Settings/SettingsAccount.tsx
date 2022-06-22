@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -21,23 +21,21 @@ import Temperature from '../../../assets/images/settings/Temperature.png';
 import smartSRYSensetivity from '../../../assets/images/settings/smartCrySensetivity.png';
 import music from '../../../assets/images/settings/music.png';
 import musicTime from '../../../assets/images/settings/musicTime.png';
-import volume from '../../../assets/images/settings/volume.png';
+import volumeImg from '../../../assets/images/settings/volume.png';
 import {Switch} from '../../../components/Switch/Switch';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import moment from 'moment';
 export const SettingsAccount = () => {
-  const {time} = useSelector(({settings}) => settings);
-
+  const {formatWakeUpTime, formatTime, volume} = useSelector(
+    ({settings}) => settings,
+  );
   const Blog = ({title, rightEl, source}) => {
     const navigation = useNavigation();
 
     const handleSettings = async title => {
       if (typeof rightEl !== 'object') {
-        //  navigation.setParams({
-        //    title: title,
-        //  });
         console.log(title, 'title');
+
         navigation.navigate(`${title}`, {title: title});
       }
     };
@@ -77,8 +75,12 @@ export const SettingsAccount = () => {
         <View style={{paddingLeft: 15}}>
           <Text style={{color: '#2371AB', fontSize: 17}}>Display Settings</Text>
         </View>
-        <Blog title="Time" rightEl="07:00" source={clock} />
-        <Blog title="Wake Up Time" source={wakeUp} rightEl={undefined} />
+        <Blog title="Time" rightEl={`${formatTime}`} source={clock} />
+        <Blog
+          title="Wake Up Time"
+          source={wakeUp}
+          rightEl={`${formatWakeUpTime}`}
+        />
         <Blog title="Colour Picker" source={colorPicker} rightEl={undefined} />
         <Blog title="Dome Brightness" source={brightness} rightEl={'3%'} />
         <Blog
@@ -92,7 +94,7 @@ export const SettingsAccount = () => {
         </View>
         <Blog title="smartCRY Sensor" source={smartCRY} rightEl={<Switch />} />
         <Blog
-          title="smartCRY Sensor Sensitivity "
+          title="smartCRY Sensor Sensitivity"
           source={smartSRYSensetivity}
           rightEl={'Moder...'}
         />
@@ -106,7 +108,11 @@ export const SettingsAccount = () => {
           source={musicTime}
           rightEl={'20 mins'}
         />
-        <Blog title="Volume" source={volume} rightEl={'50%'} />
+        <Blog
+          title="Volume"
+          source={volumeImg}
+          rightEl={Number(volume.toFixed(1))}
+        />
         <View style={{paddingLeft: 15}}>
           <Text style={{color: '#2371AB', fontSize: 17}}>Notifications</Text>
         </View>

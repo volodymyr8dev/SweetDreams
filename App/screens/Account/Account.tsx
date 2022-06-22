@@ -25,6 +25,7 @@ import lightShow from '../../assets/images/controlChild/lightsShow.png';
 import Carousel from 'react-native-anchor-carousel';
 import ShopCarousel from '../../components/Carousel/Carousel';
 import {useNavigation} from '@react-navigation/native';
+import { COLORS } from '../../styles/Constants';
 const {width: windowWidth} = Dimensions.get('window');
 export const Account = () => {
   const carouselRef = React.useRef(null);
@@ -125,7 +126,7 @@ export const Account = () => {
     );
   };
   return (
-    <ImageBackground source={background}>
+    <ImageBackground style={{backgroundColor:COLORS.backGround}} source={background}>
       <View style={styles.container}>
         <HeaderUI />
         <TouchableOpacity

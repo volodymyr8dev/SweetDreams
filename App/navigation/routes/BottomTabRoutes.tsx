@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Account} from '../../screens/Account/Account';
-import {Settings} from '../../screens/Account/Settings';
+import {Settings} from '../../screens/Account/SettingsAccount/Settings';
 import childIcon from '../../assets/images/homeIcon/child.png';
 import personIcon from '../../assets/images/homeIcon/person.png';
 import graphic from '../../assets/images/homeIcon/graphic2.png';
@@ -49,9 +49,7 @@ export const MyTabs = () => {
           tabBarStyle: {
             backgroundColor: '#707070',
           },
-          tabBarIcon: ({color, focused}) => (
-            <Image source={ document} />
-          ),
+          tabBarIcon: ({color, focused}) => <Image source={document} />,
         }}
       />
       <Tab.Screen
@@ -82,7 +80,13 @@ export const MyTabs = () => {
         name="settings"
         component={Settings}
         options={{
-          headerShown: false,
+          title: 'profile / preferences',
+          headerShown: true,
+          headerTintColor: '#fff',
+          headerStyle: {
+            backgroundColor: '#2A305A',
+          },
+          // headerShown: false,
           tabBarLabel: '',
           tabBarStyle: {
             backgroundColor: '#707070',

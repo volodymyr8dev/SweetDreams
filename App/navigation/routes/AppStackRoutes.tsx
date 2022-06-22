@@ -15,14 +15,15 @@ import {ConnectionStep2} from '../../screens/conection/ConnectionStep2';
 import {ConnectionStep3} from '../../screens/conection/ConnectionStep3';
 import {Account} from '../../screens/Account/Account';
 import {MyTabs} from './BottomTabRoutes';
-import {SettingsAccount} from '../../screens/Account/Settings/SettingsAccount'
+import {SettingsAccount} from '../../screens/Account/Settings/SettingsAccount';
 import {
   RegistrationUser,
   VerifyEmail,
 } from '../../api/CreateAccount/CreateAccount';
 import {setEmail, setLoader} from '../../redux/slice/slice';
 import SettingsRoutes from './Settings/SettingsRoutes';
-import { SettingsTemperature } from '../../screens/Account/Settings/SettingsTemperature';
+import {SettingsTemperature} from '../../screens/Account/Settings/SettingsTemperature';
+import SettingsAccountStackRoutes from './Settings/SettingsAccountRouter';
 
 const customTabBarStyle = {
   activeTintColor: '#0091EA',
@@ -90,6 +91,7 @@ export const navigationOptions = navigation => ({
                   RegistrationUser({...params})
                     .then(data => {
                       params.dispatch(setLoader(false));
+                      // params.dispatch(setLoader(false));
                       params.setPosition(params.position + 1);
 
                       navigation.navigation.navigate(
@@ -127,7 +129,7 @@ const AppStackRoutes = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName="login"
+      initialRouteName="Login"
       screenOptions={{
         headerShown: false,
       }}>
@@ -198,6 +200,7 @@ const AppStackRoutes = () => {
         options={{headerShown: false}}
       />
       {SettingsRoutes()}
+      {SettingsAccountStackRoutes()}
     </Stack.Navigator>
   );
 };

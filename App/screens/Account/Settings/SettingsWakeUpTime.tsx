@@ -8,10 +8,10 @@ import {setWakeUpTime} from '../../../redux/slice/SettingsSlice';
 export const SettingsWakeUpTime = () => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-//   const {time} = useSelector(({settings}) => settings);
+  const {wakeUpTime} = useSelector(({settings}) => settings);
   const dispatch = useDispatch();
   useEffect(() => {
-    // setDate(time);
+    setDate(wakeUpTime);
   }, []);
   return (
     <View style={styles.container}>
@@ -22,11 +22,24 @@ export const SettingsWakeUpTime = () => {
           theme="dark"
           textColor={Platform.OS === 'ios' ? '#fff' : '#000'}
           open={open}
-        //   date={date}
+          format="hh:mm"
+          //   locale={'en_GB'}
+          date={date}
           onConfirm={date => {}}
           onDateChange={value => {
-            // dispatch(setWakeUpTime(value));
+            let _date = new Date(value);
             setDate(value);
+            dispatch(
+              setWakeUpTime({
+                value: value,
+                formatValue: `${_date.getHours()}:${
+                  _date.getMinutes() < 10
+                    ? '0' + _date.getMinutes()
+                    : _date.getMinutes()
+                }`,
+              }),
+            );
+            // dispatch(setWakeUpTime(`${_date.getHours()}:${date.getMinutes()}`));
           }}
           onCancel={() => {
             setOpen(false);

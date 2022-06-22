@@ -9,8 +9,10 @@ import {SettingsDomeBrihtness} from '../../../screens/Account/Settings/SettingsD
 import {SettingsSmartCRY} from '../../../screens/Account/Settings/SettingsSmartCRY';
 import {SettingsRecording} from '../../../screens/Account/Settings/SettingsRecording';
 import {SettingsNewRecording} from '../../../screens/Account/Settings/SettingsNewRecording';
-import { SettingsTimePlaying } from '../../../screens/Account/Settings/SettingsTimePlaying';
-import { SettingsVolume } from '../../../screens/Account/Settings/SettingsVolume';
+import {SettingsTimePlaying} from '../../../screens/Account/Settings/SettingsTimePlaying';
+import {SettingsVolume} from '../../../screens/Account/Settings/SettingsVolume';
+import {ChangeFamilyMembers} from '../../../screens/Account/SettingsAccount/ChangeFamilyMembers';
+import { ChangePassword } from '../../../screens/Account/SettingsAccount/ChangePassword';
 
 const customTabBarStyle = {
   activeTintColor: '#0091EA',
@@ -38,63 +40,23 @@ const navigationOptions = navigation => {
     },
   };
 };
-const StackRoutes = () => {
+const SettingsAccountStackRoutes = () => {
   const Stack = createNativeStackNavigator();
 
   return (
     <>
       <Stack.Screen
-        name="Temperature"
-        component={SettingsTemperature}
+        name="Manage Family Members"
+        component={ChangeFamilyMembers}
         options={navigationOptions}
       />
       <Stack.Screen
-        name="Time"
-        component={SettingsTime}
-        options={navigationOptions}
-      />
-      <Stack.Screen
-        name="Wake Up Time"
-        component={SettingsWakeUpTime}
-        options={navigationOptions}
-      />
-      <Stack.Screen
-        name="Colour Picker"
-        component={SettingsColourPicker}
-        options={navigationOptions}
-      />
-      <Stack.Screen
-        name="Dome Brightness"
-        component={SettingsDomeBrihtness}
-        options={navigationOptions}
-      />
-      <Stack.Screen
-        name="smartCRY Sensor Sensitivity"
-        component={SettingsSmartCRY}
-        options={navigationOptions}
-      />
-      <Stack.Screen
-        name="Sound Playing Time"
-        component={SettingsTimePlaying}
-        options={navigationOptions}
-      />
-      <Stack.Screen
-        name="Custom Recording"
-        component={SettingsRecording}
-        options={navigationOptions}
-      />
-      <Stack.Screen
-        name="Volume"
-        component={SettingsVolume}
-        options={navigationOptions}
-      />
-      <Stack.Screen
-        name="new Recording"
-        component={SettingsNewRecording}
+        name="Change Password"
+        component={ChangePassword}
         options={navigationOptions}
       />
     </>
   );
 };
 
-export default StackRoutes;
+export default SettingsAccountStackRoutes;
