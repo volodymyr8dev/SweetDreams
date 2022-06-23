@@ -52,7 +52,7 @@ export default function ImageCarousel(props) {
   function renderItem({item, index}) {
     const {backUri, uri, title, content} = item;
     return (
-      <View
+      <TouchableOpacity
         activeOpacity={1}
         style={styles.item}
         onPress={() => {
@@ -84,7 +84,7 @@ export default function ImageCarousel(props) {
             </View>
           </View>
         </ScrollView>
-      </View>
+      </TouchableOpacity>
     );
   }
 
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1.5,
     flexGrow: 0,
     marginBottom: 20,
+    
   },
   item: {
     // borderWidth: 2,

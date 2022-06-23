@@ -12,10 +12,9 @@ import {SettingsNewRecording} from '../../../screens/Account/Settings/SettingsNe
 import {SettingsTimePlaying} from '../../../screens/Account/Settings/SettingsTimePlaying';
 import {SettingsVolume} from '../../../screens/Account/Settings/SettingsVolume';
 import {ChangeFamilyMembers} from '../../../screens/Account/SettingsAccount/ChangeFamilyMembers';
-import { ChangePassword } from '../../../screens/Account/SettingsAccount/ChangePassword';
-import { PrivacyPolicy } from '../../../screens/Account/SettingsAccount/PrivacyPolicy';
-import { TermsConditions } from '../../../screens/Account/SettingsAccount/TermsConditions';
-
+import {ChangePassword} from '../../../screens/Account/SettingsAccount/ChangePassword';
+import {PrivacyPolicy} from '../../../screens/Account/SettingsAccount/PrivacyPolicy';
+import {TermsConditions} from '../../../screens/Account/SettingsAccount/TermsConditions';
 
 const customTabBarStyle = {
   activeTintColor: '#0091EA',
@@ -33,7 +32,7 @@ const navigationOptionAccount = () => ({
   tabBarOptions: {customTabBarStyle},
 });
 const navigationOptions = navigation => {
-  console.log('here',navigation.route?.params?.title);
+  console.log('here', navigation.route?.params?.title);
   return {
     title: `${navigation.route?.params?.title}`,
     headerShown: true,
@@ -43,28 +42,23 @@ const navigationOptions = navigation => {
     },
   };
 };
-const SettingsAccountStackRoutes = () => {
+const GraphicRoutes = () => {
   const Stack = createNativeStackNavigator();
 
   return (
     <>
       <Stack.Screen
-        name="Manage Family Members"
-        component={ChangeFamilyMembers}
-        options={navigationOptions}
-      />
-      <Stack.Screen
-        name="Change Password"
+        name="last 24 hours"
         component={ChangePassword}
         options={navigationOptions}
       />
       <Stack.Screen
-        name="Privacy Policy"
+        name="last 7 days"
         component={PrivacyPolicy}
         options={navigationOptions}
       />
       <Stack.Screen
-        name="Terms Conditions"
+        name="last 28 days"
         component={TermsConditions}
         options={navigationOptions}
       />
@@ -72,4 +66,4 @@ const SettingsAccountStackRoutes = () => {
   );
 };
 
-export default SettingsAccountStackRoutes;
+export default GraphicRoutes;

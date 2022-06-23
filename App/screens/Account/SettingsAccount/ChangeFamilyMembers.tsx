@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TextInput, TouchableOpacity } from 'react-native';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {COLORS} from '../../../styles/Constants';
 
@@ -11,6 +11,7 @@ interface PropsBox {
   title: string;
   nameField: string;
   rightEl?: string;
+  placeholder?: string;
 }
 
 export const ChangeFamilyMembers = () => {
@@ -22,7 +23,13 @@ export const ChangeFamilyMembers = () => {
         console.log(title);
         navigation.navigate(title);
       };
-     const Box = ({nameOfBox, title, nameField, rightEl}: PropsBox) => {
+     const Box = ({
+       nameOfBox,
+       title,
+       nameField,
+       rightEl,
+       placeholder,
+     }: PropsBox) => {
        return nameOfBox == 'touch' ? (
          <TouchableOpacity
            onPress={() => handleGoToScreen(title)}
@@ -47,20 +54,16 @@ export const ChangeFamilyMembers = () => {
          </TouchableOpacity>
        ) : (
          <View style={styles.input}>
-           <Text
-             style={{
-               color: COLORS.text,
-               fontWeight: 'bold',
-               fontSize: 18,
-             }}>
-             {title}:{' '}
-           </Text>
-           <Text
-             style={{
-               color: COLORS.text,
-             }}>
-             {nameField}
-           </Text>
+           <View>
+             <Text style={{color: COLORS.text, fontSize: 18}}>
+               {placeholder}:
+             </Text>
+           </View>
+
+           <TextInput
+             style={{width: '100%', paddingLeft: 10, color: COLORS.text}}>
+             <Text>{nameField}</Text>
+           </TextInput>
          </View>
        );
      };
@@ -72,8 +75,15 @@ export const ChangeFamilyMembers = () => {
           please enter their details below.
         </Text>
       </View>
-      <Box title={'Email Address'} nameOfBox={'input'} />
-      <Box title={'Name'} nameOfBox={'input'} />
+      <Box
+        title={'Email Address'}
+        nameOfBox={'input'}
+        placeholder={'Email Address'}
+      />
+      <Box 
+      title={'Name'} 
+      nameOfBox={'input'}
+       placeholder={'Name'} />
     </View>
   );
 };

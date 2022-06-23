@@ -24,6 +24,7 @@ import {setEmail, setLoader} from '../../redux/slice/slice';
 import SettingsRoutes from './Settings/SettingsRoutes';
 import {SettingsTemperature} from '../../screens/Account/Settings/SettingsTemperature';
 import SettingsAccountStackRoutes from './Settings/SettingsAccountRouter';
+import GraphicRoutes from './Graphics/GraphicsRoutes';
 
 const customTabBarStyle = {
   activeTintColor: '#0091EA',
@@ -201,6 +202,7 @@ const AppStackRoutes = () => {
       />
       {SettingsRoutes()}
       {SettingsAccountStackRoutes()}
+      {GraphicRoutes()}
     </Stack.Navigator>
   );
 };

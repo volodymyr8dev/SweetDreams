@@ -70,7 +70,7 @@ export const SettingsAccount = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={{paddingBottom: 40}}>
-        <Blog title="Connection" rightEl="Connected" source={connection} />
+        <Blog title="Connectidon" rightEl="Connected" source={connection} />
         <Blog title="Child Lock" rightEl={<Switch />} source={lock} />
         <View style={{paddingLeft: 15}}>
           <Text style={{color: '#2371AB', fontSize: 17}}>Display Settings</Text>

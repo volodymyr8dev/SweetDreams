@@ -29,6 +29,7 @@
     "react": "17.0.2",
     "react-native": "0.68.2",
     "react-native-anchor-carousel": "^4.0.1",
+    "react-native-audio-recorder-player": "^3.5.1",
     "react-native-awesome-loading": "^1.0.15",
     "react-native-bouncy-checkbox": "^2.1.10",
     "react-native-bouncy-checkbox-group": "^0.1.0",

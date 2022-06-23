@@ -8,6 +8,7 @@ import {
   Image,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native';
 import BouncyCheckboxGroup, {
   ICheckboxButton,
@@ -15,14 +16,18 @@ import BouncyCheckboxGroup, {
 import arrowRight from '../../../assets/images/settings/arrowRight.png';
 import {CustomButton} from '../../../components/CustomButton/CustomButton';
 import {CustomInput} from '../../../components/CustomInput/CustomInput';
+import {InputUnit} from '../../../components/InputUnit/InputUnit';
 import {navigationOptions} from '../../../navigation/routes/AppStackRoutes';
 import {COLORS} from '../../../styles/Constants';
-interface PropsBox {
-  nameOfBox: string;
-  title: string;
-  nameField: string;
-  rightEl?: string;
-}
+import modalIcon from '../../../assets/images/settings/modalIcon/modal.png';
+import {AlertComp} from '../../../components/Alert/AlertComp';
+// interface PropsBox {
+//   nameOfBox: string;
+//   title: string;
+//   nameField?: string;
+//   rightEl?: string;
+//   placeholder?: string;
+// }
 
 const verticalStaticData = [
   {
@@ -53,56 +58,20 @@ const verticalStaticData = [
 export const Settings = () => {
   const navigation = useNavigation();
   const handleSignOut = () => {
-    navigation.navigate('Login');
-  };
-  const handleGoToScreen = title => {
-    console.log(title);
-    navigation.navigate(title);
-  };
-  const Box = ({nameOfBox, title, nameField, rightEl}: PropsBox) => {
-    return nameOfBox == 'touch' ? (
-      <TouchableOpacity
-        onPress={() => handleGoToScreen(title)}
-        style={styles.box}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          <View>
-            <Text style={{color: COLORS.text, fontSize: 18}}>{title}</Text>
-          </View>
-          {!rightEl ? (
-            <View>
-              <Image style={{height: 15, width: 15}} source={arrowRight} />
-            </View>
-          ) : (
-            <Text style={{color: '#fff', fontSize: 17}}>{rightEl}</Text>
-          )}
-        </View>
-      </TouchableOpacity>
-    ) : (
-      <TextInput
-        style={styles.input}>
-        {/* <Text
-          style={{
-            color: COLORS.text,
-            fontWeight: 'bold',
-            fontSize: 18,
-          }}>
-          {title}:{' '}
-        </Text> */}
-        <Text
-          style={{
-            color: COLORS.text,
-          }}>
-          {nameField}
-        </Text>
-      </TextInput>
+    AlertComp(
+      'Are you sure you had like to sign out of your account?',
+      'Sign out',
+      'Cancel',
     );
   };
 
+  const handleDeleteAcount = () => {
+    AlertComp(
+      'Are you sure you had like to sign out of your account?',
+      'Sign out',
+      'Cancel',
+    );
+  };
   const Gender = () => {
     const [citizen, setCitizen] = useState<any>(null);
 
@@ -137,6 +106,7 @@ export const Settings = () => {
       </View>
     );
   };
+
   return (
     <View style={styles.container}>
       <ScrollView style={{paddingTop: 10}}>
@@ -149,7 +119,7 @@ export const Settings = () => {
             devices.
           </Text>
         </View>
-        <Box nameOfBox="touch" title={'Manage Family Members'} />
+        <InputUnit nameOfBox="touch" title={'Manage Family Members'} />
         <View style={{paddingHorizontal: 20, marginVertical: 10}}>
           <Text style={{color: COLORS.text, fontSize: 18}}>
             Caregiver Information
@@ -162,18 +132,20 @@ export const Settings = () => {
             help improve the product though statistics and analytics
           </Text>
         </View>
-        <Box title={'Your Name'} nameField={'Bernie'} nameOfBox={'input'} />
-        <Box
+        <InputUnit
+          title={'Your Name'}
+          nameField={'Bernie'}
+          nameOfBox={'input'}
+          placeholder={'Your Name'}
+        />
+        <InputUnit
           title={'Your Email Address'}
           nameField={'bernie@sweetdreaamers'}
           nameOfBox={'input'}
+          placeholder={'Your Email Addres'}
         />
-        <Box
-          title={'Change Password'}
-          nameField={'bernie@sweetdreaamers'}
-          nameOfBox={'touch'}
-        />
-        <Box
+        <InputUnit title={'Change Password'} nameOfBox={'touch'} />
+        <InputUnit
           title={'Your Date of Birth'}
           nameField={'bernie@sweetdreaamers'}
           nameOfBox={'touch'}
@@ -193,8 +165,13 @@ export const Settings = () => {
             </Text>
           </View>
         </View>
-        <Box title={'Your Name'} nameField={'Bernie'} nameOfBox={'input'} />
-        <Box
+        <InputUnit
+          title={'Your Name'}
+          nameField={'Bernie'}
+          nameOfBox={'input'}
+          placeholder={'Your Name'}
+        />
+        <InputUnit
           title={'Your Date of Birth'}
           nameField={'bernie@sweetdreaamers'}
           nameOfBox={'touch'}
@@ -204,8 +181,8 @@ export const Settings = () => {
         <View style={{paddingHorizontal: 20, marginVertical: 15}}>
           <Text style={{color: COLORS.text, fontSize: 18}}>Legal Policy</Text>
         </View>
-        <Box nameOfBox="touch" title={'Privacy Policy'} />
-        <Box nameOfBox="touch" title={'Terms & Conditions'} />
+        <InputUnit nameOfBox="touch" title={'Privacy Policy'} />
+        <InputUnit nameOfBox="touch" title={'Terms Conditions'} />
         <View style={{paddingHorizontal: 20, marginVertical: 15}}>
           <Text style={{color: COLORS.text, fontSize: 18}}>
             App Version 2.1.4
@@ -216,7 +193,9 @@ export const Settings = () => {
             <Text style={{color: '#CE9B51', fontSize: 18}}>sign out</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={{marginBottom: 35}}>
+        <TouchableOpacity
+          onPress={handleDeleteAcount}
+          style={{marginBottom: 35}}>
           <View style={styles.bottomButtons}>
             <Text style={{color: '#CE9B51', fontSize: 18}}>delete account</Text>
           </View>
@@ -254,7 +233,7 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 7,
     height: 66,
-    width: '100%',
+    // width: '100%',
     borderRadius: 0,
     backgroundColor: COLORS.backGround,
     flexDirection: 'row',
@@ -277,5 +256,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 66,
+  },
+  placeholder: {
+    position: 'absolute',
+    left: 0,
+    top: 20,
   },
 });

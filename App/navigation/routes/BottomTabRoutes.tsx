@@ -1,11 +1,13 @@
 import React from 'react';
-import {Text, Image} from 'react-native';
+import {Text, Image, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Account} from '../../screens/Account/Account';
 import {Settings} from '../../screens/Account/SettingsAccount/Settings';
 import childIcon from '../../assets/images/homeIcon/child.png';
 import personIcon from '../../assets/images/homeIcon/person.png';
 import graphic from '../../assets/images/homeIcon/graphic2.png';
+import graphActive from '../../assets/images/graph/Group1.png';
+import graphActiveUp from '../../assets/images/graph/graphActiveUp.png';
 import document from '../../assets/images/homeIcon/document.png';
 import documentActive from '../../assets/images/documentActive.png';
 import location from '../../assets/images/homeIcon/location.png';
@@ -13,7 +15,24 @@ import {Graphics} from '../../screens/Account/Graphics';
 import {Document} from '../../screens/Account/Document';
 import {Location} from '../../screens/Account/Location';
 
+const iconGr = focused => {
+  return (
+    <View>
+      {focused ? (
+        <View>
+          <Image style={{width: 23, height: 23}} source={graphActive} />
+        </View>
+      ) : (
+        <View>
+          <Image style={{width: 30, height: 30}} source={graphic} />
+        </View>
+      )}
+    </View>
+  );
+};
+
 const Tab = createBottomTabNavigator();
+// const TabNav = createTabNavigator()
 
 const customTabBarStyle = {
   activeTintColor: '#707070',
@@ -37,7 +56,7 @@ export const MyTabs = () => {
           tabBarStyle: {
             backgroundColor: '#707070',
           },
-          tabBarIcon: ({color, focused}) => <Image source={graphic} />,
+          tabBarIcon: ({color, focused}) => iconGr(focused),
         }}
       />
       <Tab.Screen
