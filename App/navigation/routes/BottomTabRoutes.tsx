@@ -3,30 +3,31 @@ import {Text, Image, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Account} from '../../screens/Account/Account';
 import {Settings} from '../../screens/Account/SettingsAccount/Settings';
-import childIcon from '../../assets/images/homeIcon/child.png';
+import childActive from '../../assets/images/controlChild/childActive.png';
 import personIcon from '../../assets/images/homeIcon/person.png';
-import graphic from '../../assets/images/homeIcon/graphic2.png';
 import graphActive from '../../assets/images/graph/Group1.png';
-import graphActiveUp from '../../assets/images/graph/graphActiveUp.png';
+import graphGroup from '../../assets/images/graph/graphGroup.png';
+import graphUnActive from '../../assets/images/graph/graphUnActive.png';
 import document from '../../assets/images/homeIcon/document.png';
-import documentActive from '../../assets/images/documentActive.png';
+import documentActive from '../../assets/images/documents/groupdocument.png';
 import location from '../../assets/images/homeIcon/location.png';
+import childUnActive from '../../assets/images/controlChild/childUnActive.png';
+import niple from '../../assets/images/niple/niple.png'
 import {Graphics} from '../../screens/Account/Graphics';
 import {Document} from '../../screens/Account/Document';
 import {Location} from '../../screens/Account/Location';
+import {COLORS} from '../../styles/Constants';
 
-const iconGr = focused => {
+const iconGr = (focused, iconActive, icon, size = 30) => {
   return (
     <View>
-      {focused ? (
-        <View>
-          <Image style={{width: 23, height: 23}} source={graphActive} />
-        </View>
-      ) : (
-        <View>
-          <Image style={{width: 30, height: 30}} source={graphic} />
-        </View>
-      )}
+      <View>
+        <Image
+          resizeMode="contain"
+          style={[{width: size, height: size}]}
+          source={focused ? iconActive : icon}
+        />
+      </View>
     </View>
   );
 };
@@ -56,7 +57,8 @@ export const MyTabs = () => {
           tabBarStyle: {
             backgroundColor: '#707070',
           },
-          tabBarIcon: ({color, focused}) => iconGr(focused),
+          tabBarIcon: ({color, focused}) =>
+            iconGr(focused, graphActive, graphUnActive),
         }}
       />
       <Tab.Screen
@@ -68,7 +70,8 @@ export const MyTabs = () => {
           tabBarStyle: {
             backgroundColor: '#707070',
           },
-          tabBarIcon: ({color, focused}) => <Image source={document} />,
+          tabBarIcon: ({color, focused}) =>
+            iconGr(focused, documentActive, document),
         }}
       />
       <Tab.Screen
@@ -80,7 +83,8 @@ export const MyTabs = () => {
           tabBarStyle: {
             backgroundColor: '#707070',
           },
-          tabBarIcon: ({color}) => <Image source={childIcon} />,
+          tabBarIcon: ({color, focused}) =>
+            iconGr(focused, childActive, childUnActive, 45),
         }}
       />
       <Tab.Screen
@@ -92,7 +96,7 @@ export const MyTabs = () => {
           tabBarStyle: {
             backgroundColor: '#707070',
           },
-          tabBarIcon: ({color}) => <Image source={location} />,
+          tabBarIcon: ({color, focused}) => iconGr(focused, niple, niple),
         }}
       />
       <Tab.Screen

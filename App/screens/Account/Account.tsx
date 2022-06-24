@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -25,16 +25,26 @@ import lightShow from '../../assets/images/controlChild/lightsShow.png';
 import Carousel from 'react-native-anchor-carousel';
 import ShopCarousel from '../../components/Carousel/Carousel';
 import {useNavigation} from '@react-navigation/native';
-import { COLORS } from '../../styles/Constants';
+import {COLORS} from '../../styles/Constants';
+import backgroundGrey from '../../assets/backGrey.png';
+import powerOff from '../../assets/images/controlChild/powerOff.png';
+import {useDispatch} from 'react-redux';
+import {setPower} from '../../redux/slice/powerSlice';
 const {width: windowWidth} = Dimensions.get('window');
 export const Account = () => {
   const carouselRef = React.useRef(null);
   const navigation = useNavigation();
+  const [isActive, setISActive] = useState(true);
   const handleConnect = () => {};
+  const dispatch = useDispatch();
   const openSettings = () => {
     navigation.navigate('settingsAccount');
   };
-  const handlePower = () => {};
+  const handlePower = () => {
+    dispatch(setPower(!isActive));
+    setISActive(!isActive);
+  };
+
   const HeaderUI = () => {
     return (
       <>
@@ -126,15 +136,17 @@ export const Account = () => {
     );
   };
   return (
-    <ImageBackground style={{backgroundColor:COLORS.backGround}} source={background}>
+    <ImageBackground
+      style={{backgroundColor: COLORS.backGround}}
+      source={isActive ? background : backgroundGrey}>
       <View style={styles.container}>
         <HeaderUI />
         <TouchableOpacity
           onPress={handlePower}
           style={{alignItems: 'center', marginTop: '40%', paddingRight: 10}}>
-          <Image source={power} />
+          <Image source={isActive ? power : powerOff} />
         </TouchableOpacity>
-        <View style={styles.modalContainer}>
+        <View style={[styles.modalContainer, {}]}>
           <TouchableOpacity style={{flexDirection: 'row'}}>
             <Image style={{width: 16, height: 16}} source={play} />
           </TouchableOpacity>
@@ -213,9 +225,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderRadius: 15,
     flexDirection: 'row',
-    height: 53,
+    height: Dimensions.get('window').height / 13,
     width: '100%',
-    backgroundColor: '#221B36',
+    backgroundColor: 'rgba(255,255,255,0.15)',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
