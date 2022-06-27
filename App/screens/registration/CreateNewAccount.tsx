@@ -23,6 +23,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
 import back from '../../assets/images/homeIcon/bacgroundHome.png';
+import { COLORS } from '../../styles/Constants';
 type Nav = {
   navigate: (value: string) => void;
   setParams(value: any);
@@ -120,7 +121,7 @@ export const CreateNewAccount = () => {
 
   return (
     <>
-      <ImageBackground source={back} style={{flex: 1}}>
+      <ImageBackground source={back} style={{flex: 1,backgroundColor:COLORS.backGround}}>
         <ScrollView>
           <View style={styles.container}>
             <StepIndicator

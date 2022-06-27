@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@react-native-community/checkbox": "^0.5.12",
-    "@react-native-community/netinfo": "^9.0.0",
+    "@react-native-community/netinfo": "^9.1.0",
     "@react-native-community/slider": "^4.2.3",
     "@react-native-picker/picker": "^2.4.1",
     "@react-navigation/bottom-tabs": "^6.3.1",

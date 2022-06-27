@@ -1256,10 +1256,10 @@
   "resolved" "https://registry.npmjs.org/@react-native-community/eslint-plugin/-/eslint-plugin-1.2.0.tgz"
   "version" "1.2.0"
 
-"@react-native-community/netinfo@^9.0.0":
-  "integrity" "sha512-oodeVNdL0IT/Fv0cpL7CdxnnESNKiiAzf29yhvGSJBvuFmyHxvmYOtBIX27HWG9tQU8Yzeh+MyQcKBCNmkva+Q=="
-  "resolved" "https://registry.npmjs.org/@react-native-community/netinfo/-/netinfo-9.0.0.tgz"
-  "version" "9.0.0"
+"@react-native-community/netinfo@^9.1.0":
+  "integrity" "sha512-+CRWAcOpuqNia8g/DbS/Gh6/jZuDKUnaFG3hM8DZTqSgBAZ1Efewm0/KMHq0m/P5ZF6r3+1a9To5bW7jV1JO2Q=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/netinfo/-/netinfo-9.1.0.tgz"
+  "version" "9.1.0"
 
 "@react-native-community/slider@^4.2.3":
   "integrity" "sha512-qPkrAy883tSPoRWgGZjqL5tYnd4AmNLYNtjvtD9G6JMYtImxK4ITa/W8zOEgR8UOrPde/t+VN0MMxL63HZZK1Q=="

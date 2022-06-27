@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -28,23 +28,53 @@ import {useNavigation} from '@react-navigation/native';
 import {COLORS} from '../../styles/Constants';
 import backgroundGrey from '../../assets/backGrey.png';
 import powerOff from '../../assets/images/controlChild/powerOff.png';
-import {useDispatch} from 'react-redux';
-import {setPower} from '../../redux/slice/powerSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {setConnection, setPower} from '../../redux/slice/powerSlice';
+import NetInfo, {useNetInfo} from '@react-native-community/netinfo';
+import ConfirmConnection from './ConfirmConnection';
+import connectionStatus from '../../assets/images/homeIcon/connection.png';
 const {width: windowWidth} = Dimensions.get('window');
+
+const typeOfTemp = [
+  'Harp',
+  'Washing Machine',
+  'Waves',
+  'Car journey',
+  'Appliance Mix',
+  'Birds',
+];
+
 export const Account = () => {
   const carouselRef = React.useRef(null);
   const navigation = useNavigation();
   const [isActive, setISActive] = useState(true);
+  const [isInternet, setIsInternet] = useState<null | boolean>(null);
   const handleConnect = () => {};
   const dispatch = useDispatch();
+  const netInfo = useNetInfo();
+  const state = useSelector(state => state);
   const openSettings = () => {
     navigation.navigate('settingsAccount');
   };
+  console.log('aaaaaaaaaaa',state);
+  useEffect(() => {
+    NetInfo.fetch().then(state => {
+      console.log('Connection type', state.type);
+      console.log('Is connected?', state.isConnected);
+      if (state.isConnected) {
+        setIsInternet(true);
+        dispatch(setConnection(true));
+      } else {
+        setIsInternet(false);
+        dispatch(setConnection(false));
+      }
+    });
+  }, [netInfo.isConnected]);
+  console.log('000000000', netInfo.isConnected);
   const handlePower = () => {
     dispatch(setPower(!isActive));
     setISActive(!isActive);
   };
-
   const HeaderUI = () => {
     return (
       <>
@@ -55,7 +85,12 @@ export const Account = () => {
             <Image source={settings} />
           </TouchableOpacity>
         </View>
-        <View style={{marginBottom: 20, alignSelf: 'center'}}>
+        <View
+          style={{
+            display: `${!netInfo.isConnected ? 'none' : 'flex'}`,
+            marginBottom: 20,
+            alignSelf: 'center',
+          }}>
           <View style={styles.controlContainer}>
             <View
               style={{
@@ -135,65 +170,90 @@ export const Account = () => {
       <ShopCarousel />
     );
   };
+  const ControlCard = () => {
+    const [activeType, setActiveType] = useState({
+      name: typeOfTemp[0],
+      index: 0,
+    });
+    console.log(activeType);
+
+    const switchLeft = () => {
+      if (activeType.index === 0) {
+        setActiveType({
+          name: typeOfTemp[typeOfTemp.length - 1],
+          index: typeOfTemp.length - 1,
+        });
+      } else {
+        setActiveType({
+          name: typeOfTemp[activeType.index - 1],
+          index: activeType.index - 1,
+        });
+      }
+    };
+    const switchRight = () => {
+      console.log(typeOfTemp[0]);
+      if (activeType.index == typeOfTemp.length - 1) {
+        setActiveType({
+          name: typeOfTemp[0],
+          index: 0,
+        });
+      } else {
+        setActiveType({
+          name: typeOfTemp[activeType.index + 1],
+          index: activeType.index + 1,
+        });
+      }
+    };
+    return (
+      <View style={[styles.modalContainer, {}]}>
+        <TouchableOpacity style={{flexDirection: 'row'}}>
+          <Image style={{width: 16, height: 16}} source={play} />
+        </TouchableOpacity>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableOpacity onPress={switchLeft}>
+            <Image style={{width: 25, height: 25}} source={arrowBack} />
+          </TouchableOpacity>
+          <View style={{width: 95}}>
+            <Text
+              style={{
+                color: '#fff',
+                textAlign: 'center',
+              }}>
+              {typeOfTemp.length && activeType.name.length > 10
+                ? activeType.name.substring(0, 10).trim() + '...'
+                : activeType.name}
+            </Text>
+          </View>
+          <TouchableOpacity onPress={switchRight}>
+            <Image style={{width: 25, height: 25}} source={arrowRight} />
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={{flexDirection: 'row'}}>
+          <Image source={timer} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+  const Content = () => (
+    <>
+      <TouchableOpacity
+        onPress={handlePower}
+        style={{alignItems: 'center', marginTop: '40%', paddingRight: 10}}>
+        <Image source={isActive ? power : powerOff} />
+      </TouchableOpacity>
+      <ControlCard />
+      <View style={styles.containerCarousel}>
+        <ShopCarousel />
+      </View>
+    </>
+  );
   return (
     <ImageBackground
       style={{backgroundColor: COLORS.backGround}}
       source={isActive ? background : backgroundGrey}>
       <View style={styles.container}>
         <HeaderUI />
-        <TouchableOpacity
-          onPress={handlePower}
-          style={{alignItems: 'center', marginTop: '40%', paddingRight: 10}}>
-          <Image source={isActive ? power : powerOff} />
-        </TouchableOpacity>
-        <View style={[styles.modalContainer, {}]}>
-          <TouchableOpacity style={{flexDirection: 'row'}}>
-            <Image style={{width: 16, height: 16}} source={play} />
-          </TouchableOpacity>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <TouchableOpacity>
-              <Image style={{width: 25, height: 25}} source={arrowBack} />
-            </TouchableOpacity>
-            <View style={{paddingHorizontal: 35}}>
-              <Text style={{color: '#fff'}}>Harp</Text>
-            </View>
-            <TouchableOpacity>
-              <Image style={{width: 25, height: 25}} source={arrowRight} />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity style={{flexDirection: 'row'}}>
-            <Image source={timer} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.containerCarousel}>
-          {/* <Carousel
-            ref={carouselRef}
-            data={Array(3).fill(0)}
-            renderItem={CardItem}
-            style={styles.carousel}
-            itemWidth={windowWidth * 0.5}
-            containerWidth={windowWidth}
-            separatorWidth={0}
-          /> */}
-          <ShopCarousel />
-        </View>
-        {/* <View style={{marginBottom: 40, alignSelf: 'center'}}>
-          <Text style={{color: '#fff'}}>
-            Is your misty unit displaying the temperature?
-          </Text>
-        </View> */}
-        {/* <View style={{alignSelf: 'center'}}>
-          <CustomButton
-            styles={styles.button}
-            handleOnSubmit={handleConnect}
-            text="yes"
-          />
-          <CustomButton
-            styles={styles.button}
-            handleOnSubmit={handleConnect}
-            text="no"
-          />
-        </View> */}
+        {netInfo.isConnected ? <Content /> : <ConfirmConnection />}
       </View>
     </ImageBackground>
   );

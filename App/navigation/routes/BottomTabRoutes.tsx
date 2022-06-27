@@ -8,8 +8,8 @@ import personIcon from '../../assets/images/homeIcon/person.png';
 import graphActive from '../../assets/images/graph/Group1.png';
 import graphGroup from '../../assets/images/graph/graphGroup.png';
 import graphUnActive from '../../assets/images/graph/graphUnActive.png';
-import document from '../../assets/images/homeIcon/document.png';
-import documentActive from '../../assets/images/documents/groupdocument.png';
+import document from '../../assets/images/documents/document1.png';
+import documentActive from '../../assets/images/documents/documentActive.png';
 import location from '../../assets/images/homeIcon/location.png';
 import childUnActive from '../../assets/images/controlChild/childUnActive.png';
 import niple from '../../assets/images/niple/niple.png'

@@ -154,6 +154,10 @@ export default function ImageCarousel(props) {
     const {backUri, uri, title, content, items} = item;
     const handleActiveItem = (item, indexChild) => {
       let array = [...data];
+      array.map(it => {
+        return it.items.map(child => (child.active = false));
+      });
+
       array[index].items[indexChild].active =
         !array[index].items[indexChild].active;
       setData(array);
@@ -180,50 +184,13 @@ export default function ImageCarousel(props) {
             <Image source={uri} />
           </ImageBackground>
         </View>
-        {/* <ScrollView
-          scrollIndicatorStyle={{backgroundColor: '#fff'}}
-          contentContainerStyle={{flexGrow: 1}}>
-          <View style={styles.lowerContainer}>
-            <Text style={styles.titleText}>{title}</Text>
-            {items.map((item, indexChild) => {
-              return (
-                <TouchableOpacity
-                  disabled={index !== currentIndex || !power}
-                  onPress={() => handleActiveItem(item, indexChild)}
-                  style={[
-                    styles.card,
-                    {
-                      // backgroundColor: 'rgba(255,255,255,0.2)',
-                      backgroundColor: power
-                        ? item.active
-                          ? '#72D3DB'
-                          : 'rgba(255,255,255,0.2)'
-                        : 'rgba(255,255,255,0.2)',
-                    },
-                  ]}>
-                  <Image source={tempGreen} />
-                  <Text
-                    style={[
-                      styles.contentText,
-                      {
-                        color: power
-                          ? item.active
-                            ? '#000'
-                            : 'rgba(255,255,255,1)'
-                          : 'rgba(255,255,255,1)',
-                      },
-                    ]}>
-                    {content}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-          <View></View>
-        </ScrollView> */}
 
         <ScrollViewIndicator
-          scrollIndicatorStyle={{width: 4, backgroundColor: '#fff',height:"70%"}}
+          scrollIndicatorStyle={{
+            width: 4,
+            backgroundColor: '#fff',
+            height: '70%',
+          }}
           style={{paddinHorizontal: 220}}
           // scrollIndicatorStyle={{backgroundColor: '#fff'}}
           scrollIndicatorContainerStyle={{
@@ -280,7 +247,7 @@ export default function ImageCarousel(props) {
         renderItem={renderItem}
         itemWidth={0.4 * windowWidth}
         inActiveOpacity={0.4}
-        containerWidth={windowWidth - 10}
+        containerWidth={windowWidth - 20}
         onScrollEnd={handleCarouselScrollEnd}
         ref={carouselRef}
       />

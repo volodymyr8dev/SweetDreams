@@ -33,7 +33,7 @@ export const ConnectionStep2 = () => {
       setLoader(true);
       setTimeout(() => {
         setLoader(false);
-        navigation.navigate('conectio6nStep3');
+        navigation.navigate('conectionStep3');
       }, 1000);
     }
   };
