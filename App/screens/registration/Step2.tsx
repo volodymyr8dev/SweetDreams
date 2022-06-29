@@ -14,9 +14,16 @@ import {customStyles} from '../../components/StepIndicator/StepIndicator';
 import background from '../../assets/images/background.png';
 import email from '../../assets/images/email.png';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
-import {VerifyEmail} from '../../api/CreateAccount/CreateAccount';
+import {
+  SendEmailVerificationCode,
+  VerifyEmail,
+} from '../../api/CreateAccount/CreateAccount';
 import {useDispatch, useSelector} from 'react-redux';
-import {setEmail, setLoader} from '../../redux/slice/slice';
+import {
+  setEmail,
+  setLoader,
+  updateVerifiedEmail,
+} from '../../redux/slice/slice';
 import {Loader} from '../../components/Loader/Loader';
 export const Step2 = () => {
   const [currentPosition, setCurrentPosition] = useState(1);
@@ -26,7 +33,7 @@ export const Step2 = () => {
   const dispatch = useDispatch();
 
   const global = useSelector(({account}) => account);
-  console.log(global);
+  console.log('qqqqq', global);
   useEffect(() => {
     navigation.setParams({
       position: currentPosition,
@@ -43,26 +50,36 @@ export const Step2 = () => {
   useEffect(() => {
     dispatch(setEmail(navigation.getState().routes[2].params?.email));
   }, []);
+  useEffect(() => {
+    if (code && code.length == 6) {
+      dispatch(setLoader(true));
+      VerifyEmail(global?.email, code)
+        .then(data => {
+          console.log(data.data);
+          dispatch(setLoader(false));
+          navigation.navigate('step2');
+        })
+        .catch(err => {
+          console.log(err);
+          Alert.alert(err.error);
+          dispatch(setLoader(false));
+        });
+    }
+    //  else {
+    //   Alert.alert('Verification code is wrong');
+    // }
+  }, [code]);
 
   const navigateToStep3 = () => {
-    if (code) {
-      dispatch(setLoader(true));
-      setTimeout(() => {
-        dispatch(setLoader(false));
-        navigation.navigate('step2');
-      }, 3000);
-      // VerifyEmail(global.email, code)
-      //   .then(data => {
-      //     console.log(data);
-      //     navigation.navigate('step2');
-      //   })
-      //   .catch(err => {
-      //     Alert.alert('Something went wrong');
-      //   });
-    }
-    else {
-      Alert.alert('Verification code is wrong');
-    }
+    SendEmailVerificationCode(global?.email)
+      .then(data => {
+        console.log(data);
+        Alert.alert('Verification code sent successfully');
+      })
+      .catch(err => {
+        console.log('err', err.response.data);
+        Alert.alert(err.response.data.error);
+      });
   };
 
   return (
@@ -114,7 +131,7 @@ export const Step2 = () => {
                   fontWeight: 'bold',
                   textAlign: 'center',
                 }}>
-                next
+                resend Code
               </Text>
             </View>
           </View>

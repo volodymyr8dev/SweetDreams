@@ -6,8 +6,19 @@ const messageSlice = createSlice({
   initialState: {
     email: '',
     loader: false,
+    userInformation: {
+      user:{},
+      verified: false,
+    },
   },
   reducers: {
+    setUserInformation(state, action: PayloadAction<any>) {
+      state.userInformation.user = action.payload;
+    },
+    updateVerifiedEmail(state, action: PayloadAction<boolean>) {
+      state.userInformation = state.userInformation;
+      state.userInformation.verified = action.payload;
+    },
     setEmail(state, action: PayloadAction<string>) {
       state.email = action.payload;
     },
@@ -17,5 +28,6 @@ const messageSlice = createSlice({
   },
 });
 
-export const {setEmail,setLoader} = messageSlice.actions;
+export const {setEmail, setLoader, setUserInformation, updateVerifiedEmail} =
+  messageSlice.actions;
 export default messageSlice.reducer;

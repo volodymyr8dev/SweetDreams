@@ -145,7 +145,7 @@ export default function ImageCarousel(props) {
   const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
   const [isActive, setIsActive] = useState({arrayIndex: null, index: null});
   const [activeComponent, setActiveComponent] = useState(0);
-  console.log(currentIndex);
+  console.log(power);
   function handleCarouselScrollEnd(item, index) {
     setCurrentIndex(index);
   }

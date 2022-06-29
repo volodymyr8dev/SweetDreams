@@ -23,7 +23,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
 import back from '../../assets/images/homeIcon/bacgroundHome.png';
-import { COLORS } from '../../styles/Constants';
+import {COLORS} from '../../styles/Constants';
+import {RegistrationUser} from '../../api/CreateAccount/CreateAccount';
+import {updateVerifiedEmail} from '../../redux/slice/slice';
 type Nav = {
   navigate: (value: string) => void;
   setParams(value: any);
@@ -65,10 +67,14 @@ export const CreateNewAccount = () => {
   const [terms, setTerms] = useState(false);
   const [privacy, setPrivacy] = useState(false);
   const state = useSelector(state => state?.account);
-  console.log(state);
+  console.log('ssss', state);
   const navigation = useNavigation<Nav>();
   const isFocused = useIsFocused();
-
+  const global = useSelector(({account}) => account);
+  console.log(' global.userInformation.verified', global);
+  useEffect(() => {
+    navigation.setParams({verified: global.userInformation.verified});
+  }, [isFocused]);
   useEffect(() => {
     Validation('email', email);
     navigation.setParams({
@@ -93,11 +99,19 @@ export const CreateNewAccount = () => {
   }, [password]);
 
   useEffect(() => {
-    navigation.setParams({
-      email: email,
-      error: Validation('email', email),
-    });
-    setTimeout(() => {}, 2000);
+    if (global.email) {
+      dispatch(updateVerifiedEmail(false));
+      navigation.setParams({
+        email: email,
+        error: Validation('email', email),
+        verified: global.userInformation.verified,
+      });
+    } else {
+      navigation.setParams({
+        email: email,
+        error: Validation('email', email),
+      });
+    }
   }, [email]);
 
   useEffect(() => {
@@ -119,9 +133,17 @@ export const CreateNewAccount = () => {
     });
   }, [privacy]);
 
+  const handleShowPrivacy = () => {
+    navigation.navigate('Privacy Policy', {title: 'Privacy Policy'});
+  };
+  const handleShowTerms = () => {
+    navigation.navigate('Terms Conditions', {title: 'Terms & Conditions'});
+  };
   return (
     <>
-      <ImageBackground source={back} style={{flex: 1,backgroundColor:COLORS.backGround}}>
+      <ImageBackground
+        source={back}
+        style={{flex: 1, backgroundColor: COLORS.backGround}}>
         <ScrollView>
           <View style={styles.container}>
             <StepIndicator
@@ -215,10 +237,11 @@ export const CreateNewAccount = () => {
                       fontSize: 19,
                       color: '#2371AB',
                     }}>
-                    <Text style={{color: 'red'}}>*</Text>Terms & Conditions
+                    <Text style={{color: 'red'}}>*</Text>
+                    Terms & Conditions
                   </Text>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={handleShowTerms}>
                   <Text style={{color: '#fff', fontSize: 17}}>show</Text>
                 </TouchableOpacity>
               </View>
@@ -237,7 +260,7 @@ export const CreateNewAccount = () => {
                     <Text style={{color: 'red'}}>*</Text> Privacy Policy
                   </Text>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={handleShowPrivacy}>
                   <Text style={{color: '#fff', fontSize: 17}}>show</Text>
                 </TouchableOpacity>
               </View>

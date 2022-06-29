@@ -9,6 +9,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
+import InternetConnectionAlert from 'react-native-internet-connection-alert';
 import {CustomButton} from '../../components/CustomButton/CustomButton';
 import background from '../../assets/images/homeIcon/bacgroundHome.png';
 import sheep from '../../assets/images/controlChild/sheep.png';
@@ -29,7 +30,7 @@ import {COLORS} from '../../styles/Constants';
 import backgroundGrey from '../../assets/backGrey.png';
 import powerOff from '../../assets/images/controlChild/powerOff.png';
 import {useDispatch, useSelector} from 'react-redux';
-import {setConnection, setPower} from '../../redux/slice/powerSlice';
+import {setConnection, setPower} from '../../redux/slice/PowerSlice';
 import NetInfo, {useNetInfo} from '@react-native-community/netinfo';
 import ConfirmConnection from './ConfirmConnection';
 import connectionStatus from '../../assets/images/homeIcon/connection.png';
@@ -46,9 +47,10 @@ const typeOfTemp = [
 
 export const Account = () => {
   const carouselRef = React.useRef(null);
+  const [button, toggleButton] = useState(false);
   const navigation = useNavigation();
   const [isActive, setISActive] = useState(true);
-  const [isInternet, setIsInternet] = useState<null | boolean>(null);
+  const [isInternet, setIsInternet] = useState<boolean>(true);
   const handleConnect = () => {};
   const dispatch = useDispatch();
   const netInfo = useNetInfo();
@@ -56,25 +58,33 @@ export const Account = () => {
   const openSettings = () => {
     navigation.navigate('settingsAccount');
   };
-  console.log('aaaaaaaaaaa',state);
+  console.log('aaaaaaaaaaa', state);
   useEffect(() => {
-    NetInfo.fetch().then(state => {
-      console.log('Connection type', state.type);
-      console.log('Is connected?', state.isConnected);
-      if (state.isConnected) {
-        setIsInternet(true);
-        dispatch(setConnection(true));
-      } else {
-        setIsInternet(false);
-        dispatch(setConnection(false));
-      }
-    });
+    if (netInfo.isConnected) {
+      console.log('ifcon', netInfo);
+      dispatch(setConnection(true));
+      setIsInternet(true);
+    } else {
+      setIsInternet(false);
+
+      dispatch(setConnection(false));
+    }
   }, [netInfo.isConnected]);
-  console.log('000000000', netInfo.isConnected);
+
   const handlePower = () => {
     dispatch(setPower(!isActive));
     setISActive(!isActive);
   };
+
+  // useEffect(() => {
+  //   NetInfo.addEventListener(networkState => {
+  //     console.log('Connection type - ', networkState.type);
+  //     setIsInternet(networkState.isConnected);
+  //     console.log('Is connected? - ', networkState.isConnected);
+  //   });
+  // }, [button]);
+  //   console.log('Is connected? - ', isInternet);
+
   const HeaderUI = () => {
     return (
       <>
@@ -252,8 +262,12 @@ export const Account = () => {
       style={{backgroundColor: COLORS.backGround}}
       source={isActive ? background : backgroundGrey}>
       <View style={styles.container}>
-        <HeaderUI />
-        {netInfo.isConnected ? <Content /> : <ConfirmConnection />}
+        <HeaderUI toggleButton={toggleButton} />
+        {!netInfo.isConnected || !isInternet ? (
+          <ConfirmConnection toggleButton={toggleButton} />
+        ) : (
+          <Content />
+        )}
       </View>
     </ImageBackground>
   );

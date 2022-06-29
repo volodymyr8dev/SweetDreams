@@ -39,6 +39,7 @@
     "react-native-color-wheel": "^0.1.7",
     "react-native-date-picker": "^4.2.2",
     "react-native-fast-image": "^8.5.11",
+    "react-native-internet-connection-alert": "^0.1.8",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-loading-spinner-overlay": "^3.0.0",
     "react-native-orientation-loading-overlay": "^0.1.6",

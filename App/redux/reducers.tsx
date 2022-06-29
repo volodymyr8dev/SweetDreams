@@ -3,7 +3,7 @@ import REDUCER_KEY from './reducerKeys';
 
 import messageReducer from '../redux/slice/slice';
 import SettingsReducer from '../redux/slice/SettingsSlice';
-import PowerSlice from './slice/powerSlice';
+import PowerSlice from '../redux/slice/PowerSlice';
 export default () =>
   combineReducers({
     [REDUCER_KEY.LOGIN_REDUCER]: messageReducer,

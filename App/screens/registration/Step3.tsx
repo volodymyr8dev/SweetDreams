@@ -20,10 +20,13 @@ import {customStyles} from '../../components/StepIndicator/StepIndicator';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import {Validation} from '../../components/validation/Validation';
-import {CreateAccount} from '../../api/CreateAccount/CreateAccount';
+import {
+  CreateAccount,
+  PostCaregiver,
+} from '../../api/CreateAccount/CreateAccount';
 import {setLoader} from '../../redux/slice/slice';
 import {useDispatch, useSelector} from 'react-redux';
-import { Loader } from '../../components/Loader/Loader';
+import {Loader} from '../../components/Loader/Loader';
 
 export const Step3 = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
@@ -33,8 +36,7 @@ export const Step3 = () => {
   const [visibleData, setVisibleData] = useState(false);
   const [gender, setGender] = useState(null);
   const global = useSelector(({account}) => account);
-
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const verticalStaticData = [
     {
@@ -65,7 +67,11 @@ export const Step3 = () => {
       textStyle: {textDecorationLine: 'none'},
     },
   ];
-
+  useEffect(() => {
+    navigation.setParams({
+      hide: true,
+    });
+  }, []);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const handleGoTo4 = () => {
@@ -74,22 +80,18 @@ export const Step3 = () => {
       if (!Validation('date', date)) {
         if (gender !== null) {
           dispatch(setLoader(true));
-          setTimeout(() => {
-            dispatch(setLoader(false));
-            navigation.navigate('step3');
-          }, 2000);
-          // CreateAccount(name, date, gender)
+          // PostCaregiver(name, date, gender)
           //   .then(data => {
           //     console.log('data', data);
           //     dispatch(setLoader(false));
-
           //     navigation.navigate('step3');
           //   })
-          //   .catch(err => {
-          //     console.log('Error', err);
-          //     Alert.alert('Something went wrong');
+          //   .catch(error => {
+          //     Alert.alert(error.response.data.message);
           //     dispatch(setLoader(false));
           //   });
+          navigation.navigate('step3');
+          dispatch(setLoader(false));
         } else {
           Alert.alert('Please, choose gender');
         }
@@ -132,7 +134,7 @@ export const Step3 = () => {
           value={name}
           onChangeText={name => setName(name)}
           styling={styles.input}
-          text={'Your Name'}
+          text={'Your Name '}
         />
         <TouchableOpacity
           onPress={() => {

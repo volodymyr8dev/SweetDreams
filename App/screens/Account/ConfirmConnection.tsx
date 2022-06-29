@@ -15,6 +15,7 @@ const ConfirmConnection = props => {
   const [conect, setConnect] = useState(false);
   //   const conection = useSelector()
   const handleCheckInternet = () => {
+    props.toggleButton((prev) => !prev);
     // setConnect(!conect);
     // console.log('xxx', netInfo.isConnected);
     // if (netInfo.isConnected) {

@@ -62,6 +62,7 @@ export const Settings = () => {
       'Are you sure you had like to sign out of your account?',
       'Sign out',
       'Cancel',
+      navigation,
     );
   };
 

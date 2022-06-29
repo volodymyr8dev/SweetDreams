@@ -82,6 +82,7 @@ export const Step4 = () => {
           PostChild(name, date, gender)
             .then(data => {
               dispatch(setLoader(false));
+              // PostChild.;
             })
             .catch(err => {
               dispatch(setLoader(false));
