@@ -31,6 +31,9 @@ import {SettingsTemperature} from '../../screens/Account/Settings/SettingsTemper
 import SettingsAccountStackRoutes from './Settings/SettingsAccountRouter';
 import GraphicRoutes from './Graphics/GraphicsRoutes';
 import backButton from '../../assets/images/backButton.png';
+import {ForgotPassword} from '../../screens/registration/ForgotPassword';
+import {ForgotPassword2} from '../../screens/registration/ForgotPassword2';
+import { ForgotPassword3 } from '../../screens/registration/ForgotPassword3';
 export type RootStackParamList = {
   step2: {
     position: any;
@@ -243,6 +246,21 @@ const AppStackRoutes = () => {
       <Stack.Screen
         name="settingsAccount"
         component={SettingsAccount}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="forgotPassword"
+        component={ForgotPassword}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="ForgotPassword2"
+        component={ForgotPassword2}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="ForgotPassword3"
+        component={ForgotPassword3}
         options={navigationOptions}
       />
       {/* <Stack.Screen

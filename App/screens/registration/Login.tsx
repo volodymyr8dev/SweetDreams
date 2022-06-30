@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -14,6 +14,7 @@ import {CustomButton} from '../../components/CustomButton/CustomButton';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 import owl from '../../assets/images/owl2.png';
 import back from '../../assets/images/back.png';
+import {LogIn} from '../../api/Login/Login';
 
 type Nav = {
   navigate: (value: string) => void;
@@ -21,11 +22,24 @@ type Nav = {
 
 export const Login = () => {
   const navigation = useNavigation<Nav>();
+  const [loginEmail, setLogonEmail] = useState('');
+  const [loginPassword, setLogonPassword] = useState('');
+
   const goToCreateAccount = () => {
     navigation.navigate('CreateNewAccount');
     // navigation.navigate('account');
   };
-  const handleForgotPassword = () => {};
+
+  const LoginUser = () => {
+    LogIn(loginEmail, loginPassword)
+      .then(date => console.log(date, 'date'))
+      .catch(err => {
+        console.log(err.response.status);
+      });
+  };
+  const handleForgotPassword = () => {
+    navigation.navigate('forgotPassword'); 
+  };
   return (
     <ImageBackground style={styles.container} source={back}>
       <View style={{marginTop: -80}}>
@@ -46,14 +60,14 @@ export const Login = () => {
           <CustomInput
             colorOfText="#BDC2CE"
             text={'Username'}
-            value={''}
-            onChangeText={undefined}
+            value={loginEmail}
+            onChangeText={loginEmail => setLogonEmail(loginEmail)}
           />
           <CustomInput
             colorOfText="#BDC2CE"
             text={'Password'}
-            value={''}
-            onChangeText={undefined}
+            value={loginPassword}
+            onChangeText={loginPassword => setLogonPassword(loginPassword)}
           />
           <TouchableOpacity onPress={handleForgotPassword}>
             <View style={styles.forgotPasswordContainer}>
@@ -63,7 +77,7 @@ export const Login = () => {
             </View>
           </TouchableOpacity>
           <CustomButton
-            handleOnSubmit={() => navigation.navigate('CreateNewAccount')}
+            handleOnSubmit={LoginUser}
             text={'Login'}
             styles={undefined}></CustomButton>
           <CustomButton
