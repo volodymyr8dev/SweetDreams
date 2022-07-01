@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {View, Text, StyleSheet, Image, ImageBackground} from 'react-native';
 import {COLORS} from '../../styles/Constants';
@@ -10,6 +10,7 @@ import book from '../../assets/images/graph/iconList/book.png';
 import arrowRight from '../../assets/images/settings/arrowRight.png';
 import {useNavigation} from '@react-navigation/native';
 import back from '../../assets/images/homeIcon/bacgroundHome.png';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import carousel from 'react-native-anchor-carousel/src/carousel';
 
 const options24 = {
@@ -82,6 +83,13 @@ const optionsD28 = {
 export const Graphics = () => {
   const navigation = useNavigation();
   const [activeTime, setActiveTime] = useState('last 24 hours');
+  const getToken = async () => {
+    const value = await AsyncStorage.getItem('@storage_Key');
+    console.log('valueeee', value);
+  };
+  useEffect(() => {
+    getToken();
+  }, []);
   const handleChangeTime = time => {
     console.log(time);
     setActiveTime(time);

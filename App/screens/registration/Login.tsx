@@ -9,13 +9,17 @@ import {
   TouchableOpacity,
   ImageBackground,
   Dimensions,
+  Alert,
 } from 'react-native';
 import {CustomButton} from '../../components/CustomButton/CustomButton';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 import owl from '../../assets/images/owl2.png';
 import back from '../../assets/images/back.png';
 import {LogIn} from '../../api/Login/Login';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {setLoader} from '../../redux/slice/slice';
+import {Loader} from '../../components/Loader/Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 type Nav = {
   navigate: (value: string) => void;
 };
@@ -24,69 +28,83 @@ export const Login = () => {
   const navigation = useNavigation<Nav>();
   const [loginEmail, setLogonEmail] = useState('');
   const [loginPassword, setLogonPassword] = useState('');
-
+  const dispatch = useDispatch();
+  const global = useSelector(({account}) => account);
   const goToCreateAccount = () => {
     navigation.navigate('CreateNewAccount');
     // navigation.navigate('account');
   };
 
   const LoginUser = () => {
+    dispatch(setLoader(true));
     LogIn(loginEmail, loginPassword)
-      .then(date => console.log(date, 'date'))
+      .then(async ({data}) => {
+        await AsyncStorage.setItem('@storage_Key', data.success.token).catch(
+          err => console.log('token error', err),
+        );
+        navigation.navigate('account');
+        // console.log(data.succes.token, 'date');
+        dispatch(setLoader(false));
+      })
       .catch(err => {
-        console.log(err.response.status);
+        dispatch(setLoader(false));
+        console.log(err);
+        Alert.alert(err.response.data.error);
       });
   };
   const handleForgotPassword = () => {
-    navigation.navigate('forgotPassword'); 
+    navigation.navigate('forgotPassword', {hide: false});
   };
   return (
-    <ImageBackground style={styles.container} source={back}>
-      <View style={{marginTop: -80}}>
-        <View style={styles.title}>
-          <Image
-            style={{width: 150, height: 190, resizeMode: 'contain'}}
-            source={owl}></Image>
-          <Text
-            style={{
-              fontSize: 27,
-              color: '#fff',
-              fontFamily: 'Josefin Sans Thin Regular',
-            }}>
-            Misty The Cloud <Text style={{fontWeight: 'bold'}}> App</Text>
-          </Text>
+    <>
+      <ImageBackground style={styles.container} source={back}>
+        <View style={{marginTop: -80}}>
+          <View style={styles.title}>
+            <Image
+              style={{width: 150, height: 190, resizeMode: 'contain'}}
+              source={owl}></Image>
+            <Text
+              style={{
+                fontSize: 27,
+                color: '#fff',
+                fontFamily: 'Josefin Sans Thin Regular',
+              }}>
+              Misty The Cloud <Text style={{fontWeight: 'bold'}}> App</Text>
+            </Text>
+          </View>
+          <View style={{alignItems: 'center'}}>
+            <CustomInput
+              colorOfText="#BDC2CE"
+              text={'Username'}
+              value={loginEmail}
+              onChangeText={loginEmail => setLogonEmail(loginEmail)}
+            />
+            <CustomInput
+              colorOfText="#BDC2CE"
+              text={'Password'}
+              value={loginPassword}
+              onChangeText={loginPassword => setLogonPassword(loginPassword)}
+            />
+            <TouchableOpacity onPress={handleForgotPassword}>
+              <View style={styles.forgotPasswordContainer}>
+                <Text style={styles.forgotPassword}>
+                  yep... i forgot password
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <CustomButton
+              handleOnSubmit={LoginUser}
+              text={'Login'}
+              styles={undefined}></CustomButton>
+            <CustomButton
+              handleOnSubmit={goToCreateAccount}
+              text={'Register'}
+              styles={undefined}></CustomButton>
+          </View>
         </View>
-        <View style={{alignItems: 'center'}}>
-          <CustomInput
-            colorOfText="#BDC2CE"
-            text={'Username'}
-            value={loginEmail}
-            onChangeText={loginEmail => setLogonEmail(loginEmail)}
-          />
-          <CustomInput
-            colorOfText="#BDC2CE"
-            text={'Password'}
-            value={loginPassword}
-            onChangeText={loginPassword => setLogonPassword(loginPassword)}
-          />
-          <TouchableOpacity onPress={handleForgotPassword}>
-            <View style={styles.forgotPasswordContainer}>
-              <Text style={styles.forgotPassword}>
-                yep... i forgot password
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <CustomButton
-            handleOnSubmit={LoginUser}
-            text={'Login'}
-            styles={undefined}></CustomButton>
-          <CustomButton
-            handleOnSubmit={goToCreateAccount}
-            text={'Register'}
-            styles={undefined}></CustomButton>
-        </View>
-      </View>
-    </ImageBackground>
+      </ImageBackground>
+      {global?.loader && <Loader text={'Please wait ...'} />}
+    </>
   );
 };
 

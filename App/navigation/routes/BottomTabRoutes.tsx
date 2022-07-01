@@ -73,7 +73,7 @@ export const MyTabs = () => {
           tabBarIcon: ({color, focused}) =>
             iconGr(focused, documentActive, document),
         }}
-      />
+      />       
       <Tab.Screen
         name="account"
         component={Account}

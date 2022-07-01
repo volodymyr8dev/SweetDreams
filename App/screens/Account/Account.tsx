@@ -97,7 +97,7 @@ export const Account = () => {
         </View>
         <View
           style={{
-            display: `${!netInfo.isConnected ? 'none' : 'flex'}`,
+            // display: `${!netInfo.isConnected ? 'none' : 'flex'}`,
             marginBottom: 20,
             alignSelf: 'center',
           }}>
@@ -263,11 +263,11 @@ export const Account = () => {
       source={isActive ? background : backgroundGrey}>
       <View style={styles.container}>
         <HeaderUI toggleButton={toggleButton} />
-        {!netInfo.isConnected || !isInternet ? (
-          <ConfirmConnection toggleButton={toggleButton} />
-        ) : (
+        {/* {!netInfo.isConnected || !isInternet ? ( */}
+          {/* <ConfirmConnection toggleButton={toggleButton} /> */}
+        {/* ) : ( */}
           <Content />
-        )}
+        {/* )} */}
       </View>
     </ImageBackground>
   );

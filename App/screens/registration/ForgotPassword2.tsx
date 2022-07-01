@@ -36,12 +36,14 @@ export const ForgotPassword2 = () => {
   const global = useSelector(({account}) => account);
 
   const navigateToStep3 = () => {
-    VerifyEmailResetPassword(global?.email, code).then(data => {
-      console.log(data);
-      navigation.navigate('ForgotPassword3');
-    }).catch((err)=>{
-        console.log(err)
-    });
+    VerifyEmailResetPassword(global?.email, code)
+      .then(data => {
+        console.log(data);
+        navigation.navigate('ForgotPassword3');
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
     // SendEmailVerificationCode(global?.email)
     //   .then(data => {
     //     console.log(data);
@@ -89,7 +91,7 @@ export const ForgotPassword2 = () => {
         </View>
         <TouchableOpacity onPress={navigateToStep3}>
           <View style={styles.buttonDown}>
-            <View style={{marginTop: 20}}>
+            <View style={{marginTop: 30}}>
               <Text
                 style={{
                   color: '#fff',
@@ -133,7 +135,7 @@ const styles = StyleSheet.create({
   },
   buttonDown: {
     position: 'absolute',
-    bottom: -50,
+  
     width: '115%',
     marginLeft: -20,
     height: 95,

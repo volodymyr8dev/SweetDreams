@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Login} from '../../screens/registration/Login';
 import {CreateNewAccount} from '../../screens/registration/CreateNewAccount';
@@ -33,7 +33,8 @@ import GraphicRoutes from './Graphics/GraphicsRoutes';
 import backButton from '../../assets/images/backButton.png';
 import {ForgotPassword} from '../../screens/registration/ForgotPassword';
 import {ForgotPassword2} from '../../screens/registration/ForgotPassword2';
-import { ForgotPassword3 } from '../../screens/registration/ForgotPassword3';
+import {ForgotPassword3} from '../../screens/registration/ForgotPassword3';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export type RootStackParamList = {
   step2: {
     position: any;
@@ -73,7 +74,7 @@ export const navigationOptions = navigation => ({
   // headerLeft: () => null,
   headerLeft: () => {
     const params = navigation.route?.params;
-    console.log(params);
+    console.log('params',params);
     return (
       !params?.hide && (
         <TouchableOpacity onPress={() => navigation.navigation.goBack()}>
@@ -183,11 +184,24 @@ export const navigationOptions = navigation => ({
 });
 
 const AppStackRoutes = () => {
+  let value;
+  const navigation = useNavigation();
+  const [token, setToken] = useState();
   const Stack = createNativeStackNavigator<registerScreenProp>();
+  const getToken = async () => {
+    value = await AsyncStorage.getItem('@storage_Key');
+    setToken(value);
+    console.log('valueeee', value);
+    // navigation.navigate('account');
+  };
+  useEffect(() => {
+    getToken();
+  }, []);
 
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      // initialRouteName="Login"
+      initialRouteName={token ? 'account' : 'Login'}
       screenOptions={{
         headerShown: false,
       }}>
