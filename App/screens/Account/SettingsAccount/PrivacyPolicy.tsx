@@ -12,13 +12,13 @@ import {COLORS} from '../../../styles/Constants';
 
 export const PrivacyPolicy = () => {
   const [content, setContent] = useState(
-    ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis,',
+    '',
   );
   useEffect(() => {
     getPrivacyPolicy()
       .then(({data}) => {
         console.log('privacy', data);
-        setContent(data);
+        setContent(data.content);
       })
       .catch(err => {
         console.log(err.response);

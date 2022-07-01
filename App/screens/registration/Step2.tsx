@@ -60,9 +60,9 @@ export const Step2 = () => {
           navigation.navigate('step2');
         })
         .catch(err => {
-          console.log(err);
-          Alert.alert(err.error);
+          console.log('Errrrr', err.response.data.error);
           dispatch(setLoader(false));
+          Alert.alert(err.response.data.error);
         });
     }
     //  else {
@@ -71,6 +71,7 @@ export const Step2 = () => {
   }, [code]);
 
   const navigateToStep3 = () => {
+    console.log('dddddd', global.email);
     SendEmailVerificationCode(global?.email)
       .then(data => {
         console.log(data);

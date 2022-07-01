@@ -15,7 +15,7 @@ export const TermsConditions = () => {
   useEffect(() => {
     getTerms()
       .then(({data}) => {
-        setContent(data);
+        setContent(data.content);
       })
       .catch(err => {
         console.log(err);

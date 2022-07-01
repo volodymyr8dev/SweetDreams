@@ -27,7 +27,7 @@ import {
 import {setLoader} from '../../redux/slice/slice';
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
-import { ChangePassword } from '../../api/ForgotPassword/forgotPassword';
+import {ChangePassword} from '../../api/ForgotPassword/forgotPassword';
 
 export const ForgotPassword3 = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
@@ -38,7 +38,8 @@ export const ForgotPassword3 = () => {
   const [gender, setGender] = useState(null);
   const global = useSelector(({account}) => account);
   const navigation = useNavigation<any>();
-
+  const [code, setCode] = useState();
+  const [confirmCode, setConfirmCode] = useState();
   const verticalStaticData = [
     {
       id: 0,
@@ -74,7 +75,11 @@ export const ForgotPassword3 = () => {
     });
   }, []);
   const HandleChangePassword = () => {
-    ChangePassword()
+    ChangePassword(
+      navigation.getState().routes[2].params?.email,
+      code,
+      confirmCode,
+    )
       .then(data => {
         console.log(data);
       })
@@ -146,19 +151,19 @@ export const ForgotPassword3 = () => {
         </View>
         <CustomInput
           value={name}
-          onChangeText={name => setName(name)}
+          onChangeText={item => setCode(item)}
           styling={styles.input}
-          text={'Your Email'}
+          text={'Password'}
         />
-        <CustomInput
+        {/* <CustomInput
           value={name}
           onChangeText={name => setName(name)}
           styling={styles.input}
           text={'Password'}
-        />
+        /> */}
         <CustomInput
           value={name}
-          onChangeText={name => setName(name)}
+          onChangeText={confirmCode => setConfirmCode(confirmCode)}
           styling={styles.input}
           text={'Confirm Password'}
         />

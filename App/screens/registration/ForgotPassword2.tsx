@@ -43,7 +43,9 @@ export const ForgotPassword2 = () => {
     )
       .then(data => {
         console.log('aaaaaa', data);
-        navigation.navigate('ForgotPassword3');
+        navigation.navigate('ForgotPassword3', {
+          email: navigation.getState().routes[2].params?.email,
+        });
       })
       .catch(err => {
         console.log('eeeeeeeee', err.response);

@@ -37,20 +37,28 @@ export const Login = () => {
 
   const LoginUser = () => {
     dispatch(setLoader(true));
-    LogIn(loginEmail, loginPassword)
-      .then(async ({data}) => {
-        await AsyncStorage.setItem('@storage_Key', data.success.token).catch(
-          err => console.log('token error', err),
-        );
-        navigation.navigate('account');
-        // console.log(data.succes.token, 'date');
-        dispatch(setLoader(false));
-      })
-      .catch(err => {
-        dispatch(setLoader(false));
-        console.log(err);
-        Alert.alert(err.response.data.error);
-      });
+    if (loginEmail && loginPassword) {
+      LogIn(loginEmail, loginPassword)
+        .then(async ({data}) => {
+          await AsyncStorage.setItem('@storage_Key', data.success.token).catch(
+            err => console.log('token error', err),
+          );
+          navigation.navigate('account');
+          // console.log(data.succes.token, 'date');
+          dispatch(setLoader(false));
+        })
+        .catch(err => {
+          dispatch(setLoader(false));
+          console.log('aaaaa', err.response.data.error);
+          if (err.response.data.error) {
+            Alert.alert(err.response.data.error);
+          } else if (err.response.data.message)
+            Alert.alert(err.response.data.message);
+        });
+    } else {
+      dispatch(setLoader(false));
+      Alert.alert('Please, fill in all the required fields');
+    }
   };
   const handleForgotPassword = () => {
     navigation.navigate('forgotPassword', {hide: false});
@@ -84,6 +92,7 @@ export const Login = () => {
               text={'Password'}
               value={loginPassword}
               onChangeText={loginPassword => setLogonPassword(loginPassword)}
+              secure={true}
             />
             <TouchableOpacity onPress={handleForgotPassword}>
               <View style={styles.forgotPasswordContainer}>

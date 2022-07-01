@@ -74,7 +74,7 @@ export const navigationOptions = navigation => ({
   // headerLeft: () => null,
   headerLeft: () => {
     const params = navigation.route?.params;
-    console.log('params',params);
+    console.log('params', params);
     return (
       !params?.hide && (
         <TouchableOpacity onPress={() => navigation.navigation.goBack()}>
@@ -110,45 +110,16 @@ export const navigationOptions = navigation => ({
                   params.terms &&
                   params.privacy
                 ) {
-                  params.dispatch(setLoader(true));
                   console.log('vvvvv', params.verified);
+                  console.log('params', params.verified);
                   if (!params.verified) {
+                    params.dispatch(setLoader(true));
                     RegistrationUser({...params})
                       .then(({data}) => {
                         console.log('---------', data.user);
                         params.dispatch(setUserInformation(data.user));
                         params.dispatch(updateVerifiedEmail(true));
-
-                        SendEmailVerificationCode(params.email)
-                          .then(data => {
-                            console.log('VerifyEmail', data.data);
-                            params.dispatch(setLoader(false));
-
-                            params.setPosition(params.position + 1);
-                            navigation.navigation.navigate(
-                              `step${params.position + 1}`,
-                              {
-                                email: params.email,
-                              },
-                            );
-                          })
-                          .catch(err => {
-                            console.log('err', err.response);
-                            params.dispatch(setLoader(false));
-                            Alert.alert(err.response.error);
-                          });
-                      })
-                      .catch(error => {
-                        // console.log('err', error.response.data.message);
-                        Alert.alert(error.response.data.message);
                         params.dispatch(setLoader(false));
-                      });
-                  } else {
-                    SendEmailVerificationCode(params.email)
-                      .then(data => {
-                        console.log('VerifyEmail', data.data);
-                        params.dispatch(setLoader(false));
-
                         params.setPosition(params.position + 1);
                         navigation.navigation.navigate(
                           `step${params.position + 1}`,
@@ -157,12 +128,39 @@ export const navigationOptions = navigation => ({
                           },
                         );
                       })
-                      .catch(err => {
+                      .catch(error => {
+                        console.log('err', error.response.data.message);
                         params.dispatch(setLoader(false));
-                        console.log('err', err.response.data);
-                        Alert.alert(err.response.data.error);
+                        Alert.alert(error.response.data.message);
                       });
+                  } else {
+                    navigation.navigation.navigate(
+                      `step${params.position + 1}`,
+                      {
+                        email: params.email,
+                      },
+                    );
                   }
+                  // else {
+                  //   SendEmailVerificationCode(params.email)
+                  //     .then(data => {
+                  //       console.log('VerifyEmail', data.data);
+                  //       params.dispatch(setLoader(false));
+
+                  //       params.setPosition(params.position + 1);
+                  //       navigation.navigation.navigate(
+                  //         `step${params.position + 1}`,
+                  //         {
+                  //           email: params.email,
+                  //         },
+                  //       );
+                  //     })
+                  //     .catch(err => {
+                  //       params.dispatch(setLoader(false));
+                  //       console.log('err', err.response.data);
+                  //       Alert.alert(err.response.data.error);
+                  //     });
+                  // }
                 } else if (
                   !params.email ||
                   !params.password ||
