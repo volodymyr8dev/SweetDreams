@@ -33,7 +33,7 @@ export const ForgotPassword = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState('');
+  const [email, setemail] = useState('');
   const [visibleData, setVisibleData] = useState(false);
   const [gender, setGender] = useState(null);
   const global = useSelector(({account}) => account);
@@ -76,11 +76,11 @@ export const ForgotPassword = () => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const handleGoTo2 = () => {
-    if (!Validation('email', name)) {
-      forgotPassword(name)
+    if (!Validation('email', email)) {
+      forgotPassword(email)
         .then(data => {
           console.log('data', data);
-          navigation.navigate('ForgotPassword2');
+          navigation.navigate('ForgotPassword2', {email: email});
         })
         .catch(err => {
           console.log(err);
@@ -90,12 +90,12 @@ export const ForgotPassword = () => {
       Alert.alert('Email is incorect');
     }
 
-    let nameRegex = /^[a-zA-Z\-]+$/;
-    // if (name.length > 2 && nameRegex.test(name) == true) {
+    let emailRegex = /^[a-zA-Z\-]+$/;
+    // if (email.length > 2 && emailRegex.test(email) == true) {
     //   if (!Validation('date', date)) {
     //     if (gender !== null) {
     //       dispatch(setLoader(true));
-    //       // PostCaregiver(name, date, gender)
+    //       // PostCaregiver(email, date, gender)
     //       //   .then(data => {
     //       //     console.log('data', data);
     //       //     dispatch(setLoader(false));
@@ -114,7 +114,7 @@ export const ForgotPassword = () => {
     //     Alert.alert(Validation('date', date));
     //   }
     // } else {
-    //   Alert.alert('Please, enter a valid name');
+    //   Alert.alert('Please, enter a valid email');
     // }
   };
 
@@ -144,8 +144,8 @@ export const ForgotPassword = () => {
           </View> */}
         </View>
         <CustomInput
-          value={name}
-          onChangeText={name => setName(name)}
+          value={email}
+          onChangeText={email => setemail(email)}
           styling={styles.input}
           text={'Your Email'}
         />

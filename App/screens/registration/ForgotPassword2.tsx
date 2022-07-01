@@ -36,13 +36,17 @@ export const ForgotPassword2 = () => {
   const global = useSelector(({account}) => account);
 
   const navigateToStep3 = () => {
-    VerifyEmailResetPassword(global?.email, code)
+    console.log('here', navigation.getState().routes[2].params?.email);
+    VerifyEmailResetPassword(
+      navigation.getState().routes[2].params?.email,
+      code,
+    )
       .then(data => {
-        console.log(data);
+        console.log('aaaaaa', data);
         navigation.navigate('ForgotPassword3');
       })
       .catch(err => {
-        console.log(err.response);
+        console.log('eeeeeeeee', err.response);
       });
     // SendEmailVerificationCode(global?.email)
     //   .then(data => {
@@ -135,7 +139,7 @@ const styles = StyleSheet.create({
   },
   buttonDown: {
     position: 'absolute',
-  
+
     width: '115%',
     marginLeft: -20,
     height: 95,

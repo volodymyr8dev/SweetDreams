@@ -27,6 +27,7 @@ import {
 import {setLoader} from '../../redux/slice/slice';
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
+import { ChangePassword } from '../../api/ForgotPassword/forgotPassword';
 
 export const ForgotPassword3 = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
@@ -72,6 +73,15 @@ export const ForgotPassword3 = () => {
       hide: true,
     });
   }, []);
+  const HandleChangePassword = () => {
+    ChangePassword()
+      .then(data => {
+        console.log(data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const handleGoTo2 = () => {
@@ -159,7 +169,9 @@ export const ForgotPassword3 = () => {
           }}></TouchableOpacity>
         <View style={{marginBottom: 10}}></View>
 
-        <TouchableOpacity onPress={handleGoTo2} style={styles.buttonDown}>
+        <TouchableOpacity
+          onPress={HandleChangePassword}
+          style={styles.buttonDown}>
           <View>
             <Text style={{color: '#fff', fontSize: 18, textAlign: 'center'}}>
               Done
