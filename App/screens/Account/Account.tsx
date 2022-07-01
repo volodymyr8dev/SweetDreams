@@ -54,11 +54,10 @@ export const Account = () => {
   const handleConnect = () => {};
   const dispatch = useDispatch();
   const netInfo = useNetInfo();
-  const state = useSelector(state => state);
+  // const state = useSelector(state => state);
   const openSettings = () => {
     navigation.navigate('settingsAccount');
   };
-  console.log('aaaaaaaaaaa', state);
   useEffect(() => {
     if (netInfo.isConnected) {
       console.log('ifcon', netInfo);

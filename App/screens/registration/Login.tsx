@@ -61,7 +61,10 @@ export const Login = () => {
     }
   };
   const handleForgotPassword = () => {
-    navigation.navigate('forgotPassword', {hide: false});
+    navigation.setParams({
+      hide: false,
+    });
+    navigation.navigate('forgotPassword');
   };
   return (
     <>

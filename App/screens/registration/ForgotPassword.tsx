@@ -39,35 +39,7 @@ export const ForgotPassword = () => {
   const global = useSelector(({account}) => account);
   const navigation = useNavigation<any>();
 
-  const verticalStaticData = [
-    {
-      id: 0,
-      text: 'male',
-      style: {
-        textDecoration: 'none',
-      },
-      iconStyle: {
-        borderColor: '#CCC',
-      },
-      fillColor: 'transparent',
-      unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none'},
-    },
-    {
-      id: 1,
-      text: 'female',
-      style: {
-        marginLeft: 20,
-        textDecorationLine: 'none',
-      },
-      iconStyle: {
-        borderColor: '#CCC',
-      },
-      fillColor: 'transparent',
-      unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none'},
-    },
-  ];
+
   useEffect(() => {
     navigation.setParams({
       hide: true,
@@ -77,45 +49,22 @@ export const ForgotPassword = () => {
   const dispatch = useDispatch();
   const handleGoTo2 = () => {
     if (!Validation('email', email)) {
+      dispatch(setLoader(true));
       forgotPassword(email)
         .then(data => {
           console.log('data', data);
+          dispatch(setLoader(false));
           navigation.navigate('ForgotPassword2', {email: email});
         })
         .catch(err => {
           console.log(err);
+          dispatch(setLoader(false));
+
           Alert.alert('something went wrong');
         });
     } else {
       Alert.alert('Email is incorect');
     }
-
-    let emailRegex = /^[a-zA-Z\-]+$/;
-    // if (email.length > 2 && emailRegex.test(email) == true) {
-    //   if (!Validation('date', date)) {
-    //     if (gender !== null) {
-    //       dispatch(setLoader(true));
-    //       // PostCaregiver(email, date, gender)
-    //       //   .then(data => {
-    //       //     console.log('data', data);
-    //       //     dispatch(setLoader(false));
-    //       //     navigation.navigate('step3');
-    //       //   })
-    //       //   .catch(error => {
-    //       //     Alert.alert(error.response.data.message);
-    //       //     dispatch(setLoader(false));
-    //       //   });
-    //       navigation.navigate('step3');
-    //       dispatch(setLoader(false));
-    //     } else {
-    //       Alert.alert('Please, choose gender');
-    //     }
-    //   } else {
-    //     Alert.alert(Validation('date', date));
-    //   }
-    // } else {
-    //   Alert.alert('Please, enter a valid email');
-    // }
   };
 
   useEffect(() => {

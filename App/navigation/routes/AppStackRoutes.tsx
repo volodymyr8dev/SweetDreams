@@ -60,6 +60,14 @@ const customTabBarStyle = {
 //   },
 //   tabBarOptions: {customTabBarStyle},
 // });
+const forgotPasswordOptions = navigation => ({
+  title: 'My App',
+  headerShown: true,
+  headerTintColor: '#fff',
+  headerStyle: {
+    backgroundColor: '#2A305A',
+  },
+});
 export const navigationOptions = navigation => ({
   title: 'My App',
   headerShown: true,
@@ -263,7 +271,7 @@ const AppStackRoutes = () => {
       <Stack.Screen
         name="forgotPassword"
         component={ForgotPassword}
-        options={navigationOptions}
+        options={forgotPasswordOptions}
       />
       <Stack.Screen
         name="ForgotPassword2"

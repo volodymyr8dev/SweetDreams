@@ -25,7 +25,10 @@ import {
   updateVerifiedEmail,
 } from '../../redux/slice/slice';
 import {Loader} from '../../components/Loader/Loader';
-import {VerifyEmailResetPassword} from '../../api/ForgotPassword/forgotPassword';
+import {
+  forgotPassword,
+  VerifyEmailResetPassword,
+} from '../../api/ForgotPassword/forgotPassword';
 export const ForgotPassword2 = () => {
   const [currentPosition, setCurrentPosition] = useState(1);
   const navigation = useNavigation();
@@ -35,30 +38,31 @@ export const ForgotPassword2 = () => {
 
   const global = useSelector(({account}) => account);
 
-  const navigateToStep3 = () => {
-    console.log('here', navigation.getState().routes[2].params?.email);
-    VerifyEmailResetPassword(
-      navigation.getState().routes[2].params?.email,
-      code,
-    )
-      .then(data => {
-        console.log('aaaaaa', data);
-        navigation.navigate('ForgotPassword3', {
-          email: navigation.getState().routes[2].params?.email,
+  useEffect(() => {
+    if (code.length === 6) {
+      dispatch(setLoader(true));
+      VerifyEmailResetPassword(
+        navigation.getState().routes[2].params?.email,
+        code,
+      )
+        .then(data => {
+          console.log('aaaaaa', data);
+          dispatch(setLoader(false));
+          navigation.navigate('account');
+        })
+        .catch(err => {
+          dispatch(setLoader(false));
+          if (err.response.data.error) {
+            Alert.alert(err.response.data.error);
+          } else if (err.response.data.message)
+            Alert.alert(err.response.data.message);
         });
-      })
-      .catch(err => {
-        console.log('eeeeeeeee', err.response);
-      });
-    // SendEmailVerificationCode(global?.email)
-    //   .then(data => {
-    //     console.log(data);
-    //     Alert.alert('Verification code sent successfully');
-    //   })
-    //   .catch(err => {
-    //     console.log('err', err.response.data);
-    //     Alert.alert(err.response.data.error);
-    //   });
+    }
+  }, [code]);
+  const navigateToStep3 = () => {
+    forgotPassword(navigation.getState().routes[2].params?.email).catch(err => {
+      console.log(err);
+    });
   };
 
   return (
@@ -97,7 +101,7 @@ export const ForgotPassword2 = () => {
         </View>
         <TouchableOpacity onPress={navigateToStep3}>
           <View style={styles.buttonDown}>
-            <View style={{marginTop: 30}}>
+            <View style={{marginTop: 22}}>
               <Text
                 style={{
                   color: '#fff',
@@ -105,7 +109,7 @@ export const ForgotPassword2 = () => {
                   fontWeight: 'bold',
                   textAlign: 'center',
                 }}>
-                resend Code
+                Resend Code
               </Text>
             </View>
           </View>

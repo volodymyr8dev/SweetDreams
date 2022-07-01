@@ -38,8 +38,8 @@ export const ForgotPassword3 = () => {
   const [gender, setGender] = useState(null);
   const global = useSelector(({account}) => account);
   const navigation = useNavigation<any>();
-  const [code, setCode] = useState();
-  const [confirmCode, setConfirmCode] = useState();
+  const [code, setCode] = useState('');
+  const [confirmCode, setConfirmCode] = useState('');
   const verticalStaticData = [
     {
       id: 0,
@@ -81,76 +81,28 @@ export const ForgotPassword3 = () => {
       confirmCode,
     )
       .then(data => {
-        console.log(data);
+        console.log('i am here', data);
       })
       .catch(err => {
-        console.log(err);
+        if (err.response.data.message) {
+          Alert.alert(err.response.data.message);
+          console.log(err.response.data.message);
+        } else if (err.response.data.errors) {
+          Alert.alert(err.response.data.errors);
+        }
       });
   };
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const handleGoTo2 = () => {
-    if (!Validation('email', name)) {
-      navigation.navigate('ForgotPassword2');
-    } else {
-      Alert.alert('something went wrong');
-    }
-
-    let nameRegex = /^[a-zA-Z\-]+$/;
-    // if (name.length > 2 && nameRegex.test(name) == true) {
-    //   if (!Validation('date', date)) {
-    //     if (gender !== null) {
-    //       dispatch(setLoader(true));
-    //       // PostCaregiver(name, date, gender)
-    //       //   .then(data => {
-    //       //     console.log('data', data);
-    //       //     dispatch(setLoader(false));
-    //       //     navigation.navigate('step3');
-    //       //   })
-    //       //   .catch(error => {
-    //       //     Alert.alert(error.response.data.message);
-    //       //     dispatch(setLoader(false));
-    //       //   });
-    //       navigation.navigate('step3');
-    //       dispatch(setLoader(false));
-    //     } else {
-    //       Alert.alert('Please, choose gender');
-    //     }
-    //   } else {
-    //     Alert.alert(Validation('date', date));
-    //   }
-    // } else {
-    //   Alert.alert('Please, enter a valid name');
-    // }
-  };
-
-  useEffect(() => {
-    navigation.setParams({
-      position: currentPosition,
-      setPosition: setCurrentPosition,
-    });
-  }, [currentPosition, isFocused]);
 
   return (
     <>
       <View style={styles.container}>
-        {/* <StepIndicator
-          customStyles={customStyles}
-          currentPosition={currentPosition}
-          onPress={() => setCurrentPosition(currentPosition + 1)}
-        /> */}
         <View style={{paddingTop: 30, paddingBottom: 10}}>
           <Text style={{fontSize: 19, color: '#26669E'}}>Forgot Password</Text>
-          {/* <View style={{marginTop: 5, marginBottom: 15}}>
-            <Text style={{color: '#26669E'}}>
-              Please enter the details of the guardian who created the account
-              and completed the registration.The information given will be used
-              to help improve the product through statistics and analytics
-            </Text>
-          </View> */}
         </View>
         <CustomInput
-          value={name}
+          value={code}
           onChangeText={item => setCode(item)}
           styling={styles.input}
           text={'Password'}
@@ -162,17 +114,12 @@ export const ForgotPassword3 = () => {
           text={'Password'}
         /> */}
         <CustomInput
-          value={name}
+          value={confirmCode}
           onChangeText={confirmCode => setConfirmCode(confirmCode)}
           styling={styles.input}
           text={'Confirm Password'}
         />
-        <TouchableOpacity
-          onPress={() => {
-            setVisibleData(true);
-            setOpen(true);
-          }}></TouchableOpacity>
-        <View style={{marginBottom: 10}}></View>
+      
 
         <TouchableOpacity
           onPress={HandleChangePassword}
