@@ -111,7 +111,7 @@ export const ConnectionStep3 = () => {
         </View>
 
         <TouchableOpacity onPress={handleGoToStep2}>
-          <Text style={{color: '#fff'}}>adasdasdasdads</Text>
+          <Text style={{color: '#fff'}}>Skip this step</Text>
         </TouchableOpacity>
       </ScrollView>
 
