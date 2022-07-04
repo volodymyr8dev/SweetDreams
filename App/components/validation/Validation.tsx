@@ -53,7 +53,7 @@ export const Validation = (type, field) => {
     ) {
       error = 'Please, choose a correct date of birth';
     } else if (moment(new Date()).diff(moment(field), 'years') < 12) {
-      error = 'You are too small to have a child';
+      error = 'You are too yong to have a child';
     }
   }
   console.log('error', error);
