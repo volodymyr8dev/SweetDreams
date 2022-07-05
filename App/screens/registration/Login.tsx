@@ -49,7 +49,7 @@ export const Login = () => {
         })
         .catch(err => {
           dispatch(setLoader(false));
-          console.log('aaaaa', err.response.data.error);
+          console.log('aaaaa', err.response.data);
           if (err.response.data.error) {
             Alert.alert(err.response.data.error);
           } else if (err.response.data.message)

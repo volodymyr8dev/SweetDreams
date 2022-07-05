@@ -11,3 +11,11 @@ export const LogIn = async (email, password) => {
   };
   return await axiosInstance.post('/api/login', body);
 };
+
+export const deleteAccount = async () => {
+  return await axiosInstance.delete('/api/me');
+};
+
+export const Logout = async () => {
+  return await axiosInstance.post('/api/logout');
+};

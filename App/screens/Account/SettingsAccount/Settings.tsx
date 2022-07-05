@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   TextInput,
   ScrollView,
   Alert,
+  Platform,
 } from 'react-native';
 import BouncyCheckboxGroup, {
   ICheckboxButton,
@@ -21,19 +22,24 @@ import {navigationOptions} from '../../../navigation/routes/AppStackRoutes';
 import {COLORS} from '../../../styles/Constants';
 import modalIcon from '../../../assets/images/settings/modalIcon/modal.png';
 import {AlertComp} from '../../../components/Alert/AlertComp';
-// interface PropsBox {
-//   nameOfBox: string;
-//   title: string;
-//   nameField?: string;
-//   rightEl?: string;
-//   placeholder?: string;
-// }
+import {UpdateProfile} from '../../../api/Profile/ProfileApi';
+import {useDispatch, useSelector} from 'react-redux';
+import {setUserInformation} from '../../../redux/slice/slice';
 
+import moment from 'moment';
+import {DatePickerComponent} from '../../../components/DatePicker/DatePicker';
+
+interface IUser {
+  email?: string;
+  name?: string;
+  date_of_birth?: string;
+  gender?: string;
+}
 const verticalStaticData = [
   {
     id: 0,
     text: 'Male',
-
+    isChecked: true,
     iconStyle: {
       borderColor: '#CCC',
     },
@@ -56,7 +62,18 @@ const verticalStaticData = [
   },
 ];
 export const Settings = () => {
+  const {user} = useSelector(({account}) => account.userInformation);
+  const [valueName, setValueName] = useState(user.name);
+  const [valueEmail, setValueEmail] = useState(user.email);
+  const [valueDate, setValueDate] = useState(user.date_of_birdth);
+  // const [valueGender, setValueGender] = useState(user.date_of_birdth);
+  const [valueGender, setValueGender] = useState<any>(null);
+
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  console.log('userrrrrrrrrr', user);
+  console.log('valueName', valueName);
+
   const handleSignOut = () => {
     AlertComp(
       'Are you sure you had like to sign out of your account?',
@@ -65,17 +82,41 @@ export const Settings = () => {
       navigation,
     );
   };
-
+  const handleSave = () => {
+    console.log('----', valueDate);
+    const newUser: IUser = {
+      ...(valueEmail !== user.email && {email: valueEmail}),
+      ...(valueName !== user.name && {name: valueName}),
+      ...(valueDate !== user.date_of_birth && {date: valueDate}),
+      ...(valueGender !== user.gender && {gender: valueGender}),
+    };
+    console.log('setUserInformation', newUser);
+    UpdateProfile(newUser)
+      .then(({data}) => {
+        dispatch(setUserInformation(data.success));
+        console.log('yes', data.success);
+      })
+      .catch(err => {
+        console.log('err edit', err);
+        err.response.data.message && Alert.alert(err.response.data.message);
+        err.response.data.error && Alert.alert(err.response.data.error);
+      });
+  };
+  useEffect(() => {
+    navigation.setParams({
+      test: handleSave,
+    });
+  }, [valueName, valueEmail, valueDate, valueGender]);
   const handleDeleteAcount = () => {
     AlertComp(
       'Are you sure you had like to sign out of your account?',
       'Sign out',
       'Cancel',
+      navigation,
+      'delete',
     );
   };
   const Gender = () => {
-    const [citizen, setCitizen] = useState<any>(null);
-
     return (
       <View style={styles.citizen}>
         <Text
@@ -96,7 +137,9 @@ export const Settings = () => {
             data={verticalStaticData}
             style={{flexDirection: 'row'}}
             onChange={(selectedItem: ICheckboxButton) => {
-              selectedItem.id == 0 ? setCitizen(true) : setCitizen(false);
+              selectedItem.id == 0
+                ? setValueGender('male')
+                : setValueGender('female');
               console.log('SelectedItem: ', JSON.stringify(selectedItem));
             }}
             textStyle={{
@@ -134,12 +177,16 @@ export const Settings = () => {
           </Text>
         </View>
         <InputUnit
+          value={valueName}
+          setValueName={value => setValueName(value)}
           title={'Your Name'}
           nameField={'Bernie'}
           nameOfBox={'input'}
           placeholder={'Your Name'}
         />
         <InputUnit
+          value={valueEmail}
+          setValueName={setValueEmail}
           title={'Your Email Address'}
           nameField={'bernie@sweetdreaamers'}
           nameOfBox={'input'}
@@ -147,10 +194,20 @@ export const Settings = () => {
         />
         <InputUnit title={'Change Password'} nameOfBox={'touch'} />
         <InputUnit
+          value={valueDate}
+          setValueName={setValueDate}
           title={'Your Date of Birth'}
           nameField={'bernie@sweetdreaamers'}
-          nameOfBox={'touch'}
+          placeholder={'Your Date of Birdth'}
+          nameOfBox={'input'}
           rightEl={'9 April 1989'}
+          date={true}
+        />
+        <DatePickerComponent
+          changeDate={date => {
+            console.log('father date', moment(date).format('YYYY-MM-DD'));
+            setValueDate(moment(date).format('YYYY-MM-DD'));
+          }}
         />
         <Gender />
         <View style={{paddingHorizontal: 20}}>

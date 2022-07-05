@@ -18,6 +18,9 @@ interface PropsBox {
   rightEl?: string;
   placeholder?: string;
   security?: boolean;
+  value?: string;
+  setValueName?: Function;
+  date?: boolean;
 }
 
 export const InputUnit = ({
@@ -27,6 +30,9 @@ export const InputUnit = ({
   rightEl,
   placeholder,
   security,
+  value,
+  setValueName,
+  date,
 }: PropsBox) => {
   const navigation = useNavigation();
   const handleGoToScreen = titleName => {
@@ -62,10 +68,17 @@ export const InputUnit = ({
       </View>
 
       <TextInput
+        value={value}
+        onChangeText={setValueName}
         secureTextEntry={security}
         style={{width: '100%', paddingLeft: 10, color: COLORS.text}}>
-        <Text>{nameField && nameField}</Text>
+        {/* <Text>{nameField && value}</Text> */}
       </TextInput>
+      {date && (
+        <View style={{position: 'absolute', right: 15}}>
+          <Text style={{color: COLORS.text, fontSize: 18}}>{date}</Text>
+        </View>
+      )}
     </View>
   );
 };

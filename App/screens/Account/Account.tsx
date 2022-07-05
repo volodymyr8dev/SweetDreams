@@ -58,17 +58,17 @@ export const Account = () => {
   const openSettings = () => {
     navigation.navigate('settingsAccount');
   };
-  useEffect(() => {
-    if (netInfo.isConnected) {
-      console.log('ifcon', netInfo);
-      dispatch(setConnection(true));
-      setIsInternet(true);
-    } else {
-      setIsInternet(false);
+  // useEffect(() => {
+  //   if (netInfo.isConnected) {
+  //     console.log('ifcon', netInfo);
+  //     dispatch(setConnection(true));
+  //     setIsInternet(true);
+  //   } else {
+  //     setIsInternet(false);
 
-      dispatch(setConnection(false));
-    }
-  }, [netInfo.isConnected]);
+  //     dispatch(setConnection(false));
+  //   }
+  // }, [netInfo.isConnected]);
 
   const handlePower = () => {
     dispatch(setPower(!isActive));

@@ -6,25 +6,9 @@ import {
   Text,
   TouchableOpacity,
   Alert,
-  Button,
-  Platform,
-  // TextInput,
 } from 'react-native';
-import BouncyCheckboxGroup from 'react-native-bouncy-checkbox-group';
-import StepIndicator from 'react-native-step-indicator';
-// import {CheckBox} from '../../components/CheckBox/CheckBox';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
-import DatePicker from 'react-native-date-picker';
-import moment from 'moment';
-import {customStyles} from '../../components/StepIndicator/StepIndicator';
-import {Formik} from 'formik';
-import * as yup from 'yup';
-import {Validation} from '../../components/validation/Validation';
-import {
-  CreateAccount,
-  PostCaregiver,
-} from '../../api/CreateAccount/CreateAccount';
-import {setLoader} from '../../redux/slice/slice';
+
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
 import {ChangePassword} from '../../api/ForgotPassword/forgotPassword';

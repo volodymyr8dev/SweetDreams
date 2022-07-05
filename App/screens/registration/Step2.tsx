@@ -22,18 +22,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   setEmail,
   setLoader,
+  setUserInformation,
   updateVerifiedEmail,
 } from '../../redux/slice/slice';
 import {Loader} from '../../components/Loader/Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export const Step2 = () => {
   const [currentPosition, setCurrentPosition] = useState(1);
   const navigation = useNavigation();
   const [code, setCode] = useState('');
+  const [bool, setBool] = useState(false);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
   const global = useSelector(({account}) => account);
-  console.log('qqqqq', global);
   useEffect(() => {
     navigation.setParams({
       position: currentPosition,
@@ -51,27 +54,30 @@ export const Step2 = () => {
     dispatch(setEmail(navigation.getState().routes[2].params?.email));
   }, []);
   useEffect(() => {
-    if (code && code.length == 6) {
+    if (code && code.length == 6 && bool === false) {
       dispatch(setLoader(true));
       VerifyEmail(global?.email, code)
-        .then(data => {
-          console.log(data.data);
+        .then(async ({data}) => {
+          console.log('222222222', data);
           dispatch(setLoader(false));
+          dispatch(setUserInformation(data.user));
+          await AsyncStorage.setItem('@storage_Key', data.token).catch(err =>
+            console.log('token error', err),
+          );
+          dispatch(setLoader(false));
+          setBool(true);
+
           navigation.navigate('step2');
         })
         .catch(err => {
-          console.log('Errrrr', err.response.data.error);
+          console.log('Errrrr', err.response.data);
           dispatch(setLoader(false));
           Alert.alert(err.response.data.error);
         });
     }
-    //  else {
-    //   Alert.alert('Verification code is wrong');
-    // }
   }, [code]);
 
   const navigateToStep3 = () => {
-    console.log('dddddd', global.email);
     SendEmailVerificationCode(global?.email)
       .then(data => {
         console.log(data);

@@ -4,16 +4,24 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 const messageSlice = createSlice({
   name: 'account',
   initialState: {
-    email: '',
     loader: false,
     userInformation: {
-      user:{},
+      user: {baby: {}},
       verified: false,
     },
   },
   reducers: {
     setUserInformation(state, action: PayloadAction<any>) {
-      state.userInformation.user = action.payload;
+      state.userInformation.user = {
+        ...state.userInformation.user,
+        ...action.payload,
+      };
+    },
+    setBabyInformation(state, action: PayloadAction<any>) {
+      state.userInformation.user = {
+        ...state.userInformation.user,
+        baby: action.payload,
+      };
     },
     updateVerifiedEmail(state, action: PayloadAction<boolean>) {
       state.userInformation = state.userInformation;
@@ -28,6 +36,11 @@ const messageSlice = createSlice({
   },
 });
 
-export const {setEmail, setLoader, setUserInformation, updateVerifiedEmail} =
-  messageSlice.actions;
+export const {
+  setEmail,
+  setLoader,
+  setUserInformation,
+  updateVerifiedEmail,
+  setBabyInformation,
+} = messageSlice.actions;
 export default messageSlice.reducer;

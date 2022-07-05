@@ -17,7 +17,7 @@ import {PostChild} from '../../api/CreateAccount/CreateAccount';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 import {Loader} from '../../components/Loader/Loader';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
-import {setLoader} from '../../redux/slice/slice';
+import {setBabyInformation, setLoader} from '../../redux/slice/slice';
 
 type Nav = {
   navigate: (value: string) => void;
@@ -69,7 +69,7 @@ export const Step4 = () => {
   //   }, [currentPosition]);
 
   const handleGoTo5 = () => {
-    navigation.navigate('step4');
+    // navigation.navigate('step4');
 
     let nameRegex = /^[a-zA-Z\-]+$/;
     if (name.length > 2 && nameRegex.test(name) == true) {
@@ -79,14 +79,23 @@ export const Step4 = () => {
       ) {
         if (gender !== null) {
           dispatch(setLoader(true));
-          PostChild(name, date, gender)
-            .then(data => {
+          PostChild(
+            global.userInformation.user.accounts[0].id,
+            name,
+            date,
+            gender,
+          )
+            .then(({data}) => {
+              console.log('child api :', data);
               dispatch(setLoader(false));
-              // PostChild.;
+              dispatch(setBabyInformation(data.baby));
+              navigation.navigate('step4');
             })
             .catch(err => {
               dispatch(setLoader(false));
-              // Alert.alert('Something went wrong');
+              console.log(err.response.data);
+              err.response.data.message &&
+                Alert.alert(err.response.data.message);
             });
         } else {
           Alert.alert('Please, choose gender');
@@ -104,9 +113,7 @@ export const Step4 = () => {
       <View style={styles.container}>
         <StepIndicator
           customStyles={customStyles}
-          // labels={labels}
           currentPosition={currentPosition}
-          // onPress={() => setCurrentPosition(currentPosition + 1)}
         />
         <View style={{paddingTop: 30}}>
           <Text style={{fontSize: 19, color: '#26669E'}}>Baby Profile</Text>

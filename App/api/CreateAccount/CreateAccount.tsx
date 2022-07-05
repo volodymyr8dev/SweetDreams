@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import axios from 'axios';
 import {setLoader} from '../../redux/slice/slice';
 import axiosInstance from '../index';
-
+import moment from 'moment';
 export const RegistrationUser = async params => {
   console.log('loaderssss');
   const body = {
@@ -18,22 +18,24 @@ export const RegistrationUser = async params => {
 };
 
 export const PostCaregiver = async (name, dateOfBirdth, gender) => {
+  console.log('dateof birdth:', moment(dateOfBirdth).format('YYYY-MM-DD'));
   const body = {
     name,
-    date_of_birth: dateOfBirdth,
+    date_of_birth: moment(dateOfBirdth).format('YYYY-MM-DD'),
     gender,
   };
-  return await axiosInstance.put('/api/v1/register', body);
+  return await axiosInstance.patch('/api/me', body);
 };
 
-export const PostChild = async (name, dateOfBirdth, gender) => {
+export const PostChild = async (accountId, name, dateOfBirdth, gender) => {
+  console.log('date', moment(dateOfBirdth).format('YYYY-MM-DD'));
   const body = {
-    name,
-    date_of_birth: dateOfBirdth,
-    gender,
+    baby_name: name,
+    baby_date_of_birth: moment(dateOfBirdth).format('YYYY-MM-DD'),
+    baby_gender: gender,
   };
   const api = {};
-  return await axiosInstance.post('/api/v1/baby-register', body);
+  return await axiosInstance.patch(`/api/accounts/${accountId}/baby`, body);
 };
 export const VerifyEmail = async (email, code) => {
   const body = {

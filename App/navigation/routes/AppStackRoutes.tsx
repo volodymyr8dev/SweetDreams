@@ -82,7 +82,6 @@ export const navigationOptions = navigation => ({
   // headerLeft: () => null,
   headerLeft: () => {
     const params = navigation.route?.params;
-    console.log('params', params);
     return (
       !params?.hide && (
         <TouchableOpacity onPress={() => navigation.navigation.goBack()}>
@@ -91,7 +90,7 @@ export const navigationOptions = navigation => ({
       )
     );
   },
-
+ 
   headerRight: () => {
     const params = navigation.route?.params;
     return params?.title == 'connection'
@@ -118,8 +117,6 @@ export const navigationOptions = navigation => ({
                   params.terms &&
                   params.privacy
                 ) {
-                  console.log('vvvvv', params.verified);
-                  console.log('params', params.verified);
                   if (!params.verified) {
                     params.dispatch(setLoader(true));
                     RegistrationUser({...params})
@@ -204,9 +201,11 @@ const AppStackRoutes = () => {
     getToken();
   }, []);
 
+  // if (token) {
+  //   navigation.navigate('account');
+  // }
   return (
     <Stack.Navigator
-      // initialRouteName="Login"
       initialRouteName={token ? 'account' : 'Login'}
       screenOptions={{
         headerShown: false,

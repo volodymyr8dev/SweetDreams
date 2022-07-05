@@ -17,11 +17,11 @@ export const PrivacyPolicy = () => {
   useEffect(() => {
     getPrivacyPolicy()
       .then(({data}) => {
-        console.log('privacy', data);
+        console.log('privacyyyyyy', data);
         setContent(data.content);
       })
       .catch(err => {
-        console.log(err.response);
+        console.log(err);
       });
   }, []);
   return (

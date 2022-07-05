@@ -5,32 +5,19 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  ImageBackground,
   Image,
   Alert,
 } from 'react-native';
-import StepIndicator from 'react-native-step-indicator';
-import {customStyles} from '../../components/StepIndicator/StepIndicator';
-import background from '../../assets/images/background.png';
 import email from '../../assets/images/email.png';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
-import {
-  SendEmailVerificationCode,
-  VerifyEmail,
-} from '../../api/CreateAccount/CreateAccount';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  setEmail,
-  setLoader,
-  updateVerifiedEmail,
-} from '../../redux/slice/slice';
+import {setLoader} from '../../redux/slice/slice';
 import {Loader} from '../../components/Loader/Loader';
 import {
   forgotPassword,
   VerifyEmailResetPassword,
 } from '../../api/ForgotPassword/forgotPassword';
 export const ForgotPassword2 = () => {
-  const [currentPosition, setCurrentPosition] = useState(1);
   const navigation = useNavigation();
   const [code, setCode] = useState('');
   const isFocused = useIsFocused();

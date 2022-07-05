@@ -77,27 +77,27 @@ export const Step3 = () => {
   const handleGoTo4 = () => {
     let nameRegex = /^[a-zA-Z\-]+$/;
     if (name.length > 2 && nameRegex.test(name) == true) {
-      if (!Validation('date', date)) {
-        if (gender !== null) {
-          dispatch(setLoader(true));
-          // PostCaregiver(name, date, gender)
-          //   .then(data => {
-          //     console.log('data', data);
-          //     dispatch(setLoader(false));
-          //     navigation.navigate('step3');
-          //   })
-          //   .catch(error => {
-          //     Alert.alert(error.response.data.message);
-          //     dispatch(setLoader(false));
-          //   });
-          navigation.navigate('step3');
-          dispatch(setLoader(false));
-        } else {
-          Alert.alert('Please, choose gender');
-        }
+      // if (!Validation('date', date)) {
+      if (gender !== null) {
+        dispatch(setLoader(true));
+        PostCaregiver(name, date, gender)
+          .then(data => {
+            console.log('data', data);
+            dispatch(setLoader(false));
+            navigation.navigate('step3');
+          })
+          .catch(error => {
+            Alert.alert(error.response.data.message);
+            console.log('Caregiver errors', error.response);
+            dispatch(setLoader(false));
+          });
+        dispatch(setLoader(false));
       } else {
-        Alert.alert(Validation('date', date));
+        Alert.alert('Please, choose gender');
       }
+      // } else {
+      //   Alert.alert(Validation('date', date));
+      // }
     } else {
       Alert.alert('Please, enter a valid name');
     }

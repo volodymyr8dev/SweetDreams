@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, Image, View} from 'react-native';
+import {Text, Image, View, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Account} from '../../screens/Account/Account';
 import {Settings} from '../../screens/Account/SettingsAccount/Settings';
@@ -12,7 +12,7 @@ import document from '../../assets/images/documents/document1.png';
 import documentActive from '../../assets/images/documents/documentActive.png';
 import location from '../../assets/images/homeIcon/location.png';
 import childUnActive from '../../assets/images/controlChild/childUnActive.png';
-import niple from '../../assets/images/niple/niple.png'
+import niple from '../../assets/images/niple/niple.png';
 import {Graphics} from '../../screens/Account/Graphics';
 import {Document} from '../../screens/Account/Document';
 import {Location} from '../../screens/Account/Location';
@@ -31,6 +31,34 @@ const iconGr = (focused, iconActive, icon, size = 30) => {
     </View>
   );
 };
+
+const navigationOptions = navigation => ({
+  title: 'profile / preferences',
+  headerShown: true,
+  headerTintColor: '#fff',
+  headerStyle: {
+    backgroundColor: '#2A305A',
+  }, 
+  headerRight: () => {
+    const params = navigation.route?.params;
+    console.log('parapms', params);
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          params.test();
+        }}
+        style={{paddingRight: 10}}>
+        <Text style={{color: '#fff', fontSize: 19}}>save</Text>
+      </TouchableOpacity>
+    );
+  },
+  // headerShown: false,
+  tabBarLabel: '',
+  tabBarStyle: {
+    backgroundColor: '#707070',
+  },
+  tabBarIcon: ({color}) => <Image source={personIcon} />,
+});
 
 const Tab = createBottomTabNavigator();
 // const TabNav = createTabNavigator()
@@ -73,7 +101,7 @@ export const MyTabs = () => {
           tabBarIcon: ({color, focused}) =>
             iconGr(focused, documentActive, document),
         }}
-      />       
+      />
       <Tab.Screen
         name="account"
         component={Account}
@@ -102,20 +130,7 @@ export const MyTabs = () => {
       <Tab.Screen
         name="settings"
         component={Settings}
-        options={{
-          title: 'profile / preferences',
-          headerShown: true,
-          headerTintColor: '#fff',
-          headerStyle: {
-            backgroundColor: '#2A305A',
-          },
-          // headerShown: false,
-          tabBarLabel: '',
-          tabBarStyle: {
-            backgroundColor: '#707070',
-          },
-          tabBarIcon: ({color}) => <Image source={personIcon} />,
-        }}
+        options={navigationOptions}
       />
     </Tab.Navigator>
   );

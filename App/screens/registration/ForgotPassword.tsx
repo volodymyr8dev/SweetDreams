@@ -39,7 +39,6 @@ export const ForgotPassword = () => {
   const global = useSelector(({account}) => account);
   const navigation = useNavigation<any>();
 
-
   useEffect(() => {
     navigation.setParams({
       hide: true,
