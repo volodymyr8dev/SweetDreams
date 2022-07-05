@@ -35,11 +35,11 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Misty the Cloud uses this to a autofill the address when you create a calendar event.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Misty the Cloud uses this to a autofill the address when you create a calendar event.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Misty the Cloud uses this to a autofill the address when you create a calendar event.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Misty the Cloud uses this to a autofill the address when you create a calendar event.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Misty the Cloud uses the nicrophone to record sounds for Russell</string>
