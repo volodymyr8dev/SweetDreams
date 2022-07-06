@@ -26,6 +26,7 @@ import back from '../../assets/images/homeIcon/bacgroundHome.png';
 import {COLORS} from '../../styles/Constants';
 import {RegistrationUser} from '../../api/CreateAccount/CreateAccount';
 import {updateVerifiedEmail} from '../../redux/slice/slice';
+import {RootState} from '../../redux/configureStore';
 type Nav = {
   navigate: (value: string) => void;
   setParams(value: any);
@@ -70,7 +71,7 @@ export const CreateNewAccount = () => {
   console.log('ssss', state);
   const navigation = useNavigation<Nav>();
   const isFocused = useIsFocused();
-  const global = useSelector(({account}) => account);
+  const global = useSelector(({account}: RootState) => account);
   console.log(' global.userInformation.verified', global);
   useEffect(() => {
     navigation.setParams({verified: global.userInformation.verified});
@@ -152,13 +153,17 @@ export const CreateNewAccount = () => {
             />
             <View style={{marginTop: 20}}>
               <View style={{marginBottom: 7}}>
-                <Text style={{fontSize: 19, color: '#244676'}}>
+                <Text style={{fontSize: 19, color: COLORS.textLight}}>
                   Create a Sweet Dreamers Account
                 </Text>
               </View>
               <View>
                 <Text
-                  style={{fontSize: 16, marginBottom: 15, color: '#244676'}}>
+                  style={{
+                    fontSize: 16,
+                    marginBottom: 15,
+                    color: COLORS.textLight,
+                  }}>
                   A sweetDreamers account is necessary for using the App
                   services.Fill out the boxes below and select the 'done' button
                   when you're finished
@@ -183,10 +188,10 @@ export const CreateNewAccount = () => {
               />
               <View>
                 <View>
-                  <Text style={{color: '#244676'}}>Accept Terms</Text>
+                  <Text style={{color: COLORS.textLight}}>Accept Terms</Text>
                 </View>
                 <View style={{marginBottom: 9}}>
-                  <Text style={{color: '#244676'}}>
+                  <Text style={{color: COLORS.textLight}}>
                     To use the SweetDreamers service you need to agree to the
                     terms and conditions by selecting the checkbox.You can see
                     the terms and conditions by selecting the checkbox. You can

@@ -6,7 +6,7 @@ const messageSlice = createSlice({
   initialState: {
     loader: false,
     userInformation: {
-      user: {baby: {}},
+      user: {accounts: [{}]},
       verified: false,
     },
   },
@@ -18,10 +18,7 @@ const messageSlice = createSlice({
       };
     },
     setBabyInformation(state, action: PayloadAction<any>) {
-      state.userInformation.user = {
-        ...state.userInformation.user,
-        baby: action.payload,
-      };
+      state.userInformation.user.accounts[0] = action.payload;
     },
     updateVerifiedEmail(state, action: PayloadAction<boolean>) {
       state.userInformation = state.userInformation;

@@ -1,12 +1,13 @@
 import moment from 'moment';
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native';
-import { COLORS } from '../../styles/Constants';
+import {COLORS} from '../../styles/Constants';
 import DatePicker from 'react-native-date-picker';
-export const DatePickerComponent = ({changeDate}) => {
+export const DatePickerComponent = ({changeDate, value}) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [visibleData, setVisibleData] = useState(false);
+  console.log('date', value);
   return (
     <>
       <TouchableOpacity
@@ -21,12 +22,11 @@ export const DatePickerComponent = ({changeDate}) => {
                 fontSize: 19,
                 color: '#2371AB',
               }}>
-              {visibleData
-                ? moment(date).format('DD-MM-YYYY')
-                : 'Your Date of Birth'}
+              {/* {visibleData ? 'Your Date of Birth' : 'Your Date of Birth'} */}
+              Your Date of Birth
             </Text>
           </View>
-          <Text style={{color: '#fff', fontSize: 17}}>DD MM YYYY</Text>
+          <Text style={{color: '#fff', fontSize: 17}}>{value}</Text>
         </View>
       </TouchableOpacity>
       <View style={{marginBottom: 10}}></View>

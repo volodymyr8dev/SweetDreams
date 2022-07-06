@@ -1,11 +1,22 @@
-import React from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {COLORS} from '../../../styles/Constants';
 
 import arrowRight from '../../../assets/images/settings/arrowRight.png';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput} from 'react-native';
 import {InputUnit} from '../../../components/InputUnit/InputUnit';
+import {ChangePasswordApi} from '../../../api/ForgotPassword/forgotPassword';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../redux/configureStore';
+import {AccountSelector} from '../../../redux/selectors/AccountSelector';
 
 interface PropsBox {
   nameOfBox: string;
@@ -14,15 +25,48 @@ interface PropsBox {
   rightEl?: string;
   placeholder?: string;
 }
+type Nav = {
+  getState();
+  setParams(arg0: {onSave: () => void});
+  navigate: (value: string) => void;
+};
+
 export const ChangePassword = () => {
-  const navigation = useNavigation();
-  const handleSignOut = () => {
-    navigation.navigate('Login');
-  };
+  const navigation = useNavigation<Nav>();
+  const [code, setCode] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConf, setPasswordConf] = useState('');
+  const global = useSelector(AccountSelector);
+  console.log('global state', global);
   const handleGoToScreen = title => {
     console.log(title);
     navigation.navigate(title);
   };
+  const HandleChangePassword = () => {
+    console.log('HandleChangePassword');
+    ChangePasswordApi(global.userInformation.user.email, password, passwordConf)
+      .then(({data}) => {
+        console.log('change password successfully', data.message);
+        Alert.alert(data.message);
+        navigation.navigate('Login');
+      })
+      .catch(err => {
+        console.log('err change password', err.response.data.error);
+          Alert.alert(err.response.data.message);
+
+        if (err.response.data.message) {
+          Alert.alert(err.response.data.message);
+          console.log('err change password', err.response.data.message);
+        } else if (err.response.data.errors) {
+          Alert.alert(err.response.data.errors);
+        }
+      });
+  };
+  useEffect(() => {
+    navigation.setParams({
+      onSave: HandleChangePassword,
+    });
+  }, [password, passwordConf]);
   const Box = ({
     nameOfBox,
     title,
@@ -78,6 +122,10 @@ export const ChangePassword = () => {
         placeholder={'Reset Code'}
         nameField={'************'}
         security={true}
+        value={code}
+        setValueName={value => {
+          setCode(value);
+        }}
       />
       <View style={{paddingHorizontal: 20, marginVertical: 15}}>
         <Text style={{color: COLORS.text}}>
@@ -91,6 +139,10 @@ export const ChangePassword = () => {
         placeholder={'New Password'}
         nameField={'************'}
         security={true}
+        value={password}
+        setValueName={value => {
+          setPassword(value);
+        }}
       />
       <View style={{paddingHorizontal: 20, marginVertical: 15}}>
         <Text style={{color: COLORS.text}}>
@@ -104,6 +156,10 @@ export const ChangePassword = () => {
         placeholder={'Confirtm New Password'}
         nameField={'************'}
         security={true}
+        value={passwordConf}
+        setValueName={value => {
+          setPasswordConf(value);
+        }}
       />
     </View>
   );

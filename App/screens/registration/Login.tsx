@@ -20,6 +20,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setLoader} from '../../redux/slice/slice';
 import {Loader} from '../../components/Loader/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AccountSelector} from '../../redux/selectors/AccountSelector';
 type Nav = {
   navigate: (value: string) => void;
 };
@@ -29,7 +30,7 @@ export const Login = () => {
   const [loginEmail, setLogonEmail] = useState('');
   const [loginPassword, setLogonPassword] = useState('');
   const dispatch = useDispatch();
-  const global = useSelector(({account}) => account);
+  const global = useSelector(AccountSelector);
   const goToCreateAccount = () => {
     navigation.navigate('CreateNewAccount');
     // navigation.navigate('account');
@@ -64,7 +65,7 @@ export const Login = () => {
     navigation.setParams({
       hide: false,
     });
-    navigation.navigate('forgotPassword');
+    navigation.navigate('forgotPassword',{title:"recovery password"});
   };
   return (
     <>

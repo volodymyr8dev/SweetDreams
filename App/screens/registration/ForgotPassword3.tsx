@@ -1,12 +1,6 @@
 import {useNavigation, useIsFocused} from '@react-navigation/native';
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, Alert} from 'react-native';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 
 import {useDispatch, useSelector} from 'react-redux';
@@ -64,8 +58,10 @@ export const ForgotPassword3 = () => {
       code,
       confirmCode,
     )
-      .then(data => {
-        console.log('i am here', data);
+      .then(({data}) => {
+        console.log('i am here', data.message);
+        Alert.alert(data.message);
+        navigation.navigate('Login');
       })
       .catch(err => {
         if (err.response.data.message) {
@@ -103,7 +99,6 @@ export const ForgotPassword3 = () => {
           styling={styles.input}
           text={'Confirm Password'}
         />
-      
 
         <TouchableOpacity
           onPress={HandleChangePassword}

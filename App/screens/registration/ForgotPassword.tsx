@@ -31,17 +31,14 @@ import {forgotPassword} from '../../api/ForgotPassword/forgotPassword';
 
 export const ForgotPassword = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
   const [email, setemail] = useState('');
-  const [visibleData, setVisibleData] = useState(false);
-  const [gender, setGender] = useState(null);
   const global = useSelector(({account}) => account);
   const navigation = useNavigation<any>();
 
   useEffect(() => {
     navigation.setParams({
       hide: true,
+      rightEl: true,
     });
   }, []);
   const isFocused = useIsFocused();
@@ -53,7 +50,11 @@ export const ForgotPassword = () => {
         .then(data => {
           console.log('data', data);
           dispatch(setLoader(false));
-          navigation.navigate('ForgotPassword2', {email: email});
+          navigation.navigate('Change Password', {
+            email: email,
+            title: 'change password',
+            rightEl: true,
+          });
         })
         .catch(err => {
           console.log(err);
@@ -73,23 +74,19 @@ export const ForgotPassword = () => {
     });
   }, [currentPosition, isFocused]);
 
+  useEffect(() => {
+    navigation.setParams({
+      sendCode: handleGoTo2,
+    });
+  }, [email]);
   return (
     <>
       <View style={styles.container}>
-        {/* <StepIndicator
-          customStyles={customStyles}
-          currentPosition={currentPosition}
-          onPress={() => setCurrentPosition(currentPosition + 1)}
-        /> */}
-        <View style={{paddingTop: 30, paddingBottom: 10}}>
-          <Text style={{fontSize: 19, color: '#26669E'}}>Forgot Password</Text>
-          {/* <View style={{marginTop: 5, marginBottom: 15}}>
-            <Text style={{color: '#26669E'}}>
-              Please enter the details of the guardian who created the account
-              and completed the registration.The information given will be used
-              to help improve the product through statistics and analytics
-            </Text>
-          </View> */}
+        <View style={{paddingTop: 10, paddingBottom: 15}}>
+          <Text style={{fontSize: 14, color: '#26669E'}}>
+            Forgotten your password? No problem, please enter your email below
+            and we'll send you a recovery link
+          </Text>
         </View>
         <CustomInput
           value={email}
@@ -97,20 +94,15 @@ export const ForgotPassword = () => {
           styling={styles.input}
           text={'Your Email'}
         />
-        <TouchableOpacity
-          onPress={() => {
-            setVisibleData(true);
-            setOpen(true);
-          }}></TouchableOpacity>
         <View style={{marginBottom: 10}}></View>
 
-        <TouchableOpacity onPress={handleGoTo2} style={styles.buttonDown}>
+        {/* <TouchableOpacity onPress={handleGoTo2} style={styles.buttonDown}>
           <View>
             <Text style={{color: '#fff', fontSize: 18, textAlign: 'center'}}>
               next
             </Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       {global?.loader && <Loader text={'Please wait ...'} />}
     </>

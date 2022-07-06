@@ -3,7 +3,7 @@ import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Login} from '../../screens/registration/Login';
 import {CreateNewAccount} from '../../screens/registration/CreateNewAccount';
-import {Alert, TouchableOpacity, Image} from 'react-native';
+import {Alert, TouchableOpacity, Image, View} from 'react-native';
 import {Text} from 'react-native';
 import {Step2} from '../../screens/registration/Step2';
 import {Step3} from '../../screens/registration/Step3';
@@ -35,6 +35,7 @@ import {ForgotPassword} from '../../screens/registration/ForgotPassword';
 import {ForgotPassword2} from '../../screens/registration/ForgotPassword2';
 import {ForgotPassword3} from '../../screens/registration/ForgotPassword3';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {COLORS} from '../../styles/Constants';
 export type RootStackParamList = {
   step2: {
     position: any;
@@ -49,29 +50,41 @@ const customTabBarStyle = {
   inactiveTintColor: 'gray',
   style: {backgroundColor: '#000'},
 };
-// const navigationOptionAccount = () => ({
-
-//   // headerShown: true,
-//   tabBarColor: '#ddd',
-//   tabBarLabel: '',
-//   headerTintColor: '#000',
-//   style: {
-//     backgroundColor: '#000',
-//   },
-//   tabBarOptions: {customTabBarStyle},
-// });
 const forgotPasswordOptions = navigation => ({
-  title: 'My App',
+  title: navigation.route?.params.title,
   headerShown: true,
-  headerTintColor: '#fff',
+  headerTintColor: COLORS.text,
+  headerBackTitle: '',
+  headerBackStyle: {color: '#fff'},
   headerStyle: {
     backgroundColor: '#2A305A',
+  },
+  headerLeft: () => {
+    const params = navigation.route?.params;
+    console.log('params', params);
+    return (
+      <TouchableOpacity onPress={() => navigation.navigation.goBack()}>
+        <Image style={{height: 15, width: 12}} source={backButton} />
+      </TouchableOpacity>
+    );
+  },
+  headerRight: () => {
+    const params = navigation.route?.params;
+    console.log('params', params);
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          params.sendCode();
+        }}>
+        <Text style={{color: '#fff', fontSize: 18}}>send</Text>
+      </TouchableOpacity>
+    );
   },
 });
 export const navigationOptions = navigation => ({
   title: 'My App',
   headerShown: true,
-  headerTintColor: '#fff',
+  headerTintColor: COLORS.text,
   headerStyle: {
     backgroundColor: '#2A305A',
   },
@@ -90,7 +103,7 @@ export const navigationOptions = navigation => ({
       )
     );
   },
- 
+
   headerRight: () => {
     const params = navigation.route?.params;
     return params?.title == 'connection'
@@ -118,6 +131,7 @@ export const navigationOptions = navigation => ({
                   params.privacy
                 ) {
                   if (!params.verified) {
+                    console.log('hereeeeeeeeeee------');
                     params.dispatch(setLoader(true));
                     RegistrationUser({...params})
                       .then(({data}) => {
@@ -201,9 +215,9 @@ const AppStackRoutes = () => {
     getToken();
   }, []);
 
-  // if (token) {
-  //   navigation.navigate('account');
-  // }
+  if (token) {
+    navigation.navigate('account');
+  }
   return (
     <Stack.Navigator
       initialRouteName={token ? 'account' : 'Login'}

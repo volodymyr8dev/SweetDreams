@@ -36,7 +36,7 @@ export const Step2 = () => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
-  const global = useSelector(({account}) => account);
+  const global = useSelector<IRootState>(({account}) => account);
   useEffect(() => {
     navigation.setParams({
       position: currentPosition,
