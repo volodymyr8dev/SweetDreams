@@ -24,7 +24,7 @@ import {
   CreateAccount,
   PostCaregiver,
 } from '../../api/CreateAccount/CreateAccount';
-import {setLoader} from '../../redux/slice/slice';
+import {setLoader, setUserInformation} from '../../redux/slice/slice';
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
 
@@ -77,13 +77,13 @@ export const Step3 = () => {
   const handleGoTo4 = () => {
     let nameRegex = /^[a-zA-Z\-]+$/;
     if (name.length > 2 && nameRegex.test(name) == true) {
-      // if (!Validation('date', date)) {
       if (gender !== null) {
         dispatch(setLoader(true));
         PostCaregiver(name, date, gender)
-          .then(data => {
+          .then(({data}) => {
             console.log('data', data);
             dispatch(setLoader(false));
+            dispatch(setUserInformation(data.success));
             navigation.navigate('step3');
           })
           .catch(error => {
@@ -95,9 +95,6 @@ export const Step3 = () => {
       } else {
         Alert.alert('Please, choose gender');
       }
-      // } else {
-      //   Alert.alert(Validation('date', date));
-      // }
     } else {
       Alert.alert('Please, enter a valid name');
     }

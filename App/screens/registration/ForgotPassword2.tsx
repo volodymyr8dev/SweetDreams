@@ -35,7 +35,7 @@ export const ForgotPassword2 = () => {
         .then(data => {
           console.log('aaaaaa', data);
           dispatch(setLoader(false));
-          navigation.navigate('account');
+          navigation.navigate('Change Password');
         })
         .catch(err => {
           dispatch(setLoader(false));
@@ -51,6 +51,7 @@ export const ForgotPassword2 = () => {
       console.log(err);
     });
   };
+
 
   return (
     <>
@@ -132,7 +133,6 @@ const styles = StyleSheet.create({
   },
   buttonDown: {
     position: 'absolute',
-
     width: '115%',
     marginLeft: -20,
     height: 95,

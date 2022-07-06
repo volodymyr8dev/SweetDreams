@@ -12,10 +12,10 @@ import {SettingsNewRecording} from '../../../screens/Account/Settings/SettingsNe
 import {SettingsTimePlaying} from '../../../screens/Account/Settings/SettingsTimePlaying';
 import {SettingsVolume} from '../../../screens/Account/Settings/SettingsVolume';
 import {ChangeFamilyMembers} from '../../../screens/Account/SettingsAccount/ChangeFamilyMembers';
-import { ChangePassword } from '../../../screens/Account/SettingsAccount/ChangePassword';
-import { PrivacyPolicy } from '../../../screens/Account/SettingsAccount/PrivacyPolicy';
-import { TermsConditions } from '../../../screens/Account/SettingsAccount/TermsConditions';
-
+import {ChangePassword} from '../../../screens/Account/SettingsAccount/ChangePassword';
+import {PrivacyPolicy} from '../../../screens/Account/SettingsAccount/PrivacyPolicy';
+import {TermsConditions} from '../../../screens/Account/SettingsAccount/TermsConditions';
+import {View, Text, TouchableOpacity} from 'react-native';
 
 const customTabBarStyle = {
   activeTintColor: '#0091EA',
@@ -33,11 +33,24 @@ const navigationOptionAccount = () => ({
   tabBarOptions: {customTabBarStyle},
 });
 const navigationOptions = navigation => {
-  console.log('here',navigation.route?.params?.title);
   return {
     title: `${navigation.route?.params?.title}`,
     headerShown: true,
     headerTintColor: '#fff',
+    headerRight: () => {
+      console.log('params change paswword', navigation.route?.params);
+      return (
+        navigation.route?.params.rightEl && (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.route?.params.onSave();
+              console.log('pressed');
+            }}>
+            <Text style={{color: '#fff', fontSize: 17}}>save</Text>
+          </TouchableOpacity>
+        )
+      );
+    },
     headerStyle: {
       backgroundColor: '#2A305A',
     },

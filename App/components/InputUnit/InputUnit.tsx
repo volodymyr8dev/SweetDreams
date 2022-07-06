@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   TouchableOpacity,
   View,
@@ -22,7 +22,6 @@ interface PropsBox {
   setValueName?: Function;
   date?: boolean;
 }
-
 export const InputUnit = ({
   nameOfBox,
   title,
@@ -37,8 +36,9 @@ export const InputUnit = ({
   const navigation = useNavigation();
   const handleGoToScreen = titleName => {
     console.log('sdd', titleName);
-    navigation.navigate(titleName, {title: titleName});
+    navigation.navigate(titleName, {title: titleName, rightEl: true});
   };
+
   return nameOfBox == 'touch' ? (
     <TouchableOpacity
       onPress={() => handleGoToScreen(title)}

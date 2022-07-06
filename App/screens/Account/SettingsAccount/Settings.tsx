@@ -63,16 +63,17 @@ const verticalStaticData = [
 ];
 export const Settings = () => {
   const {user} = useSelector(({account}) => account.userInformation);
+  console.log('user', user);
   const [valueName, setValueName] = useState(user.name);
   const [valueEmail, setValueEmail] = useState(user.email);
-  const [valueDate, setValueDate] = useState(user.date_of_birdth);
+  const [valueDate, setValueDate] = useState(user.date_of_birth);
   // const [valueGender, setValueGender] = useState(user.date_of_birdth);
   const [valueGender, setValueGender] = useState<any>(null);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
   console.log('userrrrrrrrrr', user);
-  console.log('valueName', valueName);
+  console.log('valueDate', valueDate);
 
   const handleSignOut = () => {
     AlertComp(
@@ -193,7 +194,7 @@ export const Settings = () => {
           placeholder={'Your Email Addres'}
         />
         <InputUnit title={'Change Password'} nameOfBox={'touch'} />
-        <InputUnit
+        {/* <InputUnit
           value={valueDate}
           setValueName={setValueDate}
           title={'Your Date of Birth'}
@@ -202,8 +203,9 @@ export const Settings = () => {
           nameOfBox={'input'}
           rightEl={'9 April 1989'}
           date={true}
-        />
+        /> */}
         <DatePickerComponent
+          value={valueDate}
           changeDate={date => {
             console.log('father date', moment(date).format('YYYY-MM-DD'));
             setValueDate(moment(date).format('YYYY-MM-DD'));

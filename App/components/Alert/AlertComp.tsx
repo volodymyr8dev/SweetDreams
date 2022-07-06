@@ -21,7 +21,7 @@ export const AlertComp = (
           navigation &&
             deleteAccount()
               .then(() => {
-                console.log('success')
+                console.log('success');
                 navigation.navigate('Login');
                 navigation && AsyncStorage.clear();
               })

@@ -33,9 +33,11 @@ export const Step4 = () => {
   const [gender, setGender] = useState(null);
   const dispatch = useDispatch();
   const global = useSelector(({account}) => account);
+  console.log('global', global);
   const verticalStaticData = [
     {
       id: 0,
+      value: 'male',
       text: 'boy',
       style: {
         textDecoration: 'none',
@@ -49,6 +51,7 @@ export const Step4 = () => {
     },
     {
       id: 1,
+      value: 'female',
       text: 'girl',
       style: {
         marginLeft: 20,
@@ -61,15 +64,9 @@ export const Step4 = () => {
       textStyle: {textDecorationLine: 'none', fontFamily: 'AntagometricaBT-Regular'},
     },
   ];
-  //   useEffect(() => {
-  //     navigation.setParams({
-  //       position: currentPosition,
-  //       setPosition: setCurrentPosition,
-  //     });
-  //   }, [currentPosition]);
+
 
   const handleGoTo5 = () => {
-    // navigation.navigate('step4');
 
     let nameRegex = /^[a-zA-Z\-]+$/;
     if (name.length > 2 && nameRegex.test(name) == true) {
@@ -86,7 +83,7 @@ export const Step4 = () => {
             gender,
           )
             .then(({data}) => {
-              console.log('child api :', data);
+              console.log('child data :', data);
               dispatch(setLoader(false));
               dispatch(setBabyInformation(data.baby));
               navigation.navigate('step4');
@@ -96,6 +93,7 @@ export const Step4 = () => {
               console.log(err.response.data);
               err.response.data.message &&
                 Alert.alert(err.response.data.message);
+              err.response.data && Alert.alert(err.response.data);
             });
         } else {
           Alert.alert('Please, choose gender');
@@ -187,7 +185,7 @@ export const Step4 = () => {
             style={{flexDirection: 'row'}}
             onChange={selectedItem => {
               console.log(selectedItem);
-              setGender(selectedItem.id);
+              setGender(selectedItem.value);
             }}
             textStyle={{
               textDecorationLine: 'none',

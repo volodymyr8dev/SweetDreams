@@ -12,7 +12,7 @@ export const forgotPassword = async email => {
 };
 
 export const VerifyEmailResetPassword = async (email, code) => {
-  console.log('code',code)
+  console.log('code', code);
   const body = {
     email,
     code_changing_password: code,
@@ -20,11 +20,12 @@ export const VerifyEmailResetPassword = async (email, code) => {
   return await axiosInstance.post('/api/check-changing-password-code', body);
 };
 
-export const ChangePassword = async (email, password, confirmPassword) => {
+export const ChangePasswordApi = async (email, password, confirmPassword) => {
+  console.log('api');
   const body = {
     email,
     password,
-    confirmPassword,
+    password_confirmation: confirmPassword,
   };
   return await axiosInstance.put('/api/change-forgot-password', body);
 };
