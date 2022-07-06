@@ -67,6 +67,7 @@ const forgotPasswordOptions = navigation => ({
   headerStyle: {
     backgroundColor: '#2A305A',
   },
+
 });
 export const navigationOptions = navigation => ({
   title: 'My App',
@@ -75,6 +76,7 @@ export const navigationOptions = navigation => ({
   headerStyle: {
     backgroundColor: '#2A305A',
   },
+
 
   // headerBackTitle: 'sss',
 
@@ -90,7 +92,7 @@ export const navigationOptions = navigation => ({
       )
     );
   },
- 
+
   headerRight: () => {
     const params = navigation.route?.params;
     return params?.title == 'connection'
@@ -180,7 +182,7 @@ export const navigationOptions = navigation => ({
                 navigation.navigation.navigate(`step${params.position + 1}`);
               }
             }}>
-            <Text style={{color: '#fff', fontSize: 19}}>done</Text>
+            <Text style={{color: '#fff', fontSize: 19, fontFamily: 'AntagometricaBT-Regular'}}>done</Text>
           </TouchableOpacity>
         );
   },

@@ -29,8 +29,8 @@ export const CustomInput = ({
 }: Props) => {
   const container = {
     backgroundColor: '#213358',
-    width: 270,
-    height: 54,
+    width: 269.59,
+    height: 53.92,
     color: '#FFF',
     paddingHorizontal: 21,
     borderRadius: 40,
@@ -39,7 +39,7 @@ export const CustomInput = ({
     ...styling,
   };
   const [showPassword, setShowPassword] = useState(false);
- 
+
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };

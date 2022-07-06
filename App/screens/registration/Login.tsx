@@ -78,9 +78,9 @@ export const Login = () => {
               style={{
                 fontSize: 27,
                 color: '#fff',
-                fontFamily: 'Josefin Sans Thin Regular',
+                fontFamily: 'AntagometricaBT-Regular',
               }}>
-              Misty The Cloud <Text style={{fontWeight: 'bold'}}> App</Text>
+              Misty The Cloud <Text style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>App</Text>
             </Text>
           </View>
           <View style={{alignItems: 'center'}}>
@@ -89,6 +89,7 @@ export const Login = () => {
               text={'Username'}
               value={loginEmail}
               onChangeText={loginEmail => setLogonEmail(loginEmail)}
+              styling={{fontFamily: 'AntagometricaBT-Regular'}}
             />
             <CustomInput
               colorOfText="#BDC2CE"
@@ -96,22 +97,25 @@ export const Login = () => {
               value={loginPassword}
               onChangeText={loginPassword => setLogonPassword(loginPassword)}
               secure={true}
+              styling={{fontFamily: 'AntagometricaBT-Regular'}}
             />
-            <TouchableOpacity onPress={handleForgotPassword}>
+          </View>
+            <TouchableOpacity onPress={handleForgotPassword} style={{marginLeft: '16%'}}>
               <View style={styles.forgotPasswordContainer}>
                 <Text style={styles.forgotPassword}>
                   yep... i forgot password
                 </Text>
               </View>
             </TouchableOpacity>
+          <View style={{alignItems: 'center'}}>
             <CustomButton
               handleOnSubmit={LoginUser}
-              text={'Login'}
+              text={'login'}
               styles={undefined}></CustomButton>
             <CustomButton
-              handleOnSubmit={goToCreateAccount}
-              text={'Register'}
-              styles={undefined}></CustomButton>
+                handleOnSubmit={goToCreateAccount}
+                text={'register'}
+                styles={undefined}></CustomButton>
           </View>
         </View>
       </ImageBackground>
@@ -141,5 +145,6 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     color: '#CE9B51',
+    fontFamily: 'AntagometricaBT-Regular'
   },
 });

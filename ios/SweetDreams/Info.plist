@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -35,17 +35,19 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Misty the Cloud uses this to a autofill the address when you create a calendar event.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Misty the Cloud uses this to a autofill the address when you create a calendar event.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Misty the Cloud uses this to a autofill the address when you create a calendar event.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Misty the Cloud uses the nicrophone to record sounds for Russell</string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>JosefinSans.ttf</string>
+		<string>antagobd.otf</string>
+		<string>antagolt.otf</string>
+		<string>AntagometricaBT-Bold.ttf</string>
+		<string>AntagometricaBT-Regular.ttf</string>
+		<string>antagorg.otf</string>
+		<string>DuffyScript_Bold.otf</string>
+		<string>DuffyScript_DemiBold.otf</string>
+		<string>Nuosu SIL.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

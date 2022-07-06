@@ -137,6 +137,7 @@ export const Step2 = () => {
                   fontSize: 18,
                   fontWeight: 'bold',
                   textAlign: 'center',
+                  fontFamily: 'AntagometricaBT-Bold'
                 }}>
                 resend Code
               </Text>
@@ -164,6 +165,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     backgroundColor: '#201F3F',
     color: '#2371AB',
+    fontFamily: 'AntagometricaBT-Regular'
   },
   emailContainer: {
     paddingHorizontal: 10,

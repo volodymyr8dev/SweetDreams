@@ -17,7 +17,7 @@ export const CustomButton = ({text, handleOnSubmit, styles}) => {
   return (
     <TouchableOpacity onPress={handleOnSubmit}>
       <View style={container}>
-        <Text style={{color: 'white', fontSize: 20,fontWeight: 'bold'}}>{text}</Text>
+        <Text style={{color: 'white', fontSize: 20,fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>{text}</Text>
       </View>
     </TouchableOpacity>
   );

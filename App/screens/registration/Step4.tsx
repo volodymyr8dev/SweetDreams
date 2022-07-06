@@ -45,7 +45,7 @@ export const Step4 = () => {
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none'},
+      textStyle: {textDecorationLine: 'none', fontFamily: 'AntagometricaBT-Regular'},
     },
     {
       id: 1,
@@ -58,7 +58,7 @@ export const Step4 = () => {
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none'},
+      textStyle: {textDecorationLine: 'none', fontFamily: 'AntagometricaBT-Regular'},
     },
   ];
   //   useEffect(() => {
@@ -142,13 +142,14 @@ export const Step4 = () => {
                 style={{
                   fontSize: 19,
                   color: '#2371AB',
+                  fontFamily: 'AntagometricaBT-Regular'
                 }}>
                 {visibleData
                   ? moment(date).format('DD-MM-YYYY')
                   : 'Baby`s Date of birth'}
               </Text>
             </View>
-            <Text style={{color: '#fff', fontSize: 17}}>DD MM YYYY</Text>
+            <Text style={{color: '#fff', fontSize: 17, fontFamily: 'AntagometricaBT-Regular'}}>DD MM YYYY</Text>
           </View>
         </TouchableOpacity>
         <View style={{marginBottom: 10}}></View>
@@ -175,6 +176,7 @@ export const Step4 = () => {
               style={{
                 fontSize: 19,
                 color: '#2371AB',
+                fontFamily: 'AntagometricaBT-Regular'
               }}>
               <Text style={{color: 'red'}}>*</Text>Gender
             </Text>
@@ -194,7 +196,7 @@ export const Step4 = () => {
         </View>
         <TouchableOpacity onPress={handleGoTo5} style={styles.buttonDown}>
           <View>
-            <Text style={{color: '#fff', fontSize: 18, textAlign: 'center'}}>
+            <Text style={{color: '#fff', fontSize: 18, textAlign: 'center', fontFamily: 'AntagometricaBT-Bold'}}>
               next
             </Text>
           </View>
@@ -218,6 +220,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     backgroundColor: '#201F3F',
     color: '#2371AB',
+    fontFamily: "AntagometricaBT-Regular"
   },
   citizen: {
     alignItems: 'center',

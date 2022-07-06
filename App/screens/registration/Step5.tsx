@@ -7,7 +7,7 @@ import {customStyles} from '../../components/StepIndicator/StepIndicator';
 type Nav = {
   navigate: (value: string) => void;
 };
- 
+
 export const Step5 = () => {
   const [currentPosition, setCurrentPosition] = useState(4);
   const navigation = useNavigation<Nav>();
@@ -27,11 +27,11 @@ export const Step5 = () => {
         <View style={{marginBottom: 13}}>
           <Text style={{color: '#25558C', fontSize: 18}}>
             Welcome to the Sweet Dreamers
-          </Text>  
+          </Text>
         </View>
         <View style={{marginBottom: 35}}>
-          <Text style={{color: '#fff', fontSize: 27}}>
-            Mistly the Cloud App
+          <Text style={{color: '#fff', fontSize: 27, fontFamily: 'AntagometricaBTLight-Regular'}}>
+            Mistly the Cloud<Text style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}> App</Text>
           </Text>
         </View>
         <View>
@@ -44,7 +44,7 @@ export const Step5 = () => {
       <View></View>
       <TouchableOpacity onPress={handleLastStep} style={styles.buttonDown}>
         <View>
-          <Text style={{color: '#fff', fontSize: 19, textAlign: 'center'}}>
+          <Text style={{color: '#fff', fontSize: 19, textAlign: 'center', fontFamily: 'AntagometricaBT-Bold'}}>
             done
           </Text>
         </View>

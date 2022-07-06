@@ -15,6 +15,14 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-SweetDreams-SweetDreamsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-SweetDreams-SweetDreamsTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8214585707664372967A3CFB /* antagobd.otf in Resources */ = {isa = PBXBuildFile; fileRef = A3F387B95E9C468E89380E3B /* antagobd.otf */; };
+		91838237883248539B590ECE /* antagolt.otf in Resources */ = {isa = PBXBuildFile; fileRef = D198655F40214BF58FAB7732 /* antagolt.otf */; };
+		18CB0A8FAD0D493CB0E2BF99 /* AntagometricaBT-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F639432EEE674EB4999DE80B /* AntagometricaBT-Bold.ttf */; };
+		55960B8AEAFB4285A43E92BC /* AntagometricaBT-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 276F8CB864494676A96876E6 /* AntagometricaBT-Regular.ttf */; };
+		48C1EDCC5248406E86F1FCFA /* antagorg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 752D5B56253349D8AFC079E8 /* antagorg.otf */; };
+		9312D8D861FC47B09D3CAA5A /* DuffyScript_Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7D3DF4263D5A423BB4E89615 /* DuffyScript_Bold.otf */; };
+		B4041BF4B224452799AEEB5A /* DuffyScript_DemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A0FBD42D99D741D8895C47D8 /* DuffyScript_DemiBold.otf */; };
+		817F2959F06F4D2582DC6756 /* Nuosu SIL.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 82A5668C02FD46AF9F627EB6 /* Nuosu SIL.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +70,14 @@
 		ECF17703619B4A51A7040041 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F3E7BE565B58408A857B6F5F /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		A3F387B95E9C468E89380E3B /* antagobd.otf */ = {isa = PBXFileReference; name = "antagobd.otf"; path = "../assets/fonts/antagobd.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D198655F40214BF58FAB7732 /* antagolt.otf */ = {isa = PBXFileReference; name = "antagolt.otf"; path = "../assets/fonts/antagolt.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F639432EEE674EB4999DE80B /* AntagometricaBT-Bold.ttf */ = {isa = PBXFileReference; name = "AntagometricaBT-Bold.ttf"; path = "../assets/fonts/AntagometricaBT-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		276F8CB864494676A96876E6 /* AntagometricaBT-Regular.ttf */ = {isa = PBXFileReference; name = "AntagometricaBT-Regular.ttf"; path = "../assets/fonts/AntagometricaBT-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		752D5B56253349D8AFC079E8 /* antagorg.otf */ = {isa = PBXFileReference; name = "antagorg.otf"; path = "../assets/fonts/antagorg.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7D3DF4263D5A423BB4E89615 /* DuffyScript_Bold.otf */ = {isa = PBXFileReference; name = "DuffyScript_Bold.otf"; path = "../assets/fonts/DuffyScript_Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A0FBD42D99D741D8895C47D8 /* DuffyScript_DemiBold.otf */ = {isa = PBXFileReference; name = "DuffyScript_DemiBold.otf"; path = "../assets/fonts/DuffyScript_DemiBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		82A5668C02FD46AF9F627EB6 /* Nuosu SIL.ttf */ = {isa = PBXFileReference; name = "Nuosu SIL.ttf"; path = "../assets/fonts/Nuosu SIL.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +203,14 @@
 				966DC823B07049828B39710A /* Octicons.ttf */,
 				07E632E7038043C9922C838B /* SimpleLineIcons.ttf */,
 				722B15006F254D57866967AA /* Zocial.ttf */,
+				A3F387B95E9C468E89380E3B /* antagobd.otf */,
+				D198655F40214BF58FAB7732 /* antagolt.otf */,
+				F639432EEE674EB4999DE80B /* AntagometricaBT-Bold.ttf */,
+				276F8CB864494676A96876E6 /* AntagometricaBT-Regular.ttf */,
+				752D5B56253349D8AFC079E8 /* antagorg.otf */,
+				7D3DF4263D5A423BB4E89615 /* DuffyScript_Bold.otf */,
+				A0FBD42D99D741D8895C47D8 /* DuffyScript_DemiBold.otf */,
+				82A5668C02FD46AF9F627EB6 /* Nuosu SIL.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -288,6 +312,14 @@
 				04CA81A02851E90900AD16C7 /* JosefinSans.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				8214585707664372967A3CFB /* antagobd.otf in Resources */,
+				91838237883248539B590ECE /* antagolt.otf in Resources */,
+				18CB0A8FAD0D493CB0E2BF99 /* AntagometricaBT-Bold.ttf in Resources */,
+				55960B8AEAFB4285A43E92BC /* AntagometricaBT-Regular.ttf in Resources */,
+				48C1EDCC5248406E86F1FCFA /* antagorg.otf in Resources */,
+				9312D8D861FC47B09D3CAA5A /* DuffyScript_Bold.otf in Resources */,
+				B4041BF4B224452799AEEB5A /* DuffyScript_DemiBold.otf in Resources */,
+				817F2959F06F4D2582DC6756 /* Nuosu SIL.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,10 +558,8 @@
 			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-SweetDreams.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = JH7TL6C3VF;
+				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = SweetDreams/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -554,10 +584,8 @@
 			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-SweetDreams.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = JH7TL6C3VF;
+				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = SweetDreams/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
