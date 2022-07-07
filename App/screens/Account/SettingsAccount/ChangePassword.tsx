@@ -17,6 +17,7 @@ import {ChangePasswordApi} from '../../../api/ForgotPassword/forgotPassword';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/configureStore';
 import {AccountSelector} from '../../../redux/selectors/AccountSelector';
+import {UpdateProfile} from '../../../api/Profile/ProfileApi';
 
 interface PropsBox {
   nameOfBox: string;
@@ -31,9 +32,10 @@ type Nav = {
   navigate: (value: string) => void;
 };
 
-export const ChangePassword = () => {
+export const ChangePassword = ({route}) => {
   const navigation = useNavigation<Nav>();
   const [code, setCode] = useState('');
+  const [passwordOld, setPasswordOld] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConf, setPasswordConf] = useState('');
   const global = useSelector(AccountSelector);
@@ -42,25 +44,34 @@ export const ChangePassword = () => {
     console.log(title);
     navigation.navigate(title);
   };
-  const HandleChangePassword = () => {
-    console.log('HandleChangePassword');
-    ChangePasswordApi(global.userInformation.user.email, password, passwordConf)
-      .then(({data}) => {
-        console.log('change password successfully', data.message);
-        Alert.alert(data.message);
-        navigation.navigate('Login');
-      })
-      .catch(err => {
-        console.log('err change password', err.response.data.error);
-          Alert.alert(err.response.data.message);
-
-        if (err.response.data.message) {
-          Alert.alert(err.response.data.message);
+  console.log('vvvvv', route.params);
+  const HandleChangePassword = async () => {
+    if (route.params.email) {
+      ChangePasswordApi(route.params.email, code, password, passwordConf)
+        .then(({data}) => {
+          console.log('change password successfully', data.message);
+          Alert.alert(data.message);
+          navigation.navigate('Login');
+        })
+        .catch(err => {
+          console.log('err change password', err.response.data.error);
+          Alert.alert(err.response.data.error);
+          err.response.data.message && Alert.alert(err.response.data.message);
           console.log('err change password', err.response.data.message);
-        } else if (err.response.data.errors) {
-          Alert.alert(err.response.data.errors);
-        }
+          err.response.data.errors && Alert.alert(err.response.data.errors);
+        });
+    } else {
+      const user = {
+        password_old: passwordOld,
+        password: password,
+        password_confirmation: passwordConf,
+      };
+      const {data} = await UpdateProfile(user).catch(err => {
+        console.log('errnewpassword', err);
+        Alert.alert(err.response.data.message);
       });
+      console.log(data);
+    }
   };
   useEffect(() => {
     navigation.setParams({
@@ -116,6 +127,12 @@ export const ChangePassword = () => {
 
   return (
     <View style={styles.container}>
+      <View style={{paddingHorizontal: 20, marginVertical: 15}}>
+        <Text style={{color: COLORS.text}}>
+          Please enter the reset code we recently sent to your email address
+          supplied
+        </Text>
+      </View>
       <InputUnit
         title={'Reset Code'}
         nameOfBox={'input'}
@@ -128,9 +145,23 @@ export const ChangePassword = () => {
         }}
       />
       <View style={{paddingHorizontal: 20, marginVertical: 15}}>
+        <Text style={{color: COLORS.text}}>Please enter the old password</Text>
+      </View>
+      <InputUnit
+        title={'old Password'}
+        nameOfBox={'input'}
+        placeholder={'old password'}
+        nameField={'************'}
+        security={true}
+        value={passwordOld}
+        setValueName={value => {
+          setPasswordOld(value);
+        }}
+      />
+      <View style={{paddingHorizontal: 20, marginVertical: 15}}>
         <Text style={{color: COLORS.text}}>
-          Please enter the reset code we recently sent to your email address
-          supplied
+          Please enter the new password 8-64 charapters (letters, numbers AND
+          special characters)
         </Text>
       </View>
       <InputUnit
@@ -144,12 +175,7 @@ export const ChangePassword = () => {
           setPassword(value);
         }}
       />
-      <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-        <Text style={{color: COLORS.text}}>
-          Please enter the new password 8-64 charapters (letters, numbers AND
-          special characters)
-        </Text>
-      </View>
+
       <InputUnit
         title={'Confirtm New Password'}
         nameOfBox={'input'}

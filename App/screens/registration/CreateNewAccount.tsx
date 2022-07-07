@@ -43,7 +43,10 @@ export const CreateNewAccount = () => {
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none', fontFamily: 'AntagometricaBT-Regular'},
+      textStyle: {
+        textDecorationLine: 'none',
+        fontFamily: 'AntagometricaBT-Regular',
+      },
     },
     {
       id: 1,
@@ -56,7 +59,10 @@ export const CreateNewAccount = () => {
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none', fontFamily: 'AntagometricaBT-Regular'},
+      textStyle: {
+        textDecorationLine: 'none',
+        fontFamily: 'AntagometricaBT-Regular',
+      },
     },
   ];
   const dispatch = useDispatch();
@@ -82,7 +88,7 @@ export const CreateNewAccount = () => {
       position: currentPosition,
       setPosition: setCurrentPosition,
       show: true,
-      title: 'registration',
+      title: 'create new account',
       firstScreen: true,
       error: Validation('email', email),
     });
@@ -207,7 +213,7 @@ export const CreateNewAccount = () => {
                   style={{
                     fontSize: 19,
                     color: '#2371AB',
-                    fontFamily: 'AntagometricaBT-Regular'
+                    fontFamily: 'AntagometricaBT-Regular',
                   }}>
                   EU citizen
                 </Text>
@@ -242,14 +248,21 @@ export const CreateNewAccount = () => {
                     style={{
                       fontSize: 19,
                       color: '#2371AB',
-                      fontFamily: 'AntagometricaBT-Regular'
+                      fontFamily: 'AntagometricaBT-Regular',
                     }}>
                     <Text style={{color: 'red'}}>*</Text>
                     Terms & Conditions
                   </Text>
                 </View>
                 <TouchableOpacity onPress={handleShowTerms}>
-                  <Text style={{color: '#fff', fontSize: 17, fontFamily: 'AntagometricaBT-Regular'}}>show</Text>
+                  <Text
+                    style={{
+                      color: '#fff',
+                      fontSize: 17,
+                      fontFamily: 'AntagometricaBT-Regular',
+                    }}>
+                    show
+                  </Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.citizen}>
@@ -263,13 +276,20 @@ export const CreateNewAccount = () => {
                     style={{
                       fontSize: 19,
                       color: '#2371AB',
-                      fontFamily: 'AntagometricaBT-Regular'
+                      fontFamily: 'AntagometricaBT-Regular',
                     }}>
                     <Text style={{color: 'red'}}>*</Text> Privacy Policy
                   </Text>
                 </View>
                 <TouchableOpacity onPress={handleShowPrivacy}>
-                  <Text style={{color: '#fff', fontSize: 17, fontFamily: 'AntagometricaBT-Regular'}}>show</Text>
+                  <Text
+                    style={{
+                      color: '#fff',
+                      fontSize: 17,
+                      fontFamily: 'AntagometricaBT-Regular',
+                    }}>
+                    show
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -296,7 +316,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     backgroundColor: '#201F3F',
     color: '#2371AB',
-    fontFamily: 'AntagometricaBT-Regular'
+    fontFamily: 'AntagometricaBT-Regular',
   },
   citizen: {
     alignItems: 'center',

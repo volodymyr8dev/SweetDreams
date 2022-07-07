@@ -61,15 +61,25 @@ const customTabBarStyle = {
 //   tabBarOptions: {customTabBarStyle},
 // });
 const forgotPasswordOptions = navigation => ({
-  title: 'My App',
+  title: navigation.route?.params.title,
   headerShown: true,
   headerTintColor: '#fff',
   headerStyle: {
     backgroundColor: '#2A305A',
   },
+  headerRight: () => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          navigation.route?.params.sendCode();
+        }}>
+        <Text style={{color: '#fff', fontSize: 15}}>send</Text>
+      </TouchableOpacity>
+    );
+  },
 });
 export const navigationOptions = navigation => ({
-  title: 'My App',
+  title: navigation.route?.params.title,
   headerShown: true,
   headerTintColor: '#fff',
   headerStyle: {
@@ -146,26 +156,6 @@ export const navigationOptions = navigation => ({
                       },
                     );
                   }
-                  // else {
-                  //   SendEmailVerificationCode(params.email)
-                  //     .then(data => {
-                  //       console.log('VerifyEmail', data.data);
-                  //       params.dispatch(setLoader(false));
-
-                  //       params.setPosition(params.position + 1);
-                  //       navigation.navigation.navigate(
-                  //         `step${params.position + 1}`,
-                  //         {
-                  //           email: params.email,
-                  //         },
-                  //       );
-                  //     })
-                  //     .catch(err => {
-                  //       params.dispatch(setLoader(false));
-                  //       console.log('err', err.response.data);
-                  //       Alert.alert(err.response.data.error);
-                  //     });
-                  // }
                 } else if (
                   !params.email ||
                   !params.password ||

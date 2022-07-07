@@ -202,7 +202,7 @@ export const Settings = () => {
           placeholder={'Your Date of Birdth'}
           nameOfBox={'input'}
           rightEl={'9 April 1989'}
-          date={true}
+          date={truet
         /> */}
         <DatePickerComponent
           value={valueDate}

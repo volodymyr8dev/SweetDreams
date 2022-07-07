@@ -27,7 +27,7 @@ export const ConnectionStep1 = () => {
   }, []);
 
   const handleGoToStep2 = () => {
-    navigation.navigate('conectionStep2');
+    navigation.navigate('conectionStep2',{title:"connect misty"});
   }; 
 
   return (

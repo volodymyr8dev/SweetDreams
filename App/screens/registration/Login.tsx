@@ -22,7 +22,7 @@ import {Loader} from '../../components/Loader/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AccountSelector} from '../../redux/selectors/AccountSelector';
 type Nav = {
-  navigate: (value: string) => void;
+  navigate: (value: string, obj: any) => void;
 };
 
 export const Login = () => {
@@ -32,7 +32,7 @@ export const Login = () => {
   const dispatch = useDispatch();
   const global = useSelector(AccountSelector);
   const goToCreateAccount = () => {
-    navigation.navigate('CreateNewAccount');
+    navigation.navigate('CreateNewAccount', {title: 'create new account'});
     // navigation.navigate('account');
   };
 
@@ -64,8 +64,9 @@ export const Login = () => {
   const handleForgotPassword = () => {
     navigation.setParams({
       hide: false,
+      title: 'recovery password',
     });
-    navigation.navigate('forgotPassword',{title:"recovery password"});
+    navigation.navigate('forgotPassword', {title: 'recovery password'});
   };
   return (
     <>
@@ -79,9 +80,9 @@ export const Login = () => {
               style={{
                 fontSize: 27,
                 color: '#fff',
-                fontFamily: 'AntagometricaBT-Regular',
+                fontFamily: 'Josefin Sans Thin Regular',
               }}>
-              Misty The Cloud <Text style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>App</Text>
+              Misty The Cloud <Text style={{fontWeight: 'bold'}}> App</Text>
             </Text>
           </View>
           <View style={{alignItems: 'center'}}>
@@ -90,7 +91,6 @@ export const Login = () => {
               text={'Username'}
               value={loginEmail}
               onChangeText={loginEmail => setLogonEmail(loginEmail)}
-              styling={{fontFamily: 'AntagometricaBT-Regular'}}
             />
             <CustomInput
               colorOfText="#BDC2CE"
@@ -98,25 +98,22 @@ export const Login = () => {
               value={loginPassword}
               onChangeText={loginPassword => setLogonPassword(loginPassword)}
               secure={true}
-              styling={{fontFamily: 'AntagometricaBT-Regular'}}
             />
-          </View>
-            <TouchableOpacity onPress={handleForgotPassword} style={{marginLeft: '16%'}}>
+            <TouchableOpacity onPress={handleForgotPassword}>
               <View style={styles.forgotPasswordContainer}>
                 <Text style={styles.forgotPassword}>
                   yep... i forgot password
                 </Text>
               </View>
             </TouchableOpacity>
-          <View style={{alignItems: 'center'}}>
             <CustomButton
               handleOnSubmit={LoginUser}
-              text={'login'}
+              text={'Login'}
               styles={undefined}></CustomButton>
             <CustomButton
-                handleOnSubmit={goToCreateAccount}
-                text={'register'}
-                styles={undefined}></CustomButton>
+              handleOnSubmit={goToCreateAccount}
+              text={'Register'}
+              styles={undefined}></CustomButton>
           </View>
         </View>
       </ImageBackground>
@@ -146,6 +143,5 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     color: '#CE9B51',
-    fontFamily: 'AntagometricaBT-Regular'
   },
 });

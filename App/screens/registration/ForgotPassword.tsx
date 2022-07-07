@@ -51,6 +51,7 @@ export const ForgotPassword = () => {
           console.log('data', data);
           dispatch(setLoader(false));
           navigation.navigate('Change Password', {
+            props: {email: email},
             email: email,
             title: 'change password',
             rightEl: true,

@@ -67,7 +67,7 @@ export const Step2 = () => {
           dispatch(setLoader(false));
           setBool(true);
 
-          navigation.navigate('step2');
+          navigation.navigate('step2',{title:"create new account"});
         })
         .catch(err => {
           console.log('Errrrr', err.response.data);
