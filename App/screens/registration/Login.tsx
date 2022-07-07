@@ -22,7 +22,8 @@ import {Loader} from '../../components/Loader/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AccountSelector} from '../../redux/selectors/AccountSelector';
 type Nav = {
-  navigate: (value: string, obj: any) => void;
+  navigate: (value: string, obj?: any) => void;
+  setParams: (value: any) => void;
 };
 
 export const Login = () => {
@@ -80,9 +81,9 @@ export const Login = () => {
               style={{
                 fontSize: 27,
                 color: '#fff',
-                fontFamily: 'AntagometricaBTLight-Regular',
+                fontFamily: 'Josefin Sans Thin Regular',
               }}>
-              Misty The Cloud <Text style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>App</Text>
+              Misty The Cloud <Text style={{fontWeight: 'bold'}}> App</Text>
             </Text>
           </View>
           <View style={{alignItems: 'center'}}>
@@ -99,21 +100,21 @@ export const Login = () => {
               onChangeText={loginPassword => setLogonPassword(loginPassword)}
               secure={true}
             />
-          </View>
-            <TouchableOpacity onPress={handleForgotPassword} style={styles.YepContainer}>
+            <TouchableOpacity onPress={handleForgotPassword}>
+              <View style={styles.forgotPasswordContainer}>
                 <Text style={styles.forgotPassword}>
                   yep... i forgot password
                 </Text>
+              </View>
             </TouchableOpacity>
-          <View style={{alignItems: 'center'}}>
             <CustomButton
               handleOnSubmit={LoginUser}
-              text={'login'}
+              text={'Login'}
               styles={undefined}></CustomButton>
             <CustomButton
-                handleOnSubmit={goToCreateAccount}
-                text={'register'}
-                styles={undefined}></CustomButton>
+              handleOnSubmit={goToCreateAccount}
+              text={'Register'}
+              styles={undefined}></CustomButton>
           </View>
         </View>
       </ImageBackground>
@@ -141,6 +142,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontSize: 27,
     marginBottom: 17,
+  },
+  forgotPasswordContainer: {
+    paddingLeft: 20,
+    marginTop: -3,
+    marginBottom: 24,
   },
   forgotPassword: {
     color: '#CE9B51',

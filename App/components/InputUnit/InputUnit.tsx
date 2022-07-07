@@ -36,7 +36,11 @@ export const InputUnit = ({
   const navigation = useNavigation();
   const handleGoToScreen = titleName => {
     console.log('sdd', titleName);
-    navigation.navigate(titleName, {title: titleName, rightEl: true});
+    navigation.navigate(titleName, {
+      title: titleName,
+      rightEl: true,
+      hideOld: true,
+    });
   };
 
   return nameOfBox == 'touch' ? (
@@ -64,7 +68,14 @@ export const InputUnit = ({
   ) : (
     <View style={styles.input}>
       <View>
-        <Text style={{color: COLORS.text, fontSize: 18, fontFamily: 'AntagometricaBT-Regular'}}>{placeholder}:</Text>
+        <Text
+          style={{
+            color: COLORS.text,
+            fontSize: 18,
+            fontFamily: 'AntagometricaBT-Regular',
+          }}>
+          {placeholder}:
+        </Text>
       </View>
 
       <TextInput

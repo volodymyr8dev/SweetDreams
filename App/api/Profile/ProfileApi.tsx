@@ -18,7 +18,7 @@ export const UpdateProfile = async user => {
   //   ...(user.name && {name: user.name}),
   //   ...(user.date_of_birth && {date_of_birth: user.date_of_birth}),
   //   ...(user.gender && {gender: user.gender}),
-  // };
+  // }
   console.log('ProfileApi', user);
   const body = {
     email: user.email,

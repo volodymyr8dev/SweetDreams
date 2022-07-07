@@ -46,7 +46,7 @@ const navigationOptions = navigation => {
               navigation.route?.params.onSave();
               console.log('pressed');
             }}>
-            <Text style={{color: '#fff', fontSize: 17}}>save</Text>
+            <Text style={{color: '#fff', fontSize: 18, fontFamily: 'AntagometricaBT-Regular'}}>save</Text>
           </TouchableOpacity>
         )
       );

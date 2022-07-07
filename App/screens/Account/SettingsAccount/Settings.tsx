@@ -50,6 +50,7 @@ const verticalStaticData = [
   {
     id: 1,
     text: 'Female',
+    isChecked: false,
     style: {
       marginLeft: 20,
     },

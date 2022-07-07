@@ -28,6 +28,7 @@ import {setLoader} from '../../redux/slice/slice';
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
 import {forgotPassword} from '../../api/ForgotPassword/forgotPassword';
+import {COLORS} from '../../styles/Constants';
 
 export const ForgotPassword = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
@@ -46,6 +47,7 @@ export const ForgotPassword = () => {
   const handleGoTo2 = () => {
     if (!Validation('email', email)) {
       dispatch(setLoader(true));
+      console.log('email',email);
       forgotPassword(email)
         .then(data => {
           console.log('data', data);

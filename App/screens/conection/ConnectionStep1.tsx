@@ -12,10 +12,11 @@ import StepIndicator from 'react-native-step-indicator';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
 import flash from '../../assets/images/misty-flash-animation.png';
 import reset from '../../assets/images/misty-factory-reset.png';
+
 export const ConnectionStep1 = () => {
   const [currentPosition, setCurrentPosition] = useState(0);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export const ConnectionStep1 = () => {
   }, []);
 
   const handleGoToStep2 = () => {
-    navigation.navigate('conectionStep2');
+    navigation.navigate('conectionStep2', {title: 'connect misty'});
   };
 
   return (

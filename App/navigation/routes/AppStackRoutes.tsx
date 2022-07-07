@@ -79,7 +79,9 @@ const forgotPasswordOptions = navigation => ({
   },
 });
 export const navigationOptions = navigation => ({
-  title: navigation.route?.params.title,
+  title: navigation.route?.params?.title
+    ? navigation.route?.params.title
+    : 'App',
   headerShown: true,
   headerTintColor: '#fff',
   headerStyle: {
