@@ -47,7 +47,7 @@ export const ForgotPassword = () => {
   const handleGoTo2 = () => {
     if (!Validation('email', email)) {
       dispatch(setLoader(true));
-      console.log('email',email);
+      console.log('email', email);
       forgotPassword(email)
         .then(data => {
           console.log('data', data);
@@ -57,6 +57,7 @@ export const ForgotPassword = () => {
             email: email,
             title: 'change password',
             rightEl: true,
+            hideOld: true,
           });
         })
         .catch(err => {
@@ -86,7 +87,12 @@ export const ForgotPassword = () => {
     <>
       <View style={styles.container}>
         <View style={{paddingTop: 10, paddingBottom: 15}}>
-          <Text style={{fontSize: 14, color: '#26669E', fontFamily: 'AntagometricaBT-Regular'}}>
+          <Text
+            style={{
+              fontSize: 14,
+              color: '#26669E',
+              fontFamily: 'AntagometricaBT-Regular',
+            }}>
             Forgotten your password? No problem, please enter your email below
             and we'll send you a recovery link
           </Text>

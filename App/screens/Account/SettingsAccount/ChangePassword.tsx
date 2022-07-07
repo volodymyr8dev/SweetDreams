@@ -66,7 +66,7 @@ export const ChangePassword = ({route}) => {
         password: password,
         password_confirmation: passwordConf,
       };
-      const {data} = await UpdateProfile(user).catch(err => {
+      const {data}: any = await UpdateProfile(user).catch(err => {
         console.log('errnewpassword', err);
         Alert.alert(err.response.data.message);
       });
@@ -147,7 +147,7 @@ export const ChangePassword = ({route}) => {
       <View style={{paddingHorizontal: 20, marginVertical: 15}}>
         <Text style={{color: COLORS.text}}>Please enter the old password</Text>
       </View>
-      {!route.params.hideOld && (
+      {route.params.hideOld && (
         <InputUnit
           title={'old Password'}
           nameOfBox={'input'}

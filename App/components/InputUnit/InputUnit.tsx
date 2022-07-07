@@ -35,11 +35,9 @@ export const InputUnit = ({
 }: PropsBox) => {
   const navigation = useNavigation();
   const handleGoToScreen = titleName => {
-    console.log('sdd', titleName);
     navigation.navigate(titleName, {
       title: titleName,
       rightEl: true,
-      hideOld: true,
     });
   };
 
