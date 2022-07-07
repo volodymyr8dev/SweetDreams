@@ -84,7 +84,7 @@ export const Step3 = () => {
             console.log('data', data);
             dispatch(setLoader(false));
             dispatch(setUserInformation(data.success));
-            navigation.navigate('step3');
+            navigation.navigate('step3',{title:"create new account"});
           })
           .catch(error => {
             Alert.alert(error.response.data.message);

@@ -261,7 +261,7 @@ export const Account = () => {
       style={{backgroundColor: COLORS.backGround}}
       source={isActive ? background : backgroundGrey}>
       <View style={styles.container}>
-        <HeaderUI toggleButton={toggleButton} />
+        <HeaderUI/>
         {/* {!netInfo.isConnected || !isInternet ? ( */}
           {/* <ConfirmConnection toggleButton={toggleButton} /> */}
         {/* ) : ( */}

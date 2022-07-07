@@ -33,7 +33,7 @@ export const ConnectionStep2 = () => {
       setLoader(true);
       setTimeout(() => {
         setLoader(false);
-        navigation.navigate('conectionStep3');
+        navigation.navigate('conectionStep3',{title:"connect misty"});
       }, 1000);
     }
   };

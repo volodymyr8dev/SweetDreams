@@ -19,12 +19,15 @@ export const UpdateProfile = async user => {
   //   ...(user.date_of_birth && {date_of_birth: user.date_of_birth}),
   //   ...(user.gender && {gender: user.gender}),
   // };
-  console.log('ProfileApi', user)
+  console.log('ProfileApi', user);
   const body = {
     email: user.email,
+    password_old: user.password,
+    password: user.password,
+    password_confirmation: user.password_confirmation,
     name: user.name,
     date_of_birth: user.date,
     gender: user.gender,
   };
-  return await axiosInstance.patch('/api/me', body);
+  return await axiosInstance.patch('/api/me', user);
 };

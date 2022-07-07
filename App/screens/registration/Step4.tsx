@@ -86,7 +86,7 @@ export const Step4 = () => {
               console.log('child data :', data);
               dispatch(setLoader(false));
               dispatch(setBabyInformation(data.baby));
-              navigation.navigate('step4');
+              navigation.navigate('step4',{title:"create new account"});
             })
             .catch(err => {
               dispatch(setLoader(false));
