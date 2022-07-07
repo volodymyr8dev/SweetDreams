@@ -73,7 +73,7 @@ const forgotPasswordOptions = navigation => ({
         onPress={() => {
           navigation.route?.params.sendCode();
         }}>
-        <Text style={{color: '#fff', fontSize: 15, fontFamily: 'AntagometricaBT-Regular'}}>send</Text>
+        <Text style={{color: '#fff', fontSize: 19, fontFamily: 'AntagometricaBT-Regular'}}>send</Text>
       </TouchableOpacity>
     );
   },
