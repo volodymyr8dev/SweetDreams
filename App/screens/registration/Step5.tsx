@@ -13,7 +13,7 @@ export const Step5 = () => {
   const navigation = useNavigation<Nav>();
 
   const handleLastStep = () => {
-    navigation.navigate('connection',{title: 'connection',});
+    navigation.navigate('connection',{title: 'connection'});
   };
 
   return (

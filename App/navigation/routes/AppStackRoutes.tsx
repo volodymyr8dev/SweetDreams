@@ -73,13 +73,15 @@ const forgotPasswordOptions = navigation => ({
         onPress={() => {
           navigation.route?.params.sendCode();
         }}>
-        <Text style={{color: '#fff', fontSize: 15}}>send</Text>
+        <Text style={{color: '#fff', fontSize: 18}}>send</Text>
       </TouchableOpacity>
     );
   },
 });
 export const navigationOptions = navigation => ({
-  title: navigation.route?.params.title,
+  title: navigation.route?.params?.title
+    ? navigation.route?.params.title
+    : 'App',
   headerShown: true,
   headerTintColor: '#fff',
   headerStyle: {
