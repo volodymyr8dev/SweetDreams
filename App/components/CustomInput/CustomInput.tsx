@@ -36,6 +36,7 @@ export const CustomInput = ({
     borderRadius: 40,
     marginBottom: 11,
     fontSize: 19,
+    fontFamily: 'AntagometricaBT-Regular',
     ...styling,
   };
   const [showPassword, setShowPassword] = useState(false);

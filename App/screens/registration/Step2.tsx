@@ -104,7 +104,7 @@ export const Step2 = () => {
             <Image style={{width: 80, height: 55}} source={email} />
           </View>
           <View style={{marginBottom: 5}}>
-            <Text style={{color: '#26679F', fontSize: 19, fontWeight: 'bold'}}>
+            <Text style={{color: '#26679F', fontSize: 19, fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>
               Enter Verification Code
             </Text>
           </View>
@@ -114,7 +114,7 @@ export const Step2 = () => {
             </Text>
           </View> */}
           <View style={{marginBottom: 15}}>
-            <Text style={{textAlign: 'center', color: '#26679F'}}>
+            <Text style={{textAlign: 'center', color: '#26679F', fontFamily: 'AntagometricaBT-Regular'}}>
               Please, enter verification code which has been sent to your email
               address
             </Text>
@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
   input: {
     marginLeft: -20,
     width: '115%',
+    height: 76,
     borderRadius: 0,
     backgroundColor: '#201F3F',
     color: '#2371AB',
