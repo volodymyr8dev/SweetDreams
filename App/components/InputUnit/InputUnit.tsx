@@ -38,6 +38,7 @@ export const InputUnit = ({
     navigation.navigate(titleName, {
       title: titleName,
       rightEl: true,
+      hideOld: titleName == 'Change Password' ? true : false,
     });
   };
 

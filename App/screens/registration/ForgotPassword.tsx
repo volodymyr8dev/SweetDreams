@@ -57,7 +57,7 @@ export const ForgotPassword = () => {
             email: email,
             title: 'change password',
             rightEl: true,
-            hideOld: true,
+            hideOld: false,
           });
         })
         .catch(err => {
