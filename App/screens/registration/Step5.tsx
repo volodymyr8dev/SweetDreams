@@ -1,11 +1,11 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity,Platform} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, Platform} from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
 
 type Nav = {
-  navigate: (value: string) => void;
+  navigate: (value: string, obj: {title}) => void;
 };
 
 export const Step5 = () => {
@@ -13,7 +13,7 @@ export const Step5 = () => {
   const navigation = useNavigation<Nav>();
 
   const handleLastStep = () => {
-    navigation.navigate('connection',{title: 'connection'});
+    navigation.navigate('connection', {title: 'connection'});
   };
 
   return (
@@ -30,8 +30,18 @@ export const Step5 = () => {
           </Text>
         </View>
         <View style={{marginBottom: 35}}>
-          <Text style={{color: '#fff', fontSize: 27, fontFamily: 'AntagometricaBTLight-Regular'}}>
-            Mistly the Cloud<Text style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}> App</Text>
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 27,
+              fontFamily: 'AntagometricaBTLight-Regular',
+            }}>
+            Mistly the Cloud
+            <Text
+              style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>
+              {' '}
+              App
+            </Text>
           </Text>
         </View>
         <View>
@@ -44,7 +54,13 @@ export const Step5 = () => {
       <View></View>
       <TouchableOpacity onPress={handleLastStep} style={styles.buttonDown}>
         <View>
-          <Text style={{color: '#fff', fontSize: 19, textAlign: 'center', fontFamily: 'AntagometricaBT-Bold'}}>
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 19,
+              textAlign: 'center',
+              fontFamily: 'AntagometricaBT-Bold',
+            }}>
             done
           </Text>
         </View>

@@ -44,11 +44,14 @@ const typeOfTemp = [
   'Appliance Mix',
   'Birds',
 ];
-
+type Nav = {
+  navigate: (value: string, obj?: any) => void;
+  setParams: (value: any) => void;
+};
 export const Account = () => {
   const carouselRef = React.useRef(null);
   const [button, toggleButton] = useState(false);
-  const navigation = useNavigation();
+  const navigation = useNavigation<Nav>();
   const [isActive, setISActive] = useState(true);
   const [isInternet, setIsInternet] = useState<boolean>(true);
   const handleConnect = () => {};
@@ -261,11 +264,11 @@ export const Account = () => {
       style={{backgroundColor: COLORS.backGround}}
       source={isActive ? background : backgroundGrey}>
       <View style={styles.container}>
-        <HeaderUI/>
+        <HeaderUI />
         {/* {!netInfo.isConnected || !isInternet ? ( */}
-          {/* <ConfirmConnection toggleButton={toggleButton} /> */}
+        {/* <ConfirmConnection toggleButton={toggleButton} /> */}
         {/* ) : ( */}
-          <Content />
+        <Content />
         {/* )} */}
       </View>
     </ImageBackground>
