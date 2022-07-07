@@ -86,7 +86,7 @@ export const ForgotPassword = () => {
     <>
       <View style={styles.container}>
         <View style={{paddingTop: 10, paddingBottom: 15}}>
-          <Text style={{fontSize: 14, color: COLORS.textLight}}>
+          <Text style={{fontSize: 14, color: '#26669E', fontFamily: 'AntagometricaBT-Regular'}}>
             Forgotten your password? No problem, please enter your email below
             and we'll send you a recovery link
           </Text>
@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
     width: '115%',
     borderRadius: 0,
     backgroundColor: '#201F3F',
+    height: 76,
     color: '#2371AB',
   },
   citizen: {

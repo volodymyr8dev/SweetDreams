@@ -73,7 +73,7 @@ const forgotPasswordOptions = navigation => ({
         onPress={() => {
           navigation.route?.params.sendCode();
         }}>
-        <Text style={{color: '#fff', fontSize: 18}}>send</Text>
+        <Text style={{color: '#fff', fontSize: 15, fontFamily: 'AntagometricaBT-Regular'}}>send</Text>
       </TouchableOpacity>
     );
   },
@@ -113,7 +113,7 @@ export const navigationOptions = navigation => ({
                 `conectionStep${params?.connectionStep + 1}`,
               );
             }}>
-            <Text style={{color: '#fff', fontSize: 19}}>done</Text>
+            <Text style={{color: '#fff', fontSize: 19, fontFamily: 'AntagometricaBT-Regular'}}>done</Text>
           </TouchableOpacity>
         )
       : params?.show && (
@@ -172,7 +172,7 @@ export const navigationOptions = navigation => ({
                 navigation.navigation.navigate(`step${params.position + 1}`);
               }
             }}>
-            <Text style={{color: '#fff', fontSize: 19}}>done</Text>
+            <Text style={{color: '#fff', fontSize: 19, fontFamily: 'AntagometricaBT-Regular'}}>done</Text>
           </TouchableOpacity>
         );
   },

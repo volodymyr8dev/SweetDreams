@@ -116,11 +116,11 @@ export const Step3 = () => {
           // onPress={() => setCurrentPosition(currentPosition + 1)}
         />
         <View style={{paddingTop: 30}}>
-          <Text style={{fontSize: 19, color: '#26669E'}}>
+          <Text style={{fontSize: 19, color: '#26669E', fontFamily: 'AntagometricaBT-Bold'}}>
             Caregiver Information
           </Text>
           <View style={{marginTop: 5, marginBottom: 15}}>
-            <Text style={{color: '#26669E'}}>
+            <Text style={{color: '#26669E', fontFamily: 'AntagometricaBT-Regular'}}>
               Please enter the details of the guardian who created the account
               and completed the registration.The information given will be used
               to help improve the product through statistics and analytics
@@ -218,6 +218,7 @@ const styles = StyleSheet.create({
   input: {
     marginLeft: -20,
     width: '115%',
+    height: 76,
     borderRadius: 0,
     backgroundColor: '#201F3F',
     color: '#2371AB',

@@ -71,12 +71,12 @@ export const ConnectionStep3 = () => {
           />
 
           <View style={{marginTop: 30}}>
-            <Text style={{color: '#23659D', fontSize: 19, marginBottom: 13}}>
+            <Text style={{color: '#23659D', fontSize: 19, marginBottom: 13, fontFamily: 'AntagometricaBT-Bold'}}>
               linking misty to your home Wi-Fi
             </Text>
           </View>
           <View style={{marginBottom: 15}}>
-            <Text style={{color: '#23659D'}}>
+            <Text style={{color: '#23659D', fontFamily: 'AntagometricaBT-Regular'}}>
               Please enter your Wi-Fi name and password
             </Text>
           </View>
@@ -97,7 +97,7 @@ export const ConnectionStep3 = () => {
           <View style={{marginTop: 15}}>
             <Text style={styles.answer}>
               <Text style={{color: '#CA57E7'}}>*</Text>{' '}
-              <Text style={{fontWeight: 'bold'}}>Wi-Fi credentials</Text> are
+              <Text style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Regular'}}>Wi-Fi credentials</Text> are
               case sensitive. The password required is your home Wi-Fi password
               and not the password printed on the sticker on the base of the
               misty unit.
@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     backgroundColor: '#201F3F',
     color: '#2371AB',
+    fontFamily: 'AntagometricaBT-Regular',
   },
   button: {
     width: 200,
@@ -203,5 +204,6 @@ const styles = StyleSheet.create({
   answer: {
     fontSize: 15,
     color: '#235B91',
+    fontFamily: 'AntagometricaBT-Regular',
   },
 });

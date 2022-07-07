@@ -64,7 +64,7 @@ export const InputUnit = ({
   ) : (
     <View style={styles.input}>
       <View>
-        <Text style={{color: COLORS.text, fontSize: 18}}>{placeholder}:</Text>
+        <Text style={{color: COLORS.text, fontSize: 18, fontFamily: 'AntagometricaBT-Regular'}}>{placeholder}:</Text>
       </View>
 
       <TextInput
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 7,
-    height: 66,
+    height: 76,
     // width: '100%',
     borderRadius: 0,
     backgroundColor: COLORS.backGround,

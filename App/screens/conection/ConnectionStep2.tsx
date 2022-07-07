@@ -49,12 +49,12 @@ export const ConnectionStep2 = () => {
             onPress={() => setCurrentPosition(prev => prev + 1)}
           />
           <View style={{marginTop: 30}}>
-            <Text style={{color: '#23659D', fontSize: 19, marginBottom: 13}}>
+            <Text style={{color: '#23659D', fontSize: 19, marginBottom: 13, fontFamily: 'AntagometricaBT-Bold'}}>
               lets connect misty
             </Text>
           </View>
           <View style={{marginBottom: 15}}>
-            <Text style={{color: '#23659D'}}>
+            <Text style={{color: '#23659D', fontFamily: 'AntagometricaBT-Regular'}}>
               Please Enter you misty serial number
             </Text>
           </View>
@@ -67,7 +67,7 @@ export const ConnectionStep2 = () => {
           <View style={{marginTop: 15}}>
             <Text style={styles.answer}>
               <Text style={{color: '#CA57E7'}}>*</Text>{' '}
-              <Text style={{fontWeight: 'bold'}}>Serial number </Text> is case
+              <Text style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Regular'}}>Serial number </Text> is case
               sensitive and can be found on a sticker on the base of the unit.
             </Text>
           </View>
@@ -88,6 +88,7 @@ export const ConnectionStep2 = () => {
               fontSize: 19,
               textAlign: 'center',
               fontWeight: 'bold',
+              fontFamily: 'AntagometricaBT-Bold',
             }}>
             next
           </Text>
@@ -122,6 +123,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     backgroundColor: '#201F3F',
     color: '#2371AB',
+    fontFamily: 'AntagometricaBT-Regular',
   },
   button: {
     width: 200,
