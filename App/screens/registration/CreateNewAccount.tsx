@@ -159,7 +159,7 @@ export const CreateNewAccount = () => {
             />
             <View style={{marginTop: 20}}>
               <View style={{marginBottom: 7}}>
-                <Text style={{fontSize: 19, color: COLORS.textLight}}>
+                <Text style={{fontSize: 19, color: COLORS.textLight, fontFamily: 'AntagometricaBT-Bold'}}>
                   Create a Sweet Dreamers Account
                 </Text>
               </View>
@@ -169,6 +169,7 @@ export const CreateNewAccount = () => {
                     fontSize: 16,
                     marginBottom: 15,
                     color: COLORS.textLight,
+                    fontFamily: 'AntagometricaBT-Regular'
                   }}>
                   A sweetDreamers account is necessary for using the App
                   services.Fill out the boxes below and select the 'done' button
@@ -194,10 +195,10 @@ export const CreateNewAccount = () => {
               />
               <View>
                 <View>
-                  <Text style={{color: COLORS.textLight}}>Accept Terms</Text>
+                  <Text style={{color: COLORS.textLight, fontFamily: 'AntagometricaBT-Regular'}}>Accept Terms</Text>
                 </View>
                 <View style={{marginBottom: 9}}>
-                  <Text style={{color: COLORS.textLight}}>
+                  <Text style={{color: COLORS.textLight, fontFamily: 'AntagometricaBT-Regular'}}>
                     To use the SweetDreamers service you need to agree to the
                     terms and conditions by selecting the checkbox.You can see
                     the terms and conditions by selecting the checkbox. You can
@@ -312,6 +313,7 @@ const styles = StyleSheet.create({
   linearGradient: {},
   input: {
     marginLeft: -20,
+    height: 76,
     width: '115%',
     borderRadius: 0,
     backgroundColor: '#201F3F',

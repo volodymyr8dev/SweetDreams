@@ -81,9 +81,9 @@ export const Login = () => {
               style={{
                 fontSize: 27,
                 color: '#fff',
-                fontFamily: 'Josefin Sans Thin Regular',
+                fontFamily: 'AntagometricaBTLight-Regular',
               }}>
-              Misty The Cloud <Text style={{fontWeight: 'bold'}}> App</Text>
+              Misty The Cloud <Text style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>App</Text>
             </Text>
           </View>
           <View style={{alignItems: 'center'}}>
@@ -100,21 +100,21 @@ export const Login = () => {
               onChangeText={loginPassword => setLogonPassword(loginPassword)}
               secure={true}
             />
-            <TouchableOpacity onPress={handleForgotPassword}>
-              <View style={styles.forgotPasswordContainer}>
+          </View>
+            <TouchableOpacity onPress={handleForgotPassword} style={styles.yepContainer}>
                 <Text style={styles.forgotPassword}>
                   yep... i forgot password
                 </Text>
-              </View>
             </TouchableOpacity>
+          <View style={{alignItems:'center'}}>
             <CustomButton
               handleOnSubmit={LoginUser}
-              text={'Login'}
+              text={'login'}
               styles={undefined}></CustomButton>
             <CustomButton
-              handleOnSubmit={goToCreateAccount}
-              text={'Register'}
-              styles={undefined}></CustomButton>
+                handleOnSubmit={goToCreateAccount}
+                text={'register'}
+                styles={undefined}></CustomButton>
           </View>
         </View>
       </ImageBackground>
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     height: '100%',
     flex: 1,
   },
-  YepContainer:{
+  yepContainer:{
     marginTop: -3,
     marginBottom: 24,
     marginLeft: '21%',
