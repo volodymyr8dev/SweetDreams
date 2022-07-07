@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
   YepContainer:{
     marginTop: -3,
     marginBottom: 24,
-    marginLeft: '23%',
-    width: '36%'
+    marginLeft: '21%',
+    width: '40%'
   },
   title: {
     alignItems: 'center',
