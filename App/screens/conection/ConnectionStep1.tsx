@@ -78,14 +78,14 @@ export const ConnectionStep1 = () => {
             <Text style={styles.question}>misty not flashing purple?</Text>
             <Text style={[styles.answer, {marginBottom: 17}]}>
               If she is not flashing purple don’t worry, simply factory reset by
-              holding the <Text style={{fontWeight: 'bold'}}>UP</Text> and{' '}
+              holding the <Text style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>UP</Text> and{' '}
               <Text style={{fontWeight: 'bold'}}>DOWN</Text> buttons
               simultaneously on the unit for 10 seconds. The lower LEDs will
               blink to signify the start of the factory reset.
             </Text>
             <Text style={styles.answer}>
               <Text style={{color: '#CA57E7'}}>*</Text>{' '}
-              <Text style={{fontWeight: 'bold'}}>DO NOT</Text> power down during
+              <Text style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>DO NOT</Text> power down during
               a factory reset. Reset is complete when unit flashes purple.
             </Text>
             <View
@@ -153,24 +153,29 @@ const styles = StyleSheet.create({
   cardListInfo: {
     color: '#fff',
     fontSize: 14,
+    fontFamily: 'Antagometrica BT Light',
   },
   cardList: {
     marginVertical: 17,
     color: '#fff',
     fontSize: 14,
+    fontFamily: 'AntagometricaBT-Regular',
   },
   cardTitle: {
     color: '#fff',
     fontSize: 18,
+    fontFamily: 'AntagometricaBT-Bold',
   },
   question: {
     color: '#23659D',
     marginTop: 26,
     marginBottom: 10,
+    fontFamily: 'AntagometricaBT-Bold',
     fontSize: 19,
   },
   answer: {
     fontSize: 15,
     color: '#235B91',
+    fontFamily: 'AntagometricaBT-Regular',
   },
 });

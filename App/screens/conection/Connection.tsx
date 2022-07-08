@@ -23,13 +23,13 @@ export const Connection = () => {
     <View style={styles.container}>
       <View style={styles.card}>
         <View style={{marginBottom: 10}}>
-          <Text style={{color: '#FFFFFF'}}>Your Mistly device </Text>
+          <Text style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Bold'}}>Your Mistly device </Text>
         </View>
         <View style={{marginBottom: 10}}>
-          <Text style={{color: '#FFFFFF'}}>status : </Text>
+          <Text style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>status : </Text>
         </View>
         <View style={{marginBottom: 30}}>
-          <Text style={{color: '#FFFFFF'}}>
+          <Text style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>
             Your Mistly device is not connected
           </Text>
         </View>
