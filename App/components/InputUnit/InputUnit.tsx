@@ -53,7 +53,7 @@ export const InputUnit = ({
           justifyContent: 'space-between',
         }}>
         <View>
-          <Text style={{color: COLORS.text, fontSize: 18}}>{title}</Text>
+          <Text style={{color: COLORS.text, fontSize: 18, fontFamily: 'AntagometricaBT-Regular'}}>{title}</Text>
         </View>
         {!rightEl ? (
           <View>

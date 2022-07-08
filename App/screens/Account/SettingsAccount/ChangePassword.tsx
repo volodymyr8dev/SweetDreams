@@ -174,7 +174,7 @@ export const ChangePassword = ({route}) => {
         />
       )}
       <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-        <Text style={{color: COLORS.text}}>
+        <Text style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
           Please enter the new password 8-64 charapters (letters, numbers AND
           special characters)
         </Text>

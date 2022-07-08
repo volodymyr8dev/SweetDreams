@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     backgroundColor: '#201F3F',
     color: '#2371AB',
-    fontFamily: 'AntagometricaBT-Regular'
+    fontFamily: 'AntagometricaBT-Regular',
   },
   citizen: {
     alignItems: 'center',
