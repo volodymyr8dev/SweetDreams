@@ -45,7 +45,7 @@ const verticalStaticData = [
     },
     fillColor: 'transparent',
     unfillColor: 'transparent',
-    textStyle: {textDecorationLine: 'none', color: COLORS.text},
+    textStyle: {textDecorationLine: 'none', color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'},
   },
   {
     id: 1,
@@ -59,7 +59,7 @@ const verticalStaticData = [
     },
     fillColor: 'transparent',
     unfillColor: 'transparent',
-    textStyle: {textDecorationLine: 'none', color: COLORS.text},
+    textStyle: {textDecorationLine: 'none', color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'},
   },
 ];
 export const Settings = () => {
@@ -125,6 +125,7 @@ export const Settings = () => {
           style={{
             fontSize: 19,
             color: '#2371AB',
+            fontFamily: 'AntagometricaBT-Regular'
           }}>
           EU citizen
         </Text>
@@ -157,22 +158,22 @@ export const Settings = () => {
     <View style={styles.container}>
       <ScrollView style={{paddingTop: 10}}>
         <View style={{paddingHorizontal: 20}}>
-          <Text style={{color: COLORS.text, fontSize: 18}}>Family Account</Text>
+          <Text style={{color: COLORS.text, fontSize: 18, fontFamily: 'AntagometricaBT-Bold'}}>Family Account</Text>
         </View>
         <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-          <Text style={{color: COLORS.text}}>
+          <Text style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
             Add family members in order to share data and control of the
             devices.
           </Text>
         </View>
         <InputUnit nameOfBox="touch" title={'Manage Family Members'} />
         <View style={{paddingHorizontal: 20, marginVertical: 10}}>
-          <Text style={{color: COLORS.text, fontSize: 18}}>
+          <Text style={{color: COLORS.text, fontSize: 18, fontFamily: 'AntagometricaBT-Bold'}}>
             Caregiver Information
           </Text>
         </View>
         <View style={{paddingHorizontal: 20, marginBottom: 10}}>
-          <Text style={{color: COLORS.text}}>
+          <Text style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
             Please enter details of the guardian who created the account and
             completed the registration. The information given will be used to
             help improve the product though statistics and analytics
@@ -215,10 +216,10 @@ export const Settings = () => {
         <Gender />
         <View style={{paddingHorizontal: 20}}>
           <View style={{marginVertical: 10}}>
-            <Text style={{color: COLORS.text, fontSize: 18}}>Baby profile</Text>
+            <Text style={{color: COLORS.text, fontSize: 18, fontFamily: 'AntagometricaBT-Bold'}}>Baby profile</Text>
           </View>
           <View style={{marginBottom: 10}}>
-            <Text style={{color: COLORS.text}}>
+            <Text style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
               Please enter details of the baby who will be using the product.
               The information given will be used to help improve your prodyct in
               app experience, as well as the app itself through statistics and
@@ -240,25 +241,25 @@ export const Settings = () => {
         />
         <Gender />
         <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-          <Text style={{color: COLORS.text, fontSize: 18}}>Legal Policy</Text>
+          <Text style={{color: COLORS.text, fontSize: 18, fontFamily: 'AntagometricaBT-Bold'}}>Legal Policy</Text>
         </View>
         <InputUnit nameOfBox="touch" title={'Privacy Policy'} />
         <InputUnit nameOfBox="touch" title={'Terms Conditions'} />
         <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-          <Text style={{color: COLORS.text, fontSize: 18}}>
+          <Text style={{color: COLORS.text, fontSize: 18, fontFamily: 'AntagometricaBT-Bold'}}>
             App Version 2.1.4
           </Text>
         </View>
         <TouchableOpacity onPress={handleSignOut} style={{marginBottom: 10}}>
           <View style={styles.bottomButtons}>
-            <Text style={{color: '#CE9B51', fontSize: 18}}>sign out</Text>
+            <Text style={{color: '#CE9B51', fontSize: 18, fontFamily: 'AntagometricaBT-Bold'}}>sign out</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleDeleteAcount}
           style={{marginBottom: 35}}>
           <View style={styles.bottomButtons}>
-            <Text style={{color: '#CE9B51', fontSize: 18}}>delete account</Text>
+            <Text style={{color: '#CE9B51', fontSize: 18, fontFamily: 'AntagometricaBT-Bold'}}>delete account</Text>
           </View>
         </TouchableOpacity>
       </ScrollView>

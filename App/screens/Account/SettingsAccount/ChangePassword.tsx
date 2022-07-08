@@ -128,7 +128,7 @@ export const ChangePassword = ({route}) => {
   return (
     <View style={styles.container}>
       <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-        <Text style={{color: COLORS.text}}>
+        <Text style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
           Please enter the reset code we recently sent to your email address
           supplied
         </Text>
@@ -144,9 +144,6 @@ export const ChangePassword = ({route}) => {
           setCode(value);
         }}
       />
-      <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-        <Text style={{color: COLORS.text}}>Please enter the old password</Text>
-      </View>
       {route.params.hideOld && (
         <InputUnit
           title={'old Password'}
@@ -161,7 +158,7 @@ export const ChangePassword = ({route}) => {
         />
       )}
       <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-        <Text style={{color: COLORS.text}}>
+        <Text style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
           Please enter the new password 8-64 charapters (letters, numbers AND
           special characters)
         </Text>
