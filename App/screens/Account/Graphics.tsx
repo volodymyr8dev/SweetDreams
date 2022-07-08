@@ -184,17 +184,21 @@ export const Graphics = () => {
           subTitle={options.value4.subTitle}
           source={book}
           rightEl={options.value4.value}
+          width={30}
+          height={26}
         />
         <Blog
           title="Average Temperature"
           subTitle={options.value5.subTitle}
           source={tempretute}
           rightEl={options.value5.value}
+          width={30}
+          height={27}
         />
       </View>
     );
   };
-  const Blog = ({title, rightEl, source, subTitle}) => {
+  const Blog = ({title, rightEl, source, subTitle, width, height}) => {
     const handleSettings = async title => {
       if (typeof rightEl !== 'object') {
         console.log(title, 'title');
@@ -208,14 +212,23 @@ export const Graphics = () => {
         style={styles.blog}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Image
-            style={{width: 30, height: 30, marginRight: 10}}
+            style={{
+              width: width ? width : 30,
+              height: height ? height : 30,
+              marginRight: 10,
+            }}
             source={source}
             resizeMode="contain"
           />
           <View>
-            <Text style={{color: '#2371AB', fontSize: 16}}>{title}</Text>
+            <Text
+              style={{color: '#2371AB', fontSize: title.length > 20 ? 17 : 20}}>
+              {title}
+            </Text>
 
-            <Text style={{color: '#2371AB', fontSize: 12}}>{subTitle}</Text>
+            {subTitle ? (
+              <Text style={{color: '#2371AB', fontSize: 12}}>{subTitle}</Text>
+            ) : null}
           </View>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -223,9 +236,11 @@ export const Graphics = () => {
             rightEl
           ) : (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{color: '#2371AB', fontSize: 15}}>{rightEl}</Text>
+              <Text style={{color: COLORS.textLight, fontSize: 18}}>
+                {rightEl}
+              </Text>
               <Image
-                style={{width: 10, height: 10, marginLeft: 10}}
+                style={{width: 10, height: 11, marginLeft: 10}}
                 source={arrowRight}
               />
             </View>

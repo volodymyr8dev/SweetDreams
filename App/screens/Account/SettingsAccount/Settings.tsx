@@ -28,6 +28,7 @@ import {setUserInformation} from '../../../redux/slice/slice';
 
 import moment from 'moment';
 import {DatePickerComponent} from '../../../components/DatePicker/DatePicker';
+import {RootState} from '../../../redux/configureStore';
 
 interface IUser {
   email?: string;
@@ -42,6 +43,10 @@ const verticalStaticData = [
     isChecked: true,
     iconStyle: {
       borderColor: '#CCC',
+      borderWidth: 3,
+      height: 32,
+      width: 32,
+      borderRadius: 50,
     },
     fillColor: 'transparent',
     unfillColor: 'transparent',
@@ -56,6 +61,10 @@ const verticalStaticData = [
     },
     iconStyle: {
       borderColor: '#CCC',
+      borderWidth: 3,
+      height: 32,
+      width: 32,
+      borderRadius: 50,
     },
     fillColor: 'transparent',
     unfillColor: 'transparent',
@@ -63,7 +72,7 @@ const verticalStaticData = [
   },
 ];
 export const Settings = () => {
-  const {user} = useSelector(({account}) => account.userInformation);
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
   console.log('user', user);
   const [valueName, setValueName] = useState(user.name);
   const [valueEmail, setValueEmail] = useState(user.email);
@@ -135,7 +144,7 @@ export const Settings = () => {
             alignItems: 'center',
           }}>
           <BouncyCheckboxGroup
-            fillColor="red"
+            fillColor="redk"
             data={verticalStaticData}
             style={{flexDirection: 'row'}}
             onChange={(selectedItem: ICheckboxButton) => {
@@ -152,7 +161,6 @@ export const Settings = () => {
       </View>
     );
   };
-
   return (
     <View style={styles.container}>
       <ScrollView style={{paddingTop: 10}}>
@@ -227,7 +235,7 @@ export const Settings = () => {
           </View>
         </View>
         <InputUnit
-          title={'Your Name'}
+          title={'kYour Name'}
           nameField={'Bernie'}
           nameOfBox={'input'}
           placeholder={'Your Name'}

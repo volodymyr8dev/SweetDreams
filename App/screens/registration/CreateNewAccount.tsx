@@ -40,6 +40,10 @@ export const CreateNewAccount = () => {
 
       iconStyle: {
         borderColor: '#CCC',
+        borderWidth: 3,
+        height: 32,
+        width: 32,
+        borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
@@ -56,6 +60,10 @@ export const CreateNewAccount = () => {
       },
       iconStyle: {
         borderColor: '#CCC',
+        borderWidth: 3,
+        height: 32,
+        width: 32,
+        borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',

@@ -187,15 +187,15 @@ const AppStackRoutes = () => {
     value = await AsyncStorage.getItem('@storage_Key');
     setToken(value);
     console.log('valueeee', value);
-    // navigation.navigate('account');
+    navigation.navigate('account');
   };
   useEffect(() => {
     getToken();
   }, []);
 
-  // if (token) {
-  //   navigation.navigate('account');
-  // }
+  if (token) {
+    navigation.navigate('account');
+  }
   return (
     <Stack.Navigator
       initialRouteName={token ? 'account' : 'Login'}

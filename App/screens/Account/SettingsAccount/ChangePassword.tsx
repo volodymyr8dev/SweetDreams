@@ -66,11 +66,16 @@ export const ChangePassword = ({route}) => {
         password: password,
         password_confirmation: passwordConf,
       };
-      const {data}: any = await UpdateProfile(user).catch(err => {
-        console.log('errnewpassword', err);
-        Alert.alert(err.response.data.message);
-      });
-      console.log(data);
+      console.log('user', user);
+      UpdateProfile(user)
+        .then(({data}) => {
+          console.log('success', data);
+          Alert.alert('success');
+        })
+        .catch(err => {
+          console.log('errnewpassword', err.response.data);
+          Alert.alert(err.response.data.message);
+        });
     }
   };
   useEffect(() => {
@@ -127,31 +132,39 @@ export const ChangePassword = ({route}) => {
 
   return (
     <View style={styles.container}>
-      <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-        <Text style={{color: COLORS.text}}>
-          Please enter the reset code we recently sent to your email address
-          supplied
-        </Text>
-      </View>
-      <InputUnit
-        title={'Reset Code'}
-        nameOfBox={'input'}
-        placeholder={'Reset Code'}
-        nameField={'************'}
-        security={true}
-        value={code}
-        setValueName={value => {
-          setCode(value);
-        }}
-      />
-      <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-        <Text style={{color: COLORS.text}}>Please enter the old password</Text>
-      </View>
+      {!route.params.hideOld && (
+        <View style={{paddingHorizontal: 20, marginVertical: 15}}>
+          <Text style={{color: COLORS.text}}>
+            Please enter the reset code we recently sent to your email address
+            supplied
+          </Text>
+        </View>
+      )}
+      {!route.params.hideOld && (
+        <InputUnit
+          title={'Reset Code'}
+          nameOfBox={'input'}
+          placeholder={'Reset Code'}
+          nameField={'************'}
+          security={true}
+          value={code}
+          setValueName={value => {
+            setCode(value);
+          }}
+        />
+      )}
+      {route.params.hideOld && (
+        <View style={{paddingHorizontal: 20, marginVertical: 15}}>
+          <Text style={{color: COLORS.text}}>
+            Please enter the old password
+          </Text>
+        </View>
+      )}
       {route.params.hideOld && (
         <InputUnit
-          title={'old Password'}
+          title={'Old Password'}
           nameOfBox={'input'}
-          placeholder={'old password'}
+          placeholder={'Old password'}
           nameField={'************'}
           security={true}
           value={passwordOld}

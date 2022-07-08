@@ -11,8 +11,12 @@ import {
 } from 'react-native';
 import Carousel from 'react-native-anchor-carousel';
 import {SimplePaginationDot} from './component';
+import mainTemp from '../../assets/images/controlChild/carosel/mainTemp.png';
+import sleapTrainer from '../../assets/images/controlChild/carosel/sleapTrainer.png';
+import sun from '../../assets/images/controlChild/carosel/sun.png';
+
 import greenTemp from '../../assets/images/controlChild/greentemp.png';
-import tempGreen from '../../assets/images/controlChild/tempGreen.png';
+import tempGreen from '../../assets/images/controlChild/tempGreen.png';        
 import lightShadow from '../../assets/images/controlChild/lightShadow.png';
 import light from '../../assets/images/controlChild/lightsShow.png';
 import clock from '../../assets/images/controlChild/clock.png';
@@ -70,8 +74,7 @@ const INITIAL_INDEX = 0;
 export default function ImageCarousel(props) {
   const [data, setData] = useState([
     {
-      backUri: greenTemp,
-      uri: tempGreen,
+      uri: mainTemp,
       title: 'temperature',
       content: 'Thermometer',
       items: [
@@ -103,8 +106,7 @@ export default function ImageCarousel(props) {
       ],
     },
     {
-      backUri: greenTemp,
-      uri: tempGreen,
+      uri: sleapTrainer,
       title: 'temperature',
       content: 'Thermometer',
       items: [
@@ -126,8 +128,7 @@ export default function ImageCarousel(props) {
       ],
     },
     {
-      backUri: greenTemp,
-      uri: tempGreen,
+      uri: sleapTrainer,
       title: 'temperature',
       content: 'Thermometer',
       items: [

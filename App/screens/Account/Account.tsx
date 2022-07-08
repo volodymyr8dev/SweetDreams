@@ -91,8 +91,10 @@ export const Account = () => {
     return (
       <>
         <View style={styles.headerContainer}>
-          <View></View>
-          <Image source={sheep} />
+          <View style={{width: 21}}></View>
+          <View style={{paddingRight: 10}}>
+            <Image source={sheep} />
+          </View>
           <TouchableOpacity onPress={openSettings}>
             <Image source={settings} />
           </TouchableOpacity>
@@ -107,21 +109,47 @@ export const Account = () => {
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'center',
+                justifyContent: 'space-between',
                 alignItems: 'center',
-                paddingRight: 20,
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  width: 120,
+                }}>
                 <Image source={thermometr} />
-                <Text style={{color: '#fff', fontSize: 19}}>18.0*C</Text>
+                <Text
+                  style={{
+                    color: '#fff',
+                    fontSize: 24,
+                    fontFamily: 'AntagometricaBT-Regular',
+                    fontWeight: 'bold',
+                  }}>
+                  18.0*C
+                </Text>
               </View>
-              <View>
+              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                 <Image style={{marginHorizontal: 15}} source={line} />
               </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: 120,
+                }}>
                 <Image source={childControl} />
                 <View style={{marginLeft: 10}}>
-                  <Text style={{color: '#fff', fontSize: 19}}>OFF</Text>
+                  <Text
+                    style={{
+                      color: '#fff',
+                      fontSize: 24,
+                      fontFamily: 'AntagometricaBT-Regular',
+                      fontWeight: 'bold',
+                    }}>
+                    OFF
+                  </Text>
                 </View>
               </View>
             </View>
@@ -284,6 +312,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 15,
   },
