@@ -211,7 +211,7 @@ export const CreateNewAccount = () => {
               />
               <View>
                 <View>
-                  <Text style={{color: COLORS.textLight, fontFamily: 'AntagometricaBT-Regular'}}>Accept Terms</Text>
+                  <Text style={{color: COLORS.textLight, fontFamily: 'AntagometricaBT-Regular', fontSize: 19, marginBottom: 7}}>Accept Terms</Text>
                 </View>
                 <View style={{marginBottom: 9}}>
                   <Text style={{color: COLORS.textLight, fontFamily: 'AntagometricaBT-Regular'}}>
