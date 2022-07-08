@@ -6,6 +6,7 @@ import {CustomInput} from '../../components/CustomInput/CustomInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
 import {ChangePassword} from '../../api/ForgotPassword/forgotPassword';
+import checkButton from '../../assets/images/checkButton.png'
 
 export const ForgotPassword3 = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
@@ -22,29 +23,45 @@ export const ForgotPassword3 = () => {
     {
       id: 0,
       text: 'male',
-      style: {
-        textDecoration: 'none',
-      },
       iconStyle: {
         borderColor: '#CCC',
+        borderWidth: 3,
+        height: 44,
+        width: 44,
+        borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none'},
+      textStyle: {
+        textDecorationLine: 'none',
+        color: '#2371AB',
+        fontFamily: 'AntagometricaBT-Regular',
+      },
+      checkIconImageSource: checkButton,
+      iconImageStyle:{height: 17.2,width: 20.36},
     },
     {
       id: 1,
       text: 'female',
       style: {
         marginLeft: 20,
-        textDecorationLine: 'none',
       },
       iconStyle: {
         borderColor: '#CCC',
+        borderWidth: 3,
+        height: 44,
+        width: 44,
+        borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none'},
+      textStyle: {
+        textDecorationLine: 'none',
+        color: '#2371AB',
+        fontFamily: 'AntagometricaBT-Regular',
+      },
+      checkIconImageSource: checkButton,
+      iconImageStyle:{height: 17.2,width: 20.36},
     },
   ];
   useEffect(() => {

@@ -18,6 +18,7 @@ import {CustomInput} from '../../components/CustomInput/CustomInput';
 import {Loader} from '../../components/Loader/Loader';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
 import {setBabyInformation, setLoader} from '../../redux/slice/slice';
+import checkButton from '../../assets/images/checkButton.png'
 
 type Nav = {
   navigate: (value: string) => void;
@@ -39,29 +40,44 @@ export const Step4 = () => {
       id: 0,
       value: 'male',
       text: 'boy',
-      style: {
-        textDecoration: 'none',
-      },
       iconStyle: {
         borderColor: '#CCC',
+        borderWidth: 3,
+        height: 44,
+        width: 44,
+        borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none', fontFamily: 'AntagometricaBT-Regular'},
+      textStyle: {
+        textDecorationLine: 'none',
+        color: '#2371AB',
+        fontFamily: 'AntagometricaBT-Regular',
+      },
+      checkIconImageSource: checkButton,
+      iconImageStyle:{height: 17.2,width: 20.36},
     },
     {
       id: 1,
       value: 'female',
       text: 'girl',
-      style: {
-        marginLeft: 20,
-      },
       iconStyle: {
         borderColor: '#CCC',
+        borderWidth: 3,
+        height: 44,
+        width: 44,
+        borderRadius: 50,
+        marginLeft: 20
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none', fontFamily: 'AntagometricaBT-Regular'},
+      textStyle: {
+        textDecorationLine: 'none',
+        color: '#2371AB',
+        fontFamily: 'AntagometricaBT-Regular',
+      },
+      checkIconImageSource: checkButton,
+      iconImageStyle:{height: 17.2,width: 20.36},
     },
   ];
 
@@ -127,7 +143,7 @@ export const Step4 = () => {
           value={name}
           onChangeText={val => setName(val)}
           styling={styles.input}
-          text={'Baby Nickname'}
+          text={'Baby\'s Nickname'}
         />
         <TouchableOpacity
           onPress={() => {
@@ -144,7 +160,7 @@ export const Step4 = () => {
                 }}>
                 {visibleData
                   ? moment(date).format('DD-MM-YYYY')
-                  : 'Baby`s Date of birth'}
+                  : 'Baby\'s Date of birth'}
               </Text>
             </View>
             <Text style={{color: '#fff', fontSize: 17, fontFamily: 'AntagometricaBT-Regular'}}>DD MM YYYY</Text>

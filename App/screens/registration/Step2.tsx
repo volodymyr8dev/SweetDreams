@@ -27,6 +27,7 @@ import {
 } from '../../redux/slice/slice';
 import {Loader} from '../../components/Loader/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import checkButton from '../../assets/images/checkButton.png'
 
 export const Step2 = () => {
   const [currentPosition, setCurrentPosition] = useState(1);
@@ -139,7 +140,7 @@ export const Step2 = () => {
                   textAlign: 'center',
                   fontFamily: 'AntagometricaBT-Bold'
                 }}>
-                resend Code
+                Resend Code
               </Text>
             </View>
           </View>

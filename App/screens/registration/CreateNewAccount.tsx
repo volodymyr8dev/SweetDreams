@@ -38,7 +38,6 @@ export const CreateNewAccount = () => {
     {
       id: 0,
       text: 'yes',
-
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
@@ -61,7 +60,6 @@ export const CreateNewAccount = () => {
       text: 'no',
       style: {
         marginLeft: 20,
-
       },
       iconStyle: {
         borderColor: '#CCC',
