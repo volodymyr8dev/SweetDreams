@@ -25,6 +25,7 @@ import {AlertComp} from '../../../components/Alert/AlertComp';
 import {UpdateProfile} from '../../../api/Profile/ProfileApi';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUserInformation} from '../../../redux/slice/slice';
+import checkButton from '../../../assets/images/checkButton.png'
 
 import moment from 'moment';
 import {DatePickerComponent} from '../../../components/DatePicker/DatePicker';
@@ -39,22 +40,24 @@ interface IUser {
 const verticalStaticData = [
   {
     id: 0,
-    text: 'Male',
+    text: 'male',
     isChecked: true,
     iconStyle: {
       borderColor: '#CCC',
       borderWidth: 3,
-      height: 32,
-      width: 32,
+      height: 44,
+      width: 44,
       borderRadius: 50,
     },
     fillColor: 'transparent',
     unfillColor: 'transparent',
     textStyle: {textDecorationLine: 'none', color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'},
+    checkIconImageSource: checkButton,
+    iconImageStyle: {height: 17.2, width: 20.36},
   },
   {
     id: 1,
-    text: 'Female',
+    text: 'female',
     isChecked: false,
     style: {
       marginLeft: 20,
@@ -62,8 +65,8 @@ const verticalStaticData = [
     iconStyle: {
       borderColor: '#CCC',
       borderWidth: 3,
-      height: 32,
-      width: 32,
+      height: 44,
+      width: 44,
       borderRadius: 50,
     },
     fillColor: 'transparent',

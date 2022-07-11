@@ -27,6 +27,7 @@ import {
 import {setLoader, setUserInformation} from '../../redux/slice/slice';
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
+import checkButton from '../../assets/images/checkButton.png'
 
 export const Step3 = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
@@ -47,10 +48,16 @@ export const Step3 = () => {
       },
       iconStyle: {
         borderColor: '#CCC',
+        borderWidth: 3,
+        height: 44,
+        width: 44,
+        borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none', fontFamily: 'AntagometricaBT-Regular'},
+      textStyle: {textDecorationLine: 'none', color: '#2371AB', fontFamily: 'AntagometricaBT-Regular'},
+      checkIconImageSource: checkButton,
+      iconImageStyle:{height: 17.2,width: 20.36},
     },
     {
       id: 1,
@@ -61,10 +68,16 @@ export const Step3 = () => {
       },
       iconStyle: {
         borderColor: '#CCC',
+        borderWidth: 3,
+        height: 44,
+        width: 44,
+        borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none', fontFamily: 'AntagometricaBT-Regular'},
+      textStyle: {textDecorationLine: 'none', color: '#2371AB', fontFamily: 'AntagometricaBT-Regular'},
+      checkIconImageSource: checkButton,
+      iconImageStyle:{height: 17.2,width: 20.36},
     },
   ];
   useEffect(() => {

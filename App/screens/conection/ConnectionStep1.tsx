@@ -45,13 +45,13 @@ export const ConnectionStep1 = () => {
             <Text style={styles.cardTitle}>
               before you connect you will need:
             </Text>
-            <Text style={styles.cardList}>A good Wi-Fi connection.</Text>
+            <Text style={styles.cardList}>{'\u2022'} A good Wi-Fi connection.</Text>
             <Text style={styles.cardListInfo}>
               We suggest moving your misty closer to your router during set up.
               She’ll remember all your credentials if you wish to relocate her
               to the bedroom or nursery.
             </Text>
-            <Text style={styles.cardList}>Your Wi-Fi password and name.</Text>
+            <Text style={styles.cardList}>{'\u2022'} Your Wi-Fi password and name.</Text>
             <Text style={styles.cardListInfo}>
               You can normally find these on the back of the router itself, or
               on a little sticker within the Wi-Fi welcome pack.
@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
     marginVertical: 17,
     color: '#fff',
     fontSize: 14,
+    fontWeight: 'bold',
     fontFamily: 'AntagometricaBT-Regular',
   },
   cardTitle: {

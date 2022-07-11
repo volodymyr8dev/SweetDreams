@@ -18,6 +18,7 @@ import {CustomInput} from '../../components/CustomInput/CustomInput';
 import {Loader} from '../../components/Loader/Loader';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
 import {setBabyInformation, setLoader} from '../../redux/slice/slice';
+import checkButton from '../../assets/images/checkButton.png'
 
 type Nav = {
   navigate: (value: string) => void;
@@ -44,10 +45,17 @@ export const Step4 = () => {
       },
       iconStyle: {
         borderColor: '#CCC',
+        borderWidth: 3,
+        height: 44,
+        width: 44,
+        borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none', fontFamily: 'AntagometricaBT-Regular'},
+      textStyle: {textDecorationLine: 'none', color: '#2371AB', fontFamily: 'AntagometricaBT-Regular'},
+      checkIconImageSource: checkButton,
+      iconImageStyle:{height: 17.2,width: 20.36},
+
     },
     {
       id: 1,
@@ -58,10 +66,16 @@ export const Step4 = () => {
       },
       iconStyle: {
         borderColor: '#CCC',
+        borderWidth: 3,
+        height: 44,
+        width: 44,
+        borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none', fontFamily: 'AntagometricaBT-Regular'},
+      textStyle: {textDecorationLine: 'none', color: '#2371AB', fontFamily: 'AntagometricaBT-Regular'},
+      checkIconImageSource: checkButton,
+      iconImageStyle:{height: 17.2,width: 20.36},
     },
   ];
 

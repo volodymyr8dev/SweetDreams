@@ -35,10 +35,10 @@ const iconGr = (focused, iconActive, icon, size = 30) => {
 const navigationOptions = navigation => ({
   title: 'profile / preferences',
   headerShown: true,
-  headerTintColor: '#fff',
+  headerTintColor: '#2371AB',
   headerStyle: {
     backgroundColor: '#2A305A',
-  }, 
+  },
   headerRight: () => {
     const params = navigation.route?.params;
     console.log('parapms', params);

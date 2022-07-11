@@ -97,7 +97,7 @@ export const ConnectionStep3 = () => {
           <View style={{marginTop: 15}}>
             <Text style={styles.answer}>
               <Text style={{color: '#CA57E7'}}>*</Text>{' '}
-              <Text style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Regular'}}>Wi-Fi credentials</Text> are
+              <Text style={{fontFamily: 'AntagometricaBT-Regular'}}>Wi-Fi credentials</Text> are
               case sensitive. The password required is your home Wi-Fi password
               and not the password printed on the sticker on the base of the
               misty unit.
@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
     marginLeft: -20,
     width: '115%',
     borderRadius: 0,
+    height: 76,
     backgroundColor: '#201F3F',
     color: '#2371AB',
     fontFamily: 'AntagometricaBT-Regular',
