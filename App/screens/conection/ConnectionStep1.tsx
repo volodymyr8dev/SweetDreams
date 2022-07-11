@@ -65,7 +65,7 @@ export const ConnectionStep1 = () => {
             <Text style={styles.question}>is misty ready for connection?</Text>
             <Text style={styles.answer}>
               Please plug misty into the mains power.{'\n'}She will{' '}
-              <Text style={{color: '#CA57E7'}}>flash purple</Text> when ready to
+              <Text style={{color: '#CA57E7', fontFamily: 'AntagometricaBT-Bold'}}>flash purple</Text> when ready to
               connect to the app.
             </Text>
             <View
