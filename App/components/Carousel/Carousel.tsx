@@ -9,14 +9,17 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
+// import SvgUri from 'react-native-svg-uri';
 import Carousel from 'react-native-anchor-carousel';
 import {SimplePaginationDot} from './component';
 import mainTemp from '../../assets/images/controlChild/carosel/mainTemp.png';
+// import {mainTemp_temp} from '../../assets/images/controlChild/carosel/mainTemp_temp.svg';
+
 import sleapTrainer from '../../assets/images/controlChild/carosel/sleapTrainer.png';
 import sun from '../../assets/images/controlChild/carosel/sun.png';
 
 import greenTemp from '../../assets/images/controlChild/greentemp.png';
-import tempGreen from '../../assets/images/controlChild/tempGreen.png';        
+import tempGreen from '../../assets/images/controlChild/tempGreen.png';
 import lightShadow from '../../assets/images/controlChild/lightShadow.png';
 import light from '../../assets/images/controlChild/lightsShow.png';
 import clock from '../../assets/images/controlChild/clock.png';
@@ -25,50 +28,6 @@ import {useSelector} from 'react-redux';
 import {COLORS} from '../../styles/Constants';
 const {width: windowWidth} = Dimensions.get('window');
 import ScrollViewIndicator from 'react-native-scroll-indicator';
-const items = [
-  [
-    {
-      img: tempGreen,
-      text: 'Thermometer',
-    },
-    {
-      img: tempGreen,
-      text: 'Thermometer2',
-    },
-    {
-      img: tempGreen,
-      text: 'Thermometer3',
-    },
-  ],
-  [
-    {
-      img: tempGreen,
-      text: 'Sunset',
-    },
-    {
-      img: tempGreen,
-      text: 'Northern lights',
-    },
-    {
-      img: tempGreen,
-      text: 'Pulsing',
-    },
-  ],
-  [
-    {
-      img: tempGreen,
-      text: 'Thermometer',
-    },
-    {
-      img: tempGreen,
-      text: 'Thermometer2',
-    },
-    {
-      img: tempGreen,
-      text: 'Thermometer3',
-    },
-  ],
-];
 
 const INITIAL_INDEX = 0;
 export default function ImageCarousel(props) {
@@ -83,31 +42,11 @@ export default function ImageCarousel(props) {
           text: 'something',
           active: false,
         },
-        {
-          img: tempGreen,
-          text: 'something',
-          active: false,
-        },
-        {
-          img: tempGreen,
-          text: 'something',
-          active: false,
-        },
-        {
-          img: tempGreen,
-          text: 'something',
-          active: false,
-        },
-        {
-          img: tempGreen,
-          text: 'something',
-          active: false,
-        },
       ],
     },
     {
       uri: sleapTrainer,
-      title: 'temperature',
+      title: 'light show',
       content: 'Thermometer',
       items: [
         {
@@ -129,7 +68,7 @@ export default function ImageCarousel(props) {
     },
     {
       uri: sleapTrainer,
-      title: 'temperature',
+      title: 'sleep trainer',
       content: 'Thermometer',
       items: [
         {
@@ -185,19 +124,17 @@ export default function ImageCarousel(props) {
             <Image source={uri} />
           </ImageBackground>
         </View>
-
         <ScrollViewIndicator
           scrollIndicatorStyle={{
             width: 4,
             backgroundColor: '#fff',
-            height: '70%',
+            height: '60%',
           }}
           style={{paddinHorizontal: 220}}
           // scrollIndicatorStyle={{backgroundColor: '#fff'}}
           scrollIndicatorContainerStyle={{
             backgroundColor: 'rgba(0, 0, 0, 0.1)',
-          }}
-          children={undefined}>
+          }}>
           <View style={styles.lowerContainer}>
             <Text style={styles.titleText}>{title}</Text>
             {items.map((item, indexChild) => {
@@ -216,7 +153,10 @@ export default function ImageCarousel(props) {
                         : 'rgba(255,255,255,0.2)',
                     },
                   ]}>
-                  <Image source={tempGreen} />
+                  {/* <Svg>
+                    <Image source={item.img} />{' '}
+                  </Svg> */}
+                  {/* <SvgUri width="200" height="200" svgXmlData={item.img} /> */}
                   <Text
                     style={[
                       styles.contentText,
@@ -228,7 +168,7 @@ export default function ImageCarousel(props) {
                           : 'rgba(255,255,255,1)',
                       },
                     ]}>
-                    {content}
+                    {item.text}
                   </Text>
                 </TouchableOpacity>
               );
@@ -261,7 +201,7 @@ export default function ImageCarousel(props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 10,
+    paddingVertical: 0,
   },
   carousel: {
     // backgroundColor: '#141518',
@@ -306,9 +246,10 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontWeight: 'bold',
-    marginBottom: 7,
+    marginBottom: 16,
     fontSize: 18,
     color: '#fff',
+    fontFamily: 'AntagometricaBt-Regular',
   },
   contentText: {
     fontSize: 14,
@@ -316,12 +257,11 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#699',
     borderRadius: 10,
-    paddingHorizontal: 5,
-    height: 50,
-    width: '96%',
+    paddingHorizontal: 9,
+    height: 60,
+    width: '92%',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
     marginBottom: 7,
   },
 });

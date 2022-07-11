@@ -189,13 +189,13 @@ const AppStackRoutes = () => {
     console.log('valueeee', value);
     navigation.navigate('account');
   };
-  useEffect(() => {
-    getToken();
-  }, []);
+  // useEffect(() => {
+  //   getToken();
+  // }, []);
 
-  if (token) {
-    navigation.navigate('account');
-  }
+  // if (token) {
+  //   navigation.navigate('account');
+  // }
   return (
     <Stack.Navigator
       initialRouteName={token ? 'account' : 'Login'}

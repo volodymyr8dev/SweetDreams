@@ -7,7 +7,6 @@ export const DatePickerComponent = ({changeDate, value}) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [visibleData, setVisibleData] = useState(false);
-  console.log('date', value);
   return (
     <>
       <TouchableOpacity

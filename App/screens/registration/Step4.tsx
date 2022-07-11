@@ -47,7 +47,10 @@ export const Step4 = () => {
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none', fontFamily: 'AntagometricaBT-Regular'},
+      textStyle: {
+        textDecorationLine: 'none',
+        fontFamily: 'AntagometricaBT-Regular',
+      },
     },
     {
       id: 1,
@@ -61,45 +64,38 @@ export const Step4 = () => {
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none', fontFamily: 'AntagometricaBT-Regular'},
+      textStyle: {
+        textDecorationLine: 'none',
+        fontFamily: 'AntagometricaBT-Regular',
+      },
     },
   ];
 
-
   const handleGoTo5 = () => {
-
     let nameRegex = /^[a-zA-Z\-]+$/;
     if (name.length > 2 && nameRegex.test(name) == true) {
-      if (
-        moment(date).format('DD-MM-YYYY') !==
-        moment(new Date()).format('DD-MM-YYYY')
-      ) {
-        if (gender !== null) {
-          dispatch(setLoader(true));
-          PostChild(
-            global.userInformation.user.accounts[0].id,
-            name,
-            date,
-            gender,
-          )
-            .then(({data}) => {
-              console.log('child data :', data);
-              dispatch(setLoader(false));
-              dispatch(setBabyInformation(data.baby));
-              navigation.navigate('step4',{title:"create new account"});
-            })
-            .catch(err => {
-              dispatch(setLoader(false));
-              console.log(err.response.data);
-              err.response.data.message &&
-                Alert.alert(err.response.data.message);
-              err.response.data && Alert.alert(err.response.data);
-            });
-        } else {
-          Alert.alert('Please, choose gender');
-        }
+      if (gender !== null) {
+        dispatch(setLoader(true));
+        PostChild(
+          global.userInformation.user.accounts[0].id,
+          name,
+          date,
+          gender,
+        )
+          .then(({data}) => {
+            console.log('child data :', data);
+            dispatch(setLoader(false));
+            dispatch(setBabyInformation(data.baby));
+            navigation.navigate('step4', {title: 'create new account'});
+          })
+          .catch(err => {
+            dispatch(setLoader(false));
+            console.log(err.response.data);
+            err.response.data.message && Alert.alert(err.response.data.message);
+            err.response.data && Alert.alert(err.response.data);
+          });
       } else {
-        Alert.alert('Please, choose a correct date of birth');
+        Alert.alert('Please, choose gender');
       }
     } else {
       Alert.alert(`Please, enter the baby's name`);
@@ -114,9 +110,17 @@ export const Step4 = () => {
           currentPosition={currentPosition}
         />
         <View style={{paddingTop: 30}}>
-          <Text style={{fontSize: 19, color: '#26669E', fontFamily: 'AntagometricaBT-Bold'}}>Baby Profile</Text>
+          <Text
+            style={{
+              fontSize: 19,
+              color: '#26669E',
+              fontFamily: 'AntagometricaBT-Bold',
+            }}>
+            Baby Profile
+          </Text>
           <View style={{marginTop: 5, marginBottom: 15}}>
-            <Text style={{color: '#26669E', fontFamily: 'AntagometricaBT-Regular'}}>
+            <Text
+              style={{color: '#26669E', fontFamily: 'AntagometricaBT-Regular'}}>
               Please enter the details of the guardian who created the account
               and completed the registration.The information given will be used
               to help improve the product through statistics and analytics
@@ -140,14 +144,21 @@ export const Step4 = () => {
                 style={{
                   fontSize: 19,
                   color: '#2371AB',
-                  fontFamily: 'AntagometricaBT-Regular'
+                  fontFamily: 'AntagometricaBT-Regular',
                 }}>
                 {visibleData
                   ? moment(date).format('DD-MM-YYYY')
                   : 'Baby`s Date of birth'}
               </Text>
             </View>
-            <Text style={{color: '#fff', fontSize: 17, fontFamily: 'AntagometricaBT-Regular'}}>DD MM YYYY</Text>
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 17,
+                fontFamily: 'AntagometricaBT-Regular',
+              }}>
+              DD MM YYYY
+            </Text>
           </View>
         </TouchableOpacity>
         <View style={{marginBottom: 10}}></View>
@@ -174,7 +185,7 @@ export const Step4 = () => {
               style={{
                 fontSize: 19,
                 color: '#2371AB',
-                fontFamily: 'AntagometricaBT-Regular'
+                fontFamily: 'AntagometricaBT-Regular',
               }}>
               <Text style={{color: 'red'}}>*</Text>Gender
             </Text>
@@ -194,7 +205,13 @@ export const Step4 = () => {
         </View>
         <TouchableOpacity onPress={handleGoTo5} style={styles.buttonDown}>
           <View>
-            <Text style={{color: '#fff', fontSize: 18, textAlign: 'center', fontFamily: 'AntagometricaBT-Bold'}}>
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 18,
+                textAlign: 'center',
+                fontFamily: 'AntagometricaBT-Bold',
+              }}>
               next
             </Text>
           </View>
@@ -219,7 +236,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     backgroundColor: '#201F3F',
     color: '#2371AB',
-    fontFamily: "AntagometricaBT-Regular"
+    fontFamily: 'AntagometricaBT-Regular',
   },
   citizen: {
     alignItems: 'center',

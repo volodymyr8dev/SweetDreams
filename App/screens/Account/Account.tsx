@@ -258,6 +258,9 @@ export const Account = () => {
               style={{
                 color: '#fff',
                 textAlign: 'center',
+                fontFamily: 'AntagometricaBT-Bold',
+                fontWeight: '400',
+                fontSize: 16
               }}>
               {typeOfTemp.length && activeType.name.length > 10
                 ? activeType.name.substring(0, 10).trim() + '...'
