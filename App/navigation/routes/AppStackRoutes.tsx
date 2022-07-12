@@ -193,11 +193,6 @@ const AppStackRoutes = () => {
   // useEffect(() => {
   //   getToken();
   // }, []);
-<<<<<<< HEAD
-
-=======
-  //
->>>>>>> 0d7365014ae931c89761d480d66c38c8b7adbaa1
   // if (token) {
   //   navigation.navigate('account');
   // }
