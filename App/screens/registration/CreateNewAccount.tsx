@@ -27,9 +27,10 @@ import {COLORS} from '../../styles/Constants';
 import {RegistrationUser} from '../../api/CreateAccount/CreateAccount';
 import {updateVerifiedEmail} from '../../redux/slice/slice';
 import {RootState} from '../../redux/configureStore';
-import checkButton from '../../assets/images/checkButton.png'
+import checkButton from '../../assets/images/checkButton.png';
 
 type Nav = {
+  setParams(arg0: {terms: any});
 };
 
 export const CreateNewAccount = () => {
@@ -41,8 +42,8 @@ export const CreateNewAccount = () => {
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
-        height: 32,
-        width: 32,
+        height: 44,
+        width: 44,
         borderRadius: 50,
       },
       fillColor: 'transparent',
@@ -61,8 +62,8 @@ export const CreateNewAccount = () => {
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
-        height: 32,
-        width: 32,
+        height: 44,
+        width: 44,
         borderRadius: 50,
       },
       fillColor: 'transparent',
@@ -167,7 +168,12 @@ export const CreateNewAccount = () => {
             />
             <View style={{marginTop: 20}}>
               <View style={{marginBottom: 7}}>
-                <Text style={{fontSize: 19, color: COLORS.textLight, fontFamily: 'AntagometricaBT-Bold'}}>
+                <Text
+                  style={{
+                    fontSize: 19,
+                    color: COLORS.textLight,
+                    fontFamily: 'AntagometricaBT-Bold',
+                  }}>
                   Create a Sweet Dreamers Account
                 </Text>
               </View>
@@ -177,7 +183,7 @@ export const CreateNewAccount = () => {
                     fontSize: 16,
                     marginBottom: 15,
                     color: COLORS.textLight,
-                    fontFamily: 'AntagometricaBT-Regular'
+                    fontFamily: 'AntagometricaBT-Regular',
                   }}>
                   A sweetDreamers account is necessary for using the App
                   services.Fill out the boxes below and select the 'done' button
@@ -203,10 +209,20 @@ export const CreateNewAccount = () => {
               />
               <View>
                 <View>
-                  <Text style={{color: COLORS.textLight, fontFamily: 'AntagometricaBT-Regular'}}>Accept Terms</Text>
+                  <Text
+                    style={{
+                      color: COLORS.textLight,
+                      fontFamily: 'AntagometricaBT-Regular',
+                    }}>
+                    Accept Terms
+                  </Text>
                 </View>
                 <View style={{marginBottom: 9}}>
-                  <Text style={{color: COLORS.textLight, fontFamily: 'AntagometricaBT-Regular'}}>
+                  <Text
+                    style={{
+                      color: COLORS.textLight,
+                      fontFamily: 'AntagometricaBT-Regular',
+                    }}>
                     To use the SweetDreamers service you need to agree to the
                     terms and conditions by selecting the checkbox.You can see
                     the terms and conditions by selecting the checkbox. You can
