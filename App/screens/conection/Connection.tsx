@@ -1,6 +1,6 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import React, {useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import {CustomButton} from '../../components/CustomButton/CustomButton';
 
 export const Connection = () => {
@@ -23,14 +23,16 @@ export const Connection = () => {
     <View style={styles.container}>
       <View style={styles.card}>
         <View style={{marginBottom: 10}}>
-          <Text style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Bold'}}>Your Mistly device </Text>
+          <Text style={{color: '#FFFFFF',fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>your misty device </Text>
         </View>
         <View style={{marginBottom: 10}}>
-          <Text style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>status : </Text>
+          <Text style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>Status: </Text>
+          <View style={{width: 15, height: 15, backgroundColor: '#D65852', borderRadius: 100}}/>
+          <Text style={{color: '#FFFFFF'}}>NOT CONNECTED</Text>
         </View>
         <View style={{marginBottom: 30}}>
           <Text style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>
-            Your Mistly device is not connected
+            Your misty device is not connected
           </Text>
         </View>
         <View>
