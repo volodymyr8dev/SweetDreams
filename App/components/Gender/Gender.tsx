@@ -4,18 +4,19 @@ import BouncyCheckboxGroup, {
   ICheckboxButton,
 } from 'react-native-bouncy-checkbox-group';
 import {COLORS} from '../../styles/Constants';
+import checkButton from '../../assets/images/checkButton.png'
 
 export const Gender = ({setValue, type, initialId}) => {
   const verticalStaticData = [
     {
       id: 0,
       isChecked: true,
-      text: type !== 'child' ? 'Male' : 'boy',
+      text: type !== 'child' ? 'male' : 'boy',
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
-        height: 32,
-        width: 32,
+        height: 44,
+        width: 44,
         borderRadius: 50,
       },
       fillColor: 'transparent',
@@ -25,10 +26,12 @@ export const Gender = ({setValue, type, initialId}) => {
         color: COLORS.text,
         fontFamily: 'AntagometricaBT-Regular',
       },
+      checkIconImageSource: checkButton,
+      iconImageStyle:{height: 17.2,width: 20.36},
     },
     {
       id: 1,
-      text: type !== 'child' ? 'Female' : 'girl',
+      text: type !== 'child' ? 'female' : 'girl',
 
       style: {
         marginLeft: 20,
@@ -36,8 +39,8 @@ export const Gender = ({setValue, type, initialId}) => {
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
-        height: 32,
-        width: 32,
+        height: 44,
+        width: 44,
         borderRadius: 50,
       },
       fillColor: 'transparent',
@@ -47,6 +50,8 @@ export const Gender = ({setValue, type, initialId}) => {
         color: COLORS.text,
         fontFamily: 'AntagometricaBT-Regular',
       },
+      checkIconImageSource: checkButton,
+      iconImageStyle:{height: 17.2,width: 20.36},
     },
   ];
 
