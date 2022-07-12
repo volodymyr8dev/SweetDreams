@@ -22,7 +22,7 @@ export const Gender = ({setValue, type, initialId}) => {
       fillColor: 'transparent',
       unfillColor: 'transparent',
       textStyle: {
-        textDecorationLine: 'none',
+        textDecorationLine: 'none',  
         color: COLORS.text,
         fontFamily: 'AntagometricaBT-Regular',
       },
@@ -54,7 +54,7 @@ export const Gender = ({setValue, type, initialId}) => {
       iconImageStyle:{height: 17.2,width: 20.36},
     },
   ];
-
+                                                                                                                 
   return (
     <View>
       <View style={styles.citizen}>
@@ -64,7 +64,7 @@ export const Gender = ({setValue, type, initialId}) => {
             color: '#2371AB',
             fontFamily: 'AntagometricaBT-Regular',
           }}>
-          EU citizen
+          Gender
         </Text>
         <View
           style={{
@@ -89,7 +89,7 @@ export const Gender = ({setValue, type, initialId}) => {
     </View>
   );
 };
-
+                                                     
 const styles = StyleSheet.create({
   container: {
     paddingTop: 10,

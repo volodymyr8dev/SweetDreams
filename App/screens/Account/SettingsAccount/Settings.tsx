@@ -1,31 +1,22 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
-  TextInput,
   ScrollView,
   Alert,
-  Platform,
 } from 'react-native';
-import BouncyCheckboxGroup, {
-  ICheckboxButton,
-} from 'react-native-bouncy-checkbox-group';
-import arrowRight from '../../../assets/images/settings/arrowRight.png';
-import {CustomButton} from '../../../components/CustomButton/CustomButton';
-import {CustomInput} from '../../../components/CustomInput/CustomInput';
-import {InputUnit} from '../../../components/InputUnit/InputUnit';
-import {navigationOptions} from '../../../navigation/routes/AppStackRoutes';
-import {COLORS} from '../../../styles/Constants';
-import modalIcon from '../../../assets/images/settings/modalIcon/modal.png';
-import {AlertComp} from '../../../components/Alert/AlertComp';
 import {
+  getProfile,
   UpdateProfile,
   UpdateProfileChild,
 } from '../../../api/Profile/ProfileApi';
+
+import {InputUnit} from '../../../components/InputUnit/InputUnit';
+import {COLORS} from '../../../styles/Constants';
+import {AlertComp} from '../../../components/Alert/AlertComp';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUserInformation} from '../../../redux/slice/slice';
 import checkButton from '../../../assets/images/checkButton.png'
@@ -35,6 +26,7 @@ import {DatePickerComponent} from '../../../components/DatePicker/DatePicker';
 import {RootState} from '../../../redux/configureStore';
 import {Gender} from '../../../components/Gender/Gender';
 import {Loader} from '../../../components/Loader/Loader';
+import {UserInformationSelector} from '../../../redux/selectors/AccountSelector';
 
 interface IUser {
   email?: string;
@@ -86,7 +78,8 @@ const verticalStaticData = [
   },
 ];
 export const Settings = () => {
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const {user} = useSelector(UserInformationSelector);
+  // const global = useSelector(({account}) => account);
   const [valueName, setValueName] = useState(user.name);
   const [valueNameChild, setValueNameChild] = useState(
     user.accounts[0].baby_name,
@@ -97,56 +90,10 @@ export const Settings = () => {
     user.accounts[0].baby_date_of_birth,
   );
   const [valueGender, setValueGender] = useState<any>(null);
-
   const [valueGenderChild, setValueGenderChild] = useState<any>(
     user.accounts[0].baby_gender,
   );
-  console.log('user-------', user.accounts[0]);
 
-  // const verticalStaticData = [
-  //   {
-  //     id: 0,
-  //     isChecked: true,
-  //     value: valueGender,
-  //     text: 'Male',
-  //     iconStyle: {
-  //       borderColor: '#CCC',
-  //       borderWidth: 3,
-  //       height: 32,
-  //       width: 32,
-  //       borderRadius: 50,
-  //     },
-  //     fillColor: 'transparent',
-  //     unfillColor: 'transparent',
-  //     textStyle: {
-  //       textDecorationLine: 'none',
-  //       color: COLORS.text,
-  //       fontFamily: 'AntagometricaBT-Regular',
-  //     },
-  //   },
-  //   {
-  //     id: 1,
-  //     text: 'Female',
-  //     value: valueGender,
-  //     style: {
-  //       marginLeft: 20,
-  //     },
-  //     iconStyle: {
-  //       borderColor: '#CCC',
-  //       borderWidth: 3,
-  //       height: 32,
-  //       width: 32,
-  //       borderRadius: 50,
-  //     },
-  //     fillColor: 'transparent',
-  //     unfillColor: 'transparent',
-  //     textStyle: {
-  //       textDecorationLine: 'none',
-  //       color: COLORS.text,
-  //       fontFamily: 'AntagometricaBT-Regular',
-  //     },
-  //   },
-  // ];
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -193,36 +140,42 @@ export const Settings = () => {
 
     console.log('setUserInformation', newUser);
     console.log('setChildInformation', newChild);
-    dispatch(setLoader(true));
+    // dispatch(setLoader(true));
     Promise.all([UpdateProfile(newUser), UpdateProfileChild(newChild)])
       .then(data => {
         console.log('00000000', data[0].data.success);
         dispatch(setUserInformation(data[0].data.success));
-        dispatch(setLoader(false));
+        // dispatch(setLoader(false));
         Alert.alert('success');
       })
       .catch(({response}) => {
-        dispatch(setLoader(false));
+        // dispatch(setLoader(false));
         response.data.error && Alert.alert(response.data.error);
         console.log('xxxxxxx', response.data.message);
       });
-    // UpdateProfile(newUser)
-    //   .then(({data}) => {
-    //     dispatch(setUserInformation(data.success));
-    //     Alert.alert('success');
-    //     console.log('yes', data.success);
-    //   })
-    //   .catch(err => {
-    //     console.log('err edit', err.response.data);
-    //     err.response.data.message && Alert.alert(err.response.data.message);
-    //     err.response.data.error && Alert.alert(err.response.data.error);
-    //   });
   };
   useEffect(() => {
     navigation.setParams({
       test: handleSave,
     });
-  }, [valueName, valueEmail, valueDate, valueGender, valueGenderChild]);
+  }, [
+    valueName,
+    valueEmail,
+    valueDate,
+    valueGender,
+    valueGenderChild,
+    valueDateChild,
+  ]);
+  useEffect(() => {
+    getProfile()
+      .then(({data}) => {
+        console.log('all information about user', data);
+        dispatch(setUserInformation(data.user));
+      })
+      .catch(err => {
+        console.log('what error', err.response.data);
+      });
+  }, []);
   const handleDeleteAcount = () => {
     AlertComp(
       'Are you sure you had like to sign out of your account?',
@@ -433,7 +386,6 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 7,
     height: 66,
-    // width: '100%',
     borderRadius: 0,
     backgroundColor: COLORS.backGround,
     flexDirection: 'row',
