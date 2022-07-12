@@ -17,6 +17,7 @@ import {Graphics} from '../../screens/Account/Graphics';
 import {Document} from '../../screens/Account/Document';
 import {Location} from '../../screens/Account/Location';
 import {COLORS} from '../../styles/Constants';
+import backButton from '../../assets/images/backButton.png';
 
 const iconGr = (focused, iconActive, icon, size = 30) => {
   return (
@@ -35,10 +36,19 @@ const iconGr = (focused, iconActive, icon, size = 30) => {
 const navigationOptions = navigation => ({
   title: 'profile / preferences',
   headerShown: true,
-  headerTintColor: '#fff',
+  headerTintColor: COLORS.text,
   headerStyle: {
     backgroundColor: '#2A305A',
-  }, 
+  },
+  headerLeft: () => {
+    return (
+      <TouchableOpacity
+        style={{paddingLeft: 15}}
+        onPress={() => navigation.navigation.goBack()}>
+        <Image style={{width: 17, height: 17}} source={backButton} />
+      </TouchableOpacity>
+    );
+  },
   headerRight: () => {
     const params = navigation.route?.params;
     console.log('parapms', params);

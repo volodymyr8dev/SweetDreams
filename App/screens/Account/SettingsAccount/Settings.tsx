@@ -131,10 +131,10 @@ export const Settings = () => {
     getProfile()
       .then(({data}) => {
         console.log('all information about user', data);
-            dispatch(setUserInformation(data.user));
+        dispatch(setUserInformation(data.user));
       })
       .catch(err => {
-        console.log(err.response.data);
+        console.log('what error', err.response.data);
       });
   }, []);
   const handleDeleteAcount = () => {

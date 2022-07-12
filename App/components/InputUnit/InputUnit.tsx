@@ -35,9 +35,11 @@ export const InputUnit = ({
 }: PropsBox) => {
   const navigation = useNavigation();
   const handleGoToScreen = titleName => {
+    console.log('titleName', titleName);
     navigation.navigate(titleName, {
       title: titleName,
-      rightEl: true,
+      rightEl:
+        titleName === 'Terms Conditions' || 'Privacy Policy' ? false : true,
       hideOld: titleName == 'Change Password' ? true : false,
     });
   };
@@ -53,7 +55,14 @@ export const InputUnit = ({
           justifyContent: 'space-between',
         }}>
         <View>
-          <Text style={{color: COLORS.text, fontSize: 18, fontFamily: 'AntagometricaBT-Regular'}}>{title}</Text>
+          <Text
+            style={{
+              color: COLORS.text,
+              fontSize: 18,
+              fontFamily: 'AntagometricaBT-Regular',
+            }}>
+            {title}
+          </Text>
         </View>
         {!rightEl ? (
           <View>

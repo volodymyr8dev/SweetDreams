@@ -59,7 +59,7 @@ export const Gender = ({setValue, type, initialId}) => {
             color: '#2371AB',
             fontFamily: 'AntagometricaBT-Regular',
           }}>
-          EU citizen
+          Gender
         </Text>
         <View
           style={{

@@ -5,3 +5,4 @@ import {RootState} from '../configureStore';
 
 export const AccountSelector = ({account}: RootState) => account;
 export const UserInformationSelector = ({account}: RootState) =>account.userInformation;
+                              

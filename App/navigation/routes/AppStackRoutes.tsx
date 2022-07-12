@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Login} from '../../screens/registration/Login';
 import {CreateNewAccount} from '../../screens/registration/CreateNewAccount';
@@ -13,21 +13,15 @@ import {Connection} from '../../screens/conection/Connection';
 import {ConnectionStep1} from '../../screens/conection/ConnectionStep1';
 import {ConnectionStep2} from '../../screens/conection/ConnectionStep2';
 import {ConnectionStep3} from '../../screens/conection/ConnectionStep3';
-import {Account} from '../../screens/Account/Account';
 import {MyTabs} from './BottomTabRoutes';
 import {SettingsAccount} from '../../screens/Account/Settings/SettingsAccount';
-import {
-  RegistrationUser,
-  VerifyEmail,
-  SendEmailVerificationCode,
-} from '../../api/CreateAccount/CreateAccount';
+import {RegistrationUser} from '../../api/CreateAccount/CreateAccount';
 import {
   setLoader,
   setUserInformation,
   updateVerifiedEmail,
 } from '../../redux/slice/slice';
 import SettingsRoutes from './Settings/SettingsRoutes';
-import {SettingsTemperature} from '../../screens/Account/Settings/SettingsTemperature';
 import SettingsAccountStackRoutes from './Settings/SettingsAccountRouter';
 import GraphicRoutes from './Graphics/GraphicsRoutes';
 import backButton from '../../assets/images/backButton.png';
@@ -73,7 +67,14 @@ const forgotPasswordOptions = navigation => ({
         onPress={() => {
           navigation.route?.params.sendCode();
         }}>
-        <Text style={{color: '#fff', fontSize: 19, fontFamily: 'AntagometricaBT-Regular'}}>send</Text>
+        <Text
+          style={{
+            color: '#fff',
+            fontSize: 19,
+            fontFamily: 'AntagometricaBT-Regular',
+          }}>
+          send
+        </Text>
       </TouchableOpacity>
     );
   },
@@ -113,7 +114,14 @@ export const navigationOptions = navigation => ({
                 `conectionStep${params?.connectionStep + 1}`,
               );
             }}>
-            <Text style={{color: '#fff', fontSize: 19, fontFamily: 'AntagometricaBT-Regular'}}>done</Text>
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 19,
+                fontFamily: 'AntagometricaBT-Regular',
+              }}>
+              done
+            </Text>
           </TouchableOpacity>
         )
       : params?.show && (
@@ -172,7 +180,14 @@ export const navigationOptions = navigation => ({
                 navigation.navigation.navigate(`step${params.position + 1}`);
               }
             }}>
-            <Text style={{color: '#fff', fontSize: 19, fontFamily: 'AntagometricaBT-Regular'}}>done</Text>
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 19,
+                fontFamily: 'AntagometricaBT-Regular',
+              }}>
+              done
+            </Text>
           </TouchableOpacity>
         );
   },
