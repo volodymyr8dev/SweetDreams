@@ -4,7 +4,7 @@ import BouncyCheckboxGroup, {
   ICheckboxButton,
 } from 'react-native-bouncy-checkbox-group';
 import {COLORS} from '../../styles/Constants';
-
+                                                                         
 export const Gender = ({setValue, type, initialId}) => {
   const verticalStaticData = [
     {
@@ -21,7 +21,7 @@ export const Gender = ({setValue, type, initialId}) => {
       fillColor: 'transparent',
       unfillColor: 'transparent',
       textStyle: {
-        textDecorationLine: 'none',
+        textDecorationLine: 'none',  
         color: COLORS.text,
         fontFamily: 'AntagometricaBT-Regular',
       },
@@ -49,7 +49,7 @@ export const Gender = ({setValue, type, initialId}) => {
       },
     },
   ];
-
+                                                                                                                 
   return (
     <View>
       <View style={styles.citizen}>
@@ -84,7 +84,7 @@ export const Gender = ({setValue, type, initialId}) => {
     </View>
   );
 };
-
+                                                     
 const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
