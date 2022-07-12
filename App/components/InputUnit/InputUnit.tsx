@@ -90,7 +90,14 @@ export const InputUnit = ({
         value={value}
         onChangeText={setValueName}
         secureTextEntry={security}
-        style={{width: '100%', paddingLeft: 10, color: COLORS.text}}>
+        style={{
+          width: '100%',
+          paddingLeft: 10,
+          color: COLORS.text,
+          fontSize: 18,
+
+          fontFamily: 'AntagometricaBT-Regular',
+        }}>
         {/* <Text>{nameField && value}</Text> */}
       </TextInput>
       {date && (

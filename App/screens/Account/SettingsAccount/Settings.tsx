@@ -107,7 +107,7 @@ export const Settings = () => {
         console.log('00000000', data[0].data.success);
         dispatch(setUserInformation(data[0].data.success));
         // dispatch(setLoader(false));
-        Alert.alert('success');
+        Alert.alert('Profile settings are updated');
       })
       .catch(({response}) => {
         // dispatch(setLoader(false));
