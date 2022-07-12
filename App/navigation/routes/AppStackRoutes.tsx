@@ -84,7 +84,7 @@ export const navigationOptions = navigation => ({
     ? navigation.route?.params.title
     : 'App',
   headerShown: true,
-  headerTintColor: '#fff',
+  headerTintColor: '#2371AB',
   headerStyle: {
     backgroundColor: '#2A305A',
   },
@@ -98,7 +98,7 @@ export const navigationOptions = navigation => ({
     return (
       !params?.hide && (
         <TouchableOpacity onPress={() => navigation.navigation.goBack()}>
-          <Image style={{width: 17, height: 17}} source={backButton} />
+          <Image style={{width: 12.3, height: 18.86}} source={backButton} />
         </TouchableOpacity>
       )
     );

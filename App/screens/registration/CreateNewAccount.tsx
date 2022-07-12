@@ -36,41 +36,47 @@ export const CreateNewAccount = () => {
   const verticalStaticData = [
     {
       id: 0,
-      text: 'Yes',
+      text: 'yes',
 
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
-        height: 32,
-        width: 32,
+        height: 44,
+        width: 44,
         borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
       textStyle: {
         textDecorationLine: 'none',
+        color: '#2371AB',
         fontFamily: 'AntagometricaBT-Regular',
       },
+      checkIconImageSource: checkButton,
+      iconImageStyle: {height: 17.2, width: 20.36},
     },
     {
       id: 1,
-      text: 'No',
+      text: 'no',
       style: {
         marginLeft: 20,
       },
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
-        height: 32,
-        width: 32,
+        height: 44,
+        width: 44,
         borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
       textStyle: {
         textDecorationLine: 'none',
+        color: '#2371AB',
         fontFamily: 'AntagometricaBT-Regular',
       },
+      checkIconImageSource: checkButton,
+      iconImageStyle: {height: 17.2, width: 20.36},
     },
   ];
   const dispatch = useDispatch();
@@ -179,7 +185,7 @@ export const CreateNewAccount = () => {
                     color: COLORS.textLight,
                     fontFamily: 'AntagometricaBT-Regular'
                   }}>
-                  A sweetDreamers account is necessary for using the App
+                  A SweetDreamers account is necessary for using the App
                   services.Fill out the boxes below and select the 'done' button
                   when you're finished
                 </Text>
@@ -191,7 +197,7 @@ export const CreateNewAccount = () => {
                   setEmail(name);
                 }}
                 styling={styles.input}
-                text={'Your email address'}
+                text={'Your email Address'}
               />
 
               <CustomInput
@@ -213,7 +219,7 @@ export const CreateNewAccount = () => {
                     see the terms and conditions by selecting the show button.
                     {'\n'}EU (European Union) are applicable to General Data
                     Protection Regulation(GDPR){'\n'}
-                    (*)is required agreement
+                    (<Text style={{color: 'red'}}>*</Text>)is required agreement
                   </Text>
                 </View>
               </View>
@@ -247,7 +253,7 @@ export const CreateNewAccount = () => {
                 </View>
               </View>
               <View style={styles.citizen}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <CheckBox
                     value={terms}
                     setValue={value => setTerms(value)}
@@ -275,7 +281,7 @@ export const CreateNewAccount = () => {
                 </TouchableOpacity>
               </View>
               <View style={styles.citizen}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <CheckBox
                     value={privacy}
                     setValue={value => setPrivacy(value)}
@@ -287,7 +293,7 @@ export const CreateNewAccount = () => {
                       color: '#2371AB',
                       fontFamily: 'AntagometricaBT-Regular',
                     }}>
-                    <Text style={{color: 'red'}}>*</Text> Privacy Policy
+                    <Text style={{color: 'red'}}>*</Text>Privacy Policy
                   </Text>
                 </View>
                 <TouchableOpacity onPress={handleShowPrivacy}>

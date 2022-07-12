@@ -26,9 +26,11 @@ export const Connection = () => {
           <Text style={{color: '#FFFFFF',fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>your misty device </Text>
         </View>
         <View style={{marginBottom: 10}}>
-          <Text style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>Status: </Text>
-          <View style={{width: 15, height: 15, backgroundColor: '#D65852', borderRadius: 100}}/>
-          <Text style={{color: '#FFFFFF'}}>NOT CONNECTED</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>Status: </Text>
+            <View style={{width: 9, height: 9, backgroundColor: '#D65852', borderRadius: 100, marginTop: 5, marginRight: 2}}/>
+            <Text style={{color: '#FFFFFF'}}>NOT CONNECTED</Text>
+          </View>
         </View>
         <View style={{marginBottom: 30}}>
           <Text style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>
