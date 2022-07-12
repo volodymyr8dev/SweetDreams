@@ -27,6 +27,7 @@ import {COLORS} from '../../styles/Constants';
 import {RegistrationUser} from '../../api/CreateAccount/CreateAccount';
 import {updateVerifiedEmail} from '../../redux/slice/slice';
 import {RootState} from '../../redux/configureStore';
+import checkButton from '../../assets/images/checkButton.png'
 
 type Nav = {
 };

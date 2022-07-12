@@ -14,14 +14,14 @@ export const Gender = ({setValue, type, initialId}) => {
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
-        height: 32,
-        width: 32,
+        height: 44,
+        width: 44,
         borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
       textStyle: {
-        textDecorationLine: 'none',  
+        textDecorationLine: 'none',
         color: COLORS.text,
         fontFamily: 'AntagometricaBT-Regular',
       },
@@ -36,8 +36,8 @@ export const Gender = ({setValue, type, initialId}) => {
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
-        height: 32,
-        width: 32,
+        height: 44,
+        width: 44,
         borderRadius: 50,
       },
       fillColor: 'transparent',
@@ -49,6 +49,7 @@ export const Gender = ({setValue, type, initialId}) => {
       },
     },
   ];
+  
                                                                                                                  
   return (
     <View>
