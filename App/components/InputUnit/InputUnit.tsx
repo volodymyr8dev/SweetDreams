@@ -90,7 +90,14 @@ export const InputUnit = ({
         value={value}
         onChangeText={setValueName}
         secureTextEntry={security}
-        style={{width: '100%', paddingLeft: 10, color: COLORS.text}}>
+        style={{
+          width: '100%',
+          paddingLeft: 10,
+          color: COLORS.text,
+          fontSize: 18,
+
+          fontFamily: 'AntagometricaBT-Regular',
+        }}>
         {/* <Text>{nameField && value}</Text> */}
       </TextInput>
       {date && (
@@ -120,7 +127,7 @@ const styles = StyleSheet.create({
     borderColor: '#2A70AA',
   },
   box: {
-    height: 66,
+    height: 76,
     paddingHorizontal: 20,
     justifyContent: 'center',
     backgroundColor: COLORS.backGround,

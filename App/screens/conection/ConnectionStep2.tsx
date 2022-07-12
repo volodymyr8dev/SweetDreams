@@ -50,12 +50,12 @@ export const ConnectionStep2 = () => {
           />
           <View style={{marginTop: 30}}>
             <Text style={{color: '#23659D', fontSize: 19, marginBottom: 13, fontFamily: 'AntagometricaBT-Bold'}}>
-              lets connect misty
+              let`s connect misty
             </Text>
           </View>
           <View style={{marginBottom: 15}}>
             <Text style={{color: '#23659D', fontFamily: 'AntagometricaBT-Regular'}}>
-              Please Enter you misty serial number
+              Please enter you misty serial number
             </Text>
           </View>
           <CustomInput
@@ -67,7 +67,7 @@ export const ConnectionStep2 = () => {
           <View style={{marginTop: 15}}>
             <Text style={styles.answer}>
               <Text style={{color: '#CA57E7'}}>*</Text>{' '}
-              <Text style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Regular'}}>Serial number </Text> is case
+              <Text style={{fontFamily: 'AntagometricaBT-Regular'}}>Serial number</Text> is case
               sensitive and can be found on a sticker on the base of the unit.
             </Text>
           </View>
@@ -120,10 +120,10 @@ const styles = StyleSheet.create({
   input: {
     marginLeft: -20,
     width: '115%',
+    height: 76,
     borderRadius: 0,
     backgroundColor: '#201F3F',
     color: '#2371AB',
-    fontFamily: 'AntagometricaBT-Regular',
   },
   button: {
     width: 200,

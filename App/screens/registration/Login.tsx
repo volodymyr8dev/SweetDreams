@@ -103,7 +103,7 @@ export const Login = () => {
           </View>
             <TouchableOpacity onPress={handleForgotPassword} style={styles.yepContainer}>
                 <Text style={styles.forgotPassword}>
-                  yep... i forgot password
+                  yep... i forgot my password
                 </Text>
             </TouchableOpacity>
           <View style={{alignItems:'center'}}>
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     marginTop: -3,
     marginBottom: 24,
     marginLeft: '21%',
-    width: '40%'
+    width: '45%'
   },
   title: {
     alignItems: 'center',

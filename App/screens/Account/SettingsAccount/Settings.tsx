@@ -18,7 +18,9 @@ import {InputUnit} from '../../../components/InputUnit/InputUnit';
 import {COLORS} from '../../../styles/Constants';
 import {AlertComp} from '../../../components/Alert/AlertComp';
 import {useDispatch, useSelector} from 'react-redux';
-import {setLoader, setUserInformation} from '../../../redux/slice/slice';
+import {setUserInformation} from '../../../redux/slice/slice';
+import checkButton from '../../../assets/images/checkButton.png'
+
 import moment from 'moment';
 import {DatePickerComponent} from '../../../components/DatePicker/DatePicker';
 import {RootState} from '../../../redux/configureStore';
@@ -38,6 +40,43 @@ interface IUserChild {
   baby_date_of_birth?: string;
   baby_gender?: string;
 }
+const verticalStaticData = [
+  {
+    id: 0,
+    text: 'male',
+    isChecked: true,
+    iconStyle: {
+      borderColor: '#CCC',
+      borderWidth: 3,
+      height: 44,
+      width: 44,
+      borderRadius: 50,
+    },
+    fillColor: 'transparent',
+    unfillColor: 'transparent',
+    textStyle: {textDecorationLine: 'none', color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'},
+    checkIconImageSource: checkButton,
+    iconImageStyle: {height: 17.2, width: 20.36},
+  },
+  {
+    id: 1,
+    text: 'female',
+    isChecked: false,
+    style: {
+      marginLeft: 20,
+    },
+    iconStyle: {
+      borderColor: '#CCC',
+      borderWidth: 3,
+      height: 44,
+      width: 44,
+      borderRadius: 50,
+    },
+    fillColor: 'transparent',
+    unfillColor: 'transparent',
+    textStyle: {textDecorationLine: 'none', color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'},
+  },
+];
 export const Settings = () => {
   const {user} = useSelector(UserInformationSelector);
   // const global = useSelector(({account}) => account);
@@ -107,7 +146,7 @@ export const Settings = () => {
         console.log('00000000', data[0].data.success);
         dispatch(setUserInformation(data[0].data.success));
         // dispatch(setLoader(false));
-        Alert.alert('success');
+        Alert.alert('Profile settings are updated');
       })
       .catch(({response}) => {
         // dispatch(setLoader(false));
