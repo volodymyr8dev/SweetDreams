@@ -27,7 +27,8 @@ import {
   UpdateProfileChild,
 } from '../../../api/Profile/ProfileApi';
 import {useDispatch, useSelector} from 'react-redux';
-import {setLoader, setUserInformation} from '../../../redux/slice/slice';
+import {setUserInformation} from '../../../redux/slice/slice';
+import checkButton from '../../../assets/images/checkButton.png'
 
 import moment from 'moment';
 import {DatePickerComponent} from '../../../components/DatePicker/DatePicker';
@@ -47,6 +48,43 @@ interface IUserChild {
   baby_date_of_birth?: string;
   baby_gender?: string;
 }
+const verticalStaticData = [
+  {
+    id: 0,
+    text: 'male',
+    isChecked: true,
+    iconStyle: {
+      borderColor: '#CCC',
+      borderWidth: 3,
+      height: 44,
+      width: 44,
+      borderRadius: 50,
+    },
+    fillColor: 'transparent',
+    unfillColor: 'transparent',
+    textStyle: {textDecorationLine: 'none', color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'},
+    checkIconImageSource: checkButton,
+    iconImageStyle: {height: 17.2, width: 20.36},
+  },
+  {
+    id: 1,
+    text: 'female',
+    isChecked: false,
+    style: {
+      marginLeft: 20,
+    },
+    iconStyle: {
+      borderColor: '#CCC',
+      borderWidth: 3,
+      height: 44,
+      width: 44,
+      borderRadius: 50,
+    },
+    fillColor: 'transparent',
+    unfillColor: 'transparent',
+    textStyle: {textDecorationLine: 'none', color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'},
+  },
+];
 export const Settings = () => {
   const {user} = useSelector(({account}: RootState) => account.userInformation);
   const [valueName, setValueName] = useState(user.name);

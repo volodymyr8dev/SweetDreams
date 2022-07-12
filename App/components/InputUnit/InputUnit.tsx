@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     borderColor: '#2A70AA',
   },
   box: {
-    height: 66,
+    height: 76,
     paddingHorizontal: 20,
     justifyContent: 'center',
     backgroundColor: COLORS.backGround,
