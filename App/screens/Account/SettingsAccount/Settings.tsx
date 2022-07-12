@@ -19,7 +19,7 @@ import {COLORS} from '../../../styles/Constants';
 import {AlertComp} from '../../../components/Alert/AlertComp';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUserInformation} from '../../../redux/slice/slice';
-import checkButton from '../../../assets/images/checkButton.png'
+import checkButton from '../../../assets/images/checkButton.png';
 
 import moment from 'moment';
 import {DatePickerComponent} from '../../../components/DatePicker/DatePicker';
@@ -27,7 +27,7 @@ import {RootState} from '../../../redux/configureStore';
 import {Gender} from '../../../components/Gender/Gender';
 import {Loader} from '../../../components/Loader/Loader';
 import {UserInformationSelector} from '../../../redux/selectors/AccountSelector';
-
+import {useIsFocused} from '@react-navigation/native';
 interface IUser {
   email?: string;
   name?: string;
@@ -54,7 +54,11 @@ const verticalStaticData = [
     },
     fillColor: 'transparent',
     unfillColor: 'transparent',
-    textStyle: {textDecorationLine: 'none', color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'},
+    textStyle: {
+      textDecorationLine: 'none',
+      color: COLORS.text,
+      fontFamily: 'AntagometricaBT-Regular',
+    },
     checkIconImageSource: checkButton,
     iconImageStyle: {height: 17.2, width: 20.36},
   },
@@ -74,16 +78,23 @@ const verticalStaticData = [
     },
     fillColor: 'transparent',
     unfillColor: 'transparent',
-    textStyle: {textDecorationLine: 'none', color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'},
+    textStyle: {
+      textDecorationLine: 'none',
+      color: COLORS.text,
+      fontFamily: 'AntagometricaBT-Regular',
+    },
   },
 ];
 export const Settings = () => {
-  const {user} = useSelector(UserInformationSelector);
+  const isFocused = useIsFocused();
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
   // const global = useSelector(({account}) => account);
+  console.log('userrrrrr', user);
   const [valueName, setValueName] = useState(user.name);
   const [valueNameChild, setValueNameChild] = useState(
     user.accounts[0].baby_name,
   );
+  console.log('valueNamestart', valueName);
   const [valueEmail, setValueEmail] = useState(user.email);
   const [valueDate, setValueDate] = useState(user.date_of_birth);
   const [valueDateChild, setValueDateChild] = useState(
@@ -142,9 +153,9 @@ export const Settings = () => {
     console.log('setChildInformation', newChild);
     // dispatch(setLoader(true));
     Promise.all([UpdateProfile(newUser), UpdateProfileChild(newChild)])
-      .then(data => {
+      .then(async data => {
         console.log('00000000', data[0].data.success);
-        dispatch(setUserInformation(data[0].data.success));
+        const res = await dispatch(setUserInformation(data[0].data.success));
         // dispatch(setLoader(false));
         Alert.alert('Profile settings are updated');
       })
@@ -168,14 +179,21 @@ export const Settings = () => {
   ]);
   useEffect(() => {
     getProfile()
-      .then(({data}) => {
+      .then(async ({data}) => {
         console.log('all information about user', data);
-        dispatch(setUserInformation(data.user));
+        await dispatch(setUserInformation(data.user));
+        setValueName(data.user.name);
+        setValueNameChild(data.user.accounts[0].baby_name);
+        setValueEmail(data.user.email);
+        setValueDate(data.user.date_of_birth);
+        setValueDateChild(data.user.accounts[0].baby_date_of_birth);
+        setValueGender(data.user.gender);
+        setValueGenderChild(data.user.accounts[0].baby_gender);
       })
       .catch(err => {
         console.log('what error', err.response.data);
       });
-  }, []);
+  }, [isFocused]);
   const handleDeleteAcount = () => {
     AlertComp(
       'Are you sure you had like to sign out of your account?',
