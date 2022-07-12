@@ -27,7 +27,6 @@ import {COLORS} from '../../styles/Constants';
 import {RegistrationUser} from '../../api/CreateAccount/CreateAccount';
 import {updateVerifiedEmail} from '../../redux/slice/slice';
 import {RootState} from '../../redux/configureStore';
-import checkButton from '../../assets/images/checkButton.png'
 type Nav = {
   navigate: (value: string) => void;
   setParams(value: any);
@@ -37,46 +36,41 @@ export const CreateNewAccount = () => {
   const verticalStaticData = [
     {
       id: 0,
-      text: 'yes',
+      text: 'Yes',
+
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
-        height: 44,
-        width: 44,
+        height: 32,
+        width: 32,
         borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
       textStyle: {
         textDecorationLine: 'none',
-        color: '#2371AB',
         fontFamily: 'AntagometricaBT-Regular',
       },
-      checkIconImageSource: checkButton,
-      iconImageStyle:{height: 17.2,width: 20.36},
     },
     {
       id: 1,
-      text: 'no',
+      text: 'No',
       style: {
         marginLeft: 20,
       },
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
-        height: 44,
-        width: 44,
+        height: 32,
+        width: 32,
         borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
       textStyle: {
         textDecorationLine: 'none',
-        color: '#2371AB',
         fontFamily: 'AntagometricaBT-Regular',
       },
-      checkIconImageSource: checkButton,
-      iconImageStyle:{height: 17.2,width: 20.36},
     },
   ];
   const dispatch = useDispatch();
@@ -209,7 +203,7 @@ export const CreateNewAccount = () => {
               />
               <View>
                 <View>
-                  <Text style={{color: COLORS.textLight, fontFamily: 'AntagometricaBT-Regular', fontSize: 19, marginBottom: 7}}>Accept Terms</Text>
+                  <Text style={{color: COLORS.textLight, fontFamily: 'AntagometricaBT-Regular'}}>Accept Terms</Text>
                 </View>
                 <View style={{marginBottom: 9}}>
                   <Text style={{color: COLORS.textLight, fontFamily: 'AntagometricaBT-Regular'}}>
@@ -219,7 +213,7 @@ export const CreateNewAccount = () => {
                     see the terms and conditions by selecting the show button.
                     {'\n'}EU (European Union) are applicable to General Data
                     Protection Regulation(GDPR){'\n'}
-                    (<Text style={{color: 'red'}}>*</Text>)is required agreement
+                    (*)is required agreement
                   </Text>
                 </View>
               </View>
@@ -253,7 +247,7 @@ export const CreateNewAccount = () => {
                 </View>
               </View>
               <View style={styles.citizen}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{flexDirection: 'row'}}>
                   <CheckBox
                     value={terms}
                     setValue={value => setTerms(value)}
@@ -281,7 +275,7 @@ export const CreateNewAccount = () => {
                 </TouchableOpacity>
               </View>
               <View style={styles.citizen}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{flexDirection: 'row'}}>
                   <CheckBox
                     value={privacy}
                     setValue={value => setPrivacy(value)}

@@ -35,7 +35,6 @@ import {ForgotPassword} from '../../screens/registration/ForgotPassword';
 import {ForgotPassword2} from '../../screens/registration/ForgotPassword2';
 import {ForgotPassword3} from '../../screens/registration/ForgotPassword3';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { COLORS } from '../../styles/Constants';
 export type RootStackParamList = {
   step2: {
     position: any;
@@ -84,7 +83,7 @@ export const navigationOptions = navigation => ({
     ? navigation.route?.params.title
     : 'App',
   headerShown: true,
-  headerTintColor: COLORS.text,
+  headerTintColor: '#fff',
   headerStyle: {
     backgroundColor: '#2A305A',
   },
@@ -98,7 +97,7 @@ export const navigationOptions = navigation => ({
     return (
       !params?.hide && (
         <TouchableOpacity onPress={() => navigation.navigation.goBack()}>
-          <Image style={{width: 12.3, height: 18.86}} source={backButton} />
+          <Image style={{width: 17, height: 17}} source={backButton} />
         </TouchableOpacity>
       )
     );
@@ -193,11 +192,7 @@ const AppStackRoutes = () => {
   // useEffect(() => {
   //   getToken();
   // }, []);
-<<<<<<< HEAD
 
-=======
-  //
->>>>>>> 0d7365014ae931c89761d480d66c38c8b7adbaa1
   // if (token) {
   //   navigation.navigate('account');
   // }
@@ -279,11 +274,6 @@ const AppStackRoutes = () => {
         component={ForgotPassword3}
         options={navigationOptions}
       />
-      {/* <Stack.Screen
-        name="settingstemperature"
-        component={SettingsTemperature}
-        options={navigationOptions}
-      /> */}
       <Stack.Screen
         name="account"
         component={MyTabs}

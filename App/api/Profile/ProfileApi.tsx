@@ -13,12 +13,6 @@ export const LogIn = async (email, password) => {
 };
 
 export const UpdateProfile = async user => {
-  // const body = {
-  //   ...(user.email && {email: user.email}),
-  //   ...(user.name && {name: user.name}),
-  //   ...(user.date_of_birth && {date_of_birth: user.date_of_birth}),
-  //   ...(user.gender && {gender: user.gender}),
-  // }
   console.log('ProfileApi', user);
   const body = {
     email: user.email,
@@ -33,7 +27,6 @@ export const UpdateProfile = async user => {
 };
 
 export const UpdateProfileChild = async user => {
-
   // const body = {
   //   ...(user.email && {email: user.email}),
   //   ...(user.name && {name: user.name}),
@@ -46,6 +39,10 @@ export const UpdateProfileChild = async user => {
     baby_date_of_birth: user.baby_date_of_birth,
     baby_gender: user.baby_gender,
   };
-  console.log('body',body)
+  console.log('body', body);
   return await axiosInstance.patch(`/api/accounts/${user.id}/baby`, body);
+};
+
+export const getProfile = async () => {
+  return await axiosInstance.get('api/me');
 };
