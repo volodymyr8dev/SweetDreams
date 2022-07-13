@@ -51,45 +51,11 @@ export const DatePickerComponent = ({changeDate, value}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 10,
-    backgroundColor: '#221B36',
-    height: '100%',
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 15,
-  },
-  button: {
-    width: 200,
-    backgroundColor: 'opacity',
-    borderWidth: 1,
-    borderColor: '#2A70AA',
-  },
-  box: {
-    height: 66,
-    paddingHorizontal: 20,
-    justifyContent: 'center',
-    backgroundColor: COLORS.backGround,
-    width: '100%',
-    marginBottom: 7,
-  },
-  input: {
-    marginBottom: 7,
-    height: 66,
-    // width: '100%',
-    borderRadius: 0,
-    backgroundColor: COLORS.backGround,
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    alignItems: 'center',
-  },
+
   citizen: {
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginTop: 6,
     paddingHorizontal: 19,
     backgroundColor: COLORS.backGround,
     width: '100%',

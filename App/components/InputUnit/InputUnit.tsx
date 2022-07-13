@@ -22,6 +22,7 @@ interface PropsBox {
   setValueName?: Function;
   date?: boolean;
 }
+const exec = 'Privacy Policy' && 'Terms Conditions';
 export const InputUnit = ({
   nameOfBox,
   title,
@@ -38,8 +39,7 @@ export const InputUnit = ({
     console.log('titleName', titleName);
     navigation.navigate(titleName, {
       title: titleName,
-      rightEl:
-        titleName === 'Terms Conditions' || 'Privacy Policy' ? false : true,
+      rightEl: titleName == exec ? false : true,
       hideOld: titleName == 'Change Password' ? true : false,
     });
   };

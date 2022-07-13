@@ -31,7 +31,7 @@ const navigationOptionAccount = () => ({
     backgroundColor: '#000',
   },
   tabBarOptions: {customTabBarStyle},
-});
+});                                                                  
 const navigationOptions = navigation => {
   return {
     title: `${navigation.route?.params?.title}`,
@@ -58,7 +58,7 @@ const navigationOptions = navigation => {
 };
 const SettingsAccountStackRoutes = () => {
   const Stack = createNativeStackNavigator();
-
+      
   return (
     <>
       <Stack.Screen
@@ -84,5 +84,6 @@ const SettingsAccountStackRoutes = () => {
     </>
   );
 };
-
+                                         
 export default SettingsAccountStackRoutes;
+                                                                       
