@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   cardListInfo: {
     color: '#fff',
     fontSize: 14,
-    fontFamily: 'Antagometrica BT Light',
+    fontFamily: 'AntagometricaBT-Regular',
   },
   cardList: {
     marginVertical: 17,

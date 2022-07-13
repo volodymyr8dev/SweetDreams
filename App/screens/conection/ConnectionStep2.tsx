@@ -50,7 +50,7 @@ export const ConnectionStep2 = () => {
           />
           <View style={{marginTop: 30}}>
             <Text style={{color: '#23659D', fontSize: 19, marginBottom: 13, fontFamily: 'AntagometricaBT-Bold'}}>
-              let`s connect misty
+              let's connect misty
             </Text>
           </View>
           <View style={{marginBottom: 15}}>

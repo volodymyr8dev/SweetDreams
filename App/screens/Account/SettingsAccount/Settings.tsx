@@ -263,7 +263,7 @@ export const Settings = () => {
             title={'Your Email Address'}
             nameField={'bernie@sweetdreaamers'}
             nameOfBox={'input'}
-            placeholder={'Your Email Addres'}
+            placeholder={'Your Email Address'}
           />
           <InputUnit title={'Change Password'} nameOfBox={'touch'} />
           <DatePickerComponent

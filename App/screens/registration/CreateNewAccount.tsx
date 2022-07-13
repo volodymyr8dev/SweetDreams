@@ -41,14 +41,16 @@ export const CreateNewAccount = () => {
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
-        height: 32,
-        width: 32,
+        height: 44,
+        width: 44,
         borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
       textStyle: {
         textDecorationLine: 'none',
+        color: '#2371AB',
+        fontSize: 19,
         fontFamily: 'AntagometricaBT-Regular',
       },
     },
@@ -61,13 +63,15 @@ export const CreateNewAccount = () => {
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
-        height: 32,
-        width: 32,
+        height: 44,
+        width: 44,
         borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
       textStyle: {
+        color: '#2371AB',
+        fontSize: 19,
         textDecorationLine: 'none',
         fontFamily: 'AntagometricaBT-Regular',
       },
@@ -203,7 +207,7 @@ export const CreateNewAccount = () => {
               />
               <View>
                 <View>
-                  <Text style={{color: COLORS.textLight, fontFamily: 'AntagometricaBT-Regular'}}>Accept Terms</Text>
+                  <Text style={{fontSize: 19, color: COLORS.textLight, fontFamily: 'AntagometricaBT-Bold', marginBottom: 10}}>Accept Terms</Text>
                 </View>
                 <View style={{marginBottom: 9}}>
                   <Text style={{color: COLORS.textLight, fontFamily: 'AntagometricaBT-Regular'}}>
@@ -246,7 +250,7 @@ export const CreateNewAccount = () => {
                   />
                 </View>
               </View>
-              <View style={styles.citizen}>
+              <View style={styles.legal}>
                 <View style={{flexDirection: 'row'}}>
                   <CheckBox
                     value={terms}
@@ -258,6 +262,7 @@ export const CreateNewAccount = () => {
                       fontSize: 19,
                       color: '#2371AB',
                       fontFamily: 'AntagometricaBT-Regular',
+                      marginTop: 10,
                     }}>
                     <Text style={{color: 'red'}}>*</Text>
                     Terms & Conditions
@@ -274,7 +279,7 @@ export const CreateNewAccount = () => {
                   </Text>
                 </TouchableOpacity>
               </View>
-              <View style={styles.citizen}>
+              <View style={styles.legal}>
                 <View style={{flexDirection: 'row'}}>
                   <CheckBox
                     value={privacy}
@@ -286,6 +291,7 @@ export const CreateNewAccount = () => {
                       fontSize: 19,
                       color: '#2371AB',
                       fontFamily: 'AntagometricaBT-Regular',
+                      marginTop: 10
                     }}>
                     <Text style={{color: 'red'}}>*</Text> Privacy Policy
                   </Text>
@@ -334,6 +340,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 6,
     paddingHorizontal: 19,
+    marginLeft: -20,
+    backgroundColor: '#201F3F',
+    width: '115%',
+    height: 76,
+  },
+  legal: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    marginTop: 6,
+    paddingRight: 19,
     marginLeft: -20,
     backgroundColor: '#201F3F',
     width: '115%',

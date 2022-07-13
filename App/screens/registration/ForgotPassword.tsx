@@ -38,7 +38,6 @@ export const ForgotPassword = () => {
 
   useEffect(() => {
     navigation.setParams({
-      hide: true,
       rightEl: true,
     });
   }, []);
