@@ -164,7 +164,7 @@ export const ChangePassword = ({route}) => {
         <InputUnit
           title={'Old Password'}
           nameOfBox={'input'}
-          placeholder={'Old password'}
+          placeholder={'Old Password'}
           nameField={'************'}
           security={true}
           value={passwordOld}
@@ -192,9 +192,9 @@ export const ChangePassword = ({route}) => {
       />
 
       <InputUnit
-        title={'Confirtm New Password'}
+        title={'Confirm New Password'}
         nameOfBox={'input'}
-        placeholder={'Confirtm New Password'}
+        placeholder={'Confirm New Password'}
         nameField={'************'}
         security={true}
         value={passwordConf}

@@ -43,7 +43,6 @@ const customTabBarStyle = {
   // inactiveTintColor: 'gray',
   style: {backgroundColor: '#000'},
 };
-// const navigationOptionAccount = () => ({
 
 //   // headerShown: true,
   // tabBarColor: '#ddd',
@@ -80,11 +79,13 @@ const forgotPasswordOptions = navigation => ({
   },
 });
 export const navigationOptions = navigation => ({
-  title: navigation.route?.params?.title
-    ? navigation.route?.params.title
-    : 'App',
+  title: navigation.route?.params?.title ? navigation.route?.params.title : 'App',
   headerShown: true,
-  headerTintColor: '#fff',
+  headerTintColor: '#2371AB', 
+  headerTitleStyle: {
+    fontFamily: 'AntagometricaBT-Bold',
+    fontSize: 20
+  },
   headerStyle: {
     backgroundColor: '#2A305A',
   },
@@ -98,7 +99,7 @@ export const navigationOptions = navigation => ({
     return (
       !params?.hide && (
         <TouchableOpacity onPress={() => navigation.navigation.goBack()}>
-          <Image style={{width: 17, height: 17}} source={backButton} />
+          <Image style={{width: 12, height: 17}} source={backButton} />
         </TouchableOpacity>
       )
     );
@@ -277,7 +278,7 @@ const AppStackRoutes = () => {
       <Stack.Screen
         name="forgotPassword"
         component={ForgotPassword}
-        options={forgotPasswordOptions}
+        options={navigationOptions}
       />
       <Stack.Screen
         name="ForgotPassword2"

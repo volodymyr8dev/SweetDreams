@@ -55,6 +55,7 @@ export const Step3 = () => {
       textStyle: {
         textDecorationLine: 'none',
         color: '#2371AB',
+        fontSize: 19,
         fontFamily: 'AntagometricaBT-Regular',
       },
       checkIconImageSource: checkButton,
@@ -76,6 +77,7 @@ export const Step3 = () => {
       textStyle: {
         textDecorationLine: 'none',
         color: '#2371AB',
+        fontSize: 19,
         fontFamily: 'AntagometricaBT-Regular',
       },
       checkIconImageSource: checkButton,
