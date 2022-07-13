@@ -43,48 +43,15 @@ const customTabBarStyle = {
   inactiveTintColor: 'gray',
   style: {backgroundColor: '#000'},
 };
-// const navigationOptionAccount = () => ({
 
-//   // headerShown: true,
-//   tabBarColor: '#ddd',
-//   tabBarLabel: '',
-//   headerTintColor: '#000',
-//   style: {
-//     backgroundColor: '#000',
-//   },
-//   tabBarOptions: {customTabBarStyle},
-// });
-const forgotPasswordOptions = navigation => ({
-  title: navigation.route?.params.title,
-  headerShown: true,
-  headerTintColor: '#fff',
-  headerStyle: {
-    backgroundColor: '#2A305A',
-  },
-  headerRight: () => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          navigation.route?.params.sendCode();
-        }}>
-        <Text
-          style={{
-            color: '#fff',
-            fontSize: 19,
-            fontFamily: 'AntagometricaBT-Regular',
-          }}>
-          send
-        </Text>
-      </TouchableOpacity>
-    );
-  },
-});
 export const navigationOptions = navigation => ({
-  title: navigation.route?.params?.title
-    ? navigation.route?.params.title
-    : 'App',
+  title: navigation.route?.params?.title ? navigation.route?.params.title : 'App',
   headerShown: true,
-  headerTintColor: '#2371AB',
+  headerTintColor: '#2371AB', 
+  headerTitleStyle: {
+    fontFamily: 'AntagometricaBT-Bold',
+    fontSize: 20
+  },
   headerStyle: {
     backgroundColor: '#2A305A',
   },
@@ -276,7 +243,7 @@ const AppStackRoutes = () => {
       <Stack.Screen
         name="forgotPassword"
         component={ForgotPassword}
-        options={forgotPasswordOptions}
+        options={navigationOptions}
       />
       <Stack.Screen
         name="ForgotPassword2"

@@ -36,7 +36,7 @@ export const Step5 = () => {
               fontSize: 27,
               fontFamily: 'AntagometricaBTLight-Regular',
             }}>
-            Mistly the Cloud
+            Misty the Cloud
             <Text
               style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>
               {' '}
@@ -46,7 +46,7 @@ export const Step5 = () => {
         </View>
         <View>
           <Text style={{color: '#25558C', fontSize: 18, textAlign: 'center', fontFamily: 'AntagometricaBT-Regular'}}>
-            Now let`s get your device paired so you can start collecting sleep
+            Now let's get your device paired so you can start collecting sleep
             data{' '}
           </Text>
         </View>

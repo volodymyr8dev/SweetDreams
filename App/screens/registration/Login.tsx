@@ -150,5 +150,7 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     color: '#CE9B51',
+    fontFamily: 'AntagometricaBTLight-Regular',
+    paddingLeft: 10,
   },
 });

@@ -51,6 +51,7 @@ export const CreateNewAccount = () => {
       textStyle: {
         textDecorationLine: 'none',
         color: '#2371AB',
+        fontSize: 19,
         fontFamily: 'AntagometricaBT-Regular',
       },
       checkIconImageSource: checkButton,
@@ -72,6 +73,8 @@ export const CreateNewAccount = () => {
       fillColor: 'transparent',
       unfillColor: 'transparent',
       textStyle: {
+        color: '#2371AB',
+        fontSize: 19,
         textDecorationLine: 'none',
         color: '#2371AB',
         fontFamily: 'AntagometricaBT-Regular',
@@ -215,13 +218,7 @@ export const CreateNewAccount = () => {
               />
               <View>
                 <View>
-                  <Text
-                    style={{
-                      color: COLORS.textLight,
-                      fontFamily: 'AntagometricaBT-Regular',
-                    }}>
-                    Accept Terms
-                  </Text>
+                  <Text style={{fontSize: 19, color: COLORS.textLight, fontFamily: 'AntagometricaBT-Bold', marginBottom: 10}}>Accept Terms</Text>
                 </View>
                 <View style={{marginBottom: 9}}>
                   <Text
@@ -280,6 +277,7 @@ export const CreateNewAccount = () => {
                       fontSize: 19,
                       color: '#2371AB',
                       fontFamily: 'AntagometricaBT-Regular',
+                      marginTop: 10,
                     }}>
                     <Text style={{color: 'red'}}>*</Text>
                     Terms & Conditions
@@ -308,6 +306,7 @@ export const CreateNewAccount = () => {
                       fontSize: 19,
                       color: '#2371AB',
                       fontFamily: 'AntagometricaBT-Regular',
+                      marginTop: 10
                     }}>
                     <Text style={{color: 'red'}}>*</Text>Privacy Policy
                   </Text>
@@ -356,6 +355,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 6,
     paddingHorizontal: 19,
+    marginLeft: -20,
+    backgroundColor: '#201F3F',
+    width: '115%',
+    height: 76,
+  },
+  legal: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    marginTop: 6,
+    paddingRight: 19,
     marginLeft: -20,
     backgroundColor: '#201F3F',
     width: '115%',
