@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  ImageBackground,
 } from 'react-native';
 import {
   getProfile,
@@ -20,7 +21,7 @@ import {AlertComp} from '../../../components/Alert/AlertComp';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUserInformation} from '../../../redux/slice/slice';
 import checkButton from '../../../assets/images/checkButton.png';
-
+import back from '../../../assets/backOrigin.png';
 import moment from 'moment';
 import {DatePickerComponent} from '../../../components/DatePicker/DatePicker';
 import {RootState} from '../../../redux/configureStore';
@@ -204,7 +205,7 @@ export const Settings = () => {
     );
   };
   return (
-    <>
+    <ImageBackground source={back} style={{backgroundColor:COLORS.backGround}}>
       <View style={styles.container}>
         <ScrollView style={{paddingTop: 10}}>
           <View style={{paddingHorizontal: 20}}>
@@ -372,14 +373,14 @@ export const Settings = () => {
         </ScrollView>
       </View>
       {global?.loader && <Loader text={'Please wait for Verification'} />}
-    </>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
-    backgroundColor: '#221B36',
+    // backgroundColor: '#221B36',
     height: '100%',
   },
   headerContainer: {
