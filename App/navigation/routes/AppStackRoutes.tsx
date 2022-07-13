@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Login} from '../../screens/registration/Login';
@@ -40,13 +40,13 @@ export type registerScreenProp = StackNavigationProp<RootStackParamList>;
 
 const customTabBarStyle = {
   activeTintColor: '#0091EA',
-  inactiveTintColor: 'gray',
+  // inactiveTintColor: 'gray',
   style: {backgroundColor: '#000'},
 };
 // const navigationOptionAccount = () => ({
 
 //   // headerShown: true,
-//   tabBarColor: '#ddd',
+  // tabBarColor: '#ddd',
 //   tabBarLabel: '',
 //   headerTintColor: '#000',
 //   style: {
@@ -204,12 +204,13 @@ const AppStackRoutes = () => {
     console.log('valueeee', value);
     navigation.navigate('account');
   };
-  // useEffect(() => {
-  //   getToken();
-  // }, []);
-  // if (token) {
-  //   navigation.navigate('account');
-  // }
+  
+  useEffect(() => {
+    getToken();
+  }, []);
+  if (token) {
+    navigation.navigate('account');
+  }
   return (
     <Stack.Navigator
       initialRouteName={token ? 'account' : 'Login'}
@@ -291,7 +292,7 @@ const AppStackRoutes = () => {
       <Stack.Screen
         name="account"
         component={MyTabs}
-        options={{headerShown: false}}
+        options={{headerShown: false,contentStyle:{backgroundColor: '#000'}}}
       />
       {SettingsRoutes()}
       {SettingsAccountStackRoutes()}

@@ -22,7 +22,6 @@ interface PropsBox {
   setValueName?: Function;
   date?: boolean;
 }
-const exec = 'Privacy Policy' && 'Terms Conditions';
 export const InputUnit = ({
   nameOfBox,
   title,
@@ -39,7 +38,8 @@ export const InputUnit = ({
     console.log('titleName', titleName);
     navigation.navigate(titleName, {
       title: titleName,
-      rightEl: titleName == exec ? false : true,
+      rightEl:
+        titleName === 'Terms Conditions' || 'Privacy Policy' ? false : true,
       hideOld: titleName == 'Change Password' ? true : false,
     });
   };
@@ -66,7 +66,7 @@ export const InputUnit = ({
         </View>
         {!rightEl ? (
           <View>
-            <Image style={{height: 15, width: 15}} source={arrowRight} />
+            <Image style={{height: 14.19, width: 9.26}} source={arrowRight} />
           </View>
         ) : (
           <Text style={{color: '#fff', fontSize: 17}}>{rightEl}</Text>
@@ -132,10 +132,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: COLORS.backGround,
     width: '100%',
-    marginBottom: 7,
+    marginBottom: 8.3,
   },
   input: {
-    marginBottom: 7,
+    marginBottom: 8.3,
     height: 76,
     // width: '100%',
     borderRadius: 0,

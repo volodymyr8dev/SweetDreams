@@ -32,20 +32,31 @@ const iconGr = (focused, iconActive, icon, size = 30) => {
     </View>
   );
 };
-                                               
+
 const navigationOptions = navigation => ({
   title: 'profile / preferences',
   headerShown: true,
-  headerTintColor: COLORS.text,
+  headerTintColor: '#2371AB',
   headerStyle: {
     backgroundColor: '#2A305A',
+    shadowColor: 'transparent', // this covers iOS
+    elevation: 0,
+    // borderBottomWidth:2,
+    // borderBottomColor: COLORS.backGround
+  },
+  headerTitleStyle: {
+    fontFamily: 'AntagometricaBT-Bold',
+    fontSize: 19,
+  },
+  tabBarStyle: {
+    elevation: 0,
   },
   headerLeft: () => {
     return (
       <TouchableOpacity
-        style={{paddingLeft: 15}}
+        style={{paddingLeft: 15.44}}
         onPress={() => navigation.navigation.goBack()}>
-        <Image style={{width: 17, height: 17}} source={backButton} />
+        <Image style={{width: 12.29, height: 18.84}} source={backButton} />
       </TouchableOpacity>
     );
   },
@@ -57,35 +68,44 @@ const navigationOptions = navigation => ({
         onPress={() => {
           params.test();
         }}
-        style={{paddingRight: 10}}>
-        <Text style={{color: '#fff', fontSize: 19}}>save</Text>
+        style={{paddingRight: 17.45}}>
+        <Text
+          style={{
+            color: '#fff',
+            fontSize: 19,
+            fontFamily: 'AntagometricaBT-Regular',
+          }}>
+          save
+        </Text>
       </TouchableOpacity>
     );
   },
   // headerShown: false,
   tabBarLabel: '',
   tabBarStyle: {
-    backgroundColor: '#707070',
+    backgroundColor: 'rgba(52, 52, 90, 0.97)',
   },
   tabBarIcon: ({color}) => <Image source={personIcon} />,
 });
-                                                   
+
 const Tab = createBottomTabNavigator();
 // const TabNav = createTabNavigator()
 
 const customTabBarStyle = {
-  activeTintColor: '#707070',
-  inactiveTintColor: 'gray',
+  borderBottomWidth: 0,
+  // activeTintColor: '#707070',
+  // inactiveTintColor: 'gray',
   tabStyle: {
     paddingTop: 25,
   },
+
   labelStyle: {},
 
-  style: {backgroundColor: '#707070'},
+  // style: {backgroundColor: '#707070'},
 };
 export const MyTabs = () => {
   return (
-    <Tab.Navigator activeColor="#707070" tabBarOptions={customTabBarStyle}>
+    <Tab.Navigator tabBarOptions={customTabBarStyle}>
       <Tab.Screen
         name="graphics"
         component={Graphics}
@@ -106,7 +126,7 @@ export const MyTabs = () => {
           headerShown: false,
           tabBarLabel: '',
           tabBarStyle: {
-            backgroundColor: '#707070',
+            backgroundColor: 'rgba(52, 52, 90, 0.97)',
           },
           tabBarIcon: ({color, focused}) =>
             iconGr(focused, documentActive, document),
@@ -119,7 +139,7 @@ export const MyTabs = () => {
           headerShown: false,
           tabBarLabel: '',
           tabBarStyle: {
-            backgroundColor: '#707070',
+            backgroundColor: 'rgba(52, 52, 90, 0.97)',
           },
           tabBarIcon: ({color, focused}) =>
             iconGr(focused, childActive, childUnActive, 45),
@@ -132,7 +152,7 @@ export const MyTabs = () => {
           headerShown: false,
           tabBarLabel: '',
           tabBarStyle: {
-            backgroundColor: '#707070',
+            backgroundColor: 'rgba(52, 52, 90, 0.97)',
           },
           tabBarIcon: ({color, focused}) => iconGr(focused, niple, niple),
         }}
@@ -145,4 +165,3 @@ export const MyTabs = () => {
     </Tab.Navigator>
   );
 };
-                

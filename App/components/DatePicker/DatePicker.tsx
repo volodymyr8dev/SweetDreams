@@ -11,7 +11,7 @@ export const DatePickerComponent = ({changeDate, value}) => {
     <>
       <TouchableOpacity
         onPress={() => {
-          setVisibleData(true);
+          setVisibleData(true);a
           setOpen(true);
         }}>
         <View style={styles.citizen}>
@@ -22,13 +22,13 @@ export const DatePickerComponent = ({changeDate, value}) => {
                 color: '#2371AB',
               }}>
               {/* {visibleData ? 'Your Date of Birth' : 'Your Date of Birth'} */}
-              Your Date of Birth
+              Baby’s Date of Birth
             </Text>
           </View>
           <Text style={{color: '#fff', fontSize: 17}}>{value}</Text>
         </View>
       </TouchableOpacity>
-      <View style={{marginBottom: 10}}></View>
+      <View style={{marginBottom: 8.3}}></View>
       <DatePicker
         maximumDate={new Date()}
         mode="date"

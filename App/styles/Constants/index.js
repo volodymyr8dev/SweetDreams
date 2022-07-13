@@ -1,5 +1,5 @@
 export const COLORS = {
-  backGround: '#1A172D',
+  backGround: 'rgba(26, 23, 45, .75)',
   text: '#2371AB',
   textLight: '#2371AB',
 };
