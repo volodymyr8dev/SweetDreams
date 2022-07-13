@@ -27,49 +27,57 @@ import {COLORS} from '../../styles/Constants';
 import {RegistrationUser} from '../../api/CreateAccount/CreateAccount';
 import {updateVerifiedEmail} from '../../redux/slice/slice';
 import {RootState} from '../../redux/configureStore';
+import checkButton from '../../assets/images/checkButton.png';
 
 type Nav = {
+  setParams(arg0: {terms: any});
 };
 
 export const CreateNewAccount = () => {
   const verticalStaticData = [
     {
       id: 0,
-      text: 'Yes',
+      text: 'yes',
 
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
-        height: 32,
-        width: 32,
+        height: 44,
+        width: 44,
         borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
       textStyle: {
         textDecorationLine: 'none',
+        color: '#2371AB',
         fontFamily: 'AntagometricaBT-Regular',
       },
+      checkIconImageSource: checkButton,
+      iconImageStyle: {height: 17.2, width: 20.36},
     },
     {
       id: 1,
-      text: 'No',
+      text: 'no',
       style: {
         marginLeft: 20,
       },
       iconStyle: {
         borderColor: '#CCC',
         borderWidth: 3,
-        height: 32,
-        width: 32,
+        height: 44,
+        width: 44,
         borderRadius: 50,
       },
       fillColor: 'transparent',
       unfillColor: 'transparent',
       textStyle: {
         textDecorationLine: 'none',
+        color: '#2371AB',
         fontFamily: 'AntagometricaBT-Regular',
       },
+      checkIconImageSource: checkButton,
+      iconImageStyle: {height: 17.2, width: 20.36},
     },
   ];
   const dispatch = useDispatch();
@@ -166,7 +174,12 @@ export const CreateNewAccount = () => {
             />
             <View style={{marginTop: 20}}>
               <View style={{marginBottom: 7}}>
-                <Text style={{fontSize: 19, color: COLORS.textLight, fontFamily: 'AntagometricaBT-Bold'}}>
+                <Text
+                  style={{
+                    fontSize: 19,
+                    color: COLORS.textLight,
+                    fontFamily: 'AntagometricaBT-Bold',
+                  }}>
                   Create a Sweet Dreamers Account
                 </Text>
               </View>
@@ -176,9 +189,9 @@ export const CreateNewAccount = () => {
                     fontSize: 16,
                     marginBottom: 15,
                     color: COLORS.textLight,
-                    fontFamily: 'AntagometricaBT-Regular'
+                    fontFamily: 'AntagometricaBT-Regular',
                   }}>
-                  A sweetDreamers account is necessary for using the App
+                  A SweetDreamers account is necessary for using the App
                   services.Fill out the boxes below and select the 'done' button
                   when you're finished
                 </Text>
@@ -190,7 +203,7 @@ export const CreateNewAccount = () => {
                   setEmail(name);
                 }}
                 styling={styles.input}
-                text={'Your email address'}
+                text={'Your email Address'}
               />
 
               <CustomInput
@@ -202,17 +215,27 @@ export const CreateNewAccount = () => {
               />
               <View>
                 <View>
-                  <Text style={{color: COLORS.textLight, fontFamily: 'AntagometricaBT-Regular'}}>Accept Terms</Text>
+                  <Text
+                    style={{
+                      color: COLORS.textLight,
+                      fontFamily: 'AntagometricaBT-Regular',
+                    }}>
+                    Accept Terms
+                  </Text>
                 </View>
                 <View style={{marginBottom: 9}}>
-                  <Text style={{color: COLORS.textLight, fontFamily: 'AntagometricaBT-Regular'}}>
+                  <Text
+                    style={{
+                      color: COLORS.textLight,
+                      fontFamily: 'AntagometricaBT-Regular',
+                    }}>
                     To use the SweetDreamers service you need to agree to the
                     terms and conditions by selecting the checkbox.You can see
                     the terms and conditions by selecting the checkbox. You can
                     see the terms and conditions by selecting the show button.
                     {'\n'}EU (European Union) are applicable to General Data
                     Protection Regulation(GDPR){'\n'}
-                    (*)is required agreement
+                    (<Text style={{color: 'red'}}>*</Text>)is required agreement
                   </Text>
                 </View>
               </View>
@@ -246,7 +269,7 @@ export const CreateNewAccount = () => {
                 </View>
               </View>
               <View style={styles.citizen}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <CheckBox
                     value={terms}
                     setValue={value => setTerms(value)}
@@ -274,7 +297,7 @@ export const CreateNewAccount = () => {
                 </TouchableOpacity>
               </View>
               <View style={styles.citizen}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <CheckBox
                     value={privacy}
                     setValue={value => setPrivacy(value)}
@@ -286,7 +309,7 @@ export const CreateNewAccount = () => {
                       color: '#2371AB',
                       fontFamily: 'AntagometricaBT-Regular',
                     }}>
-                    <Text style={{color: 'red'}}>*</Text> Privacy Policy
+                    <Text style={{color: 'red'}}>*</Text>Privacy Policy
                   </Text>
                 </View>
                 <TouchableOpacity onPress={handleShowPrivacy}>

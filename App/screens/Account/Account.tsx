@@ -216,7 +216,7 @@ export const Account = () => {
       index: 0,
     });
     console.log(activeType);
-
+              
     const switchLeft = () => {
       if (activeType.index === 0) {
         setActiveType({
@@ -243,7 +243,7 @@ export const Account = () => {
           index: activeType.index + 1,
         });
       }
-    };
+    };               
     return (
       <View style={[styles.modalContainer, {}]}>
         <TouchableOpacity style={{flexDirection: 'row'}}>
@@ -276,7 +276,7 @@ export const Account = () => {
         </TouchableOpacity>
       </View>
     );
-  };
+  };                        
   const Content = () => (
     <>
       <TouchableOpacity
@@ -289,7 +289,7 @@ export const Account = () => {
         <ShopCarousel />
       </View>
     </>
-  );
+  );   
   return (
     <ImageBackground
       style={{backgroundColor: COLORS.backGround}}
@@ -305,7 +305,7 @@ export const Account = () => {
     </ImageBackground>
   );
 };
-
+     
 const styles = StyleSheet.create({
   container: {
     paddingTop: 60,

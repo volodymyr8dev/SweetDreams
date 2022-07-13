@@ -28,7 +28,7 @@ import {useSelector} from 'react-redux';
 import {COLORS} from '../../styles/Constants';
 const {width: windowWidth} = Dimensions.get('window');
 import ScrollViewIndicator from 'react-native-scroll-indicator';
-
+                                                                                                                                                                                                                                                                   
 const INITIAL_INDEX = 0;
 export default function ImageCarousel(props) {
   const [data, setData] = useState([
@@ -49,7 +49,7 @@ export default function ImageCarousel(props) {
       title: 'light show',
       content: 'Thermometer',
       items: [
-        {
+        { 
           img: tempGreen,
           text: 'something',
           active: false,
@@ -79,7 +79,7 @@ export default function ImageCarousel(props) {
       ],
     },
   ]);
-
+                                                                                                                 
   const {power} = useSelector(({power}) => power);
   const carouselRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
@@ -89,7 +89,7 @@ export default function ImageCarousel(props) {
   function handleCarouselScrollEnd(item, index) {
     setCurrentIndex(index);
   }
-
+                                              
   function renderItem({item, index}) {
     const {backUri, uri, title, content, items} = item;
     const handleActiveItem = (item, indexChild) => {
@@ -179,7 +179,7 @@ export default function ImageCarousel(props) {
       </TouchableOpacity>
     );
   }
-
+                                   
   return (
     <View style={styles.container}>
       <Carousel

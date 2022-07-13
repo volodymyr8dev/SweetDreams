@@ -19,22 +19,26 @@ export const Gender = ({setValue, type, initialId}) => {
         width: 44,
         borderRadius: 50,
       },
+      style: {
+        marginLeft: 25,
+      },
       fillColor: 'transparent',
       unfillColor: 'transparent',
       textStyle: {
-        textDecorationLine: 'none',  
+        textDecorationLine: 'none',
         color: COLORS.text,
         fontFamily: 'AntagometricaBT-Regular',
+        fontSize: 19,
       },
       checkIconImageSource: checkButton,
-      iconImageStyle:{height: 17.2,width: 20.36},
+      iconImageStyle: {height: 17.2, width: 20.36},
     },
     {
       id: 1,
       text: type !== 'child' ? 'female' : 'girl',
 
       style: {
-        marginLeft: 20,
+        marginLeft: 25,
       },
       iconStyle: {
         borderColor: '#CCC',
@@ -49,12 +53,13 @@ export const Gender = ({setValue, type, initialId}) => {
         textDecorationLine: 'none',
         color: COLORS.text,
         fontFamily: 'AntagometricaBT-Regular',
+        fontSize: 19,
       },
       checkIconImageSource: checkButton,
-      iconImageStyle:{height: 17.2,width: 20.36},
+      iconImageStyle: {height: 17.2, width: 20.36},
     },
   ];
-                                                                                                                 
+
   return (
     <View>
       <View style={styles.citizen}>
@@ -89,7 +94,7 @@ export const Gender = ({setValue, type, initialId}) => {
     </View>
   );
 };
-                                                     
+
 const styles = StyleSheet.create({
   container: {
     paddingTop: 10,

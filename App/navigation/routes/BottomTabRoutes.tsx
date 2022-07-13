@@ -32,7 +32,7 @@ const iconGr = (focused, iconActive, icon, size = 30) => {
     </View>
   );
 };
-
+                                               
 const navigationOptions = navigation => ({
   title: 'profile / preferences',
   headerShown: true,
@@ -45,7 +45,7 @@ const navigationOptions = navigation => ({
       <TouchableOpacity
         style={{paddingLeft: 15}}
         onPress={() => navigation.navigation.goBack()}>
-        <Image style={{width: 17, height: 17}} source={backButton} />
+        <Image style={{width: 12.3, height: 18.86}} source={backButton} />
       </TouchableOpacity>
     );
   },
@@ -69,7 +69,7 @@ const navigationOptions = navigation => ({
   },
   tabBarIcon: ({color}) => <Image source={personIcon} />,
 });
-
+                                                   
 const Tab = createBottomTabNavigator();
 // const TabNav = createTabNavigator()
 
@@ -145,3 +145,4 @@ export const MyTabs = () => {
     </Tab.Navigator>
   );
 };
+                
