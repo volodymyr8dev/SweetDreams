@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Login} from '../../screens/registration/Login';
@@ -40,10 +40,44 @@ export type registerScreenProp = StackNavigationProp<RootStackParamList>;
 
 const customTabBarStyle = {
   activeTintColor: '#0091EA',
-  inactiveTintColor: 'gray',
+  // inactiveTintColor: 'gray',
   style: {backgroundColor: '#000'},
 };
 
+//   // headerShown: true,
+  // tabBarColor: '#ddd',
+//   tabBarLabel: '',
+//   headerTintColor: '#000',
+//   style: {
+//     backgroundColor: '#000',
+//   },
+//   tabBarOptions: {customTabBarStyle},
+// });
+const forgotPasswordOptions = navigation => ({
+  title: navigation.route?.params.title,
+  headerShown: true,
+  headerTintColor: '#fff',
+  headerStyle: {
+    backgroundColor: '#2A305A',
+  },
+  headerRight: () => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          navigation.route?.params.sendCode();
+        }}>
+        <Text
+          style={{
+            color: '#fff',
+            fontSize: 19,
+            fontFamily: 'AntagometricaBT-Regular',
+          }}>
+          send
+        </Text>
+      </TouchableOpacity>
+    );
+  },
+});
 export const navigationOptions = navigation => ({
   title: navigation.route?.params?.title ? navigation.route?.params.title : 'App',
   headerShown: true,
@@ -171,12 +205,13 @@ const AppStackRoutes = () => {
     console.log('valueeee', value);
     navigation.navigate('account');
   };
-  // useEffect(() => {
-  //   getToken();
-  // }, []);
-  // if (token) {
-  //   navigation.navigate('account');
-  // }
+  
+  useEffect(() => {
+    getToken();
+  }, []);
+  if (token) {
+    navigation.navigate('account');
+  }
   return (
     <Stack.Navigator
       initialRouteName={token ? 'account' : 'Login'}
@@ -258,7 +293,7 @@ const AppStackRoutes = () => {
       <Stack.Screen
         name="account"
         component={MyTabs}
-        options={{headerShown: false}}
+        options={{headerShown: false,contentStyle:{backgroundColor: '#000'}}}
       />
       {SettingsRoutes()}
       {SettingsAccountStackRoutes()}

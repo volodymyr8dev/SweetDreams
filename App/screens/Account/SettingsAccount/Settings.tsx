@@ -205,7 +205,7 @@ export const Settings = () => {
     );
   };
   return (
-    <ImageBackground source={back} style={{backgroundColor:COLORS.backGround}}>
+    <ImageBackground source={back} style={{backgroundColor: COLORS.backGround}}>
       <View style={styles.container}>
         <ScrollView style={{paddingTop: 10}}>
           <View style={{paddingHorizontal: 20}}>
@@ -268,6 +268,7 @@ export const Settings = () => {
           />
           <InputUnit title={'Change Password'} nameOfBox={'touch'} />
           <DatePickerComponent
+            type="parent"
             value={valueDate}
             changeDate={date => {
               setValueDate(moment(date).format('YYYY-MM-DD'));
@@ -311,6 +312,7 @@ export const Settings = () => {
             placeholder={'Your Name'}
           />
           <DatePickerComponent
+            type="child"
             value={valueDateChild}
             changeDate={date => {
               setValueDateChild(moment(date).format('YYYY-MM-DD'));

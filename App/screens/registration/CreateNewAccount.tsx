@@ -306,7 +306,7 @@ export const CreateNewAccount = () => {
                       fontSize: 19,
                       color: '#2371AB',
                       fontFamily: 'AntagometricaBT-Regular',
-                      marginTop: 10
+                      marginTop: 10,
                     }}>
                     <Text style={{color: 'red'}}>*</Text>Privacy Policy
                   </Text>

@@ -24,7 +24,7 @@ const customTabBarStyle = {
 };
 const navigationOptionAccount = () => ({
   // headerShown: true,
-  tabBarColor: '#ddd',
+  // tabBarColor: '#ddd',
   tabBarLabel: '',
   headerTintColor: '#000',
   style: {
