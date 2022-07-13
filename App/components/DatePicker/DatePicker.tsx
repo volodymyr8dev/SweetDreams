@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native';
 import {COLORS} from '../../styles/Constants';
 import DatePicker from 'react-native-date-picker';
-export const DatePickerComponent = ({changeDate, value}) => {
+export const DatePickerComponent = ({changeDate, value, type}) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [visibleData, setVisibleData] = useState(false);
@@ -11,7 +11,8 @@ export const DatePickerComponent = ({changeDate, value}) => {
     <>
       <TouchableOpacity
         onPress={() => {
-          setVisibleData(true);a
+          setVisibleData(true);
+          a;
           setOpen(true);
         }}>
         <View style={styles.citizen}>
@@ -19,10 +20,11 @@ export const DatePickerComponent = ({changeDate, value}) => {
             <Text
               style={{
                 fontSize: 19,
+                fontFamily: 'AntagometricaBT-Regular',
                 color: '#2371AB',
               }}>
               {/* {visibleData ? 'Your Date of Birth' : 'Your Date of Birth'} */}
-              Baby’s Date of Birth
+              {type == 'parent' ? 'Your Date of Birth' : 'Baby\'s Date of Birth'}
             </Text>
           </View>
           <Text style={{color: '#fff', fontSize: 17}}>{value}</Text>
@@ -51,7 +53,6 @@ export const DatePickerComponent = ({changeDate, value}) => {
 };
 
 const styles = StyleSheet.create({
-
   citizen: {
     alignItems: 'center',
     justifyContent: 'space-between',
