@@ -2,6 +2,7 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {CustomButton} from '../../components/CustomButton/CustomButton';
+import Cloud from "../../assets/images/cloud";
 
 export const Connection = () => {
   const navigation = useNavigation();
@@ -22,6 +23,9 @@ export const Connection = () => {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
+        <View style={{marginBottom: 5}}>
+          <Image source={require('../../assets/images/Cloud.png')} style={{width: 35, height: 22}}/>
+        </View>
         <View style={{marginBottom: 10}}>
           <Text style={{color: '#FFFFFF',fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>your misty device </Text>
         </View>
@@ -55,14 +59,16 @@ const styles = StyleSheet.create({
     paddingLeft: 19,
     paddingRight: 29,
     height: '100%',
-    backgroundColor: '#272A57',
+    // backgroundColor: '#272A57',
+    backgroundColor: '#262450',
   },
   card: {
     backgroundColor: '#36365D',
+    // backgroundColor: '#383967',
     borderRadius: 13,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 206,
+    height: 230,
   },
   button: {
     width: 200,
