@@ -32,7 +32,7 @@ const iconGr = (focused, iconActive, icon, size = 30) => {
     </View>
   );
 };
-                                               
+
 const navigationOptions = navigation => ({
   title: 'profile / preferences',
   headerShown: true,
@@ -69,7 +69,7 @@ const navigationOptions = navigation => ({
   },
   tabBarIcon: ({color}) => <Image source={personIcon} />,
 });
-                                                   
+
 const Tab = createBottomTabNavigator();
 // const TabNav = createTabNavigator()
 
@@ -145,4 +145,3 @@ export const MyTabs = () => {
     </Tab.Navigator>
   );
 };
-                
