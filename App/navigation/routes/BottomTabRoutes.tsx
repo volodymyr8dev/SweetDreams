@@ -18,6 +18,8 @@ import {Document} from '../../screens/Account/Document';
 import {Location} from '../../screens/Account/Location';
 import {COLORS} from '../../styles/Constants';
 import backButton from '../../assets/images/backButton.png';
+import plus from '../../assets/images/documents/plus.png';
+import search from '../../assets/images/documents/search.png';
 
 const iconGr = (focused, iconActive, icon, size = 30) => {
   return (
@@ -123,8 +125,33 @@ export const MyTabs = () => {
         name="document"
         component={Document}
         options={{
-          headerShown: false,
+          headerTitle: "baby's diary",
+          headerRight: () => {
+            return (
+              <View style={{marginRight: 18.58, flexDirection: 'row'}}>
+                <TouchableOpacity>
+                  <Image
+                    style={{width: 18.58, height: 18.58}}
+                    source={search}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginLeft: 13.76}}>
+                  <Image style={{width: 18.58, height: 18.58}} source={plus} />
+                </TouchableOpacity>
+              </View>
+            );
+          },
           tabBarLabel: '',
+          headerTintColor: '#2371AB',
+          headerStyle: {
+            backgroundColor: '#242247',
+            shadowColor: 'transparent',
+            elevation: 0,
+          },
+
+          headerTitleStyle: {
+            fontSize: 20,
+          },
           tabBarStyle: {
             backgroundColor: 'rgba(52, 52, 90, 0.97)',
           },

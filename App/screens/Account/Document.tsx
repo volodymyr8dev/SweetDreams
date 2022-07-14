@@ -1,179 +1,360 @@
-import React from 'react';
-import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
-import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
-export const Document = () => {
-  return (
-    <SafeAreaView>
-      {/* <CalendarList
-        // Callback which gets executed when visible months change in scroll view. Default = undefined
-        onVisibleMonthsChange={months => {
-          console.log('now these months are visible', months);
-        }}
-        // Max amount of months allowed to scroll to the past. Default = 50
-        pastScrollRange={50}
-        // Max amount of months allowed to scroll to the future. Default = 50
-        futureScrollRange={50}
-        // Enable or disable scrolling of calendar list
-        scrollEnabled={true}
-        // Enable or disable vertical scroll indicator. Default = false
-        showScrollIndicator={true}
-        //   ...calendarParams
-      />
-      <View>
-        <Text>asdasdasd</Text>
-        <Agenda
-          // The list of items that have to be displayed in agenda. If you want to render item as empty date
-          // the value of date key has to be an empty array []. If there exists no value for date key it is
-          // considered that the date in question is not yet loaded
-          items={{
-            '2012-05-22': [{name: 'item 1 - any js object'}],
-            '2012-05-23': [{name: 'item 2 - any js object', height: 80}],
-            '2012-05-24': [],
-            '2012-05-25': [
-              {name: 'item 3 - any js object'},
-              {name: 'any js object'},
-            ],
-          }}
-          // Callback that gets called when items for a certain month should be loaded (month became visible)
-          loadItemsForMonth={month => {
-            console.log('trigger items loading');
-          }}
-          // Callback that fires when the calendar is opened or closed
-          onCalendarToggled={calendarOpened => {
-            console.log(calendarOpened);
-          }}
-          // Callback that gets called on day press
-          onDayPress={day => {
-            console.log('day pressed');
-          }}
-          // Callback that gets called when day changes while scrolling agenda list
-          onDayChange={day => {
-            console.log('day changed');
-          }}
-          // Initially selected day
-          selected={'2012-05-16'}
-          // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-          minDate={'2012-05-10'}
-          // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-          maxDate={'2012-05-30'}
-          // Max amount of months allowed to scroll to the past. Default = 50
-          pastScrollRange={50}
-          // Max amount of months allowed to scroll to the future. Default = 50
-          futureScrollRange={50}
-          // Specify how each item should be rendered in agenda
-          renderItem={(item, firstItemInDay) => {
-            return <View />;
-          }}
-          // Specify how each date should be rendered. day can be undefined if the item is not first in that day
-          renderDay={(day, item) => {
-            return <View />;
-          }}
-          // Specify how empty date content with no items should be rendered
-          renderEmptyDate={() => {
-            return <View />;
-          }}
-          // Specify how agenda knob should look like
-          renderKnob={() => {
-            return <View />;
-          }}
-          // Specify what should be rendered instead of ActivityIndicator
-          renderEmptyData={() => {
-            return <View />;
-          }}
-          // Specify your item comparison function for increased performance
-          rowHasChanged={(r1, r2) => {
-            return r1.text !== r2.text;
-          }}
-          // Hide knob button. Default = false
-          hideKnob={true}
-          // When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false
-          showClosingKnob={false}
-          // By default, agenda dates are marked if they have at least one item, but you can override this if needed
-          markedDates={{
-            '2012-05-16': {selected: true, marked: true},
-            '2012-05-17': {marked: true},
-            '2012-05-18': {disabled: true},
-          }}
-          // If disabledByDefault={true} dates flagged as not disabled will be enabled. Default = false
-          disabledByDefault={true}
-          // If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly
-          onRefresh={() => console.log('refreshing...')}
-          // Set this true while waiting for new data from a refresh
-          refreshing={false}
-          // Add a custom RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView
-          refreshControl={null}
-          // Agenda theme
-          theme={{
-            agendaDayTextColor: 'yellow',
-            agendaDayNumColor: 'green',
-            agendaTodayColor: 'red',
-            agendaKnobColor: 'blue',
-          }}
-          // Agenda container style
-        />
-      </View> */}
-      <CalendarList
-        startDate={'2017-02-01'}
-        monthsCount={12}
-        onDatePress={item => console.log('item', item)}
-        initialNumToRender={1}
-        rowHeight={40}
-        headerHeight={40}
-        style={{backgroundColor: '#000'}}
-      />
-    </SafeAreaView>
-  );
+import React, {useState} from 'react';
+import {Calendar, CalendarList} from 'react-native-calendars';
+// import dateFns from 'date-fns';
+import {
+  format,
+  formatDistance,
+  formatRelative,
+  subDays,
+  subWeeks,
+  addWeeks,
+} from 'date-fns';
+// import {format, formatDistance, formatRelative, subDays} from 'date-fns';
+import {LocaleConfig} from 'react-native-calendars';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  ImageBackground,
+} from 'react-native';
+import moment from 'moment';
+import RNCalendarEvents from 'react-native-calendar-events';
+import DatePicker from 'react-native-date-picker';
+import {COLORS} from '../../styles/Constants';
+import eventDateImg from '../../assets/images/documents/dateEventVertical.png';
+import eventDateimportant from '../../assets/images/documents/dateEventVerticalImportant.png';
+import backImg from '../../assets/images/documents/background.png';
+LocaleConfig.locales['ru'] = {
+  monthNames: [
+    'Январь',
+    'Февраль',
+    'Март',
+    'Апрель',
+    'Май',
+    'Июнь',
+    'Июль',
+    'Август',
+    'Сентябрь',
+    'Октябрь',
+    'Ноябрь',
+    'Декабрь',
+  ],
+  monthNamesShort: [
+    'Янв.',
+    'Фев.',
+    'Март',
+    'Апрель',
+    'Май',
+    'Июнь',
+    'Июль.',
+    'Авг.',
+    'Сент.',
+    'Окт.',
+    'Нояб.',
+    'Дек.',
+  ],
+  dayNames: [
+    'Dimanche',
+    'Lundi',
+    'Mardi',
+    'Mercredi',
+    'Jeudi',
+    'Vendredi',
+    'Samedi',
+  ],
+  dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+  today: "Aujourd'hui",
 };
 
+LocaleConfig.locales.en = LocaleConfig.locales[''];
+// LocaleConfig.defaultLocale = 'fr';
+const formatDate = (date = new Date()) => {
+  console.log('date', date);
+  return moment(date).format('YYYY-MM-DD');
+};
+
+const getMarkedDates = (baseDate, appointments) => {
+  const markedDates = {};
+
+  markedDates[formatDate(baseDate)] = {selected: true};
+
+  appointments.forEach(appointment => {
+    const formattedDate = formatDate(new Date(appointment.date));
+    console.log('formattedDate', formattedDate);
+    markedDates[formattedDate] = {
+      ...markedDates[formattedDate],
+      marked: true,
+      color: '#000',
+      textAlign: 'center',
+      fontSize: 19,
+    };
+  });
+
+  return markedDates;
+};
+
+export const Document = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date(2022, 6, 12));
+
+  // const baseDate = new Date(2019, 6, 15);
+  // console.log('base', baseDate);
+  const APPOINTMENTS = [
+    {
+      date: '2022-07-13T05:00:00.000Z',
+      title: "It's a past thing!",
+    },
+    {
+      date: '2022-07-15T05:00:00.000Z',
+      title: "It's a today thing!",
+    },
+    {
+      date: '2022-07-18T05:00:00.000Z',
+      title: "It's a future thing!",
+    },
+  ];
+  return (
+    <ImageBackground source={backImg} style={styles.container}>
+      <View>
+        <Calendar
+          selected={'2012-05-16'}
+          showScrollIndicator={true}
+          enableSwipeMonths={true}
+          current={formatDate(selectedDate)}
+          // hideExtraDays={true}
+          // minDate={subWeeks(baseDate, 1)}
+          // maxDate={addWeeks(baseDate, 1)}
+          dayNames={[
+            'Sonntag',
+            'Montag',
+            'Dienstag',
+            'Mittwoch',
+            'Donnerstag',
+            'Freitag',
+            'Samstag',
+          ]}
+          onDayPress={day => {
+            setSelectedDate(new Date(day.year, day.month - 1, day.day));
+            console.log('selected day', day);
+          }}
+          markedDates={getMarkedDates(selectedDate, APPOINTMENTS)}
+          theme={{
+            //@ts-ignore
+            'stylesheet.calendar.header': {
+              header: {
+                flexDirection: 'row',
+                marginLeft: -30,
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                color: COLORS.yellow,
+              },
+            },
+            // 'stylesheet.day.single': {
+            //   base: {
+            //     overflow: 'hidden',
+            //     height: 34,
+            //     alignItems: 'center',
+            //     width: 38,
+            //   }
+            // },
+            // 'stylesheet.day.basic': {
+            //   text: {
+            //     // marginBottom: 4,
+            //     color: COLORS.textLight,
+            //     alignText: 'center',
+            //     dispay: 'flex',
+            //     justifyContent: 'center',
+            //     alignItems: 'center',
+            //     marginTop: 14, // specify the margin you want
+            //     paddingLeft: 5,
+            //     // ...otherTextStyles
+            //   },
+            // },
+            'stylesheet.calendar.main': {
+              // monthView: {
+              //   backgroundColor: colors.grey30,
+              // },
+              // week: {
+              //   flexDirection: 'row',
+              //   justifyContent: 'space-around',
+              //   backgroundColor: '#fff',
+              //   // margin: 1,
+
+              //   // borderBottomWidth: 1,
+              //   // borderBottomColor: colors.grey30,
+              // },
+              dayContainer: {
+                // borderColor: '#D1D3D4',
+                // borderWidth: 1,
+                // justifyContent: 'center',
+                // alignItems: 'center',
+                // padding: 10,
+                justifyContent: 'space-between',
+              },
+
+              week: {
+                height: 60,
+                width: '100%',
+                borderBottomWidth: 0.4,
+
+                flexDirection: 'row',
+                borderBottomColor: 'rgba(35, 113, 171, .4)',
+                alignItems: 'flex-start',
+                justifyContent: 'space-around',
+                marginTop: 7,
+              },
+            },
+            textMonthColor: COLORS.yellow,
+            textDayFontFamily: 'AntagometricaBT-Bold',
+            textDayFontSize: 18,
+            arrowStyle: {
+              opacity: 0,
+            },
+            textDayFontWeight: 'bold',
+            textDayStyle: {
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              textAlign: 'center',
+              // backgroundColor: 'green',
+              // color: 'red',
+            },
+            // textDayFontWeight: "bold",
+            selectedStyle: {
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
+
+            dotStyle: {
+              marginTop: 11,
+              width: 5.76,
+              height: 5.76,
+              borderRadius: 50,
+            },
+            todayTextColor: '#CE9B51',
+            calendarBackground: '#1F1933',
+            backgroundColor: '#ffffff',
+            selectedDayBackgroundColor: '#2371AB',
+
+            selectedDayTextColor: '#fff',
+            selectedDotColor: '#fff',
+
+            dayTextColor: COLORS.textLight,
+            textDisabledColor: '#729DAF',
+            dotColor: '#DBE9EE',
+            monthTextColor: '#DBE9EE',
+            textMonthFontWeight: 'bold',
+
+            arrowColor: '#DBE9EE',
+          }}
+        />
+        <View>
+          {APPOINTMENTS.map(item => {
+            return (
+              <View style={styles.eventContainer}>
+                <View style={styles.eventLeftC}>
+                  <View style={styles.eventDate}>
+                    <Text style={{color: COLORS.textLight, fontSize: 10}}>
+                      13:00
+                    </Text>
+                  </View>
+                  <View style={styles.eventDate}>
+                    <Text style={{color: COLORS.textLight, fontSize: 10}}>
+                      13:30
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <Image
+                    style={{width: 0.77, height: 40}}
+                    source={eventDateImg}
+                  />
+                </View>
+                <View
+                  style={{
+                    paddingLeft: 7.67,
+                  }}>
+                  <View>
+                    <Text style={styles.eventText}>{item.title}</Text>
+                  </View>
+                  <Text style={styles.eventSubText}> home</Text>
+                </View>
+              </View>
+            );
+          })}
+        </View>
+      </View>
+    </ImageBackground>
+  );
+};
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 60,
-    // backgroundColor: '#221B36',
-    height: '100%',
-    paddingHorizontal: 20,
+    flex: 1,
+    backgroundColor: '#272854',
+    // marginTop: 50,
+    heaight: '100%',
   },
-  headerContainer: {
+  mainContainer: {
+    display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 15,
+    padding: 10,
   },
-  button: {
-    width: 200,
-    backgroundColor: 'opacity',
-    borderWidth: 1,
-    borderColor: '#2A70AA',
+
+  singleElement: {
+    display: 'flex',
+    flex: 4,
+    flexDirection: 'column',
   },
-  controlContainer: {
-    flexDirection: 'row',
-  },
-  modalContainer: {
-    marginTop: 15,
-    marginBottom: 15,
+
+  textInputContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: 15,
+    backgroundColor: '#fff',
     borderRadius: 15,
+    marginBottom: 1,
+  },
+
+  dateInputContainer: {
+    flex: 1,
     flexDirection: 'row',
-    height: 53,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 15,
+    borderRadius: 15,
+    marginBottom: 1,
+    margin: 2,
+  },
+
+  dateIcon: {
+    padding: 10,
+  },
+  eventContainer: {
+    paddingHorizontal: 35.24,
+    paddingVertical: 10,
+    flexDirection: 'row',
     width: '100%',
-    backgroundColor: '#221B36',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
+    borderBottomWidth: 0.3,
+    borderBottomColor: 'rgba(35, 113, 171, .4)',
   },
-  containerCarousel: {
-    alignItems: 'center',
-    // justifyContent:'center'
-    // marginHorizontal: 20,
+  eventText: {
+    fontSize: 18,
+    color: COLORS.textLight,
+    fontFamily: 'AntagometricaBT-Bold',
   },
-  cardCarousel: {
-    // width: 170,
-    alignItems: 'center',
-    borderRadius: 20,
-    // padding: '11px 12px ',
-    // backgroundColor: '#221B36',
+  eventSubText: {
+    fontSize: 10,
+    color: COLORS.textLight,
+    fontFamily: 'AntagometricaBT-Bold',
   },
-  carousel: {
-    flexGrow: 0,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    height: 280,
+  eventLeftC: {
+    // paddingTop: 11.55,
+    paddingRight: 12,
+    justifyContent: 'center',
   },
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {COLORS} from '../../styles/Constants';
-
+   
 export const Location = () => {
   return (
     <View style={styles.container}>
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   text: {
     color: COLORS.text,
   },
-  blog: {
+  blog: {                          
     paddingHorizontal: 10,
     marginVertical: 5,
     width: '100%',
@@ -33,3 +33,4 @@ const styles = StyleSheet.create({
   border: {backgroundColor: '#292C62', height: 4},
   borderActive: {backgroundColor: '#CE9B51', height: 4},
 });
+                                                             

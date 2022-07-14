@@ -14,9 +14,9 @@ const App = () => {
     <Provider store={store}>
       <MyStack />
     </Provider>
-  );
+  );   
 };
-
+      
 const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,

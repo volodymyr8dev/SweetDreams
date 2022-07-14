@@ -7,12 +7,12 @@ export const DatePickerComponent = ({changeDate, value, type}) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [visibleData, setVisibleData] = useState(false);
+  
   return (
     <>
       <TouchableOpacity
         onPress={() => {
           setVisibleData(true);
-          a;
           setOpen(true);
         }}>
         <View style={styles.citizen}>

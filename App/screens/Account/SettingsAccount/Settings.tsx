@@ -205,7 +205,7 @@ export const Settings = () => {
     );
   };
   return (
-    <ImageBackground source={back} style={{backgroundColor: COLORS.backGround}}>
+    <ImageBackground source={back} style={{backgroundColor: COLORS.back}}>
       <View style={styles.container}>
         <ScrollView style={{paddingTop: 10}}>
           <View style={{paddingHorizontal: 20}}>
