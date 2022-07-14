@@ -34,6 +34,17 @@ import {setConnection, setPower} from '../../redux/slice/PowerSlice';
 import NetInfo, {useNetInfo} from '@react-native-community/netinfo';
 import ConfirmConnection from './ConfirmConnection';
 import connectionStatus from '../../assets/images/homeIcon/connection.png';
+import PowerOn from '../../assets/images/svg/PowerOn';
+import PowerOff from '../../assets/images/svg/PowerOff';
+import Thermometer from '../../assets/images/svg/Thermometer';
+import CryChild from '../../assets/images/svg/CryChild';
+import TopGear from '../../assets/images/svg/TopGear';
+import Sheep from '../../assets/images/svg/Sheep';
+import ArrowRight from '../../assets/images/svg/ArrowRight';
+import ArrowLeft from '../../assets/images/svg/ArrowLeft';
+import Play from '../../assets/images/svg/Play';
+
+
 const {width: windowWidth} = Dimensions.get('window');
 
 const typeOfTemp = [
@@ -93,10 +104,12 @@ export const Account = () => {
         <View style={styles.headerContainer}>
           <View style={{width: 21}}></View>
           <View style={{paddingRight: 10}}>
-            <Image source={sheep} />
+            {/*<Image source={sheep} />*/}
+            <Sheep/>
           </View>
           <TouchableOpacity onPress={openSettings}>
-            <Image source={settings} />
+            {/*<Image source={settings} />*/}
+            <TopGear/>
           </TouchableOpacity>
         </View>
         <View
@@ -119,7 +132,7 @@ export const Account = () => {
                   alignItems: 'center',
                   width: 120,
                 }}>
-                <Image source={thermometr} />
+                <Thermometer/>
                 <Text
                   style={{
                     color: '#fff',
@@ -139,7 +152,8 @@ export const Account = () => {
                   alignItems: 'center',
                   width: 120,
                 }}>
-                <Image source={childControl} />
+                {/*<Image source={childControl} />*/}
+                <CryChild />
                 <View style={{marginLeft: 10}}>
                   <Text
                     style={{
@@ -216,7 +230,7 @@ export const Account = () => {
       index: 0,
     });
     console.log(activeType);
-              
+
     const switchLeft = () => {
       if (activeType.index === 0) {
         setActiveType({
@@ -243,15 +257,17 @@ export const Account = () => {
           index: activeType.index + 1,
         });
       }
-    };               
+    };
     return (
       <View style={[styles.modalContainer, {}]}>
         <TouchableOpacity style={{flexDirection: 'row'}}>
-          <Image style={{width: 16, height: 16}} source={play} />
+          {/*<Image style={{width: 16, height: 16}} source={play} />*/}
+          <Play/>
         </TouchableOpacity>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <TouchableOpacity onPress={switchLeft}>
-            <Image style={{width: 25, height: 25}} source={arrowBack} />
+            {/*<Image style={{width: 25, height: 25}} source={arrowBack} />*/}
+            <ArrowLeft/>
           </TouchableOpacity>
           <View style={{width: 95}}>
             <Text
@@ -268,7 +284,8 @@ export const Account = () => {
             </Text>
           </View>
           <TouchableOpacity onPress={switchRight}>
-            <Image style={{width: 25, height: 25}} source={arrowRight} />
+            {/*<Image style={{width: 25, height: 25}} source={arrowRight} />*/}
+            <ArrowRight/>
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={{flexDirection: 'row'}}>
@@ -276,20 +293,23 @@ export const Account = () => {
         </TouchableOpacity>
       </View>
     );
-  };                        
+  };
   const Content = () => (
     <>
-      <TouchableOpacity
-        onPress={handlePower}
-        style={{alignItems: 'center', marginTop: '40%', paddingRight: 10}}>
-        <Image source={isActive ? power : powerOff} />
-      </TouchableOpacity>
+      <View style={{alignItems: 'center'}}>
+        <TouchableOpacity
+          onPress={handlePower}
+          style={{marginTop: '40%', width: 50}}>
+        {/*<Image source={isActive ? power : powerOff}/>*/}
+        {isActive ? <PowerOn/> : <PowerOff/>}
+        </TouchableOpacity>
+      </View>
       <ControlCard />
       <View style={styles.containerCarousel}>
         <ShopCarousel />
       </View>
     </>
-  );   
+  );
   return (
     <ImageBackground
       style={{backgroundColor: COLORS.backGround}}
@@ -305,7 +325,7 @@ export const Account = () => {
     </ImageBackground>
   );
 };
-     
+
 const styles = StyleSheet.create({
   container: {
     paddingTop: 60,

@@ -29,6 +29,7 @@ import {Gender} from '../../../components/Gender/Gender';
 import {Loader} from '../../../components/Loader/Loader';
 import {UserInformationSelector} from '../../../redux/selectors/AccountSelector';
 import {useIsFocused} from '@react-navigation/native';
+import Schedule from '../../../assets/images/svg/Schedule';
 interface IUser {
   email?: string;
   name?: string;
@@ -239,7 +240,9 @@ export const Settings = () => {
               Caregiver Information
             </Text>
           </View>
+
           <View style={{paddingHorizontal: 20, marginBottom: 10}}>
+
             <Text
               style={{
                 color: COLORS.text,

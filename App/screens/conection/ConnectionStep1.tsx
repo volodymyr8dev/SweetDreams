@@ -79,7 +79,7 @@ export const ConnectionStep1 = () => {
             <Text style={[styles.answer, {marginBottom: 17}]}>
               If she is not flashing purple don’t worry, simply factory reset by
               holding the <Text style={{fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>UP</Text> and{' '}
-              <Text style={{fontWeight: 'bold'}}>DOWN</Text> buttons
+              and <Text style={{fontWeight: 'bold'}}>DOWN</Text> buttons
               simultaneously on the unit for 10 seconds. The lower LEDs will
               blink to signify the start of the factory reset.
             </Text>

@@ -13,7 +13,8 @@ import {
 import Carousel from 'react-native-anchor-carousel';
 import {SimplePaginationDot} from './component';
 import mainTemp from '../../assets/images/controlChild/carosel/mainTemp.png';
-// import {mainTemp_temp} from '../../assets/images/controlChild/carosel/mainTemp_temp.svg';
+import {mainTemp_temp} from '../../assets/images/controlChild/carosel/mainTemp_temp.svg';
+import Bottle from '../../assets/images/svg/Bottle'
 
 import sleapTrainer from '../../assets/images/controlChild/carosel/sleapTrainer.png';
 import sun from '../../assets/images/controlChild/carosel/sun.png';
@@ -26,16 +27,26 @@ import clock from '../../assets/images/controlChild/clock.png';
 import clockShadow from '../../assets/images/controlChild/clockShadow.png';
 import {useSelector} from 'react-redux';
 import {COLORS} from '../../styles/Constants';
-const {width: windowWidth} = Dimensions.get('window');
 import ScrollViewIndicator from 'react-native-scroll-indicator';
-                                                                                                                                                                                                                                                                   
+import ArrowRight from '../../assets/images/svg/ArrowRight';
+import Play from '../../assets/images/svg/Play';
+import TemperatureAccount from '../../assets/images/svg/TemperatureAccount';
+import BackgroundTemperature from '../../assets/images/BackgroundTemperature.png';
+import Sun from '../../assets/images/svg/Sun';
+import Timer from '../../assets/images/svg/Timer';
+import BackgroundTimer2 from '../../assets/images/BackgroundTimer2.png';
+import BackgroundSun from '../../assets/images/BackgroundSun.png'
+
+const {width: windowWidth} = Dimensions.get('window');
+
 const INITIAL_INDEX = 0;
 export default function ImageCarousel(props) {
   const [data, setData] = useState([
     {
-      uri: mainTemp,
+      uri: <TemperatureAccount style={{}}/>,
       title: 'temperature',
       content: 'Thermometer',
+      backUri: BackgroundTemperature,
       items: [
         {
           img: tempGreen,
@@ -45,11 +56,12 @@ export default function ImageCarousel(props) {
       ],
     },
     {
-      uri: sleapTrainer,
+      uri: <Sun style={{}}/>,
       title: 'light show',
+      backUri: BackgroundSun,
       content: 'Thermometer',
       items: [
-        { 
+        {
           img: tempGreen,
           text: 'something',
           active: false,
@@ -67,9 +79,11 @@ export default function ImageCarousel(props) {
       ],
     },
     {
-      uri: sleapTrainer,
+      uri: <Timer style={{}}/>,
       title: 'sleep trainer',
+      backUri: BackgroundTimer2,
       content: 'Thermometer',
+
       items: [
         {
           img: tempGreen,
@@ -79,7 +93,7 @@ export default function ImageCarousel(props) {
       ],
     },
   ]);
-                                                                                                                 
+
   const {power} = useSelector(({power}) => power);
   const carouselRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
@@ -89,7 +103,7 @@ export default function ImageCarousel(props) {
   function handleCarouselScrollEnd(item, index) {
     setCurrentIndex(index);
   }
-                                              
+
   function renderItem({item, index}) {
     const {backUri, uri, title, content, items} = item;
     const handleActiveItem = (item, indexChild) => {
@@ -121,7 +135,8 @@ export default function ImageCarousel(props) {
         }}>
         <View style={{paddingTop: 10, alignItems: 'center'}}>
           <ImageBackground style={styles.shadowImage} source={backUri}>
-            <Image source={uri} />
+            {/*<Image source={uri} />*/}
+            {uri}
           </ImageBackground>
         </View>
         <ScrollViewIndicator
@@ -179,7 +194,7 @@ export default function ImageCarousel(props) {
       </TouchableOpacity>
     );
   }
-                                   
+
   return (
     <View style={styles.container}>
       <Carousel

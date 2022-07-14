@@ -18,6 +18,16 @@ import {Document} from '../../screens/Account/Document';
 import {Location} from '../../screens/Account/Location';
 import {COLORS} from '../../styles/Constants';
 import backButton from '../../assets/images/backButton.png';
+import Schedule from '../../assets/images/svg/Schedule';
+import ScheduleActive from '../../assets/images/svg/ScheduleActive';
+import Calendar from '../../assets/images/svg/Calendar';
+import CalendarActive from '../../assets/images/svg/CalendarActive';
+import Child from '../../assets/images/svg/Child';
+import ChildActive from '../../assets/images/svg/ChildActive';
+import Bottle from '../../assets/images/svg/Bottle';
+import BottleActive from '../../assets/images/svg/BottleActive';
+import SettingsAccount from '../../assets/images/svg/Settings';
+import SettingsActive from '../../assets/images/svg/SettingsActive';
 
 const iconGr = (focused, iconActive, icon, size = 30) => {
   return (
@@ -85,7 +95,7 @@ const navigationOptions = navigation => ({
   tabBarStyle: {
     backgroundColor: 'rgba(52, 52, 90, 0.97)',
   },
-  tabBarIcon: ({color}) => <Image source={personIcon} />,
+    tabBarIcon: ({focused}) => (focused ? <SettingsActive/> : <SettingsAccount/>)
 });
 
 const Tab = createBottomTabNavigator();
@@ -113,10 +123,10 @@ export const MyTabs = () => {
           headerShown: false,
           tabBarLabel: '',
           tabBarStyle: {
-            backgroundColor: '#707070',
+            backgroundColor: 'rgba(52, 52, 90, 0.97)',
           },
-          tabBarIcon: ({color, focused}) =>
-            iconGr(focused, graphActive, graphUnActive),
+          tabBarIcon: ({focused}) => ( focused ? <ScheduleActive/> : <Schedule />)
+          // iconGr(focused, graphActive, graphUnActive),
         }}
       />
       <Tab.Screen
@@ -128,8 +138,8 @@ export const MyTabs = () => {
           tabBarStyle: {
             backgroundColor: 'rgba(52, 52, 90, 0.97)',
           },
-          tabBarIcon: ({color, focused}) =>
-            iconGr(focused, documentActive, document),
+          tabBarIcon: ({focused}) => (focused ? <CalendarActive/> : <Calendar/>)
+          // iconGr(focused, documentActive, document),
         }}
       />
       <Tab.Screen
@@ -141,8 +151,8 @@ export const MyTabs = () => {
           tabBarStyle: {
             backgroundColor: 'rgba(52, 52, 90, 0.97)',
           },
-          tabBarIcon: ({color, focused}) =>
-            iconGr(focused, childActive, childUnActive, 45),
+          tabBarIcon: ({focused}) => (focused ? <ChildActive/> : <Child/>)
+          // iconGr(focused, childActive, childUnActive, 45),
         }}
       />
       <Tab.Screen
@@ -154,7 +164,8 @@ export const MyTabs = () => {
           tabBarStyle: {
             backgroundColor: 'rgba(52, 52, 90, 0.97)',
           },
-          tabBarIcon: ({color, focused}) => iconGr(focused, niple, niple),
+          tabBarIcon: ({ focused}) => (focused ? <BottleActive/> : <Bottle/>)
+          // iconGr(focused, niple, niple),
         }}
       />
       <Tab.Screen
