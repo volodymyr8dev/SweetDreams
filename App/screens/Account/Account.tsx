@@ -140,7 +140,7 @@ export const Account = () => {
                     fontFamily: 'AntagometricaBT-Regular',
                     fontWeight: 'bold',
                   }}>
-                  18.0*C
+                  18.0°C
                 </Text>
               </View>
               <View style={{flexDirection: 'row', justifyContent: 'center'}}>
