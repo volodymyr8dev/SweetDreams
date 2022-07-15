@@ -1,8 +1,10 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import React, {useEffect} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, ImageBackground} from 'react-native';
 import {CustomButton} from '../../components/CustomButton/CustomButton';
-import Cloud from "../../assets/images/cloud";
+import Cloud from '../../assets/images/cloud';
+import {COLORS} from '../../styles/Constants';
+import background from '../../assets/images/homeIcon/bacgroundHome.png';
 
 export const Connection = () => {
   const navigation = useNavigation();
@@ -17,39 +19,69 @@ export const Connection = () => {
   }, []);
 
   const handleConnect = () => {
-    navigation.navigate('conectionStep1',{title:"connect misty"});
+    navigation.navigate('conectionStep1', {title: 'connect misty'});
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.card}>
-        <View style={{marginBottom: 5}}>
-          <Image source={require('../../assets/images/Cloud.png')} style={{width: 35, height: 22}}/>
-        </View>
-        <View style={{marginBottom: 10}}>
-          <Text style={{color: '#FFFFFF',fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>your misty device </Text>
-        </View>
-        <View style={{marginBottom: 10}}>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>Status: </Text>
-            <View style={{width: 9, height: 9, backgroundColor: '#D65852', borderRadius: 100, marginTop: 5, marginRight: 2}}/>
-            <Text style={{color: '#FFFFFF'}}>NOT CONNECTED</Text>
+    <ImageBackground
+      style={{backgroundColor: COLORS.backGround}}
+      source={background}>
+      <View style={styles.container}>
+        <View style={styles.card}>
+          <View style={{marginBottom: 5}}>
+            <Image
+              source={require('../../assets/images/Cloud.png')}
+              style={{width: 35, height: 22}}
+            />
+          </View>
+          <View style={{marginBottom: 10}}>
+            <Text
+              style={{
+                color: '#FFFFFF',
+                fontWeight: 'bold',
+                fontFamily: 'AntagometricaBT-Bold',
+              }}>
+              your misty device{' '}
+            </Text>
+          </View>
+          <View style={{marginBottom: 10}}>
+            <View style={{flexDirection: 'row'}}>
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontFamily: 'AntagometricaBT-Regular',
+                }}>
+                Status:{' '}
+              </Text>
+              <View
+                style={{
+                  width: 9,
+                  height: 9,
+                  backgroundColor: '#D65852',
+                  borderRadius: 100,
+                  marginTop: 5,
+                  marginRight: 2,
+                }}
+              />
+              <Text style={{color: '#FFFFFF'}}>NOT CONNECTED</Text>
+            </View>
+          </View>
+          <View style={{marginBottom: 30}}>
+            <Text
+              style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>
+              Your misty device is not connected
+            </Text>
+          </View>
+          <View>
+            <CustomButton
+              styles={styles.button}
+              handleOnSubmit={handleConnect}
+              text="connect"
+            />
           </View>
         </View>
-        <View style={{marginBottom: 30}}>
-          <Text style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>
-            Your misty device is not connected
-          </Text>
-        </View>
-        <View>
-          <CustomButton
-            styles={styles.button}
-            handleOnSubmit={handleConnect}
-            text="connect"
-          />
-        </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -60,11 +92,10 @@ const styles = StyleSheet.create({
     paddingRight: 29,
     height: '100%',
     // backgroundColor: '#272A57',
-    backgroundColor: '#262450',
+    // backgroundColor: '#2B2D60',
   },
   card: {
     backgroundColor: '#36365D',
-    // backgroundColor: '#383967',
     borderRadius: 13,
     alignItems: 'center',
     justifyContent: 'center',

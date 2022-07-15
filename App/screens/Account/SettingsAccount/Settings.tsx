@@ -90,7 +90,8 @@ const verticalStaticData = [
 export const Settings = () => {
   const isFocused = useIsFocused();
   const {user} = useSelector(({account}: RootState) => account.userInformation);
-  // const global = useSelector(({account}) => account);
+  const global = useSelector(({account}) => account);
+  console.log(global,"KOKOKOKO")
   console.log('userrrrrr', user);
   const [valueName, setValueName] = useState(user.name);
   const [valueNameChild, setValueNameChild] = useState(

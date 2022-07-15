@@ -81,7 +81,7 @@ const forgotPasswordOptions = navigation => ({
 export const navigationOptions = navigation => ({
   title: navigation.route?.params?.title ? navigation.route?.params.title : 'App',
   headerShown: true,
-  headerTintColor: '#2371AB', 
+  headerTintColor: '#2371AB',
   headerTitleStyle: {
     fontFamily: 'AntagometricaBT-Bold',
     fontSize: 20
@@ -194,7 +194,7 @@ export const navigationOptions = navigation => ({
   },
 });
 
-const AppStackRoutes = () => {
+    const AppStackRoutes = () => {
   let value;
   const navigation = useNavigation();
   const [token, setToken] = useState();
@@ -203,9 +203,9 @@ const AppStackRoutes = () => {
     value = await AsyncStorage.getItem('@storage_Key');
     setToken(value);
     console.log('valueeee', value);
-    navigation.navigate('account');
+    // navigation.navigate('account');
   };
-  
+
   useEffect(() => {
     getToken();
   }, []);

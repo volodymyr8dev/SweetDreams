@@ -14,12 +14,16 @@ import {customStyles} from '../../components/StepIndicator/StepIndicator';
 import serialNumberImage from '../../assets/images/misty-serial-number.png';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 import {Loader} from '../../components/Loader/Loader';
+import {ConnectDevice} from '../../api/Device/Device';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../redux/configureStore';
 
 type Nav = {
   navigate: (value: string) => void;
 };
 
 export const ConnectionStep2 = () => {
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
   const [currentPosition, setCurrentPosition] = useState(1);
   const [serialNumber, setSerialNumber] = useState('');
   const [loader, setLoader] = useState(false);
@@ -31,10 +35,22 @@ export const ConnectionStep2 = () => {
       Alert.alert('Serial Number is required');
     } else {
       setLoader(true);
-      setTimeout(() => {
-        setLoader(false);
-        navigation.navigate('conectionStep3',{title:"connect misty"});
-      }, 1000);
+      ConnectDevice(user.accounts[0].id, serialNumber)
+        .then(res => {
+          if (res.data.success) {
+            setLoader(false);
+            navigation.navigate('conectionStep3', {title: 'connect misty'});
+          }
+        })
+        .catch(res => {
+          setLoader(false);
+          Alert.alert(res.response.data.error);
+        });
+
+      //  setTimeout(() => {
+      //   setLoader(false);
+      //   navigation.navigate('conectionStep3',{title:"connect misty"});
+      //  }, 1000);
     }
   };
 
@@ -49,12 +65,19 @@ export const ConnectionStep2 = () => {
             onPress={() => setCurrentPosition(prev => prev + 1)}
           />
           <View style={{marginTop: 30}}>
-            <Text style={{color: '#23659D', fontSize: 19, marginBottom: 13, fontFamily: 'AntagometricaBT-Bold'}}>
+            <Text
+              style={{
+                color: '#23659D',
+                fontSize: 19,
+                marginBottom: 13,
+                fontFamily: 'AntagometricaBT-Bold',
+              }}>
               let's connect misty
             </Text>
           </View>
           <View style={{marginBottom: 15}}>
-            <Text style={{color: '#23659D', fontFamily: 'AntagometricaBT-Regular'}}>
+            <Text
+              style={{color: '#23659D', fontFamily: 'AntagometricaBT-Regular'}}>
               Please enter you misty serial number
             </Text>
           </View>
@@ -67,8 +90,11 @@ export const ConnectionStep2 = () => {
           <View style={{marginTop: 15}}>
             <Text style={styles.answer}>
               <Text style={{color: '#CA57E7'}}>*</Text>{' '}
-              <Text style={{fontFamily: 'AntagometricaBT-Regular'}}>Serial number</Text> is case
-              sensitive and can be found on a sticker on the base of the unit.
+              <Text style={{fontFamily: 'AntagometricaBT-Regular'}}>
+                Serial number
+              </Text>{' '}
+              is case sensitive and can be found on a sticker on the base of the
+              unit.
             </Text>
           </View>
           <View style={{alignItems: 'center', marginTop: 32}}>
