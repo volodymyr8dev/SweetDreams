@@ -68,7 +68,7 @@ const StackRoutes = () => {
         component={SettingsDomeBrihtness}
         options={navigationOptions}
       />
-      <Stack.Screen
+      <Stack.Screen 
         name="smartCRY Sensor Sensitivity"
         component={SettingsSmartCRY}
         options={navigationOptions}

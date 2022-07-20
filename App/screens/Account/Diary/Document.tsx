@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Calendar, CalendarList} from 'react-native-calendars';
 // import dateFns from 'date-fns';
 import {
@@ -23,58 +23,60 @@ import {
   ImageBackground,
 } from 'react-native';
 import moment from 'moment';
-import RNCalendarEvents from 'react-native-calendar-events';
-import DatePicker from 'react-native-date-picker';
-import {COLORS} from '../../styles/Constants';
-import eventDateImg from '../../assets/images/documents/dateEventVertical.png';
-import eventDateimportant from '../../assets/images/documents/dateEventVerticalImportant.png';
-import backImg from '../../assets/images/documents/background.png';
-LocaleConfig.locales['ru'] = {
+import {COLORS, monthNames} from '../../../styles/Constants';
+import eventDateImg from '../../../assets/images/documents/dateEventVertical.png';
+import eventDateimportant from '../../../assets/images/documents/dateEventVerticalImportant.png';
+import backImg from '../../../assets/images/documents/background.png';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {GetEventApi} from '../../../api/Diary/calendar';
+import {RootState} from '../../../redux/configureStore';
+
+// LocaleConfig.locales.en = LocaleConfig.locales['en'];
+// LocaleConfig.defaultLocale = 'en';
+LocaleConfig.locales.en = {
   monthNames: [
-    'Январь',
-    'Февраль',
-    'Март',
-    'Апрель',
-    'Май',
-    'Июнь',
-    'Июль',
-    'Август',
-    'Сентябрь',
-    'Октябрь',
-    'Ноябрь',
-    'Декабрь',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ],
   monthNamesShort: [
-    'Янв.',
-    'Фев.',
-    'Март',
-    'Апрель',
-    'Май',
-    'Июнь',
-    'Июль.',
-    'Авг.',
-    'Сент.',
-    'Окт.',
-    'Нояб.',
-    'Дек.',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Okc',
+    'Nov',
+    'Dec',
   ],
   dayNames: [
-    'Dimanche',
-    'Lundi',
-    'Mardi',
-    'Mercredi',
-    'Jeudi',
-    'Vendredi',
-    'Samedi',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
   ],
-  dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
-  today: "Aujourd'hui",
+  dayNamesShort: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
 };
+LocaleConfig.defaultLocale = 'en';
 
-LocaleConfig.locales.en = LocaleConfig.locales[''];
-// LocaleConfig.defaultLocale = 'fr';
 const formatDate = (date = new Date()) => {
-  console.log('date', date);
   return moment(date).format('YYYY-MM-DD');
 };
 
@@ -85,7 +87,6 @@ const getMarkedDates = (baseDate, appointments) => {
 
   appointments.forEach(appointment => {
     const formattedDate = formatDate(new Date(appointment.date));
-    console.log('formattedDate', formattedDate);
     markedDates[formattedDate] = {
       ...markedDates[formattedDate],
       marked: true,
@@ -99,11 +100,14 @@ const getMarkedDates = (baseDate, appointments) => {
 };
 
 export const Document = () => {
+  const isFocused = useIsFocused();
+  const navigation = useNavigation();
   const [selectedDate, setSelectedDate] = useState(new Date(2022, 6, 12));
+  const global = useSelector(
+    ({account}: RootState) => account.userInformation.user.accounts[0],
+  );
 
-  // const baseDate = new Date(2019, 6, 15);
-  // console.log('base', baseDate);
-  const APPOINTMENTS = [
+  const [points, setPoints] = useState([
     {
       date: '2022-07-13T05:00:00.000Z',
       title: "It's a past thing!",
@@ -114,13 +118,63 @@ export const Document = () => {
     },
     {
       date: '2022-07-18T05:00:00.000Z',
-      title: "It's a future thing!",
+      title: "It's a future thi!",
     },
-  ];
+  ]);
+  console.log('points here', points);
+  useEffect(() => {
+    console.log('update', global);
+    GetEventApi(global.id)
+      .then(({data}) => {
+        let res = data.map(item => {
+          item.date = item.starts_at;
+          item.date = new Date(item.date);
+          return item;
+        });
+        setPoints(res);
+      })
+      .catch(err => {
+        console.log('err', err.response.data);
+      });
+  }, [isFocused]);
+  useEffect(() => {
+    navigation.setParams({
+      addEvent: sendSelectedDate,
+    });
+  }, [selectedDate]);
+
+  const goToEvent = async EventItem => {
+    let d = new Date(selectedDate);
+    console.log('points', points);
+    let res = points.filter(
+      item =>
+        moment(item.date).format('YYYY-MM-DD') ==
+        moment(selectedDate).format('YYYY-MM-DD'),
+    );
+    console.log('res', EventItem);
+    navigation.navigate('entry details', {
+      title: 'entry details',
+      backTitle: `${monthNames[d.getMonth()]} ${d.getFullYear()}`,
+      event: EventItem,
+      rightText: 'edit',
+    });
+  };
+
+  const sendSelectedDate = () => {
+    navigation.navigate('addEvent', {
+      selectedDate,
+      title: 'new event entry',
+      backTitle: 'entry type',
+      global,
+      rightText: 'add',
+    });
+  };
+
   return (
     <ImageBackground source={backImg} style={styles.container}>
       <View>
         <Calendar
+          // displayLoadingIndicator={true}
           selected={'2012-05-16'}
           showScrollIndicator={true}
           enableSwipeMonths={true}
@@ -128,29 +182,27 @@ export const Document = () => {
           // hideExtraDays={true}
           // minDate={subWeeks(baseDate, 1)}
           // maxDate={addWeeks(baseDate, 1)}
-          dayNames={[
-            'Sonntag',
-            'Montag',
-            'Dienstag',
-            'Mittwoch',
-            'Donnerstag',
-            'Freitag',
-            'Samstag',
-          ]}
           onDayPress={day => {
             setSelectedDate(new Date(day.year, day.month - 1, day.day));
             console.log('selected day', day);
           }}
-          markedDates={getMarkedDates(selectedDate, APPOINTMENTS)}
+          markedDates={getMarkedDates(selectedDate, points)}
+          disabledDaysIndexes={[1, 6]}
           theme={{
+            textDayHeaderFontSize: 13,
+            textDayHeaderFontFamily: 'AntagometricaBT-Bold',
+            textDefaultColor: COLORS.yellow,
             //@ts-ignore
             'stylesheet.calendar.header': {
               header: {
                 flexDirection: 'row',
                 marginLeft: -30,
-                justifyContent: 'flex-start',
+                // justifyContent: 'flex-start',
                 alignItems: 'center',
                 color: COLORS.yellow,
+                width: '120%',
+                borderBottomWidth: 0.4,
+                borderBottomColor: 'rgba(35, 113, 171, .4)',
               },
             },
             // 'stylesheet.day.single': {
@@ -199,13 +251,15 @@ export const Document = () => {
               week: {
                 height: 60,
                 width: '100%',
-                borderBottomWidth: 0.4,
-
+                // borderBottomWidth: 0.4,
+                borderTopColor: 'rgba(35, 113, 171, .4)',
+                borderTopWidth: 0.4,
                 flexDirection: 'row',
-                borderBottomColor: 'rgba(35, 113, 171, .4)',
+                // borderBottomColor: 'rgba(35, 113, 171, .4)',
                 alignItems: 'flex-start',
                 justifyContent: 'space-around',
-                marginTop: 7,
+                paddingTop: 7,
+                // marginTop: 7,
               },
             },
             textMonthColor: COLORS.yellow,
@@ -228,7 +282,6 @@ export const Document = () => {
               alignItems: 'center',
               justifyContent: 'center',
             },
-
             dotStyle: {
               marginTop: 11,
               width: 5.76,
@@ -242,7 +295,8 @@ export const Document = () => {
 
             selectedDayTextColor: '#fff',
             selectedDotColor: '#fff',
-
+            textSectionTitleColor: '#2371AB',
+            textSectionTitleDisabledColor: COLORS.textLight,
             dayTextColor: COLORS.textLight,
             textDisabledColor: '#729DAF',
             dotColor: '#DBE9EE',
@@ -252,41 +306,48 @@ export const Document = () => {
             arrowColor: '#DBE9EE',
           }}
         />
-        <View>
-          {APPOINTMENTS.map(item => {
-            return (
-              <View style={styles.eventContainer}>
-                <View style={styles.eventLeftC}>
-                  <View style={styles.eventDate}>
-                    <Text style={{color: COLORS.textLight, fontSize: 10}}>
-                      13:00
-                    </Text>
-                  </View>
-                  <View style={styles.eventDate}>
-                    <Text style={{color: COLORS.textLight, fontSize: 10}}>
-                      13:30
-                    </Text>
-                  </View>
-                </View>
-                <View>
-                  <Image
-                    style={{width: 0.77, height: 40}}
-                    source={eventDateImg}
-                  />
-                </View>
-                <View
-                  style={{
-                    paddingLeft: 7.67,
-                  }}>
-                  <View>
-                    <Text style={styles.eventText}>{item.title}</Text>
-                  </View>
-                  <Text style={styles.eventSubText}> home</Text>
-                </View>
-              </View>
-            );
-          })}
-        </View>
+        <ScrollView style={{paddingBottom: 150}}>
+          <View style={{paddingBottom: 50}}>
+            {points.map(item => {
+              return (
+                moment(item.date).format('YYYY-MM-DD') ==
+                  moment(selectedDate).format('YYYY-MM-DD') && (
+                  <TouchableOpacity
+                    onPress={() => goToEvent(item)}
+                    style={styles.eventContainer}>
+                    <View style={styles.eventLeftC}>
+                      <View style={styles.eventDate}>
+                        <Text style={{color: COLORS.textLight, fontSize: 10}}>
+                          13:00
+                        </Text>
+                      </View>
+                      <View style={styles.eventDate}>
+                        <Text style={{color: COLORS.textLight, fontSize: 10}}>
+                          13:30
+                        </Text>
+                      </View>
+                    </View>
+                    <View>
+                      <Image
+                        style={{width: 0.77, height: 40}}
+                        source={eventDateImg}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        paddingLeft: 7.67,
+                      }}>
+                      <View>
+                        <Text style={styles.eventText}>{item.title}</Text>
+                      </View>
+                      <Text style={styles.eventSubText}> home</Text>
+                    </View>
+                  </TouchableOpacity>
+                )
+              );
+            })}
+          </View>
+        </ScrollView>
       </View>
     </ImageBackground>
   );
@@ -347,6 +408,7 @@ const styles = StyleSheet.create({
     color: COLORS.textLight,
     fontFamily: 'AntagometricaBT-Bold',
   },
+  eventDate: {},
   eventSubText: {
     fontSize: 10,
     color: COLORS.textLight,

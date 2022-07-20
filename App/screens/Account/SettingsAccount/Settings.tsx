@@ -228,7 +228,11 @@ export const Settings = () => {
               devices.
             </Text>
           </View>
-          <InputUnit nameOfBox="touch" title={'Manage Family Members'} />
+          <InputUnit
+            nameOfBox="touch"
+            title={'Manage Family Members'}
+            rightArrow={true}
+          />
           <View style={{paddingHorizontal: 20, marginVertical: 10}}>
             <Text
               style={{
@@ -266,9 +270,15 @@ export const Settings = () => {
             nameOfBox={'input'}
             placeholder={'Your Email Address'}
           />
-          <InputUnit title={'Change Password'} nameOfBox={'touch'} />
+          <InputUnit
+            title={'Change Password'}
+            nameOfBox={'touch'}
+            rightEl={'save'}
+            rightArrow={true}
+          />
           <DatePickerComponent
-            type="parent"
+            mode="date"
+            type="Your Date of Birth"
             value={valueDate}
             changeDate={date => {
               setValueDate(moment(date).format('YYYY-MM-DD'));
@@ -306,13 +316,12 @@ export const Settings = () => {
           <InputUnit
             value={valueNameChild}
             setValueName={value => setValueNameChild(value)}
-            title={'Your Name'}
-            nameField={'Bernie'}
             nameOfBox={'input'}
-            placeholder={'Your Name'}
+            placeholder={"Baby's Nickname"}
           />
           <DatePickerComponent
-            type="child"
+            mode="date"
+            type="Baby's Date of Birth"
             value={valueDateChild}
             changeDate={date => {
               setValueDateChild(moment(date).format('YYYY-MM-DD'));
@@ -374,6 +383,7 @@ export const Settings = () => {
           </TouchableOpacity>
         </ScrollView>
       </View>
+      
       {global?.loader && <Loader text={'Please wait for Verification'} />}
     </ImageBackground>
   );

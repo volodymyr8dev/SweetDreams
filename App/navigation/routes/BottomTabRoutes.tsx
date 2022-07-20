@@ -14,7 +14,7 @@ import location from '../../assets/images/homeIcon/location.png';
 import childUnActive from '../../assets/images/controlChild/childUnActive.png';
 import niple from '../../assets/images/niple/niple.png';
 import {Graphics} from '../../screens/Account/Graphics';
-import {Document} from '../../screens/Account/Document';
+import {Document} from '../../screens/Account/Diary/Document';
 import {Location} from '../../screens/Account/Location';
 import {COLORS} from '../../styles/Constants';
 import backButton from '../../assets/images/backButton.png';
@@ -43,6 +43,7 @@ const navigationOptions = navigation => ({
     backgroundColor: '#2A305A',
     shadowColor: 'transparent', // this covers iOS
     elevation: 0,
+    headerTransparent: true,
     // borderBottomWidth:2,
     // borderBottomColor: COLORS.backGround
   },
@@ -90,41 +91,7 @@ const navigationOptions = navigation => ({
   tabBarIcon: ({color}) => <Image source={personIcon} />,
 });
 
-const Tab = createBottomTabNavigator();
-// const TabNav = createTabNavigator()
-
-const customTabBarStyle = {
-  borderBottomWidth: 0,
-  // activeTintColor: '#707070',
-  // inactiveTintColor: 'gray',
-  tabStyle: {
-    paddingTop: 25,
-  },
-
-  labelStyle: {},
-
-  // style: {backgroundColor: '#707070'},
-};
-export const MyTabs = () => {
-  return (
-    <Tab.Navigator tabBarOptions={customTabBarStyle}>
-      <Tab.Screen
-        name="graphics"
-        component={Graphics}
-        options={{
-          headerShown: false,
-          tabBarLabel: '',
-          tabBarStyle: {
-            backgroundColor: '#707070',
-          },
-          tabBarIcon: ({color, focused}) =>
-            iconGr(focused, graphActive, graphUnActive),
-        }}
-      />
-      <Tab.Screen
-        name="document"
-        component={Document}
-        options={{
+const navigationDocument =({navigation,route}) =>({
           headerTitle: "baby's diary",
           headerRight: () => {
             return (
@@ -135,7 +102,12 @@ export const MyTabs = () => {
                     source={search}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity style={{marginLeft: 13.76}}>
+                <TouchableOpacity
+                  onPress={() => {
+                   console.log('route', route?.params.addEvent);
+                   route?.params.addEvent();
+                  }}
+                  style={{marginLeft: 13.76}}>
                   <Image style={{width: 18.58, height: 18.58}} source={plus} />
                 </TouchableOpacity>
               </View>
@@ -157,7 +129,39 @@ export const MyTabs = () => {
           },
           tabBarIcon: ({color, focused}) =>
             iconGr(focused, documentActive, document),
+})
+const Tab = createBottomTabNavigator();
+// const TabNav = createTabNavigator()
+const customTabBarStyle = {
+  borderBottomWidth: 0,
+  // activeTintColor: '#707070',
+  // inactiveTintColor: 'gray',
+  tabStyle: {
+    paddingTop: 25,
+  },
+  labelStyle: {},
+  // style: {backgroundColor: '#707070'},
+};
+export const MyTabs = () => {
+  return (
+    <Tab.Navigator tabBarOptions={customTabBarStyle}>
+      <Tab.Screen
+        name="graphics"
+        component={Graphics}
+        options={{
+          headerShown: false,
+          tabBarLabel: '',
+          tabBarStyle: {
+            backgroundColor: '#707070',
+          },
+          tabBarIcon: ({color, focused}) =>
+            iconGr(focused, graphActive, graphUnActive),
         }}
+      />
+      <Tab.Screen
+        name="document"
+        component={Document}
+        options={navigationDocument}
       />
       <Tab.Screen
         name="account"

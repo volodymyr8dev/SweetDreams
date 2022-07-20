@@ -29,13 +29,15 @@ import {ForgotPassword} from '../../screens/registration/ForgotPassword';
 import {ForgotPassword2} from '../../screens/registration/ForgotPassword2';
 import {ForgotPassword3} from '../../screens/registration/ForgotPassword3';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { DiaryRoutes } from './Diary/DiaryRoutes';
+import { getProfile } from '../../api/Profile/ProfileApi';
+import { useDispatch } from 'react-redux';
 export type RootStackParamList = {
   step2: {
     position: any;
     setPosition: any;
   };
 };
-
 export type registerScreenProp = StackNavigationProp<RootStackParamList>;
 
 const customTabBarStyle = {
@@ -194,6 +196,7 @@ export const navigationOptions = navigation => ({
 });
 
 const AppStackRoutes = () => {
+  const dispatch = useDispatch();
   let value;
   const navigation = useNavigation();
   const [token, setToken] = useState();
@@ -209,6 +212,14 @@ const AppStackRoutes = () => {
     getToken();
   }, []);
   if (token) {
+        getProfile()
+          .then(async ({data}) => {
+            console.log('all information about user', data);
+            dispatch(setUserInformation(data.user));
+          })
+          .catch(err => {
+            console.log('what error', err.response.data);
+          });
     navigation.navigate('account');
   }
   return (
@@ -253,7 +264,6 @@ const AppStackRoutes = () => {
         component={Connection}
         options={navigationOptions}
       />
-
       <Stack.Screen
         name="conectionStep1"
         component={ConnectionStep1}
@@ -292,8 +302,9 @@ const AppStackRoutes = () => {
       <Stack.Screen
         name="account"
         component={MyTabs}
-        options={{headerShown: false,contentStyle:{backgroundColor: '#000'}}}
+        options={{headerShown: false, contentStyle: {backgroundColor: '#000'}}}
       />
+      {DiaryRoutes()}
       {SettingsRoutes()}
       {SettingsAccountStackRoutes()}
       {GraphicRoutes()}
