@@ -1,12 +1,13 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
+import WifiManager from 'react-native-wifi-reborn';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
   Text,
   ScrollView,
   TouchableOpacity,
-  Alert
+  Alert,
 } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
@@ -14,6 +15,7 @@ import {customStyles} from '../../components/StepIndicator/StepIndicator';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 import {Loader} from '../../components/Loader/Loader';
 import NetInfo from '@react-native-community/netinfo';
+import {GetSalt} from "../../api/Device/Device";
 // import WifiManager from 'react-native-wifi-reborn';
 
 export const ConnectionStep3 = () => {
@@ -21,10 +23,32 @@ export const ConnectionStep3 = () => {
   const [loader, setLoader] = useState(false);
   const [wifiName, setWifiName] = useState('');
   const [wifiPassword, setWififPassword] = useState('');
+  // const [salt, setSalt] = useState();
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const route = useRoute<any>();
+  const serialNumber = route.params.serial_number.serial_number;
 
+  // useEffect(() => {
+  //   GetSalt('misty').then(res => {
+  //     setSalt(res.data.data.salt);
+  //   });
+  // }, []);
+
+
+
+  //  const ConnectToNetwork = async () => {
+  //   WifiManager.connectToProtectedSSID(wifiName, wifiPassword, false).then(
+  //     () => {
+  //       //console.log("connectToProtectedSSID successfully!");
+  //     },
+  //     reason => {
+  //       //console.log("connectToProtectedSSID failed!");
+  //       //console.log(reason);
+  //     },
+  //   );
+  // };
   // useEffect(() => {
   //   NetInfo.fetch().then(res => {
   //     console.log(res);
@@ -32,22 +56,25 @@ export const ConnectionStep3 = () => {
   //   });
   // }, []);
   const ConnectToNetwork = async () => {
-    // try {
-    //   WifiManager.connectToProtectedSSID(wifiName, wifiPassword, false)
-    //     .then(
-    //       () => {
-    //         console.log('connectToProtectedSSID successfully!');
-    //       },
-    //       reason => {
-    //         console.log('connectToProtectedSSID failed!');
-    //         console.log(reason);
-    //       },
-    //     )
-    //     .catch(err => console.log('WIFI ERROR', err));
-    // } catch (err) {
-    //   console.log('ERR', err);
-    // }
+    try {
+      console.log(wifiName, wifiPassword)
+      WifiManager.connectToProtectedSSID(wifiName, wifiPassword, false)
+        .then(
+          () => {
+            console.log('connectToProtectedSSID successfully!');
+          },
+          reason => {
+            console.log('connectToProtectedSSID failed!');
+            console.log(reason);
+          },
+        )
+        .catch(err => console.log('WIFI ERROR', err));
+    } catch (err) {
+      console.log('ERR', err);
+    }
   };
+
+
 
   const handleGoToStep2 = () => {
     setLoader(true);
@@ -71,12 +98,19 @@ export const ConnectionStep3 = () => {
           />
 
           <View style={{marginTop: 30}}>
-            <Text style={{color: '#23659D', fontSize: 19, marginBottom: 13, fontFamily: 'AntagometricaBT-Bold'}}>
+            <Text
+              style={{
+                color: '#23659D',
+                fontSize: 19,
+                marginBottom: 13,
+                fontFamily: 'AntagometricaBT-Bold',
+              }}>
               linking misty to your home Wi-Fi
             </Text>
           </View>
           <View style={{marginBottom: 15}}>
-            <Text style={{color: '#23659D', fontFamily: 'AntagometricaBT-Regular'}}>
+            <Text
+              style={{color: '#23659D', fontFamily: 'AntagometricaBT-Regular'}}>
               Please enter your Wi-Fi name and password
             </Text>
           </View>
@@ -97,16 +131,18 @@ export const ConnectionStep3 = () => {
           <View style={{marginTop: 15}}>
             <Text style={styles.answer}>
               <Text style={{color: '#CA57E7'}}>*</Text>{' '}
-              <Text style={{fontFamily: 'AntagometricaBT-Regular'}}>Wi-Fi credentials</Text> are
-              case sensitive. The password required is your home Wi-Fi password
-              and not the password printed on the sticker on the base of the
-              misty unit.
+              <Text style={{fontFamily: 'AntagometricaBT-Regular'}}>
+                Wi-Fi credentials
+              </Text>{' '}
+              are case sensitive. The password required is your home Wi-Fi
+              password and not the password printed on the sticker on the base
+              of the misty unit.
             </Text>
           </View>
           <TouchableOpacity
             onPress={ConnectToNetwork}
             style={{marginLeft: 100, width: 80, height: 20, marginBottom: 10}}>
-            {/* <Text style={{color: '#fff'}}>1010100101010100</Text> */}
+            <Text style={{color: '#fff'}}>1010100101010100</Text>
           </TouchableOpacity>
         </View>
 

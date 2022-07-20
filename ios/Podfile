@@ -21,6 +21,8 @@ target 'SweetDreams' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+  pod 'RNWifi', :path => '../node_modules/react-native-wifi-reborn'
+
   target 'SweetDreamsTests' do
     inherit! :complete
     # Pods for testing
