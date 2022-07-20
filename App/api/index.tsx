@@ -15,7 +15,6 @@ instance.interceptors.request.use(async config => {
   const token = await AsyncStorage.getItem('@storage_Key');
   console.log('tokennnnnnn', token);
   config.headers.Authorization = `Bearer ${await getToken()}`;
-  console.log('hhhhhh', await getToken());
   return config;
 });
  

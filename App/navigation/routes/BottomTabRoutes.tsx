@@ -14,7 +14,7 @@ import location from '../../assets/images/homeIcon/location.png';
 import childUnActive from '../../assets/images/controlChild/childUnActive.png';
 import niple from '../../assets/images/niple/niple.png';
 import {Graphics} from '../../screens/Account/Graphics';
-import {Document} from '../../screens/Account/Document';
+import {Document} from '../../screens/Account/Diary/Document';
 import {Location} from '../../screens/Account/Location';
 import {COLORS} from '../../styles/Constants';
 import backButton from '../../assets/images/backButton.png';
@@ -28,6 +28,8 @@ import Bottle from '../../assets/images/svg/Bottle';
 import BottleActive from '../../assets/images/svg/BottleActive';
 import SettingsAccount from '../../assets/images/svg/Settings';
 import SettingsActive from '../../assets/images/svg/SettingsActive';
+import plus from '../../assets/images/documents/plus.png';
+import search from '../../assets/images/documents/search.png';
 
 const iconGr = (focused, iconActive, icon, size = 30) => {
   return (
@@ -51,6 +53,7 @@ const navigationOptions = navigation => ({
     backgroundColor: '#2A305A',
     shadowColor: 'transparent', // this covers iOS
     elevation: 0,
+    headerTransparent: true,
     // borderBottomWidth:2,
     // borderBottomColor: COLORS.backGround
   },
@@ -98,9 +101,47 @@ const navigationOptions = navigation => ({
     tabBarIcon: ({focused}) => (focused ? <SettingsActive/> : <SettingsAccount/>)
 });
 
+const navigationDocument =({navigation,route}) =>({
+          headerTitle: "baby's diary",
+          headerRight: () => {
+            return (
+              <View style={{marginRight: 18.58, flexDirection: 'row'}}>
+                <TouchableOpacity>
+                  <Image
+                    style={{width: 18.58, height: 18.58}}
+                    source={search}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                   console.log('route', route?.params.addEvent);
+                   route?.params.addEvent();
+                  }}
+                  style={{marginLeft: 13.76}}>
+                  <Image style={{width: 18.58, height: 18.58}} source={plus} />
+                </TouchableOpacity>
+              </View>
+            );
+          },
+          tabBarLabel: '',
+          headerTintColor: '#2371AB',
+          headerStyle: {
+            backgroundColor: '#242247',
+            shadowColor: 'transparent',
+            elevation: 0,
+          },
+
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+          tabBarStyle: {
+            backgroundColor: 'rgba(52, 52, 90, 0.97)',
+          },
+          tabBarIcon: ({color, focused}) =>
+            iconGr(focused, documentActive, document),
+})
 const Tab = createBottomTabNavigator();
 // const TabNav = createTabNavigator()
-
 const customTabBarStyle = {
   borderBottomWidth: 0,
   // activeTintColor: '#707070',
@@ -108,9 +149,7 @@ const customTabBarStyle = {
   tabStyle: {
     paddingTop: 25,
   },
-
   labelStyle: {},
-
   // style: {backgroundColor: '#707070'},
 };
 export const MyTabs = () => {
@@ -132,15 +171,7 @@ export const MyTabs = () => {
       <Tab.Screen
         name="document"
         component={Document}
-        options={{
-          headerShown: false,
-          tabBarLabel: '',
-          tabBarStyle: {
-            backgroundColor: 'rgba(52, 52, 90, 0.97)',
-          },
-          tabBarIcon: ({focused}) => (focused ? <CalendarActive/> : <Calendar/>)
-          // iconGr(focused, documentActive, document),
-        }}
+        options={navigationDocument}
       />
       <Tab.Screen
         name="account"

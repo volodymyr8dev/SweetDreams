@@ -106,6 +106,7 @@ export default function ImageCarousel(props) {
 
   function renderItem({item, index}) {
     const {backUri, uri, title, content, items} = item;
+    console.log('item',item)
     const handleActiveItem = (item, indexChild) => {
       let array = [...data];
       array.map(it => {

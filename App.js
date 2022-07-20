@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
 
 import {store} from './App/redux/configureStore';
 import {Provider} from 'react-redux';
@@ -13,10 +13,11 @@ const App = () => {
   return (
     <Provider store={store}>
       <MyStack />
+      <StatusBar barStyle={'light-content'}/>
     </Provider>
-  );
+  );   
 };
-
+      
 const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,
