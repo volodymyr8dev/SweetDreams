@@ -1,5 +1,6 @@
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useState, useEffect} from 'react';
+import WifiManager from "react-native-wifi-reborn";
 import {
   View,
   StyleSheet,
@@ -8,6 +9,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  NativeModules,
 } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
@@ -15,7 +17,8 @@ import serialNumberImage from '../../assets/images/misty-serial-number.png';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 import {Loader} from '../../components/Loader/Loader';
 import {ConnectDevice} from '../../api/Device/Device';
-import {useSelector} from 'react-redux';
+import {GetSalt} from '../../api/Device/Device';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/configureStore';
 
 type Nav = {
@@ -28,7 +31,7 @@ export const ConnectionStep2 = () => {
   const [serialNumber, setSerialNumber] = useState('');
   const [loader, setLoader] = useState(false);
   const navigation = useNavigation<Nav>();
-  // const isFocused = useIsFocused();
+  const [salt, setSalt] = useState('');
 
   const handleGoToStep3 = () => {
     if (!serialNumber) {
@@ -38,21 +41,59 @@ export const ConnectionStep2 = () => {
       ConnectDevice(user.accounts[0].id, serialNumber)
         .then(res => {
           if (res.data.success) {
+            console.log(res.data.success, 'datadatadata');
+            GetSalt('misty').then(res => {
+              // console.log(res);
+              // setSalt(res.data.data.salt);
+              ConnectToNetwork()
+            });
             setLoader(false);
-            navigation.navigate('conectionStep3', {title: 'connect misty'});
+            // dispatch(setSerialNumber(res.data.success))
+            navigation.navigate('conectionStep3', {
+              title: 'connect misty',
+              serial_number: res.data.success,
+            });
           }
         })
         .catch(res => {
           setLoader(false);
           Alert.alert(res.response.data.error);
         });
-
-      //  setTimeout(() => {
-      //   setLoader(false);
-      //   navigation.navigate('conectionStep3',{title:"connect misty"});
-      //  }, 1000);
     }
   };
+
+  const ConnectToNetwork = async () => {
+    WifiManager.connectToProtectedSSID(
+      `Misty - ${serialNumber}`,
+      `efdfsdsw3r34df`,
+      false,
+    ).then(
+      () => {
+        console.log('Connected successfully!');
+      },
+      rej => {
+        console.log('Connection failed!', rej);
+      },
+    );
+  };
+
+  // useEffect(() => {
+  //   if (salt !== '') {
+  //     console.log('ZASHOL');
+  //     WifiManager.connectToProtectedSSID(
+  //       `Misty - ${serialNumber}`,
+  //       `${salt}`,
+  //       false,
+  //     ).then(
+  //       () => {
+  //         console.log('Connected successfully!');
+  //       },
+  //       rej => {
+  //         console.log('Connection failed!', rej);
+  //       },
+  //     );
+  //   }
+  // }, [salt]);
 
   return (
     <>

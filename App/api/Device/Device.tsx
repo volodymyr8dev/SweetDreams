@@ -3,13 +3,11 @@ import axiosInstance from '../index';
 
 export const ConnectDevice = async (accountId, serialNumber) => {
   const body = {
-    "serial_number": serialNumber,
+    serial_number: serialNumber,
   };
   return await axiosInstance.post(`/api/accounts/${accountId}/device`, body);
 };
 
-// export const deleteAccount = async () => {
-//   return await axiosInstance.delete('/api/me');
-// };
-
-
+export const GetSalt = async type => {
+  return await axiosInstance.get(`/api/setup/${type}/wifi-salt`);
+};
