@@ -333,7 +333,7 @@ export const Document = () => {
                 // },
                 'stylesheet.calendar.main': {
                   monthView: {
-                    backgroundColor: COLORS.yellow,
+                    // backgroundColor: COLORS.yellow,
                   },
                   // week: {
                   //   flexDirection: 'row',
