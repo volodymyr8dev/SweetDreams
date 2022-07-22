@@ -51,6 +51,8 @@ export const InputUnit = ({
       title: titleName,
       rightEl: rightEl ? true : false,
       hideOld: titleName == 'Change Password' ? true : false,
+      location: value,
+      setLocation: setValueName,
     });
   };
 

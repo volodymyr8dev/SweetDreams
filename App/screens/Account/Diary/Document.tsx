@@ -1,21 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Calendar, CalendarList} from 'react-native-calendars';
-// import dateFns from 'date-fns';
-import {
-  format,
-  formatDistance,
-  formatRelative,
-  subDays,
-  subWeeks,
-  addWeeks,
-} from 'date-fns';
-// import {format, formatDistance, formatRelative, subDays} from 'date-fns';
+import {Dimensions} from 'react-native';
+
 import {LocaleConfig} from 'react-native-calendars';
 import {
   Text,
   View,
   StyleSheet,
-  TextInput,
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
@@ -31,9 +22,12 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {GetEventApi} from '../../../api/Diary/calendar';
 import {RootState} from '../../../redux/configureStore';
+import SearchBar from '../../../components/SearchBar';
 
-// LocaleConfig.locales.en = LocaleConfig.locales['en'];
-// LocaleConfig.defaultLocale = 'en';
+interface IPoints {
+  title: string;
+  date: string;
+}
 LocaleConfig.locales.en = {
   monthNames: [
     'January',
@@ -102,11 +96,16 @@ const getMarkedDates = (baseDate, appointments) => {
 export const Document = () => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
+  const [shown, setShown] = useState(false);
+
   const [selectedDate, setSelectedDate] = useState(new Date(2022, 6, 12));
   const global = useSelector(
     ({account}: RootState) => account.userInformation.user.accounts[0],
   );
 
+  const [filteredPoints, setFilteredPoints] = useState<IPoints[] | ['']>([
+    {title: '', date: ''},
+  ]);
   const [points, setPoints] = useState([
     {
       date: '2022-07-13T05:00:00.000Z',
@@ -121,6 +120,41 @@ export const Document = () => {
       title: "It's a future thi!",
     },
   ]);
+  const EventHtml = item => {
+    console.log('item', item);
+    let date = moment(item.starts_at).format('hh:ss');
+    console.log('date', date);
+    return item ? (
+      <TouchableOpacity
+        onPress={() => goToEvent(item)}
+        style={styles.eventContainer}>
+        <View style={styles.eventLeftC}>
+          <View style={styles.eventDate}>
+            <Text style={{color: COLORS.textLight, fontSize: 10}}>
+              {moment(item.starts_at).format('hh:ss').trim()}
+            </Text>
+          </View>
+          <View style={styles.eventDate}>
+            <Text style={{color: COLORS.textLight, fontSize: 10}}>
+              {moment(item.ends_at).format('hh:ss').trim()}
+            </Text>
+          </View>
+        </View>
+        <View>
+          <Image style={{width: 0.77, height: 40}} source={eventDateImg} />
+        </View>
+        <View
+          style={{
+            paddingLeft: 7.67,
+          }}>
+          <View>
+            <Text style={styles.eventText}>{item.title}</Text>
+          </View>
+          <Text style={styles.eventSubText}> {item.location}</Text>
+        </View>
+      </TouchableOpacity>
+    ) : null;
+  };
   console.log('points here', points);
   useEffect(() => {
     console.log('update', global);
@@ -170,185 +204,233 @@ export const Document = () => {
     });
   };
 
+  const [searchPhrase, setSearchPhrase] = useState('');
+  const [clicked, setClicked] = useState(true);
+  const [fakeData, setFakeData] = useState();
+  useEffect(() => {
+    const getData = async () => {
+      const apiResponse = await fetch(
+        'https://my-json-server.typicode.com/kevintomas1995/logRocket_searchBar/languages',
+      );
+      const data = await apiResponse.json();
+      setFakeData(data);
+    };
+    getData();
+  }, []);
+  console.log('%c Filtered Data', 'background-color:blue', filteredPoints);
+  useEffect(() => {
+    let res = points.filter(item => {
+      if (searchPhrase == item.title) {
+        return item;
+      }
+    });
+    setFilteredPoints(res);
+  }, [searchPhrase]);
+  useEffect(() => {
+    console.log('shown', shown);
+    console.log('filteredPoints', filteredPoints.length);
+    if (!shown) {
+      setFilteredPoints([]);
+    } else if (shown) {
+      setFilteredPoints(['']);
+    }
+  }, [shown]);
   return (
     <ImageBackground source={backImg} style={styles.container}>
-      <View>
-        <Calendar
-          // displayLoadingIndicator={true}
-          selected={'2012-05-16'}
-          showScrollIndicator={true}
-          enableSwipeMonths={true}
-          current={formatDate(selectedDate)}
-          // hideExtraDays={true}
-          // minDate={subWeeks(baseDate, 1)}
-          // maxDate={addWeeks(baseDate, 1)}
-          onDayPress={day => {
-            setSelectedDate(new Date(day.year, day.month - 1, day.day));
-            console.log('selected day', day);
-          }}
-          markedDates={getMarkedDates(selectedDate, points)}
-          disabledDaysIndexes={[1, 6]}
-          theme={{
-            textDayHeaderFontSize: 13,
-            textDayHeaderFontFamily: 'AntagometricaBT-Bold',
-            textDefaultColor: COLORS.yellow,
-            //@ts-ignore
-            'stylesheet.calendar.header': {
-              header: {
-                flexDirection: 'row',
-                marginLeft: -30,
-                // justifyContent: 'flex-start',
-                alignItems: 'center',
-                color: COLORS.yellow,
-                width: '120%',
-                borderBottomWidth: 0.4,
-                borderBottomColor: 'rgba(35, 113, 171, .4)',
-              },
-            },
-            // 'stylesheet.day.single': {
-            //   base: {
-            //     overflow: 'hidden',
-            //     height: 34,
-            //     alignItems: 'center',
-            //     width: 38,
-            //   }
-            // },
-            // 'stylesheet.day.basic': {
-            //   text: {
-            //     // marginBottom: 4,
-            //     color: COLORS.textLight,
-            //     alignText: 'center',
-            //     dispay: 'flex',
-            //     justifyContent: 'center',
-            //     alignItems: 'center',
-            //     marginTop: 14, // specify the margin you want
-            //     paddingLeft: 5,
-            //     // ...otherTextStyles
-            //   },
-            // },
-            'stylesheet.calendar.main': {
-              // monthView: {
-              //   backgroundColor: colors.grey30,
-              // },
-              // week: {
-              //   flexDirection: 'row',
-              //   justifyContent: 'space-around',
-              //   backgroundColor: '#fff',
-              //   // margin: 1,
-
-              //   // borderBottomWidth: 1,
-              //   // borderBottomColor: colors.grey30,
-              // },
-              dayContainer: {
-                // borderColor: '#D1D3D4',
-                // borderWidth: 1,
-                // justifyContent: 'center',
-                // alignItems: 'center',
-                // padding: 10,
-                justifyContent: 'space-between',
-              },
-
-              week: {
-                height: 60,
-                width: '100%',
-                // borderBottomWidth: 0.4,
-                borderTopColor: 'rgba(35, 113, 171, .4)',
-                borderTopWidth: 0.4,
-                flexDirection: 'row',
-                // borderBottomColor: 'rgba(35, 113, 171, .4)',
-                alignItems: 'flex-start',
-                justifyContent: 'space-around',
-                paddingTop: 7,
-                // marginTop: 7,
-              },
-            },
-            textMonthColor: COLORS.yellow,
-            textDayFontFamily: 'AntagometricaBT-Bold',
-            textDayFontSize: 18,
-            arrowStyle: {
-              opacity: 0,
-            },
-            textDayFontWeight: 'bold',
-            textDayStyle: {
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              textAlign: 'center',
-              // backgroundColor: 'green',
-              // color: 'red',
-            },
-            // textDayFontWeight: "bold",
-            selectedStyle: {
-              alignItems: 'center',
-              justifyContent: 'center',
-            },
-            dotStyle: {
-              marginTop: 11,
-              width: 5.76,
-              height: 5.76,
-              borderRadius: 50,
-            },
-            todayTextColor: '#CE9B51',
-            calendarBackground: '#1F1933',
-            backgroundColor: '#ffffff',
-            selectedDayBackgroundColor: '#2371AB',
-
-            selectedDayTextColor: '#fff',
-            selectedDotColor: '#fff',
-            textSectionTitleColor: '#2371AB',
-            textSectionTitleDisabledColor: COLORS.textLight,
-            dayTextColor: COLORS.textLight,
-            textDisabledColor: '#729DAF',
-            dotColor: '#DBE9EE',
-            monthTextColor: '#DBE9EE',
-            textMonthFontWeight: 'bold',
-
-            arrowColor: '#DBE9EE',
-          }}
+      <SafeAreaView style={{alignItems: 'center', marginTop: 10}}>
+        <SearchBar
+          searchPhrase={searchPhrase}
+          setSearchPhrase={setSearchPhrase}
+          clicked={clicked}
+          setClicked={setClicked}
+          shown={shown}
+          setShown={setShown}
         />
-        <ScrollView style={{paddingBottom: 150}}>
-          <View style={{paddingBottom: 50}}>
-            {points.map(item => {
-              return (
-                moment(item.date).format('YYYY-MM-DD') ==
-                  moment(selectedDate).format('YYYY-MM-DD') && (
-                  <TouchableOpacity
-                    onPress={() => goToEvent(item)}
-                    style={styles.eventContainer}>
-                    <View style={styles.eventLeftC}>
-                      <View style={styles.eventDate}>
-                        <Text style={{color: COLORS.textLight, fontSize: 10}}>
-                          13:00
-                        </Text>
-                      </View>
-                      <View style={styles.eventDate}>
-                        <Text style={{color: COLORS.textLight, fontSize: 10}}>
-                          13:30
-                        </Text>
-                      </View>
-                    </View>
-                    <View>
-                      <Image
-                        style={{width: 0.77, height: 40}}
-                        source={eventDateImg}
-                      />
-                    </View>
-                    <View
-                      style={{
-                        paddingLeft: 7.67,
-                      }}>
-                      <View>
-                        <Text style={styles.eventText}>{item.title}</Text>
-                      </View>
-                      <Text style={styles.eventSubText}> home</Text>
-                    </View>
-                  </TouchableOpacity>
-                )
-              );
-            })}
-          </View>
-        </ScrollView>
-      </View>
+      </SafeAreaView>
+
+      <SafeAreaView>
+        <View>
+          {!shown && (
+            <Calendar
+              selected={'2012-05-16'}
+              showScrollIndicator={true}
+              enableSwipeMonths={true}
+              current={formatDate(selectedDate)}
+              // hideExtraDays={true}
+              // minDate={subWeeks(baseDate, 1)}
+              // maxDate={addWeeks(baseDate, 1)}
+              onDayPress={day => {
+                setSelectedDate(new Date(day.year, day.month - 1, day.day));
+                console.log('selected day', day);
+              }}
+              markedDates={getMarkedDates(selectedDate, points)}
+              disabledDaysIndexes={[1, 6]}
+              theme={{
+                textDayHeaderFontSize: 13,
+                textDayHeaderFontFamily: 'AntagometricaBT-Bold',
+                textDefaultColor: COLORS.yellow,
+                //@ts-ignore
+                'stylesheet.calendar.header': {
+                  week: {
+                    color: COLORS.yellow,
+                    flexDirection: 'row',
+                    // backgroundColor: '#000',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: 14,
+                    paddingTop: 9.23,
+                    paddingBottom: 6.97,
+                  },
+                  header: {
+                    flexDirection: 'row',
+                    marginLeft: -30,
+                    // justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    color: COLORS.yellow,
+                    width: '120%',
+                    borderBottomWidth: 0.4,
+                    borderBottomColor: 'rgba(35, 113, 171, .4)',
+                    marginBottom: 4,
+                    // backgroundColor: '#2A305A',
+                    dayHeader: {
+                      marginTop: 2,
+                      marginBottom: 7,
+                      width: 30,
+                      textAlign: 'center',
+                      fontSize: 14,
+                      color: '#fff',
+                    },
+                  },
+                  dayTextAtIndex0: {
+                    color: 'red',
+                    padding: 10,
+                    backgroundColor: 'red',
+                  },
+                  headerTitle: {
+                    color: COLORS.yellow,
+                  },
+                },
+                // 'stylesheet.day.single': {
+                //   base: {
+                //     overflow: 'hidden',
+                //     height: 34,
+                //     alignItems: 'center',
+                //     backgroundColor: 'red',
+                //     width: 38,
+                //   }
+                // },
+                // 'stylesheet.day.basic': {
+                //   text: {
+                //     // marginBottom: 4,
+                //     color: COLORS.textLight,
+                //     alignText: 'center',
+                //     dispay: 'flex',
+                //     justifyContent: 'center',
+                //     alignItems: 'center',
+                //     marginTop: 14, // specify the margin you want
+                //     paddingLeft: 5,
+                //     // ...otherTextStyles
+                //   },
+                // },
+                'stylesheet.calendar.main': {
+                  monthView: {
+                    backgroundColor: COLORS.yellow,
+                  },
+                  // week: {
+                  //   flexDirection: 'row',
+                  //   justifyContent: 'space-around',
+                  //   backgroundColor: '#fff',
+                  //   // margin: 1,
+
+                  //   // borderBottomWidth: 1,
+                  //   // borderBottomColor: colors.grey30,
+                  // },
+                  dayContainer: {
+                    // borderColor: '#D1D3D4',
+                    // borderWidth: 1,
+                    // justifyContent: 'center',
+                    // alignItems: 'center',
+                    // padding: 10,
+                    justifyContent: 'space-between',
+                  },
+
+                  week: {
+                    height: 60,
+                    width: '100%',
+                    // borderBottomWidth: 0.4,
+                    borderTopColor: 'rgba(35, 113, 171, .4)',
+                    borderTopWidth: 0.4,
+                    flexDirection: 'row',
+                    // borderBottomColor: 'rgba(35, 113, 171, .4)',
+                    alignItems: 'flex-start',
+                    justifyContent: 'space-around',
+                    paddingTop: 7,
+                    // marginTop: 7,
+                  },
+                },
+                textMonthColor: COLORS.yellow,
+                textDayFontFamily: 'AntagometricaBT-Bold',
+                textDayFontSize: 18,
+                arrowStyle: {
+                  opacity: 0,
+                },
+                textDayFontWeight: 'bold',
+                textDayStyle: {
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  // backgroundColor: 'green',
+                  // color: 'red',
+                },
+                // textDayFontWeight: "bold",
+                selectedStyle: {
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                },
+                dotStyle: {
+                  marginTop: 11,
+                  width: 5.76,
+                  height: 5.76,
+                  borderRadius: 50,
+                },
+                todayTextColor: '#CE9B51',
+                calendarBackground: '#1F1933',
+                backgroundColor: '#ffffff',
+                selectedDayBackgroundColor: '#2371AB',
+
+                selectedDayTextColor: '#fff',
+                selectedDotColor: '#fff',
+                textSectionTitleColor: '#2371AB',
+                textSectionTitleDisabledColor: COLORS.textLight,
+                dayTextColor: COLORS.textLight,
+                textDisabledColor: '#729DAF',
+                dotColor: '#DBE9EE',
+                monthTextColor: '#DBE9EE',
+                textMonthFontWeight: 'bold',
+
+                arrowColor: '#DBE9EE',
+              }}
+            />
+          )}
+          <ScrollView
+            style={{
+              paddingBottom: 150,
+              height: Dimensions.get('window').height / 3,
+            }}>
+            <View style={{paddingBottom: 40}}>
+              {(filteredPoints.length > 0 ? filteredPoints : points).map(
+                item => {
+                  return filteredPoints.length > 0
+                    ? EventHtml(item)
+                    : moment(item.date).format('YYYY-MM-DD') ==
+                        moment(selectedDate).format('YYYY-MM-DD') &&
+                        EventHtml(item);
+                },
+              )}
+            </View>
+          </ScrollView>
+        </View>
+      </SafeAreaView>
     </ImageBackground>
   );
 };

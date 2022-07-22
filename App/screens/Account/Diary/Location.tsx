@@ -11,7 +11,10 @@ import {
 import {COLORS} from '../../../styles/Constants';
 import backLocation from '../../../assets/images/documents/backLocation.png';
 import point from '../../../assets/images/documents/pointEvent.png';
-export const Location = ({value, setValue}) => {
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+
+export const Location = ({value, setValue, location, setLocation}) => {
+  navigator.geolocation = require('@react-native-community/geolocation');
   const CardItem = () => {
     return (
       <View style={styles.itemcard}>
@@ -28,13 +31,33 @@ export const Location = ({value, setValue}) => {
   return (
     <View style={styles.container}>
       <View>
-        <TextInput
+        <GooglePlacesAutocomplete
+          keyboardShouldPersistTaps="always"
+          placeholder="Enter Location"
+          styles={stylesInput}
+          textInputProps={{
+            placeholderTextColor: 'rgba(35, 113, 171, 0.6)',
+          }}
+          fetchDetails={true}
+          listViewDisplayed="auto"
+          onPress={(data, details = null) => {
+            // 'details' is provided when fetchDetails = true
+            console.log('GooglePlacesAutocomplete', data, details);
+          }}
+          query={{
+            key: 'AIzaSyBi76kzF9HZr3hjSUvBA45aqIJTwe-zR9g',
+            language: 'en',
+          }}
+          currentLocation={true}
+          currentLocationLabel="Current location"
+        />
+        {/* <TextInput
           placeholder="Enter Location"
           placeholderTextColor={COLORS.textLight}
           style={styles.input}
           value={value}
           onChange={setValue}
-        />
+        /> */}
       </View>
       <View style={styles.recentsContainer}>
         <View style={{paddingTop: 6.03, paddingBottom: 7.47}}>
@@ -50,6 +73,20 @@ export const Location = ({value, setValue}) => {
     </View>
   );
 };
+const stylesInput = StyleSheet.create({
+  container: {},
+  textInput: {
+    width: Dimensions.get('window').width,
+    marginLeft: 0,
+    marginRight: 0,
+    height: 76.67,
+    color: COLORS.text,
+    fontSize: 16,
+    backgroundColor: '#1A172D',
+  },
+
+
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -57,6 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#272854',
   },
   recentsContainer: {
+    marginTop: 82.77,
     paddingHorizontal: 12.97,
   },
   input: {

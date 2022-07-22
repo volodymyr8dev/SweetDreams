@@ -30,6 +30,7 @@ import SettingsAccount from '../../assets/images/svg/Settings';
 import SettingsActive from '../../assets/images/svg/SettingsActive';
 import plus from '../../assets/images/documents/plus.png';
 import search from '../../assets/images/documents/search.png';
+import {useDispatch} from 'react-redux';
 
 const iconGr = (focused, iconActive, icon, size = 30) => {
   return (
@@ -98,48 +99,51 @@ const navigationOptions = navigation => ({
   tabBarStyle: {
     backgroundColor: 'rgba(52, 52, 90, 0.97)',
   },
-    tabBarIcon: ({focused}) => (focused ? <SettingsActive/> : <SettingsAccount/>)
+  tabBarIcon: ({focused}) =>
+    focused ? <SettingsActive /> : <SettingsAccount />,
 });
 
-const navigationDocument =({navigation,route}) =>({
-          headerTitle: "baby's diary",
-          headerRight: () => {
-            return (
-              <View style={{marginRight: 18.58, flexDirection: 'row'}}>
-                <TouchableOpacity>
-                  <Image
-                    style={{width: 18.58, height: 18.58}}
-                    source={search}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                   console.log('route', route?.params.addEvent);
-                   route?.params.addEvent();
-                  }}
-                  style={{marginLeft: 13.76}}>
-                  <Image style={{width: 18.58, height: 18.58}} source={plus} />
-                </TouchableOpacity>
-              </View>
-            );
-          },
-          tabBarLabel: '',
-          headerTintColor: '#2371AB',
-          headerStyle: {
-            backgroundColor: '#242247',
-            shadowColor: 'transparent',
-            elevation: 0,
-          },
+const navigationDocument = ({navigation, route}) => ({
+  headerTitle: "baby's diary",
 
-          headerTitleStyle: {
-            fontSize: 20,
-          },
-          tabBarStyle: {
-            backgroundColor: 'rgba(52, 52, 90, 0.97)',
-          },
-          tabBarIcon: ({color, focused}) =>
-            iconGr(focused, documentActive, document),
-})
+  headerRight: () => {
+    return (
+      <View style={{marginRight: 18.58, flexDirection: 'row'}}>
+        <TouchableOpacity
+          style={{paddingRight: 13.76, paddingLeft: 5, paddingVertical: 5}}
+          onPress={() => {
+            route.params.searchClicked();
+          }}>
+          <Image style={{width: 18.58, height: 18.58}} source={search} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{paddingVertical: 5}}
+          onPress={() => {
+            console.log('route', route?.params.addEvent);
+            route?.params.addEvent();
+          }}>
+          <Image style={{width: 18.58, height: 18.58}} source={plus} />
+        </TouchableOpacity>
+      </View>
+    );
+  },
+  headerShown: true,
+  tabBarLabel: '',
+  headerTintColor: '#2371AB',
+  headerStyle: {
+    backgroundColor: '#242247',
+    shadowColor: 'transparent',
+    elevation: 0,
+  },
+
+  headerTitleStyle: {
+    fontSize: 20,
+  },
+  tabBarStyle: {
+    backgroundColor: 'rgba(52, 52, 90, 0.97)',
+  },
+  tabBarIcon: ({color, focused}) => iconGr(focused, documentActive, document),
+});
 const Tab = createBottomTabNavigator();
 // const TabNav = createTabNavigator()
 const customTabBarStyle = {
@@ -164,7 +168,8 @@ export const MyTabs = () => {
           tabBarStyle: {
             backgroundColor: 'rgba(52, 52, 90, 0.97)',
           },
-          tabBarIcon: ({focused}) => ( focused ? <ScheduleActive/> : <Schedule />)
+          tabBarIcon: ({focused}) =>
+            focused ? <ScheduleActive /> : <Schedule />,
           // iconGr(focused, graphActive, graphUnActive),
         }}
       />
@@ -182,7 +187,7 @@ export const MyTabs = () => {
           tabBarStyle: {
             backgroundColor: 'rgba(52, 52, 90, 0.97)',
           },
-          tabBarIcon: ({focused}) => (focused ? <ChildActive/> : <Child/>)
+          tabBarIcon: ({focused}) => (focused ? <ChildActive /> : <Child />),
           // iconGr(focused, childActive, childUnActive, 45),
         }}
       />
@@ -195,7 +200,7 @@ export const MyTabs = () => {
           tabBarStyle: {
             backgroundColor: 'rgba(52, 52, 90, 0.97)',
           },
-          tabBarIcon: ({ focused}) => (focused ? <BottleActive/> : <Bottle/>)
+          tabBarIcon: ({focused}) => (focused ? <BottleActive /> : <Bottle />),
           // iconGr(focused, niple, niple),
         }}
       />

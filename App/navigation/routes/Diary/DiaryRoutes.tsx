@@ -72,7 +72,7 @@ return {
     },
   };
 }
-const navigationOptionsDoc = navigation => {
+const navigationOptionsDoc = (navigation) => {
   const nav = useNavigation();
   // console.log('paramsDoc', navigation.route?.params);
   let param:IParam = navigation.route?.params;

@@ -23,7 +23,7 @@ export const NewEvent = ({route}) => {
     ({account}: RootState) => account.userInformation.user.accounts[0],
   );
   console.log('event', event);
-  const addEvent = ({route}) => {
+  const addEvent = () => {
     console.log('here i am ');
     NewEventApi(global.id, title, location, allDay, starts, ends, notes)
       .then(({data}) => {
