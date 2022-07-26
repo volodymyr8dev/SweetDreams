@@ -10,10 +10,11 @@ import {
 } from 'react-native';
 import arrowRight from '../../assets/images/settings/arrowRight.png';
 import {COLORS} from '../../styles/Constants';
+import {Switch} from '../Switch/Switch';
 
 interface PropsBox {
   nameOfBox: string;
-  title: string;
+  title?: string;
   nameField?: string;
   rightEl?: string;
   placeholder?: string;
@@ -21,6 +22,11 @@ interface PropsBox {
   value?: string;
   setValueName?: Function;
   date?: boolean;
+  rightArrow?: boolean;
+  rightContent?: string;
+  event?: boolean;
+  style?: object;
+  multiline?: boolean;
 }
 export const InputUnit = ({
   nameOfBox,
@@ -32,81 +38,120 @@ export const InputUnit = ({
   value,
   setValueName,
   date,
+  rightArrow,
+  rightContent,
+  event,
+  style,
+  multiline,
 }: PropsBox) => {
   const navigation = useNavigation();
   const handleGoToScreen = titleName => {
     console.log('titleName', titleName);
     navigation.navigate(titleName, {
       title: titleName,
-      rightEl:
-        titleName === 'Terms Conditions' || 'Privacy Policy' ? false : true,
+      rightEl: rightEl ? true : false,
       hideOld: titleName == 'Change Password' ? true : false,
+      location: value,
+      setLocation: setValueName,
     });
   };
 
-  return nameOfBox == 'touch' ? (
-    <TouchableOpacity
-      onPress={() => handleGoToScreen(title)}
-      style={styles.box}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-        <View>
-          <Text
-            style={{
-              color: COLORS.text,
-              fontSize: 18,
-              fontFamily: 'AntagometricaBT-Regular',
-            }}>
-            {title}
-          </Text>
-        </View>
-        {!rightEl ? (
-          <View>
-            <Image style={{height: 14.19, width: 9.26}} source={arrowRight} />
+  switch (nameOfBox) {
+    case 'touch':
+      return (
+        <TouchableOpacity
+          onPress={() => handleGoToScreen(title)}
+          style={styles.box}>
+          <View style={styles.touchC}>
+            <View>
+              <Text style={styles.touchT}>{title}</Text>
+            </View>
+            {rightArrow ? (
+              <View>
+                <Image
+                  style={{height: 14.19, width: 9.26}}
+                  source={arrowRight}
+                />
+              </View>
+            ) : (
+              <Text style={{color: '#fff', fontSize: 17}}>{rightEl}</Text>
+            )}
           </View>
-        ) : (
-          <Text style={{color: '#fff', fontSize: 17}}>{rightEl}</Text>
-        )}
-      </View>
-    </TouchableOpacity>
-  ) : (
-    <View style={styles.input}>
-      <View>
-        <Text
-          style={{
-            color: COLORS.text,
-            fontSize: 18,
-            fontFamily: 'AntagometricaBT-Regular',
-          }}>
-          {placeholder}:
-        </Text>
-      </View>
-
-      <TextInput
-        value={value}
-        onChangeText={setValueName}
-        secureTextEntry={security}
-        style={{
-          width: '100%',
-          paddingLeft: 10,
-          color: COLORS.text,
-          fontSize: 18,
-
-          fontFamily: 'AntagometricaBT-Regular',
-        }}>
-        {/* <Text>{nameField && value}</Text> */}
-      </TextInput>
-      {date && (
-        <View style={{position: 'absolute', right: 15}}>
-          <Text style={{color: COLORS.text, fontSize: 18}}>{date}</Text>
+        </TouchableOpacity>
+      );
+    case 'input':
+      return (
+        <View style={[styles.input, style]}>
+          <View style={{}}>
+            <Text style={styles.inputT}>
+              {placeholder}
+              {!event ? ':' : ''}
+            </Text>
+          </View>
+          <TextInput
+            value={value}
+            onChangeText={setValueName}
+            secureTextEntry={security}
+            style={styles.inputI}
+            multiline={multiline ? true : false}
+            numberOfLines={4}
+          />
+          {date && (
+            <View style={{position: 'absolute', right: 15}}>
+              <Text style={{color: COLORS.text, fontSize: 18}}>{date}</Text>
+            </View>
+          )}
         </View>
-      )}
-    </View>
-  );
+      );
+    case 'switch':
+      return (
+        <View style={styles.input}>
+          <View>
+            <Text style={styles.inputT}>{placeholder}:</Text>
+          </View>
+
+          <TextInput
+            value={value}
+            onChangeText={setValueName}
+            secureTextEntry={security}
+            style={styles.switchI}>
+            {/* <Text>{nameField && value}</Text> */}
+          </TextInput>
+          {rightContent == 'switch' ? (
+            <View style={styles.rightContainerSwitch}>
+              <Switch val={value} setVal={setValueName} />
+            </View>
+          ) : (
+            <View style={styles.rightContainer}>
+              <Text style={styles.rightText}>{rightContent}</Text>
+            </View>
+          )}
+        </View>
+      );
+    case 'date':
+      return (
+        <View style={styles.input}>
+          <View>
+            <Text style={styles.inputT}>
+              {placeholder}
+              {!event ? ':' : ''}
+            </Text>
+          </View>
+          <TextInput
+            value={value}
+            onChangeText={setValueName}
+            secureTextEntry={security}
+            style={styles.inputI}></TextInput>
+
+          {date && (
+            <View style={{position: 'absolute', right: 15}}>
+              <Text style={{color: COLORS.text, fontSize: 18}}>{date}</Text>
+            </View>
+          )}
+        </View>
+      );
+  }
+  return <View></View>;
 };
 
 const styles = StyleSheet.create({
@@ -165,5 +210,45 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     top: 20,
+  },
+  touchC: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  touchT: {
+    color: COLORS.text,
+    fontSize: 18,
+    fontFamily: 'AntagometricaBT-Regular',
+  },
+  switchI: {
+    width: '100%',
+    paddingLeft: 10,
+    color: COLORS.text,
+    fontSize: 18,
+
+    fontFamily: 'AntagometricaBT-Regular',
+  },
+  inputI: {
+    width: '100%',
+    paddingLeft: 10,
+    color: COLORS.text,
+    fontSize: 18,
+    fontFamily: 'AntagometricaBT-Regular',
+  },
+  inputT: {
+    color: COLORS.text,
+    fontSize: 18,
+    fontFamily: 'AntagometricaBT-Regular',
+  },
+  rightContainerSwitch: {
+    position: 'absolute',
+    right: 17,
+  },
+  rightContainer: {position: 'absolute', right: 25.29},
+  rightText: {
+    color: '#fff',
+    fontSize: 18,
+    fontFamily: 'AntagometricaBT-Regular',
   },
 });

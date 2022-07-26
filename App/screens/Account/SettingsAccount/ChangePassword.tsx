@@ -108,7 +108,8 @@ export const ChangePassword = ({route}) => {
               <Image style={{height: 15, width: 15}} source={arrowRight} />
             </View>
           ) : (
-            <Text style={{color: '#fff', fontSize: 17}}>{rightEl}</Text>
+            // <Text style={{color: '#fff', fontSize: 17}}>{rightEl}</Text>
+            <Text></Text>
           )}
         </View>
       </TouchableOpacity>
@@ -134,7 +135,8 @@ export const ChangePassword = ({route}) => {
     <View style={styles.container}>
       {!route.params.hideOld && (
         <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-          <Text style={{color: COLORS.text, fontFamily:"AntagometricaBT-Regular"}}>
+          <Text
+            style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
             Please enter the reset code we recently sent to your email address
             supplied
           </Text>
@@ -174,7 +176,8 @@ export const ChangePassword = ({route}) => {
         />
       )}
       <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-        <Text style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
+        <Text
+          style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
           Please enter the new password 8-64 charapters (letters, numbers AND
           special characters)
         </Text>

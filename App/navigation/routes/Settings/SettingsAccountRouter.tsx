@@ -37,6 +37,7 @@ const navigationOptions = navigation => {
     title: `${navigation.route?.params?.title}`,
     headerShown: true,
     headerTintColor: '#fff',
+    headerTransparent:true,
     headerRight: () => {
       console.log('params change paswword', navigation.route?.params);
       return (

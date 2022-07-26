@@ -31,13 +31,15 @@ import {ForgotPassword3} from '../../screens/registration/ForgotPassword3';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ConfirmConnection from '../../screens/Account/ConfirmConnection';
 import {Account} from "../../screens/Account/Account";
+import { DiaryRoutes } from './Diary/DiaryRoutes';
+import { getProfile } from '../../api/Profile/ProfileApi';
+import { useDispatch } from 'react-redux';
 export type RootStackParamList = {
   step2: {
     position: any;
     setPosition: any;
   };
 };
-
 export type registerScreenProp = StackNavigationProp<RootStackParamList>;
 
 const customTabBarStyle = {
@@ -198,7 +200,8 @@ export const navigationOptions = navigation => ({
   },
 });
 
-    const AppStackRoutes = () => {
+const AppStackRoutes = () => {
+  const dispatch = useDispatch();
   let value;
   const navigation = useNavigation();
   const [token, setToken] = useState();
@@ -214,6 +217,14 @@ export const navigationOptions = navigation => ({
     getToken();
   }, []);
   if (token) {
+        getProfile()
+          .then(async ({data}) => {
+            console.log('all information about user', data);
+            dispatch(setUserInformation(data.user));
+          })
+          .catch(err => {
+            console.log('what error', err.response.data);
+          });
     navigation.navigate('account');
   }
   return (
@@ -258,7 +269,6 @@ export const navigationOptions = navigation => ({
         component={Connection}
         options={navigationOptions}
       />
-
       <Stack.Screen
         name="conectionStep1"
         component={ConnectionStep1}
@@ -307,8 +317,9 @@ export const navigationOptions = navigation => ({
       <Stack.Screen
         name="account"
         component={MyTabs}
-        options={{headerShown: false,contentStyle:{backgroundColor: '#000'}}}
+        options={{headerShown: false, contentStyle: {backgroundColor: '#000'}}}
       />
+      {DiaryRoutes()}
       {SettingsRoutes()}
       {SettingsAccountStackRoutes()}
       {GraphicRoutes()}
