@@ -18,7 +18,7 @@ const SettingsSlice = createSlice({
     },
     setBrightness(state, action: PayloadAction<number>) {
       state.brightness = action.payload;
-    },         
+    },
     setWakeUpTime(state, action: PayloadAction<any>) {
       state.wakeUpTime = action.payload.value;
       state.formatWakeUpTime = action.payload.formatValue;

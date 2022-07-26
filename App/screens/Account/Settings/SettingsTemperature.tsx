@@ -10,14 +10,19 @@ import SettingsSlice, {
   setTemperature,
 } from '../../../redux/slice/SettingsSlice';
 import {useSelector} from 'react-redux';
+import {SettingsDevice} from '../../../api/Settings/SettingsApi';
+import {RootState} from '../../../redux/configureStore';
 export const SettingsTemperature = () => {
   const [typeC, setTypeC] = useState(false);
   const [typeF, setTypeF] = useState(false);
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
   const {temperature} = useSelector(({settings}) => settings);
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
   console.log(temperature);
   useEffect(() => {
+    SettingsDevice({Temperature: typeC ? 'C' : 'F'}, user.accounts[0].id).then((res)=>
+    {console.log(res)})
     setLoader(true);
   }, [temperature]);
   const verticalStaticData = [
@@ -82,7 +87,6 @@ export const SettingsTemperature = () => {
             data={verticalStaticData}
             style={styles.bouncyCheckBox}
             onChange={(selectedItem: ICheckboxButton) => {
-              dispatch(setTemperature(selectedItem.id));
               if (selectedItem.id == 0) {
                 setTypeC(true);
                 setTypeF(false);
@@ -90,6 +94,7 @@ export const SettingsTemperature = () => {
                 setTypeC(false);
                 setTypeF(true);
               }
+              dispatch(setTemperature(selectedItem.id));
             }}
             textStyle={{
               textDecorationLine: 'none',

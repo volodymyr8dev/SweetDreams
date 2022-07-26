@@ -8,14 +8,14 @@ import {useNavigation} from '@react-navigation/native';
 import {AlertComp} from '../../components/Alert/AlertComp';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {setConnection} from '../../redux/slice/powerSlice';
-const ConfirmConnection = props => {
+const ConfirmConnection = ({setToggleButton}) => {
   const netInfo = useNetInfo();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [conect, setConnect] = useState(false);
   //   const conection = useSelector()
   const handleCheckInternet = () => {
-    props.toggleButton((prev) => !prev);
+    setToggleButton(true);
     // setConnect(!conect);
     // console.log('xxx', netInfo.isConnected);
     // if (netInfo.isConnected) {
@@ -24,18 +24,18 @@ const ConfirmConnection = props => {
     //   AlertComp('no internet connection ', 'reconect', 'cancel');
     // }
   };
-//   useEffect(() => {
-//     console.log('netInfo.isConnected)', netInfo.isConnected);
-//     if (netInfo.isConnected) {
-//       dispatch(setConnection(true));
-//     } else {
-//       AlertComp('no internet connection ', 'reconect', 'cancel');
-//     }
-//   }, [conect]);
+  //   useEffect(() => {
+  //     console.log('netInfo.isConnected)', netInfo.isConnected);
+  //     if (netInfo.isConnected) {
+  //       dispatch(setConnection(true));
+  //     } else {
+  //       AlertComp('no internet connection ', 'reconect', 'cancel');
+  //     }
+  //   }, [conect]);
   return (
     <View style={{marginTop: 40}}>
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
-        <Image resizeMode="contain" source={connectionStatus}></Image>
+        <Image resizeMode="contain" source={connectionStatus} />
       </View>
       <View>
         <Text

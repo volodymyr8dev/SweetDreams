@@ -29,6 +29,8 @@ import {ForgotPassword} from '../../screens/registration/ForgotPassword';
 import {ForgotPassword2} from '../../screens/registration/ForgotPassword2';
 import {ForgotPassword3} from '../../screens/registration/ForgotPassword3';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ConfirmConnection from '../../screens/Account/ConfirmConnection';
+import {Account} from "../../screens/Account/Account";
 export type RootStackParamList = {
   step2: {
     position: any;
@@ -110,10 +112,12 @@ export const navigationOptions = navigation => ({
     return params?.title == 'connection'
       ? params?.show && (
           <TouchableOpacity
-            onPress={() => {
-              navigation.navigation.navigate(
-                `conectionStep${params?.connectionStep + 1}`,
-              );
+            onPress={
+              () => {
+              // navigation.navigation.navigate(
+              //   `conectionStep${params?.connectionStep + 1}`,
+              // );
+              navigation.navigation.navigate('Account');
             }}>
             <Text
               style={{
@@ -280,9 +284,19 @@ export const navigationOptions = navigation => ({
         component={ForgotPassword}
         options={navigationOptions}
       />
+      {/*<Stack.Screen*/}
+      {/*  name="ConfirmConnection"*/}
+      {/*  component={ConfirmConnection}*/}
+      {/*  options={navigationOptions}*/}
+      {/*/>*/}
       <Stack.Screen
         name="ForgotPassword2"
         component={ForgotPassword2}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="Account"
+        component={Account}
         options={navigationOptions}
       />
       <Stack.Screen

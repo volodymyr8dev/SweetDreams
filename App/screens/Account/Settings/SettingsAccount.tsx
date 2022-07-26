@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -25,10 +25,21 @@ import volumeImg from '../../../assets/images/settings/volume.png';
 import {Switch} from '../../../components/Switch/Switch';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import {RootState} from '../../../redux/configureStore';
 export const SettingsAccount = () => {
+  // console.log(route.params)
+  // const [data, setData] = useState(route.params);
   const {formatWakeUpTime, formatTime, volume} = useSelector(
     ({settings}) => settings,
   );
+  // useEffect(()=>{
+  //   setState(route.params.childLock)
+  //
+  // },[])
+  // console.log(data, "datadatadata");
+  // useEffect(() => {
+  //   setValSwitch(true);
+  // }, []);
   const Blog = ({title, rightEl, source}) => {
     const navigation = useNavigation();
 
@@ -52,7 +63,7 @@ export const SettingsAccount = () => {
           <Text style={{color: '#2371AB', fontSize: 16}}>{title}</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {typeof rightEl == 'object' ? (
+          {typeof rightEl === 'object' ? (
             rightEl
           ) : (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -71,7 +82,11 @@ export const SettingsAccount = () => {
     <ScrollView style={styles.container}>
       <View style={{paddingBottom: 40}}>
         <Blog title="Connection" rightEl="Connected" source={connection} />
-        <Blog title="Child Lock" rightEl={<Switch />} source={lock} />
+        <Blog
+          title="Child Lock"
+          rightEl={<Switch val={true} />}
+          source={lock}
+        />
         <View style={{paddingLeft: 15}}>
           <Text style={{color: '#2371AB', fontSize: 17}}>Display Settings</Text>
         </View>
