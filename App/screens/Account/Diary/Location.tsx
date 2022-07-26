@@ -12,9 +12,15 @@ import {COLORS} from '../../../styles/Constants';
 import backLocation from '../../../assets/images/documents/backLocation.png';
 import point from '../../../assets/images/documents/pointEvent.png';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {useDispatch} from 'react-redux';
+import {setLocationEvent} from '../../../redux/slice/slice';
+import {useNavigation} from '@react-navigation/native';
 
-export const Location = ({value, setValue, location, setLocation}) => {
-  navigator.geolocation = require('@react-native-community/geolocation');
+export const Location = ({route}) => {
+  const location = route.params.location;
+  const navigation = useNavigation();
+  console.log('location2 ', route);
+  const dispatch = useDispatch();
   const CardItem = () => {
     return (
       <View style={styles.itemcard}>
@@ -30,35 +36,29 @@ export const Location = ({value, setValue, location, setLocation}) => {
   };
   return (
     <View style={styles.container}>
-      <View>
-        <GooglePlacesAutocomplete
-          keyboardShouldPersistTaps="always"
-          placeholder="Enter Location"
-          styles={stylesInput}
-          textInputProps={{
-            placeholderTextColor: 'rgba(35, 113, 171, 0.6)',
-          }}
-          fetchDetails={true}
-          listViewDisplayed="auto"
-          onPress={(data, details = null) => {
-            // 'details' is provided when fetchDetails = true
-            console.log('GooglePlacesAutocomplete', data, details);
-          }}
-          query={{
-            key: 'AIzaSyBi76kzF9HZr3hjSUvBA45aqIJTwe-zR9g',
-            language: 'en',
-          }}
-          currentLocation={true}
-          currentLocationLabel="Current location"
-        />
-        {/* <TextInput
-          placeholder="Enter Location"
-          placeholderTextColor={COLORS.textLight}
-          style={styles.input}
-          value={value}
-          onChange={setValue}
-        /> */}
-      </View>
+      <GooglePlacesAutocomplete
+        keyboardShouldPersistTaps="always"
+        placeholder="Enter Location"
+        styles={stylesInput}
+        textInputProps={{
+          placeholderTextColor: 'rgba(35, 113, 171, 0.6)',
+        }}
+        fetchDetails={true}
+        listViewDisplayed="auto"
+        onPress={(data, details = null) => {
+          console.log('GooglePlacesAutocomplete', data, details);
+          dispatch(setLocationEvent(data));
+          navigation.goBack();
+        }}
+        onFail={error => console.log('error', error)}
+        query={{
+          key: 'AIzaSyA7JXSAoMZGvVY2Y9B3OMDG8XF4ZvsL1sA',
+          language: 'en',
+        }}
+        currentLocation={true}
+        currentLocationLabel="Current location"
+      />
+
       <View style={styles.recentsContainer}>
         <View style={{paddingTop: 6.03, paddingBottom: 7.47}}>
           <Text style={styles.textRecent}>Recents</Text>
@@ -73,10 +73,17 @@ export const Location = ({value, setValue, location, setLocation}) => {
     </View>
   );
 };
+
 const stylesInput = StyleSheet.create({
-  container: {},
+  container: {
+    position: 'absolute',
+    width:"100%",
+    top: 0,
+    height: 400,
+    zIndex: 1051,
+  },
   textInput: {
-    width: Dimensions.get('window').width,
+    // width: Dimensions.get('window').width,
     marginLeft: 0,
     marginRight: 0,
     height: 76.67,
@@ -84,8 +91,6 @@ const stylesInput = StyleSheet.create({
     fontSize: 16,
     backgroundColor: '#1A172D',
   },
-
-
 });
 
 const styles = StyleSheet.create({
@@ -94,6 +99,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#272854',
   },
   recentsContainer: {
+    zIndex: 1,
+
     marginTop: 82.77,
     paddingHorizontal: 12.97,
   },

@@ -5,36 +5,59 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {COLORS} from '../../../styles/Constants';
 import MapView, {Marker} from 'react-native-maps';
 import iconEue from '../../../assets/images/documents/point.png';
 import {useNavigation} from '@react-navigation/native';
+import {DeleteEventApi} from '../../../api/Diary/calendar';
+import moment from 'moment';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../redux/configureStore';
+import { navigationOptions } from '../../../navigation/routes/AppStackRoutes';
 type Nav = {
   navigate: (value: string, obj?: any) => void;
   setParams: (value: any) => void;
+  goBack: () => void;
 };
 
 export const EventInformation = ({route}) => {
-  console.log('route', route.params);
   const navigation = useNavigation<Nav>();
   const [event, setEvent] = useState(route.params.event);
+  const global = useSelector(
+    ({account}: RootState) => account.userInformation.user.accounts[0],
+  );
   useEffect(() => {
     setEvent(route.params.event);
   }, []);
+  console.log('evemnt', event);
   const goToEdit = () => {
     navigation.navigate('addEvent', {
       title: 'edit entry',
       rightText: 'done',
       backTitle: 'cancel',
-      selectedDate: event.created_at,
+      selectedDate: event.starts_at,
       event: event,
     });
   };
   useEffect(() => {
     navigation.setParams({goToEdit: goToEdit});
   }, []);
+
+  const handleDeleteEvent = () => {
+    DeleteEventApi(global.id, event.id)
+      .then(data => {
+        console.log('success', data);
+        Alert.alert("event successfully deleted")
+        navigation.goBack()
+      })
+      .catch(err => {
+        Alert.alert(err.response.data.message);
+        console.log(err.response.data);
+      });
+  };
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -46,7 +69,7 @@ export const EventInformation = ({route}) => {
             <Text style={styles.subTitle}>{event.location}</Text>
           </View>
           <View style={styles.containerTime}>
-            <Text style={styles.subTitle}>{event.created_at}</Text>
+            <Text style={styles.subTitle}>{event.starts_at}</Text>
           </View>
           <View style={styles.containerTime}>
             <Text style={styles.subTitle}>{event.ends_at}</Text>
@@ -81,6 +104,7 @@ export const EventInformation = ({route}) => {
         <View style={styles.containerText}></View>
       </ScrollView>
       <TouchableOpacity
+        onPress={handleDeleteEvent}
         style={{
           height: 88.17,
           width: Dimensions.get('window').width,

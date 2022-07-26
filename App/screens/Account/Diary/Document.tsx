@@ -121,9 +121,9 @@ export const Document = () => {
     },
   ]);
   const EventHtml = item => {
-    console.log('item', item);
-    let date = moment(item.starts_at).format('hh:ss');
+    let date = moment(item.starts_at).format('hh:mm');
     console.log('date', date);
+    console.log('item', item);
     return item ? (
       <TouchableOpacity
         onPress={() => goToEvent(item)}
@@ -131,12 +131,12 @@ export const Document = () => {
         <View style={styles.eventLeftC}>
           <View style={styles.eventDate}>
             <Text style={{color: COLORS.textLight, fontSize: 10}}>
-              {moment(item.starts_at).format('hh:ss').trim()}
+              {moment(item.starts_at).format('hh:mm').trim()}
             </Text>
           </View>
           <View style={styles.eventDate}>
             <Text style={{color: COLORS.textLight, fontSize: 10}}>
-              {moment(item.ends_at).format('hh:ss').trim()}
+              {moment(item.ends_at).format('hh:mm').trim()}
             </Text>
           </View>
         </View>
@@ -160,11 +160,13 @@ export const Document = () => {
     console.log('update', global);
     GetEventApi(global.id)
       .then(({data}) => {
+        console.log('daat',data)
         let res = data.map(item => {
           item.date = item.starts_at;
-          item.date = new Date(item.date);
+          item.date = moment(item.date).format('YYYY-MM-DD');
           return item;
         });
+        console.log('ressss',res)
         setPoints(res);
       })
       .catch(err => {
@@ -185,7 +187,7 @@ export const Document = () => {
         moment(item.date).format('YYYY-MM-DD') ==
         moment(selectedDate).format('YYYY-MM-DD'),
     );
-    console.log('res', EventItem);
+    console.log('res//////////////////', EventItem);
     navigation.navigate('entry details', {
       title: 'entry details',
       backTitle: `${monthNames[d.getMonth()]} ${d.getFullYear()}`,
@@ -195,6 +197,7 @@ export const Document = () => {
   };
 
   const sendSelectedDate = () => {
+    console.log('selectedDate2',selectedDate)
     navigation.navigate('addEvent', {
       selectedDate,
       title: 'new event entry',

@@ -15,12 +15,10 @@ export const DatePickerComponent = ({
   const [date, setDate] = useState(new Date());
   // const [eventTime, setEventTime] = useState('10:00');
   const [open, setOpen] = useState(false);
+  // const [dater, setDater] = useState(new Date(min));
   let dater = new Date(min);
-  useEffect(() => {
-    if (mode == 'time') {
-      // setDate(new Date(value));
-    }
-  }, []);
+  console.log('dater', dater);
+
   return (
     <>
       {!time ? (
@@ -66,17 +64,18 @@ export const DatePickerComponent = ({
       {min ? (
         type !== 'Starts' ? (
           <DatePicker
+            //fix here
             minimumDate={
               new Date(
-                `${dater.getFullYear()}-${dater.getMonth()}-${
-                  dater.getDate()
-                }`,
+                `${dater.getFullYear()}-${dater.getMonth()}-${dater.getDate()}`,
               )
             }
             maximumDate={
               type == 'Starts'
                 ? new Date(
-                    `${dater.getFullYear()}-${dater.getMonth()+1}-${dater.getDate()}`,
+                    `${dater.getFullYear()}-${
+                      dater.getMonth() + 1
+                    }-${dater.getDate()}`,
                   )
                 : null
             }
@@ -107,7 +106,7 @@ export const DatePickerComponent = ({
               console.log('errror', date);
               setOpen(false);
               setDate(date);
-              moment(date).format('YYYY-MM-DD HH:mm:ss')
+           
               changeDate(date);
             }}
             onCancel={() => {

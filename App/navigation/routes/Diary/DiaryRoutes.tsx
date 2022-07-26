@@ -7,18 +7,20 @@ import {COLORS} from '../../../styles/Constants';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {EventInformation} from '../../../screens/Account/Diary/EventInformation';
 import back from '../../../assets/images/backButton.png';
-import { Location } from '../../../screens/Account/Diary/Location';
+import {Location} from '../../../screens/Account/Diary/Location';
 interface IParam {
   title: string;
   isHide: boolean;
   rightText: string;
   backTitle: string;
-  goToEdit:Function;
+  goToEdit: Function;
+  addEvent: Function;
+  editEvent: Function;
 }
-const navigationOptionsLocation = (navigation)=>{
-   const nav = useNavigation();
-return {
-    title: "location",
+const navigationOptionsLocation = navigation => {
+  const nav = useNavigation();
+  return {
+    title: 'location',
     headerShown: true,
     headerTintColor: COLORS.textLight,
     headerTitleStyle: {
@@ -38,44 +40,39 @@ return {
           onPress={() => {
             nav.goBack();
           }}>
-     
-            <Image
-              style={{width: 12.3, height: 18.86, marginRight: 7.69}}
-              source={back}
-            />
-         
+          <Image
+            style={{width: 12.3, height: 18.86, marginRight: 7.69}}
+            source={back}
+          />
+
           <Text
             style={{
               color: '#FFFFFF',
               fontSize: 19,
               fontFamily: 'AntagometricaBT-Regular',
-            }}>
-          </Text>
+            }}></Text>
         </TouchableOpacity>
       );
     },
     headerRight: () => {
       return (
-        <TouchableOpacity
-          onPress={() => {
-       
-          }}>
+        <TouchableOpacity onPress={() => {}}>
           <Text
             style={{
               color: '#fff',
               fontSize: 19,
               fontFamily: 'AntagometricaBT-Regular',
-            }}>
-          </Text>
+            }}></Text>
         </TouchableOpacity>
       );
     },
   };
-}
-const navigationOptionsDoc = (navigation) => {
+};
+const navigationOptionsDoc = navigation => {
   const nav = useNavigation();
   // console.log('paramsDoc', navigation.route?.params);
-  let param:IParam = navigation.route?.params;
+  let param: IParam = navigation.route?.params;
+  console.log(param);
   return {
     title: `${param?.title}`,
     headerShown: true,
@@ -118,9 +115,18 @@ const navigationOptionsDoc = (navigation) => {
       return (
         <TouchableOpacity
           onPress={() => {
-            param?.rightText == 'edit'
-              ? param.goToEdit()
-              : param.addEvent();
+            console.log('-----here------', param.rightText);
+            if (param.rightText === 'add') {
+              param.addEvent();
+            } else if (param.rightText == 'edit') {
+              param.goToEdit();
+            } else if (param.rightText == 'done') {
+              param.editEvent();
+            }
+            // param.rightText ==="add"?
+            //   ? param.editEvent()
+            //   : param?.rightText == 'edit'
+            //   ? param.goToEdit()
           }}>
           <Text
             style={{

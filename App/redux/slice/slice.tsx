@@ -5,6 +5,9 @@ const messageSlice = createSlice({
   name: 'account',
   initialState: {
     loader: false,
+    events: {
+      location: '',
+    },
     userInformation: {
       user: {accounts: [{}]},
       verified: false,
@@ -30,6 +33,9 @@ const messageSlice = createSlice({
     setLoader(state, action: PayloadAction<boolean>) {
       state.loader = action.payload;
     },
+    setLocationEvent(state, action: PayloadAction<any>) {
+      state.events.location = action.payload;
+    },
   },
 });
 
@@ -39,5 +45,6 @@ export const {
   setUserInformation,
   updateVerifiedEmail,
   setBabyInformation,
+  setLocationEvent
 } = messageSlice.actions;
 export default messageSlice.reducer;

@@ -25,3 +25,15 @@ export const NewEventApi = async (
 export const GetEventApi = async accoundId => {
   return await axiosInstance.get(`/api/accounts/${accoundId}/diary`);
 };
+export const EditEventApi = async (accountId, diaryId,newEvent) => {
+
+  return await axiosInstance.patch(
+    `/api/accounts/${accountId}/diary/${diaryId}`,
+    newEvent,
+  );
+};
+export const DeleteEventApi = async (accountId, diaryId) => {
+  return await axiosInstance.delete(
+    `/api/accounts/${accountId}/diary/${diaryId}`,
+  );
+};
