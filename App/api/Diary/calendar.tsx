@@ -13,7 +13,7 @@ export const NewEventApi = async (
   console.log('starts_at', moment(starts_at).format('YYYY-MM-DD hh:mm:ss'));
   const body = {
     title,
-    location,
+    location:JSON.stringify(location),
     all_day,
     starts_at: moment(starts_at).format('YYYY-MM-DD hh:mm:ss'),
     ends_at: moment(ends_at).format('YYYY-MM-DD hh:mm:ss'),

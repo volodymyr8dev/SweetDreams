@@ -11,13 +11,13 @@ export const DatePickerComponent = ({
   mode,
   time,
   min,
+  allDay,
 }) => {
   const [date, setDate] = useState(new Date());
-  // const [eventTime, setEventTime] = useState('10:00');
   const [open, setOpen] = useState(false);
-  // const [dater, setDater] = useState(new Date(min));
   let dater = new Date(min);
   console.log('dater', dater);
+  console.log('date§§§§§§§§§', date);
 
   return (
     <>
@@ -47,15 +47,6 @@ export const DatePickerComponent = ({
                 <Text style={{color: '#fff', fontSize: 17}}>{value}</Text>
               </View>
             </View>
-            {/* {time && (
-              <TouchableOpacity 
-                onPress={() => {
-                  setOpen(true);
-                  setTimeActive(true);
-                }}>
-                <Text style={styles.timeText}>{eventTime}</Text>
-              </TouchableOpacity>
-            )} */}
           </View>
         </TouchableOpacity>
       )}
@@ -106,7 +97,7 @@ export const DatePickerComponent = ({
               console.log('errror', date);
               setOpen(false);
               setDate(date);
-           
+
               changeDate(date);
             }}
             onCancel={() => {

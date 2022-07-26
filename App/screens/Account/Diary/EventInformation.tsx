@@ -16,7 +16,7 @@ import {DeleteEventApi} from '../../../api/Diary/calendar';
 import moment from 'moment';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/configureStore';
-import { navigationOptions } from '../../../navigation/routes/AppStackRoutes';
+import {navigationOptions} from '../../../navigation/routes/AppStackRoutes';
 type Nav = {
   navigate: (value: string, obj?: any) => void;
   setParams: (value: any) => void;
@@ -25,12 +25,22 @@ type Nav = {
 
 export const EventInformation = ({route}) => {
   const navigation = useNavigation<Nav>();
+  const [locationEvent, setLocationEvent] = useState('');
   const [event, setEvent] = useState(route.params.event);
   const global = useSelector(
     ({account}: RootState) => account.userInformation.user.accounts[0],
   );
+  const location = useSelector(
+    ({account}: RootState) => account.events.location,
+  );
+
+  console.log(
+    'location-----------------------------------------------',
+    locationEvent,
+  );
   useEffect(() => {
     setEvent(route.params.event);
+    setLocationEvent(route.params.event.location);
   }, []);
   console.log('evemnt', event);
   const goToEdit = () => {
@@ -50,8 +60,8 @@ export const EventInformation = ({route}) => {
     DeleteEventApi(global.id, event.id)
       .then(data => {
         console.log('success', data);
-        Alert.alert("event successfully deleted")
-        navigation.goBack()
+        Alert.alert('event successfully deleted');
+        navigation.goBack();
       })
       .catch(err => {
         Alert.alert(err.response.data.message);
@@ -66,7 +76,7 @@ export const EventInformation = ({route}) => {
             <Text style={styles.textTitle}>{event.title}</Text>
           </View>
           <View style={styles.containerText}>
-            <Text style={styles.subTitle}>{event.location}</Text>
+            <Text style={styles.subTitle}>{locationEvent.name}</Text>
           </View>
           <View style={styles.containerTime}>
             <Text style={styles.subTitle}>{event.starts_at}</Text>
@@ -85,21 +95,32 @@ export const EventInformation = ({route}) => {
           </View>
         </View>
         <View style={styles.containerMap}>
-          <MapView
-            style={{flex: 1, borderRadius: 20}}
-            initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}>
-            <Marker
-              style={{width: 33.73, height: 39.69}}
-              icon={4}
-              image={iconEue}
-              coordinate={{latitude: 37.78825, longitude: -122.4324}}
-            />
-          </MapView>
+          {locationEvent ? (
+            <MapView
+              style={{flex: 1, borderRadius: 20}}
+              initialRegion={{
+                latitude: locationEvent.locate.lat,
+                longitude: locationEvent.locate.lng,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+              region={{
+                latitude: locationEvent.locate.lat,
+                longitude: locationEvent.locate.lng,
+                latitudeDelta: 0.0822,
+                longitudeDelta: 0.0921,
+              }}>
+              <Marker
+                style={{width: 16.865, height: 19.845}}
+                icon={4}
+                image={iconEue}
+                coordinate={{
+                  latitude: locationEvent.locate.lat,
+                  longitude: locationEvent.locate.lng,
+                }}
+              />
+            </MapView>
+          ) : null}
         </View>
         <View style={styles.containerText}></View>
       </ScrollView>

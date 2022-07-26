@@ -16,7 +16,7 @@ import moment from 'moment';
 import {EditEventApi, NewEventApi} from '../../../api/Diary/calendar';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/configureStore';
-import { navigationOptions } from '../../../navigation/routes/AppStackRoutes';
+import {navigationOptions} from '../../../navigation/routes/AppStackRoutes';
 
 export const NewEvent = ({route}) => {
   const navigation = useNavigation();
@@ -33,12 +33,13 @@ export const NewEvent = ({route}) => {
   const eventSelector = useSelector(
     ({account}: RootState) => account.events.location,
   );
-  console.log('eventSelector,', global);
+  console.log('eventSelector,', eventSelector);
   const addEvent = () => {
-    console.log('here i am ');
+    console.log('location22222', location);
     NewEventApi(global.id, title, location, allDay, starts, ends, notes)
       .then(({data}) => {
         console.log('%c React', 'color:white;background-color:#61dbfb', data);
+        navigation.navigate('document')
         Alert.alert('Event successfully added');
       })
       .catch(err => {
@@ -47,7 +48,6 @@ export const NewEvent = ({route}) => {
       });
   };
   const hadleEditEvent = () => {
-    console.log('trueë', starts);
     if (route.params?.event?.id) {
       const newEVent = {
         title,
@@ -85,7 +85,17 @@ export const NewEvent = ({route}) => {
       addEvent: addEvent,
     });
   }, [title, location, allDay, starts, ends, notes]);
-  console.log('starts--------------------------------', starts);
+
+  useEffect(() => {
+    console.log('location', location);
+    if (location !== eventSelector.name.description) {
+      setLocation({
+        name: eventSelector.name.description,
+        locate: eventSelector.locate,
+      });
+    }
+  }, [eventSelector.name.description]);
+
   useEffect(() => {
     console.log('update');
     let selected = new Date(route.params.selectedDate);
@@ -130,7 +140,7 @@ export const NewEvent = ({route}) => {
           });
           navigation.navigate('Location event', {
             title: 'location',
-            location: eventSelector.description,
+            location: eventSelector,
             setLocation: setLocation,
           });
         }}>
@@ -140,7 +150,7 @@ export const NewEvent = ({route}) => {
           </View>
           <View>
             <Text style={{color: COLORS.text}}>
-              {eventSelector.description}
+              {eventSelector.name.description}
             </Text>
           </View>
         </View>
@@ -155,10 +165,11 @@ export const NewEvent = ({route}) => {
       />
       <DatePickerComponent
         min={starts}
+        allDay={allDay}
         mode="time"
         time={true}
         type="Starts"
-        value={starts}
+        value={moment(starts).format('YYYY-MM-DD hh:mm')}
         changeDate={date => {
           console.log('dateeeee', moment(date).format('YYYY-MM-DD hh:mm'));
           let time = new Date(date);
@@ -173,6 +184,7 @@ export const NewEvent = ({route}) => {
       />
       <DatePickerComponent
         mode="datetime"
+        allDay={allDay}
         time={true}
         type="Ends"
         value={ends}

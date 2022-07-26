@@ -120,10 +120,28 @@ export const Document = () => {
       title: "It's a future thi!",
     },
   ]);
+  const handleClicked = () => {
+    setShown(true);
+    setClicked(false);
+  };
+  useEffect(() => {
+    console.log('clecked', clicked);
+    navigation.setParams({
+      headerShown: clicked,
+      searchClicked: handleClicked,
+    });
+  }, []);
+  function isJsonString(str) {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
   const EventHtml = item => {
     let date = moment(item.starts_at).format('hh:mm');
-    console.log('date', date);
-    console.log('item', item);
+
     return item ? (
       <TouchableOpacity
         onPress={() => goToEvent(item)}
@@ -150,7 +168,9 @@ export const Document = () => {
           <View>
             <Text style={styles.eventText}>{item.title}</Text>
           </View>
-          <Text style={styles.eventSubText}> {item.location}</Text>
+          <Text style={styles.eventSubText}>
+            {item.location?.name ? item.location.name : ''}
+          </Text>
         </View>
       </TouchableOpacity>
     ) : null;
@@ -160,13 +180,17 @@ export const Document = () => {
     console.log('update', global);
     GetEventApi(global.id)
       .then(({data}) => {
-        console.log('daat',data)
+        console.log('daat', data);
         let res = data.map(item => {
+          // item.location = JSON.parse(item.location)
+          if (isJsonString(item.location)) {
+            item.location = JSON.parse(item.location);
+          }
           item.date = item.starts_at;
           item.date = moment(item.date).format('YYYY-MM-DD');
           return item;
         });
-        console.log('ressss',res)
+        console.log('ressss', res);
         setPoints(res);
       })
       .catch(err => {
@@ -197,7 +221,7 @@ export const Document = () => {
   };
 
   const sendSelectedDate = () => {
-    console.log('selectedDate2',selectedDate)
+    console.log('selectedDate2', selectedDate);
     navigation.navigate('addEvent', {
       selectedDate,
       title: 'new event entry',
@@ -223,9 +247,15 @@ export const Document = () => {
   console.log('%c Filtered Data', 'background-color:blue', filteredPoints);
   useEffect(() => {
     let res = points.filter(item => {
-      if (searchPhrase == item.title) {
+      // if (searchPhrase == item.title) {
+      //   return item;
+      // }
+      if (item.title.toLowerCase().includes(searchPhrase.toLowerCase())) {
         return item;
       }
+      // if (item.title.includes(searchPhrase)) {
+      //   return item;
+      // }
     });
     setFilteredPoints(res);
   }, [searchPhrase]);

@@ -47,7 +47,12 @@ export const Location = ({route}) => {
         listViewDisplayed="auto"
         onPress={(data, details = null) => {
           console.log('GooglePlacesAutocomplete', data, details);
-          dispatch(setLocationEvent(data));
+          const res = {
+            name: data,
+            location: details?.geometry?.location,
+          };
+            dispatch(setLocationEvent(res));
+              //  console.log('hereeeee',JSON.stringify(details?.geometry?.location));
           navigation.goBack();
         }}
         onFail={error => console.log('error', error)}
