@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
+  Alert,
 } from 'react-native';
 import InternetConnectionAlert from 'react-native-internet-connection-alert';
 import {CustomButton} from '../../components/CustomButton/CustomButton';
@@ -43,7 +44,9 @@ import Sheep from '../../assets/images/svg/Sheep';
 import ArrowRight from '../../assets/images/svg/ArrowRight';
 import ArrowLeft from '../../assets/images/svg/ArrowLeft';
 import Play from '../../assets/images/svg/Play';
-
+import {getSettingsDevice, SettingsDevice} from '../../api/Settings/SettingsApi';
+import {RootState} from '../../redux/configureStore';
+import {setAllSettings} from '../../redux/slice/SettingsSlice';
 
 const {width: windowWidth} = Dimensions.get('window');
 
@@ -61,16 +64,38 @@ type Nav = {
 };
 export const Account = () => {
   const carouselRef = React.useRef(null);
-  const [button, toggleButton] = useState(false);
+  const [toggleButton, setToggleButton] = useState(false);
   const navigation = useNavigation<Nav>();
   const [isActive, setISActive] = useState(true);
   const [isInternet, setIsInternet] = useState<boolean>(true);
   const handleConnect = () => {};
   const dispatch = useDispatch();
   const netInfo = useNetInfo();
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
   // const state = useSelector(state => state);
-  const openSettings = () => {
-    navigation.navigate('settingsAccount');
+  // console.log(123456)
+
+  const openSettings = async () => {
+    // const data = await SettingsDevice(
+    //   {"Child Lock": false},
+    //   user.accounts[0].id,
+    // );
+    getSettingsDevice(user.accounts[0].id)
+      .then(res => {
+        console.log(res);
+        navigation.navigate('settingsAccount', {data: res.data.data});
+      })
+      .catch(res => {
+        console.log(res);
+      });
+
+    // SettingsDevice({Connection: 'connected'}, user.accounts[0].id)
+    //   .then((res) => {
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //     // Alert.alert(err.response.data.error);
+    //   });
   };
   // useEffect(() => {
   //   if (netInfo.isConnected) {
@@ -102,14 +127,14 @@ export const Account = () => {
     return (
       <>
         <View style={styles.headerContainer}>
-          <View style={{width: 21}}></View>
+          <View style={{width: 21}} />
           <View style={{paddingRight: 10}}>
             {/*<Image source={sheep} />*/}
-            <Sheep/>
+            <Sheep />
           </View>
           <TouchableOpacity onPress={openSettings}>
             {/*<Image source={settings} />*/}
-            <TopGear/>
+            <TopGear />
           </TouchableOpacity>
         </View>
         <View
@@ -132,7 +157,7 @@ export const Account = () => {
                   alignItems: 'center',
                   width: 120,
                 }}>
-                <Thermometer/>
+                <Thermometer />
                 <Text
                   style={{
                     color: '#fff',
@@ -262,12 +287,12 @@ export const Account = () => {
       <View style={[styles.modalContainer, {}]}>
         <TouchableOpacity style={{flexDirection: 'row'}}>
           {/*<Image style={{width: 16, height: 16}} source={play} />*/}
-          <Play/>
+          <Play />
         </TouchableOpacity>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <TouchableOpacity onPress={switchLeft}>
             {/*<Image style={{width: 25, height: 25}} source={arrowBack} />*/}
-            <ArrowLeft/>
+            <ArrowLeft />
           </TouchableOpacity>
           <View style={{width: 95}}>
             <Text
@@ -276,7 +301,7 @@ export const Account = () => {
                 textAlign: 'center',
                 fontFamily: 'AntagometricaBT-Bold',
                 fontWeight: '400',
-                fontSize: 16
+                fontSize: 16,
               }}>
               {typeOfTemp.length && activeType.name.length > 10
                 ? activeType.name.substring(0, 10).trim() + '...'
@@ -285,7 +310,7 @@ export const Account = () => {
           </View>
           <TouchableOpacity onPress={switchRight}>
             {/*<Image style={{width: 25, height: 25}} source={arrowRight} />*/}
-            <ArrowRight/>
+            <ArrowRight />
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={{flexDirection: 'row'}}>
@@ -300,8 +325,8 @@ export const Account = () => {
         <TouchableOpacity
           onPress={handlePower}
           style={{marginTop: '40%', width: 50}}>
-        {/*<Image source={isActive ? power : powerOff}/>*/}
-        {isActive ? <PowerOn/> : <PowerOff/>}
+          {/*<Image source={isActive ? power : powerOff}/>*/}
+          {isActive ? <PowerOn /> : <PowerOff />}
         </TouchableOpacity>
       </View>
       <ControlCard />
@@ -315,12 +340,15 @@ export const Account = () => {
       style={{backgroundColor: COLORS.backGround}}
       source={isActive ? background : backgroundGrey}>
       <View style={styles.container}>
-        <HeaderUI />
-        {/* {!netInfo.isConnected || !isInternet ? ( */}
-        {/* <ConfirmConnection toggleButton={toggleButton} /> */}
-        {/* ) : ( */}
-        <Content />
-        {/* )} */}
+        {/*{!netInfo.isConnected || !isInternet*/}
+        {!toggleButton ? (
+          <ConfirmConnection setToggleButton={setToggleButton} />
+        ) : (
+          <>
+            <HeaderUI />
+            <Content />
+          </>
+        )}
       </View>
     </ImageBackground>
   );

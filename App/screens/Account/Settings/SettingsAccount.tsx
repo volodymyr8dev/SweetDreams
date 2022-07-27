@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -25,18 +25,38 @@ import volumeImg from '../../../assets/images/settings/volume.png';
 import {Switch} from '../../../components/Switch/Switch';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-export const SettingsAccount = () => {
+import {RootState} from '../../../redux/configureStore';
+export const SettingsAccount = ({route}) => {
+  const [settingsData, setSettingsData] = useState(route.params.data);
   const {formatWakeUpTime, formatTime, volume} = useSelector(
     ({settings}) => settings,
   );
-  const Blog = ({title, rightEl, source}) => {
+  const {temperatureNew} = useSelector(({settings}) => settings);
+  const {playingTime} = useSelector(({settings}) => settings);
+  // const {volume} = useSelector(
+  //   ({settings}) => settings,
+  // );
+  // useEffect(()=>{
+  //   setState(route.params.childLock)
+  //
+  // },[])
+  // console.log(data, "datadatadata");
+  // useEffect(() => {
+  //   setValSwitch(true);
+  // }, []);
+  const Blog = ({title, rightEl, source, value}) => {
     const navigation = useNavigation();
 
     const handleSettings = async title => {
       if (typeof rightEl !== 'object') {
         console.log(title, 'title');
-
-        navigation.navigate(`${title}`, {title: title});
+        navigation.navigate(`${title}`, {
+          title: title,
+          value: value,
+          setValue: obj => {
+            setSettingsData(obj);
+          },
+        });
       }
     };
     return (
@@ -52,7 +72,7 @@ export const SettingsAccount = () => {
           <Text style={{color: '#2371AB', fontSize: 16}}>{title}</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {typeof rightEl == 'object' ? (
+          {typeof rightEl === 'object' ? (
             rightEl
           ) : (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -71,11 +91,22 @@ export const SettingsAccount = () => {
     <ScrollView style={styles.container}>
       <View style={{paddingBottom: 40}}>
         <Blog title="Connection" rightEl="Connected" source={connection} />
-        <Blog title="Child Lock" rightEl={<Switch />} source={lock} />
+        <Blog
+          title="Child Lock"
+          rightEl={
+            <Switch
+              title={'Child Lock'}
+              val={settingsData['Child Lock']}
+              valueSmart={null}
+              setData={setSettingsData}
+            />
+          }
+          source={lock}
+        />
         <View style={{paddingLeft: 15}}>
           <Text style={{color: '#2371AB', fontSize: 17}}>Display Settings</Text>
         </View>
-        <Blog title="Time" rightEl={`${formatTime}`} source={clock} />
+        <Blog title="Time" rightEl={settingsData['Time']} value={settingsData["Time"]} source={clock} />
         <Blog
           title="Wake Up Time"
           source={wakeUp}
@@ -88,15 +119,32 @@ export const SettingsAccount = () => {
           source={displayBrightness}
           rightEl={'25%'}
         />
-        <Blog title="Temperature" source={Temperature} rightEl={'*C'} />
+        <Blog
+          title="Temperature"
+          source={Temperature}
+          rightEl={settingsData.Temperature}
+          value={settingsData.Temperature}
+        />
         <View style={{paddingLeft: 15}}>
           <Text style={{color: '#2371AB', fontSize: 17}}> Sound Settings</Text>
         </View>
-        <Blog title="smartCRY Sensor" source={smartCRY} rightEl={<Switch />} />
+        <Blog
+          title="smartCRY Sensor"
+          source={smartCRY}
+          rightEl={
+            <Switch
+                val={null}
+              valueSmart={settingsData['smartCRY Sensor']}
+              title={'smartCRY Sensor'}
+              setData={setSettingsData}
+            />
+          }
+        />
         <Blog
           title="smartCRY Sensor Sensitivity"
           source={smartSRYSensetivity}
-          rightEl={'Moder...'}
+          value={settingsData["smartCRY Sensor Sensitivity"]}
+          rightEl={Number(settingsData["smartCRY Sensor Sensitivity"]).toFixed(0)}
         />
         <Blog
           title="Custom Recording"
@@ -106,12 +154,13 @@ export const SettingsAccount = () => {
         <Blog
           title="Sound Playing Time"
           source={musicTime}
-          rightEl={'20 mins'}
+          value={settingsData["Sound Playing Time"]}
+          rightEl={settingsData["Sound Playing Time"]}
         />
         <Blog
           title="Volume"
           source={volumeImg}
-          rightEl={Number(volume.toFixed(1))}
+          rightEl={Number(settingsData["Volume"]).toFixed(0)}
         />
         <View style={{paddingLeft: 15}}>
           <Text style={{color: '#2371AB', fontSize: 17}}>Notifications</Text>

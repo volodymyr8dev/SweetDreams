@@ -139,11 +139,11 @@ export const ConnectionStep3 = () => {
               of the misty unit.
             </Text>
           </View>
-          <TouchableOpacity
-            onPress={ConnectToNetwork}
-            style={{marginLeft: 100, width: 80, height: 20, marginBottom: 10}}>
-            <Text style={{color: '#fff'}}>1010100101010100</Text>
-          </TouchableOpacity>
+          {/*<TouchableOpacity*/}
+          {/*  onPress={ConnectToNetwork}*/}
+          {/*  style={{marginLeft: 100, width: 80, height: 20, marginBottom: 10}}>*/}
+          {/*  <Text style={{color: '#fff'}}>1010100101010100</Text>*/}
+          {/*</TouchableOpacity>*/}
         </View>
 
         <TouchableOpacity onPress={handleGoToStep2}>

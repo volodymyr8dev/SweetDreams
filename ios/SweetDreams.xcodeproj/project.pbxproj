@@ -20,6 +20,8 @@
 		817F2959F06F4D2582DC6756 /* Nuosu SIL.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 82A5668C02FD46AF9F627EB6 /* Nuosu SIL.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8214585707664372967A3CFB /* antagobd.otf in Resources */ = {isa = PBXBuildFile; fileRef = A3F387B95E9C468E89380E3B /* antagobd.otf */; };
+		84F8E49C28893CB100AABB25 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F8E49B28893CB100AABB25 /* ExternalAccessory.framework */; };
+		84F8E49E28893CCF00AABB25 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F8E49D28893CCF00AABB25 /* NetworkExtension.framework */; };
 		91838237883248539B590ECE /* antagolt.otf in Resources */ = {isa = PBXBuildFile; fileRef = D198655F40214BF58FAB7732 /* antagolt.otf */; };
 		9312D8D861FC47B09D3CAA5A /* DuffyScript_Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7D3DF4263D5A423BB4E89615 /* DuffyScript_Bold.otf */; };
 		B4041BF4B224452799AEEB5A /* DuffyScript_DemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A0FBD42D99D741D8895C47D8 /* DuffyScript_DemiBold.otf */; };
@@ -64,6 +66,9 @@
 		7E060C0DE8BB45869EB0EFEB /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SweetDreams/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		82A5668C02FD46AF9F627EB6 /* Nuosu SIL.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nuosu SIL.ttf"; path = "../assets/fonts/Nuosu SIL.ttf"; sourceTree = "<group>"; };
+		84F8E49A28893CB000AABB25 /* SweetDreams.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SweetDreams.entitlements; path = SweetDreams/SweetDreams.entitlements; sourceTree = "<group>"; };
+		84F8E49B28893CB100AABB25 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
+		84F8E49D28893CCF00AABB25 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-SweetDreams-SweetDreamsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SweetDreams-SweetDreamsTests.release.xcconfig"; path = "Target Support Files/Pods-SweetDreams-SweetDreamsTests/Pods-SweetDreams-SweetDreamsTests.release.xcconfig"; sourceTree = "<group>"; };
 		966DC823B07049828B39710A /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		A0FBD42D99D741D8895C47D8 /* DuffyScript_DemiBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = DuffyScript_DemiBold.otf; path = ../assets/fonts/DuffyScript_DemiBold.otf; sourceTree = "<group>"; };
@@ -93,6 +98,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84F8E49C28893CB100AABB25 /* ExternalAccessory.framework in Frameworks */,
+				84F8E49E28893CCF00AABB25 /* NetworkExtension.framework in Frameworks */,
 				0C80B921A6F3F58F76C31292 /* libPods-SweetDreams.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -120,6 +127,7 @@
 		13B07FAE1A68108700A75B9A /* SweetDreams */ = {
 			isa = PBXGroup;
 			children = (
+				84F8E49A28893CB000AABB25 /* SweetDreams.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -133,6 +141,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84F8E49D28893CCF00AABB25 /* NetworkExtension.framework */,
+				84F8E49B28893CB100AABB25 /* ExternalAccessory.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-SweetDreams.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-SweetDreams-SweetDreamsTests.a */,
@@ -559,6 +569,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = SweetDreams/SweetDreams.entitlements;
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = JH7TL6C3VF;
 				ENABLE_BITCODE = NO;
@@ -586,6 +597,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = SweetDreams/SweetDreams.entitlements;
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = JH7TL6C3VF;
 				INFOPLIST_FILE = SweetDreams/Info.plist;

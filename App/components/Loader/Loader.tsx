@@ -40,10 +40,10 @@ const styles = StyleSheet.create({
     marginTop: -100,
   },
   textStyle: {
-      textAlign: 'center',
-      marrginTop:-30,
-      paddingHorizontal:70,
+    textAlign: 'center',
+    marginTop: -30,
+    paddingHorizontal: 70,
     color: '#fff',
-    fontSize:19,
+    fontSize: 19,
   },
 });
