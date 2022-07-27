@@ -8,23 +8,26 @@ import {COLORS} from '../../../styles/Constants';
 import {useDispatch} from 'react-redux';
 import SettingsSlice, {
   setTemperature,
+    setTemperatureNew
 } from '../../../redux/slice/SettingsSlice';
 import {useSelector} from 'react-redux';
 import {SettingsDevice} from '../../../api/Settings/SettingsApi';
 import {RootState} from '../../../redux/configureStore';
-export const SettingsTemperature = () => {
+
+
+
+export const SettingsTemperature = ({route}) => {
   const [typeC, setTypeC] = useState(false);
   const [typeF, setTypeF] = useState(false);
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
   const dispatch = useDispatch();
   const {temperature} = useSelector(({settings}) => settings);
   const {user} = useSelector(({account}: RootState) => account.userInformation);
-  console.log(temperature);
-  useEffect(() => {
-    SettingsDevice({Temperature: typeC ? 'C' : 'F'}, user.accounts[0].id).then((res)=>
-    {console.log(res)})
-    setLoader(true);
-  }, [temperature]);
+  const setNewValue = () => {
+    SettingsDevice({Temperature: route.params.value==="C"? "F" : "C"}, user.accounts[0].id).then((res)=> {
+      route.params.setValue(res.data.data)
+    })
+  }
   const verticalStaticData = [
     {
       id: 0,
@@ -82,19 +85,20 @@ export const SettingsTemperature = () => {
       <View>
         {loader ? (
           <BouncyCheckboxGroup
-            initial={temperature}
+            initial={route.params.value === "F" ? 1 : 0}
             fillColor="red"
             data={verticalStaticData}
             style={styles.bouncyCheckBox}
             onChange={(selectedItem: ICheckboxButton) => {
-              if (selectedItem.id == 0) {
-                setTypeC(true);
-                setTypeF(false);
-              } else {
-                setTypeC(false);
-                setTypeF(true);
-              }
-              dispatch(setTemperature(selectedItem.id));
+              setNewValue()
+              // if (selectedItem.id == 0) {
+              //   setTypeC(true);
+              //   setTypeF(false);
+              // } else {
+              //   setTypeC(false);
+              //   setTypeF(true);
+              // }
+              // dispatch(setTemperature(selectedItem.id));
             }}
             textStyle={{
               textDecorationLine: 'none',

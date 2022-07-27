@@ -10,7 +10,10 @@ const SettingsSlice = createSlice({
     formatTime: '7:00',
     wakeUpTime: new Date(),
     formatWakeUpTime: '2:11',
-    volume:0.5
+    volume: 0.5,
+    temperatureNew: '',
+    playingTime: '',
+
   },
   reducers: {
     setTemperature(state, action: PayloadAction<number>) {
@@ -30,9 +33,15 @@ const SettingsSlice = createSlice({
     setVolume(state, action: PayloadAction<number>) {
       state.volume = action.payload;
     },
+    setTemperatureNew(state, action: PayloadAction<any>) {
+      state.temperatureNew = action.payload;
+    },
+    setPlayingTime(state, action: PayloadAction<any>) {
+      state.playingTime = action.payload;
+    },
   },
 });
 
-export const {setTemperature, setBrightness, setWakeUpTime, setTime, setVolume} =
+export const {setTemperature, setBrightness, setWakeUpTime, setTime, setVolume, setTemperatureNew, setPlayingTime} =
   SettingsSlice.actions;
 export default SettingsSlice.reducer;

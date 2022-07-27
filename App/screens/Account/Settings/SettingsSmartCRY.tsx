@@ -1,13 +1,43 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import {useSelector} from 'react-redux';
 import {SliderComp} from '../../../components/Slider/SliderComp';
 import {COLORS} from '../../../styles/Constants';
 import wifiSmall from '../../../assets/images/settings/wifiSmall.png';
 import wifiBig from '../../../assets/images/settings/WifiBig.png';
-export const SettingsSmartCRY = () => {
-  const [value, setValue] = useState(false);
+import {SettingsDevice} from '../../../api/Settings/SettingsApi';
+import {RootState} from '../../../redux/configureStore';
+
+export const SettingsSmartCRY = ({route}) => {
+  const [active2, setActive2] = useState('');
+  // const [value, setValue] = useState(false);
   const {brightness} = useSelector(({settings}) => settings);
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const setValue = newValue => {
+    setActive2(newValue);
+  };
+
+  const timeout = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  };
+
+  useEffect(() => {
+    let isActive = false;
+    const handleChange = async () => {
+      await timeout(1000);
+      if (!isActive) {
+        console.log('activeeee');
+        SettingsDevice({"smartCRY Sensor Sensitivity": active2}, user.accounts[0].id).then(res => {
+          route.params.setValue(res.data.data);
+        });
+      }
+    };
+    handleChange();
+    return () => {
+      isActive = true;
+    };
+  }, [active2]);
+
   return (
     <View style={styles.container}>
       <View style={styles.box}>
@@ -18,7 +48,7 @@ export const SettingsSmartCRY = () => {
         <View style={{width: '75%'}}>
           <SliderComp
             brightness={brightness}
-            value={value}
+            value={route.params.value}
             setValue={setValue}
           />
         </View>
@@ -41,6 +71,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.backGround,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems:'center'
-},
+    alignItems: 'center',
+  },
 });

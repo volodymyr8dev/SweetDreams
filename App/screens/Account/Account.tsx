@@ -44,7 +44,7 @@ import Sheep from '../../assets/images/svg/Sheep';
 import ArrowRight from '../../assets/images/svg/ArrowRight';
 import ArrowLeft from '../../assets/images/svg/ArrowLeft';
 import Play from '../../assets/images/svg/Play';
-import {SettingsDevice} from '../../api/Settings/SettingsApi';
+import {getSettingsDevice, SettingsDevice} from '../../api/Settings/SettingsApi';
 import {RootState} from '../../redux/configureStore';
 import {setAllSettings} from '../../redux/slice/SettingsSlice';
 
@@ -74,15 +74,16 @@ export const Account = () => {
   const {user} = useSelector(({account}: RootState) => account.userInformation);
   // const state = useSelector(state => state);
   // console.log(123456)
+
   const openSettings = async () => {
     // const data = await SettingsDevice(
     //   {"Child Lock": false},
     //   user.accounts[0].id,
     // );
-    SettingsDevice({'Child Lock': false}, user.accounts[0].id)
+    getSettingsDevice(user.accounts[0].id)
       .then(res => {
         console.log(res);
-        navigation.navigate('settingsAccount');
+        navigation.navigate('settingsAccount', {data: res.data.data});
       })
       .catch(res => {
         console.log(res);

@@ -1,12 +1,37 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Platform, View, StyleSheet} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-date-picker';
 import {COLORS} from '../../../styles/Constants';
-export const SettingsTimePlaying = () => {
-  const [value, setValue] = useState(false);
+import {SettingsDevice} from '../../../api/Settings/SettingsApi';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../../redux/configureStore';
+import {setPlayingTime} from '../../../redux/slice/SettingsSlice';
+
+export const SettingsTimePlaying = ({route}) => {
+  const dispatch = useDispatch();
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const [value, setValue] = useState(route.params.value);
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+  const firstRun = useRef(false);
+
+  useEffect(() => {
+    if (firstRun.current) {
+      if (value !== 'Ukraine') {
+        const valueString = value.replace(/\D/g, '');
+        SettingsDevice(
+          {'Sound Playing Time': valueString},
+          user.accounts[0].id,
+        ).then(res => {
+          route.params.setValue(res.data.data);
+        });
+      }
+    } else {
+      firstRun.current = true;
+    }
+  }, [value]);
+
   return (
     <View style={styles.container}>
       {/* <DatePicker
@@ -38,7 +63,11 @@ export const SettingsTimePlaying = () => {
         }}
       /> */}
       <View style={styles.input}>
-        <RNPickerSelect
+        <RNPickerSelect placeholder = {{
+          label: 'Ukraine',
+          value: "Ukraine",
+          color: 'white'
+        }}
           mode="dropdown"
           itemStyle={{
             backgroundColor: 'lightgrey',
@@ -47,16 +76,19 @@ export const SettingsTimePlaying = () => {
           }}
           style={{
             placeholder: {
-              color: COLORS.text,
+              color: 'white',
               fontSize: 12,
               fontWeight: 'bold',
             },
           }}
-          onValueChange={value => console.log(value)}
+          onValueChange={value => {
+            setValue(value);
+            console.log(value);
+          }}
           items={[
             {label: '20 Mins', value: '20 Mins', color: COLORS.text},
             {label: '40 Mins', value: '40 Mins', color: COLORS.text},
-            {label: '1 Hour', value: '1 Hour', color: COLORS.text},
+            {label: '60 Mins', value: '60 Mins', color: COLORS.text},
           ]}
         />
       </View>
