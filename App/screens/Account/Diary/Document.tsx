@@ -247,21 +247,13 @@ export const Document = () => {
   console.log('%c Filtered Data', 'background-color:blue', filteredPoints);
   useEffect(() => {
     let res = points.filter(item => {
-      // if (searchPhrase == item.title) {
-      //   return item;
-      // }
       if (item.title.toLowerCase().includes(searchPhrase.toLowerCase())) {
         return item;
       }
-      // if (item.title.includes(searchPhrase)) {
-      //   return item;
-      // }
     });
     setFilteredPoints(res);
   }, [searchPhrase]);
   useEffect(() => {
-    console.log('shown', shown);
-    console.log('filteredPoints', filteredPoints.length);
     if (!shown) {
       setFilteredPoints([]);
     } else if (shown) {

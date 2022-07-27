@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   },
   containerTextNotes: {
     borderTopColor: '#292C62',
-    paddingTop: 10,
+    paddingTop: 7.33,
     borderTopWidth: 2,
   },
   containerTime: {},

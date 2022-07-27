@@ -17,12 +17,12 @@ export const DatePickerComponent = ({
   const [open, setOpen] = useState(false);
   let dater = new Date(min);
   console.log('dater', dater);
-  console.log('date§§§§§§§§§', date);
 
   return (
     <>
       {!time ? (
         <TouchableOpacity
+          disabled={allDay}
           onPress={() => {
             setOpen(true);
           }}>
@@ -35,6 +35,7 @@ export const DatePickerComponent = ({
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
+          disabled={allDay}
           onPress={() => {
             setOpen(true);
           }}>

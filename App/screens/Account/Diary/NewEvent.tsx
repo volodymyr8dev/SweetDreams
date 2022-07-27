@@ -17,8 +17,10 @@ import {EditEventApi, NewEventApi} from '../../../api/Diary/calendar';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/configureStore';
 import {navigationOptions} from '../../../navigation/routes/AppStackRoutes';
+import {ChildInformation} from '../../../redux/selectors/AccountSelector';
 
 export const NewEvent = ({route}) => {
+  let params = route.params;
   const navigation = useNavigation();
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
@@ -26,7 +28,7 @@ export const NewEvent = ({route}) => {
   const [starts, setStarts] = useState('');
   const [ends, setEnds] = useState('');
   const [notes, setNotes] = useState('');
-  const [event, setEvent] = useState('');
+
   const global = useSelector(
     ({account}: RootState) => account.userInformation.user.accounts[0],
   );
@@ -34,12 +36,22 @@ export const NewEvent = ({route}) => {
     ({account}: RootState) => account.events.location,
   );
   console.log('eventSelector,', eventSelector);
+  console.log('params,', params.event);
+  // useEffect(() => {
+  //   if (params?.event) {
+  //     setStarts(
+  //       moment(params.event.starts_at).format('YYYY-MM-DD hh:mm'),
+  //     );
+  //     console.log('params.event.ends_at', params.event.ends_at);
+  //     setEnds(moment(params.event.ends_at));
+  //   }
+  // }, [params.event]);
   const addEvent = () => {
     console.log('location22222', location);
     NewEventApi(global.id, title, location, allDay, starts, ends, notes)
       .then(({data}) => {
         console.log('%c React', 'color:white;background-color:#61dbfb', data);
-        navigation.navigate('document')
+        navigation.navigate('document');
         Alert.alert('Event successfully added');
       })
       .catch(err => {
@@ -48,7 +60,7 @@ export const NewEvent = ({route}) => {
       });
   };
   const hadleEditEvent = () => {
-    if (route.params?.event?.id) {
+    if (params?.event?.id) {
       const newEVent = {
         title,
         location,
@@ -57,7 +69,7 @@ export const NewEvent = ({route}) => {
         ends_at: moment(ends).format('YYYY-MM-DD hh:mm:ss'),
         notes,
       };
-      EditEventApi(global.id, route.params.event.id, newEVent)
+      EditEventApi(global.id, params.event.id, newEVent)
         .then(data => {
           Alert.alert('event successfully updated');
           navigation.navigate('document');
@@ -68,8 +80,8 @@ export const NewEvent = ({route}) => {
     }
   };
   useEffect(() => {
-    console.log('title', route.params.title);
-    if (route.params.title) {
+    console.log('title', params.title);
+    if (params.title) {
       navigation.setParams({
         editEvent: hadleEditEvent,
         editable: true,
@@ -77,9 +89,7 @@ export const NewEvent = ({route}) => {
       console.log('You can edit this');
     }
   }, [title, location, allDay, starts, ends, notes]);
-  const handleSetLocation = () => {
-    console.log('sdsdsdsdsds');
-  };
+  const handleSetLocation = () => {};
   useEffect(() => {
     navigation.setParams({
       addEvent: addEvent,
@@ -87,7 +97,6 @@ export const NewEvent = ({route}) => {
   }, [title, location, allDay, starts, ends, notes]);
 
   useEffect(() => {
-    console.log('location', location);
     if (location !== eventSelector.name.description) {
       setLocation({
         name: eventSelector.name.description,
@@ -95,26 +104,29 @@ export const NewEvent = ({route}) => {
       });
     }
   }, [eventSelector.name.description]);
-
   useEffect(() => {
-    console.log('update');
-    let selected = new Date(route.params.selectedDate);
-    if (route.params.event) {
-      setTitle(route.params.event.title);
-      setLocation(route.params.event.location);
-      setNotes(route.params.event.notes);
-      // setStarts(moment(route.params.event.starts).format('YYYY-MM-DD hh:mm'));
-      setEnds(moment(route.params.date).format('YYYY-MM-DD hh:mm'));
+    let selected = new Date(params.selectedDate);
+    if (params.event) {
+      setTitle(params.event.title);
+      setLocation(params.event.location);
+      setNotes(params.event.notes);
+      setStarts(moment(params.event.starts_at).format('YYYY-MM-DD hh:mm'));
+      console.log('3333333', params.event.ends_at);
+      setEnds(moment(params.event.ends_at));
     }
-
-    console.log(new Date(route.params.selectedDate).getDate());
-    let selectedDate = `
-      ${selected.getDate()} ${
-      monthNames[selected.getMonth()]
-    }  ${selected.getFullYear()}`;
-    console.log({selectedDate});
-    setStarts(selectedDate.trim());
-  }, [route.params.selectedDate]);
+    // let selectedDate = `
+    //   ${selected.getDate()} ${
+    //   monthNames[selected.getMonth()]
+    // }  ${selected.getFullYear()}`;
+    if (params.selectedDate) {
+      setStarts(params.selectedDate);
+      console.log('ffffff', params.event?.ends_at);
+      if (params.rightText == 'add') {
+        setEnds(moment(params.selectedDate));
+      }
+    }
+  }, [params.selectedDate]);
+  console.log('222222', eventSelector.name.description);
   return (
     <View style={styles.container}>
       <InputUnit
@@ -124,14 +136,6 @@ export const NewEvent = ({route}) => {
         nameOfBox={'input'}
         placeholder={'Title'}
       />
-      {/* <InputUnit
-        event={true}
-        value={location}
-        setValueName={value => setLocation(value)}
-        nameOfBox={'touch'}
-        placeholder={'Location'}
-        title={'Location event'}
-      /> */}
       <TouchableOpacity
         style={styles.box}
         onPress={() => {
@@ -150,7 +154,9 @@ export const NewEvent = ({route}) => {
           </View>
           <View>
             <Text style={{color: COLORS.text}}>
-              {eventSelector.name.description}
+              {params?.event?.location?.name
+                ? params?.event?.location?.name
+                : eventSelector.name.description}
             </Text>
           </View>
         </View>
@@ -169,16 +175,22 @@ export const NewEvent = ({route}) => {
         mode="time"
         time={true}
         type="Starts"
-        value={moment(starts).format('YYYY-MM-DD hh:mm')}
+        value={
+          allDay
+            ? moment(starts).format('YYYY-MM-DD')
+            : moment(starts).format('YYYY-MM-DD hh:mm')
+        }
         changeDate={date => {
-          console.log('dateeeee', moment(date).format('YYYY-MM-DD hh:mm'));
           let time = new Date(date);
           let res = `${time.getHours()}:${time.getMinutes()}`;
           console.log('res', res);
           console.log('startsssssss', starts);
+          let start = moment(starts).format('YYYY-MM-DD');
+          console.log('start', start);
+
           setStarts(
             // moment(date).format('YYYY-MM-DD hh:mm'),
-            moment(starts + ' ' + res).format('YYYY-MM-DD hh:mm'),
+            moment(start + ' ' + res).format('YYYY-MM-DD hh:mm'),
           );
         }}
       />
@@ -187,7 +199,11 @@ export const NewEvent = ({route}) => {
         allDay={allDay}
         time={true}
         type="Ends"
-        value={ends}
+        value={
+          allDay
+            ? moment(ends).format('YYYY-MM-DD')
+            : moment(ends).format('YYYY-MM-DD hh:mm')
+        }
         changeDate={date => {
           console.log('date2', date);
           setEnds(moment(date).format('YYYY-MM-DD hh:mm'));

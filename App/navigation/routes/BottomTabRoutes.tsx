@@ -113,7 +113,7 @@ const navigationDocument = ({navigation, route}) => ({
           style={{paddingRight: 13.76, paddingLeft: 5, paddingVertical: 5}}
           onPress={() => {
             console.log('route',route.params)
-            route.params.searchClicked();
+            route.params?.searchClicked();
           }}>
           <Image style={{width: 18.58, height: 18.58}} source={search} />
         </TouchableOpacity>
