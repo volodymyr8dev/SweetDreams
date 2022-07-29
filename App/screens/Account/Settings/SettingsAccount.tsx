@@ -25,48 +25,70 @@ import volumeImg from '../../../assets/images/settings/volume.png';
 import {Switch} from '../../../components/Switch/Switch';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+interface IBox {
+  title: string;
+  rightEl: object | string;
+  source: Image;
+  style?: object;
+  styleText?: object;
+  styleImage?: object;
+}
+export const Blog = ({
+  title,
+  rightEl,
+  source,
+  style,
+  styleText,
+  styleImage,
+}: IBox) => {
+  const navigation = useNavigation();
+
+  const handleSettings = async title => {
+    if (typeof rightEl !== 'object') {
+      console.log(title, 'title');
+
+      navigation.navigate(`${title}`, {title: title});
+    }
+  };
+  return (
+    <TouchableOpacity
+      onPress={() => handleSettings(title)}
+      style={[styles.blog, style && style]}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Image
+          style={{width: 15, height: 15, marginRight: 10}}
+          source={source}
+          resizeMode="contain"
+        />
+        <Text style={[styles.text, styleText && styleText]}>{title}</Text>
+      </View>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        {typeof rightEl == 'object' ? (
+          rightEl
+        ) : (
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={[styleText ? styleText : styles.textRight]}>
+              {rightEl}
+            </Text>
+            <Image
+              style={[
+                styleImage
+                  ? styleImage
+                  : {width: 9.27, height: 14.2, marginLeft: 10},
+              ]}
+              source={arrowRight}
+            />
+          </View>
+        )}
+      </View>
+    </TouchableOpacity>
+  );
+};
 export const SettingsAccount = () => {
   const {formatWakeUpTime, formatTime, volume} = useSelector(
     ({settings}) => settings,
   );
-  const Blog = ({title, rightEl, source}) => {
-    const navigation = useNavigation();
 
-    const handleSettings = async title => {
-      if (typeof rightEl !== 'object') {
-        console.log(title, 'title');
-
-        navigation.navigate(`${title}`, {title: title});
-      }
-    };
-    return (
-      <TouchableOpacity
-        onPress={() => handleSettings(title)}
-        style={styles.blog}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
-            style={{width: 15, height: 15, marginRight: 10}}
-            source={source}
-            resizeMode="contain"
-          />
-          <Text style={{color: '#2371AB', fontSize: 16}}>{title}</Text>
-        </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {typeof rightEl == 'object' ? (
-            rightEl
-          ) : (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{color: '#2371AB', fontSize: 15}}>{rightEl}</Text>
-              <Image
-                style={{width: 10, height: 10, marginLeft: 10}}
-                source={arrowRight}
-              />
-            </View>
-          )}
-        </View>
-      </TouchableOpacity>
-    );
-  };
   return (
     <ScrollView style={styles.container}>
       <View style={{paddingBottom: 40}}>
@@ -75,7 +97,7 @@ export const SettingsAccount = () => {
         <View style={{paddingLeft: 15}}>
           <Text style={{color: '#2371AB', fontSize: 17}}>Display Settings</Text>
         </View>
-        <Blog title="Time" rightEl={`${formatTime}`} source={clock} />
+        <Blog title="time" rightEl={`${formatTime}`} source={clock} />
         <Blog
           title="Wake Up Time"
           source={wakeUp}
@@ -141,5 +163,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
+  },
+  text: {
+    color: '#2371AB',
+    fontSize: 16,
+    fontFamily: 'AntagometricaBT-Regular',
+  },
+  textRight: {
+    color: '#2371AB',
+    fontSize: 15,
+    fontFamily: 'AntagometricaBT-Regular',
   },
 });

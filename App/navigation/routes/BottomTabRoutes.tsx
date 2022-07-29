@@ -13,7 +13,7 @@ import documentActive from '../../assets/images/documents/documentActive.png';
 import location from '../../assets/images/homeIcon/location.png';
 import childUnActive from '../../assets/images/controlChild/childUnActive.png';
 import niple from '../../assets/images/niple/niple.png';
-import {Graphics} from '../../screens/Account/Graphics';
+import {NurseryData} from '../../screens/Account/Nursery/NurseryData';
 import {Document} from '../../screens/Account/Diary/Document';
 import {Location} from '../../screens/Account/Location';
 import {COLORS} from '../../styles/Constants';
@@ -162,7 +162,7 @@ export const MyTabs = () => {
     <Tab.Navigator tabBarOptions={customTabBarStyle}>
       <Tab.Screen
         name="graphics"
-        component={Graphics}
+        component={NurseryData}
         options={{
           headerShown: false,
           tabBarLabel: '',

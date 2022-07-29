@@ -32,6 +32,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DiaryRoutes } from './Diary/DiaryRoutes';
 import { getProfile } from '../../api/Profile/ProfileApi';
 import { useDispatch } from 'react-redux';
+import { NurseryRoutes } from './Nursery/NurseryRoutes';
 export type RootStackParamList = {
   step2: {
     position: any;
@@ -309,6 +310,7 @@ const AppStackRoutes = () => {
       {SettingsRoutes()}
       {SettingsAccountStackRoutes()}
       {GraphicRoutes()}
+      {NurseryRoutes()}
     </Stack.Navigator>
   );
 };

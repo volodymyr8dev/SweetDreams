@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SettingsTemperature} from '../../../screens/Account/Settings/SettingsTemperature';
@@ -9,8 +10,8 @@ import {SettingsDomeBrihtness} from '../../../screens/Account/Settings/SettingsD
 import {SettingsSmartCRY} from '../../../screens/Account/Settings/SettingsSmartCRY';
 import {SettingsRecording} from '../../../screens/Account/Settings/SettingsRecording';
 import {SettingsNewRecording} from '../../../screens/Account/Settings/SettingsNewRecording';
-import { SettingsTimePlaying } from '../../../screens/Account/Settings/SettingsTimePlaying';
-import { SettingsVolume } from '../../../screens/Account/Settings/SettingsVolume';
+import {SettingsTimePlaying} from '../../../screens/Account/Settings/SettingsTimePlaying';
+import {SettingsVolume} from '../../../screens/Account/Settings/SettingsVolume';
 
 const customTabBarStyle = {
   activeTintColor: '#0091EA',
@@ -49,7 +50,7 @@ const StackRoutes = () => {
         options={navigationOptions}
       />
       <Stack.Screen
-        name="Time"
+        name="time"
         component={SettingsTime}
         options={navigationOptions}
       />
@@ -68,7 +69,7 @@ const StackRoutes = () => {
         component={SettingsDomeBrihtness}
         options={navigationOptions}
       />
-      <Stack.Screen 
+      <Stack.Screen
         name="smartCRY Sensor Sensitivity"
         component={SettingsSmartCRY}
         options={navigationOptions}

@@ -8,6 +8,8 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {EventInformation} from '../../../screens/Account/Diary/EventInformation';
 import back from '../../../assets/images/backButton.png';
 import {Location} from '../../../screens/Account/Diary/Location';
+import {AverageTempature} from '../../../screens/Account/Nursery/properties/AverageTempature';
+import {TotalTimeComp} from '../../../screens/Account/Nursery/properties/TotalTimeComp';
 interface IParam {
   title: string;
   isHide: boolean;
@@ -141,26 +143,20 @@ const navigationOptionsDoc = navigation => {
     },
   };
 };
-export const DiaryRoutes = () => {
+export const NurseryRoutes = () => {
   const Stack = createNativeStackNavigator();
-                
+
   return (
     <>
       <Stack.Screen
-        name="addEvent"
-        component={NewEvent}
+        name="Average Temperature"
+        component={AverageTempature}
         options={navigationOptionsDoc}
       />
       <Stack.Screen
-        name="entry details"
-        component={EventInformation}
-        options={navigationOptionsDoc}
-      />
-      <Stack.Screen
-        name="Location event"
-        component={Location}
-        options={navigationOptionsLocation}
-      />
+        name="Total Time Without Activation"
+        component={TotalTimeComp}
+        options={navigationOptionsDoc}></Stack.Screen>
     </>
   );
 };
