@@ -9,8 +9,9 @@ import {SettingsDomeBrihtness} from '../../../screens/Account/Settings/SettingsD
 import {SettingsSmartCRY} from '../../../screens/Account/Settings/SettingsSmartCRY';
 import {SettingsRecording} from '../../../screens/Account/Settings/SettingsRecording';
 import {SettingsNewRecording} from '../../../screens/Account/Settings/SettingsNewRecording';
-import { SettingsTimePlaying } from '../../../screens/Account/Settings/SettingsTimePlaying';
-import { SettingsVolume } from '../../../screens/Account/Settings/SettingsVolume';
+import {SettingsTimePlaying} from '../../../screens/Account/Settings/SettingsTimePlaying';
+import {SettingsVolume} from '../../../screens/Account/Settings/SettingsVolume';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 
 const customTabBarStyle = {
   activeTintColor: '#0091EA',
@@ -32,9 +33,43 @@ const navigationOptions = navigation => {
   return {
     title: `${navigation.route?.params?.title}`,
     headerShown: true,
-    headerTintColor: '#fff',
+    headerTintColor: '#2371AB',
+    headerTitleStyle: {
+      fontFamily: 'AntagometricaBT-Bold',
+      fontSize: 20,
+    },
     headerStyle: {
       backgroundColor: '#2A305A',
+    },
+    headerLeft: () => {
+      console.log(navigation);
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigation.goBack();
+          }}
+          style={{alignItems: 'center'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <Image
+              source={require('../../../assets/images/backButton.png')}
+              style={{width: 12.3, height: 18.86, marginRight: 10}}
+            />
+            <Text
+              style={{
+                fontSize: 19,
+                color: 'white',
+                fontFamily: 'AntagometricaBT-Regular',
+                paddingBottom: 4,
+              }}>
+              settings
+            </Text>
+          </View>
+        </TouchableOpacity>
+      );
     },
   };
 };
@@ -68,7 +103,7 @@ const StackRoutes = () => {
         component={SettingsDomeBrihtness}
         options={navigationOptions}
       />
-      <Stack.Screen 
+      <Stack.Screen
         name="smartCRY Sensor Sensitivity"
         component={SettingsSmartCRY}
         options={navigationOptions}

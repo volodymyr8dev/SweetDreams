@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, ImageBackground} from 'react-native';
 import BouncyCheckboxGroup, {
   ICheckboxButton,
 } from 'react-native-bouncy-checkbox-group';
@@ -15,6 +15,7 @@ import Slider from '@react-native-community/slider';
 import DomeBrignessBig from '../../../assets/images/settings/DomeBrignessBig.png';
 import DomeBrignessSmal from '../../../assets/images/settings/DomeBrignessSmal.png';
 import {SliderComp} from '../../../components/Slider/SliderComp';
+import background from '../../../assets/images/homeIcon/bacgroundHome.png'
 
 export const SettingsDomeBrihtness = () => {
   const [value, setValue] = useState();
@@ -25,20 +26,20 @@ export const SettingsDomeBrihtness = () => {
   const dispatch = useDispatch();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.box}>
-        <Image
-          source={DomeBrignessBig}
-          style={{width: 25, height: 25, marginRight: 5}}
-        />
-        <View style={{justifyContent:'center',width:'75%'}}>
-          <SliderComp
-            brightness={brightness}
-            value={value}
-            setValue={setValue}
+      <ImageBackground source={background}><View style={styles.container}>
+        <View style={styles.box}>
+          <Image
+              source={DomeBrignessBig}
+              style={{width: 25, height: 25, marginRight: 5}}
           />
-        </View>
-        {/* <Slider
+          <View style={{justifyContent: 'center', width: '75%'}}>
+            <SliderComp
+                brightness={brightness}
+                value={value}
+                setValue={setValue}
+            />
+          </View>
+          {/* <Slider
           style={{width: '75%', height: 40}}
           value={brightness}
           minimumValue={0}
@@ -54,18 +55,18 @@ export const SettingsDomeBrihtness = () => {
             console.log(value);
           }}
         /> */}
-        <Image
-          style={{width: 30, height: 30, marginLeft: 5}}
-          source={DomeBrignessSmal}
-        />
-      </View>
-    </View>
+          <Image
+              style={{width: 30, height: 30, marginLeft: 5}}
+              source={DomeBrignessSmal}
+          />
+        </View>
+      </View></ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#2A2E63',
+    // backgroundColor: '#2A2E63',
     height: '100%',
   },
   box: {

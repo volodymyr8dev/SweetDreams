@@ -1,11 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Platform, View, StyleSheet} from 'react-native';
+import {Platform, View, StyleSheet, ImageBackground} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-date-picker';
 import {COLORS} from '../../../styles/Constants';
 import {SettingsDevice} from '../../../api/Settings/SettingsApi';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../redux/configureStore';
+import background from '../../../assets/images/homeIcon/bacgroundHome.png'
 import {setPlayingTime} from '../../../redux/slice/SettingsSlice';
 
 export const SettingsTimePlaying = ({route}) => {
@@ -33,8 +34,8 @@ export const SettingsTimePlaying = ({route}) => {
   }, [value]);
 
   return (
-    <View style={styles.container}>
-      {/* <DatePicker
+      <ImageBackground source={background}><View style={styles.container}>
+        {/* <DatePicker
         maximumDate={new Date()}
         mode="date"
         theme="dark"
@@ -62,43 +63,43 @@ export const SettingsTimePlaying = ({route}) => {
           setOpen(false);
         }}
       /> */}
-      <View style={styles.input}>
-        <RNPickerSelect placeholder = {{
-          label: 'Ukraine',
-          value: "Ukraine",
-          color: 'white'
-        }}
-          mode="dropdown"
-          itemStyle={{
-            backgroundColor: 'lightgrey',
-            marginLeft: 0,
-            paddingLeft: 15,
+        <View style={styles.input}>
+          <RNPickerSelect placeholder={{
+            label: 'Developer',
+            value: "Developer",
+            color: 'white'
           }}
-          style={{
-            placeholder: {
-              color: 'white',
-              fontSize: 12,
-              fontWeight: 'bold',
-            },
-          }}
-          onValueChange={value => {
-            setValue(value);
-            console.log(value);
-          }}
-          items={[
-            {label: '20 Mins', value: '20 Mins', color: COLORS.text},
-            {label: '40 Mins', value: '40 Mins', color: COLORS.text},
-            {label: '60 Mins', value: '60 Mins', color: COLORS.text},
-          ]}
-        />
-      </View>
-    </View>
+                          mode="dropdown"
+                          itemStyle={{
+                            backgroundColor: 'lightgrey',
+                            marginLeft: 0,
+                            paddingLeft: 15,
+                          }}
+                          style={{
+                            placeholder: {
+                              color: 'white',
+                              fontSize: 12,
+                              fontWeight: 'bold',
+                            },
+                          }}
+                          onValueChange={value => {
+                            setValue(value);
+                            console.log(value);
+                          }}
+                          items={[
+                            {label: '20 Mins', value: '20 Mins', color: COLORS.text},
+                            {label: '40 Mins', value: '40 Mins', color: COLORS.text},
+                            {label: '60 Mins', value: '60 Mins', color: COLORS.text},
+                          ]}
+          />
+        </View>
+      </View></ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#2A2E63',
+    // backgroundColor: '#2A2E63',
     height: '100%',
     paddingTop: 10,
   },
