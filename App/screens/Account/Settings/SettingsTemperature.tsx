@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, ImageBackground} from 'react-native';
 import BouncyCheckboxGroup, {
   ICheckboxButton,
 } from 'react-native-bouncy-checkbox-group';
@@ -13,6 +13,7 @@ import SettingsSlice, {
 import {useSelector} from 'react-redux';
 import {SettingsDevice} from '../../../api/Settings/SettingsApi';
 import {RootState} from '../../../redux/configureStore';
+import background from '../../../assets/images/homeIcon/bacgroundHome.png'
 
 
 
@@ -31,7 +32,7 @@ export const SettingsTemperature = ({route}) => {
   const verticalStaticData = [
     {
       id: 0,
-      text: '*C',
+      text: '°C',
       iconStyle: {
         padding: 15,
         borderRadius: 50,
@@ -42,19 +43,19 @@ export const SettingsTemperature = ({route}) => {
       style: {
         width: '100%',
         marginTop: 20,
-        backgroundColor: '#1A172D',
+        backgroundColor: 'rgba(26,23,45,0.7)',
         paddingHorizontal: 15,
         justifyContent: 'space-between',
-        height: 50,
+        height: 76,
         flexDirection: 'row-reverse',
       },
       fillColor: '#2371AB',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none', color: COLORS.text},
+      textStyle: {textDecorationLine: 'none', color: COLORS.text, fontSize: 20, fontFamily: 'AntagometricaBT-Bold'},
     },
     {
       id: 1,
-      text: '*F',
+      text: '°F',
       iconStyle: {
         borderColor: '#CCC',
         padding: 15,
@@ -62,9 +63,9 @@ export const SettingsTemperature = ({route}) => {
       },
       style: {
         width: '100%',
-        marginTop: 20,
-        height: 50,
-        backgroundColor: '#1A172D',
+        marginTop: 8,
+        height: 76,
+        backgroundColor: 'rgba(26,23,45,0.7)',
         paddingHorizontal: 15,
         justifyContent: 'space-between',
         flexDirection: 'row-reverse',
@@ -76,43 +77,44 @@ export const SettingsTemperature = ({route}) => {
       },
       fillColor: '#2371AB',
       unfillColor: 'transparent',
-      textStyle: {textDecorationLine: 'none', color: COLORS.text},
+      textStyle: {textDecorationLine: 'none', color: COLORS.text, fontSize: 20, fontFamily: 'AntagometricaBT-Bold'},
     },
   ];
 
   return (
-    <View style={styles.container}>
-      <View>
-        {loader ? (
-          <BouncyCheckboxGroup
-            initial={route.params.value === "F" ? 1 : 0}
-            fillColor="red"
-            data={verticalStaticData}
-            style={styles.bouncyCheckBox}
-            onChange={(selectedItem: ICheckboxButton) => {
-              setNewValue()
-              // if (selectedItem.id == 0) {
-              //   setTypeC(true);
-              //   setTypeF(false);
-              // } else {
-              //   setTypeC(false);
-              //   setTypeF(true);
-              // }
-              // dispatch(setTemperature(selectedItem.id));
-            }}
-            textStyle={{
-              textDecorationLine: 'none',
-            }}
-          />
-        ) : null}
-      </View>
-    </View>
+      <ImageBackground source={background}>
+        <View style={styles.container}>
+        <View>
+          {loader ? (
+              <BouncyCheckboxGroup
+                  initial={route.params.value === "F" ? 1 : 0}
+                  fillColor="red"
+                  data={verticalStaticData}
+                  style={styles.bouncyCheckBox}
+                  onChange={(selectedItem: ICheckboxButton) => {
+                    setNewValue()
+                    // if (selectedItem.id == 0) {
+                    //   setTypeC(true);
+                    //   setTypeF(false);
+                    // } else {
+                    //   setTypeC(false);
+                    //   setTypeF(true);
+                    // }
+                    // dispatch(setTemperature(selectedItem.id));
+                  }}
+                  textStyle={{
+                    textDecorationLine: 'none',
+                  }}
+              />
+          ) : null}
+        </View>
+      </View></ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#2A2E63',
+    // backgroundColor: '#2A2E63',
     height: '100%',
   },
   blog: {
