@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SettingsTemperature} from '../../../screens/Account/Settings/SettingsTemperature';
@@ -33,9 +33,43 @@ const navigationOptions = navigation => {
   return {
     title: `${navigation.route?.params?.title}`,
     headerShown: true,
-    headerTintColor: '#fff',
+    headerTintColor: '#2371AB',
+    headerTitleStyle: {
+      fontFamily: 'AntagometricaBT-Bold',
+      fontSize: 20,
+    },
     headerStyle: {
       backgroundColor: '#2A305A',
+    },
+    headerLeft: () => {
+      console.log(navigation);
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigation.goBack();
+          }}
+          style={{alignItems: 'center'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <Image
+              source={require('../../../assets/images/backButton.png')}
+              style={{width: 12.3, height: 18.86, marginRight: 10}}
+            />
+            <Text
+              style={{
+                fontSize: 19,
+                color: 'white',
+                fontFamily: 'AntagometricaBT-Regular',
+                paddingBottom: 4,
+              }}>
+              settings
+            </Text>
+          </View>
+        </TouchableOpacity>
+      );
     },
   };
 };

@@ -1,24 +1,33 @@
-import React, {useState} from 'react';
+import React from 'react';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {COLORS} from '../../styles/Constants/index';
-// import {Switch} from 'react-native-switch';
-export const Switch = ({val, setVal}) => {
-  const [value, setValue] = useState(false);
+import {SettingsDevice} from '../../api/Settings/SettingsApi';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../redux/configureStore';
+
+export const Switch = ({val, setVal, setData, valueSmart, title}) => {
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const setValue = async () => {
+    const data = await SettingsDevice(
+      // val !== null ? {'Child Lock': !val} : {'smartCRY Sensor': "0"},
+      {[title]: val !== null ? !val : valueSmart === '0' ? '1' : '0'},
+      user.accounts[0].id,
+    );
+    setData(data.data.data);
+  };
+
   return (
     <ToggleSwitch
-      isOn={val ? val : value}
+      isOn={val !== null ? val : valueSmart === '0' ? false : true}
       onColor={COLORS.text}
       offColor="#707070"
       labelStyle={{color: 'black', fontWeight: '900'}}
       size="large"
-      onToggle={isOn => {
-        console.log(val);
-        if (val) {
+      onToggle={() => {
+        if (setVal) {
           setVal(!val);
-          setValue(!value);
         } else {
-          setVal && setVal(!val);
-          setValue(!value);
+          setValue();
         }
       }}
     />

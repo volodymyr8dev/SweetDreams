@@ -1,30 +1,32 @@
 import React, {useState} from 'react';
-import {View, Text, Dimensions, StyleSheet} from 'react-native';
+import {View, Text, Dimensions, StyleSheet, ImageBackground} from 'react-native';
 import {ColorWheel} from 'react-native-color-wheel';
 // import { ColorPicker } from 'react-native-color-picker'
 import ColorPicker from 'react-native-wheel-color-picker';
 import {COLORS} from '../../../styles/Constants';
+import background from '../../../assets/images/homeIcon/bacgroundHome.png'
+
 export const SettingsColourPicker = () => {
   const [color, setColor] = useState('#ddd');
   return (
-    <View style={styles.container}>
-      <View>
-        <ColorPicker
-          color={color}
-          // swatchesOnly={this.state.swatchesOnly}
-          onColorChange={value => {
-            setColor(value);
-          }}
-          // onColorChangeComplete={value => console.log(value)}
-          thumbSize={40}
-          sliderSize={40}
-          noSnap={true}
-          row={false}
-          // swatchesLast={this.state.swatchesLast}
-          swatches={true}
-          discrete={false}
-        />
-        {/* <ColorWheel
+      <ImageBackground source={background}><View style={styles.container}>
+        <View>
+          <ColorPicker
+              color={color}
+              // swatchesOnly={this.state.swatchesOnly}
+              onColorChange={value => {
+                setColor(value);
+              }}
+              // onColorChangeComplete={value => console.log(value)}
+              thumbSize={40}
+              sliderSize={40}
+              noSnap={true}
+              row={false}
+              // swatchesLast={this.state.swatchesLast}
+              swatches={true}
+              discrete={false}
+          />
+          {/* <ColorWheel
           initialColor="#eeff00"
           onColorChange={(color) => console.log(color )}
           onColorChangeComplete={color => console.log({color})}
@@ -37,14 +39,14 @@ export const SettingsColourPicker = () => {
           }}
           thumbStyle={{height: 10, width: 10, borderRadius: 20}}
         /> */}
-      </View>
-    </View>
+        </View>
+      </View></ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#2A2E63',
+    // backgroundColor: '#2A2E63',
     height: '100%',
     paddingHorizontal: 40,
   },

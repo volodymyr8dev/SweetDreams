@@ -41,18 +41,15 @@ export const ConnectionStep2 = () => {
       ConnectDevice(user.accounts[0].id, serialNumber)
         .then(res => {
           if (res.data.success) {
-            console.log(res.data.success, 'datadatadata');
+            // console.log(res.data.success, 'datadatadata');
             GetSalt('misty').then(res => {
               // console.log(res);
-              // setSalt(res.data.data.salt);
+              setSalt(res.data.data.salt);
               ConnectToNetwork()
+              setLoader(false);
             });
-            setLoader(false);
             // dispatch(setSerialNumber(res.data.success))
-            navigation.navigate('conectionStep3', {
-              title: 'connect misty',
-              serial_number: res.data.success,
-            });
+
           }
         })
         .catch(res => {
@@ -65,35 +62,21 @@ export const ConnectionStep2 = () => {
   const ConnectToNetwork = async () => {
     WifiManager.connectToProtectedSSID(
       `Misty - ${serialNumber}`,
-      `efdfsdsw3r34df`,
+      `${salt}`,
       false,
     ).then(
       () => {
         console.log('Connected successfully!');
+        navigation.navigate('conectionStep3', {
+          title: 'connect misty',
+        });
       },
-      rej => {
+      (rej) => {
         console.log('Connection failed!', rej);
       },
     );
   };
 
-  // useEffect(() => {
-  //   if (salt !== '') {
-  //     console.log('ZASHOL');
-  //     WifiManager.connectToProtectedSSID(
-  //       `Misty - ${serialNumber}`,
-  //       `${salt}`,
-  //       false,
-  //     ).then(
-  //       () => {
-  //         console.log('Connected successfully!');
-  //       },
-  //       rej => {
-  //         console.log('Connection failed!', rej);
-  //       },
-  //     );
-  //   }
-  // }, [salt]);
 
   return (
     <>

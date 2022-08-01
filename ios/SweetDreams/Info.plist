@@ -28,6 +28,13 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>New Exception Domain</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -43,8 +50,6 @@
 	<string>Misty the Cloud uses this to a autofill the address when you create a calendar event.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Misty the Cloud uses the nicrophone to record sounds for Russell</string>
-	<key>com.apple.developer.networking.HotspotConfiguration</key>
-	<key>com.apple.developer.networking.wifi-info</key>
 	<key>UIAppFonts</key>
 	<array>
 		<string>JosefinSans.ttf</string>
@@ -71,5 +76,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>com.apple.developer.networking.HotspotConfiguration</key>
+	<string>com.apple.developer.networking.wifi-info</string>
 </dict>
 </plist>
