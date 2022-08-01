@@ -11,12 +11,12 @@ import React, {useState} from 'react';
 const lines = [
   {start: 14, end: 16.3, isActive: false},
   {start: 12, end: 17.32, isActive: false},
-  {start: 15, end: 20.3, isActive: false},
-  {start: 12, end: 16.3, isActive: false},
-  {start: 12, end: 16.4, isActive: false},
-  {start: 12, end: 16.3, isActive: false},
-  {start: 12, end: 16.3, isActive: false},
-  {start: 12, end: 16.3, isActive: false},
+//   {start: 15, end: 20.3, isActive: false},
+//   {start: 12, end: 16.3, isActive: false},
+//   {start: 12, end: 16.4, isActive: false},
+//   {start: 12, end: 16.3, isActive: false},
+//   {start: 12, end: 16.3, isActive: false},
+//   {start: 12, end: 16.3, isActive: false},
 ];
 const koef = 0.2625;
 console.log((Dimensions.get('window').width - 36) / 12);
@@ -52,14 +52,14 @@ export const BarChartComp = () => {
                 <View style={styles.verticalCont}>
                   <TouchableOpacity
                     onPress={e => {
-                      setState(
-                        state.map((item, indexMap) => {
-                          index == indexMap
-                            ? (item.isActive = true)
-                            : (item.isActive = false);
-                          return item;
-                        }),
-                      );
+                    //   setState(
+                    //     state.map((item, indexMap) => {
+                    //       index == indexMap
+                    //         ? (item.isActive = true)
+                    //         : (item.isActive = false);
+                    //       return item;
+                    //     }),
+                    //   );
                       console.log('y', e.nativeEvent.locationY);
                       setLocation({
                         x: e.nativeEvent.locationX,
