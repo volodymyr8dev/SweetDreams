@@ -6,54 +6,207 @@ import {
   Image,
   Dimensions,
   ImageBackground,
+  Alert,
+  TouchableOpacity,
 } from 'react-native';
 import arrowLeft from '../../../../assets/images/nersery/arrowLeft.png';
 import arrowRight from '../../../../assets/images/nersery/arrowRight.png';
 import sleepDiary from '../../../../assets/images/nersery/sleepDiary.png';
 import alertUp from '../../../../assets/images/nersery/alertUp.png';
 import alertDown from '../../../../assets/images/nersery/alertDown.png';
-import {InputUnit} from '../../../../components/InputUnit/InputUnit';
-import {COLORS} from '../../../../styles/Constants';
-import {Blog} from '../../Settings/SettingsAccount';
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from 'react-native-chart-kit';
-export const AverageTempature = () => {
-  const array = [22.5, 23, 10, 30];
+import {COLORS, timeIndex, time} from '../../../../styles/Constants';
+import {LineChart} from 'react-native-chart-kit';
+import {Blog} from '../../../../components/Touchable/TouchableInput';
+import {NureseryTemperatureApi} from '../../../../api/Nursery/Nuresery';
+import moment from 'moment';
 
+export const AverageTempature = ({route}) => {
+  const [array, setArray] = useState([22.5, 23, 15, 30, 28]);
+  const [labels, setLabels] = useState<string[]>(['']);
+  const [activeTime, setActiveTime] = useState('last 24 hours');
+
+  const chooseDate = start => {
+    console.log('chooseDate', start);
+    let date = new Date();
+    switch (start) {
+      case 'last 24 hours':
+        return moment(date).format('YYYY-MM-DD HH:mm:ss');
+      case '2 days ago':
+        return moment(date).subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+      case '3 days ago':
+        return moment(date).subtract(2, 'days').format('YYYY-MM-DD HH:mm:ss');
+      case '4 days ago':
+        return moment(date).subtract(3, 'days').format('YYYY-MM-DD HH:mm:ss');
+      case '5 days ago':
+        return moment(date).subtract(4, 'days').format('YYYY-MM-DD HH:mm:ss');
+      case '6 days ago':
+        return moment(date).subtract(5, 'days').format('YYYY-MM-DD HH:mm:ss');
+      case '7 days ago':
+        return moment(date).subtract(6, 'days').format('YYYY-MM-DD HH:mm:ss');
+      case '7 days - 14':
+        return moment(date).subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss');
+      case '7 days - 14':
+        return moment(date).subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss');
+      case '7 days - 21':
+        return moment(date).subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss');
+      case '2 weeks ago':
+        return moment(date).subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss');
+      case '3 weeks ago':
+        return moment(date).subtract(14, 'days').format('YYYY-MM-DD HH:mm:ss');
+      case '4 weeks ago':
+        return moment(date).subtract(21, 'days').format('YYYY-MM-DD HH:mm:ss');
+      case '2 month ago':
+        return moment(date).subtract(28, 'days').format('YYYY-MM-DD HH:mm:ss');
+    }
+  };
+  useEffect(() => {
+    NureseryTemperatureApi(
+      route.params.childId,
+      moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss'),
+      moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+    )
+      .then(({data}) => {
+        console.log('success', data);
+        let labels: string[] = [];
+        let points = data
+          .map(item => item.temperature[0])
+          .map(item => {
+            labels.push(item[0].time);
+            return item[0].temperature;
+          });
+        labels.sort(
+          (a: any, b: any) => a.replace(':', '') - b.replace(':', ''),
+        );
+        setLabels(labels);
+        setArray(points.sort((a, b) => a - b));
+      })
+      .catch(err => {
+        console.log('err', err);
+        setArray([0]);
+      });
+  }, []);
+  const chooseTimeOrIndex = (type, direction) => {
+    console.log('active', time.length - 1);
+    if (direction === 'left') {
+      if (type == 'time') {
+        return time.indexOf(activeTime) == 0
+          ? time[time.length - 1]
+          : time[time.indexOf(activeTime) - 1];
+      } else {
+        return time.indexOf(activeTime) == 0
+          ? timeIndex[time.length - 1]
+          : timeIndex[time.indexOf(activeTime) - 1];
+      }
+    } else {
+      if (type == 'time') {
+        return time.indexOf(activeTime) == time.length - 1
+          ? time[0]
+          : time[time.indexOf(activeTime) + 1];
+      } else {
+        return time.indexOf(activeTime) == 0
+          ? timeIndex[time.length - 1]
+          : timeIndex[time.indexOf(activeTime) - 1];
+      }
+    }
+  };
+
+  //left arrow
+  const handleLeftData = () => {
+    time.indexOf(activeTime) == 0
+      ? setActiveTime(time[activeTime.length - 1])
+      : setActiveTime(time[time.indexOf(activeTime) - 1]);
+
+    let start = chooseTimeOrIndex('timeIndex', 'left');
+    let end = chooseDate(chooseTimeOrIndex('time', 'left'));
+    console.log('start', start);
+    console.log('end', end);
+    NureseryTemperatureApi(route.params.childId, start, end)
+      .then(({data}) => {
+        console.log('success', data);
+        let labels: string[] = [];
+        let points = data
+          .map(item => item.temperature[0])
+          .map(item => {
+            labels.push(item[0].time);
+            return item[0].temperature;
+          });
+        labels.sort(
+          (a: any, b: any) => a.replace(':', '') - b.replace(':', ''),
+        );
+        setLabels(labels);
+        setArray(points.sort((a, b) => a - b));
+      })
+      .catch(err => {
+        console.log('err', err);
+        setArray([0]);
+      });
+  };
+
+  //right arrow
+  const handleRightData = () => {
+    time.indexOf(activeTime) == time.length - 1
+      ? setActiveTime(time[0])
+      : setActiveTime(time[time.indexOf(activeTime) + 1]);
+
+    let start = chooseTimeOrIndex('timeIndex', 'right');
+    let end = chooseDate(chooseTimeOrIndex('time', 'right'));
+    console.log('start ', start);
+    console.log('end ', start);
+    NureseryTemperatureApi(route.params.childId, start, end)
+      .then(({data}) => {
+        console.log('success', data);
+        let labels: string[] = [];
+        let points = data
+          .map(item => item.temperature[0])
+          .map(item => {
+            labels.push(item[0].time);
+            return item[0].temperature;
+          });
+        labels.sort(
+          (a: any, b: any) => a.replace(':', '') - b.replace(':', ''),
+        ),
+          setLabels(labels);
+        setArray(points.sort((a, b) => a - b));
+      })
+      .catch(err => {
+        console.log('err', err);
+        setArray([0]);
+      });
+  };
   const [value, setValue] = useState({value: 0, y: 0, x: 0, yMax: 0, xMax: 0});
   useEffect(() => {
-    // let min = Math.min(...array);
-    // let max = Math.max(...array);
-    // let indexMin = array.indexOf(min);
-    // let indexMax = array.indexOf(max);
-    // console.log('min', min);
-    // console.log('--------------------', indexMax * 70 + 43);
-    // setValue(prev => ({
-    //   ...prev,
-    //   y: min * 8.97501 + 90,
-    //   x: indexMin * 70 + 43,
-    //   xMax: indexMax * 70 + 43,
-    //   yMax: (max * 8.97501) / array.length + 90,
-    // }));
+    let min = Math.min(...array);
+    let max = Math.max(...array);
+    let indexMin = array.indexOf(min);
+    let indexMax = array.indexOf(max);
+    console.log('min', min);
+    console.log('--------------------', indexMax * 70 + 43);
+    setValue(prev => ({
+      ...prev,
+      y: min * 10 + 90,
+      x: indexMin * 100 + 43,
+      xMax: indexMax * 70 + 43,
+      yMax: (max * 8.97501) / array.length + 90,
+    }));
   }, []);
-  console.log('value222', value);
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerContent}>
-          <Image style={{width: 10.77, height: 18.86}} source={arrowLeft} />
+          <TouchableOpacity
+            style={{paddingHorizontal: 5, paddingVertical: 5}}
+            onPress={() => handleLeftData()}>
+            <Image style={{width: 10.77, height: 18.86}} source={arrowLeft} />
+          </TouchableOpacity>
           <View style={styles.headerWraper}>
-            <Text style={styles.headerText}>24 hours - 1 day</Text>
+            <Text style={styles.headerText}>{activeTime}</Text>
             <Text style={styles.headerTextTime}>24 hours - 1 day</Text>
           </View>
-          <Image style={{width: 10.77, height: 18.86}} source={arrowRight} />
+          <TouchableOpacity
+            style={{paddingHorizontal: 5, paddingVertical: 5}}
+            onPress={handleRightData}>
+            <Image style={{width: 10.77, height: 18.86}} source={arrowRight} />
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.graphicContent}>
@@ -76,14 +229,20 @@ export const AverageTempature = () => {
             console.log('masoud');
           }}
           fromZero
+          getDotColor={(dataPoint, dataPointIndex) => {
+            if (dataPointIndex === 0) {
+              return COLORS.textLight;
+            }
+            return COLORS.textLight;
+          }}
           data={{
-            labels: ['12', '18', '24', '6', '12'],
+            labels: labels,
             datasets: [
               {
                 data: array,
               },
               {
-                data: [1], // min
+                data: [20], // min
                 withDots: false,
               },
               {
@@ -220,7 +379,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: 'auto',
-    bottom: 0,
+    bottom: 10,
   },
   bottomButton: {
     height: 76,

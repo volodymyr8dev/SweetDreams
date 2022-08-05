@@ -8,6 +8,7 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {EventInformation} from '../../../screens/Account/Diary/EventInformation';
 import back from '../../../assets/images/backButton.png';
 import {Location} from '../../../screens/Account/Diary/Location';
+import {LongestPeriod} from '../../../screens/Account/Nursery/properties/LongestPeriod';
 interface IParam {
   title: string;
   isHide: boolean;
@@ -143,7 +144,7 @@ const navigationOptionsDoc = navigation => {
 };
 export const DiaryRoutes = () => {
   const Stack = createNativeStackNavigator();
-                
+
   return (
     <>
       <Stack.Screen
@@ -159,6 +160,11 @@ export const DiaryRoutes = () => {
       <Stack.Screen
         name="Location event"
         component={Location}
+        options={navigationOptionsLocation}
+      />
+      <Stack.Screen
+        name="LongestPeriod"
+        component={LongestPeriod}
         options={navigationOptionsLocation}
       />
     </>

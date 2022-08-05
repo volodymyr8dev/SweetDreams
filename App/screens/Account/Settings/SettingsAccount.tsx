@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import arrowRight from '../../..//assets/images/settings/arrowRight.png';
+import arrowRight from '../../../assets/images/settings/arrowRight.png';
 import connection from '../../../assets/images/settings/connection.png';
 import lock from '../../../assets/images/settings/lock.png';
 import clock from '../../../assets/images/settings/clock.png';
@@ -26,122 +26,8 @@ import volumeImg from '../../../assets/images/settings/volume.png';
 import {Switch} from '../../../components/Switch/Switch';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-<<<<<<< HEAD
-interface IBox {
-  title: string;
-  rightEl: object | string;
-  source: Image;
-  style?: object;
-  styleText?: object;
-  styleImage?: object;
-}
-export const Blog = ({
-  title,
-  rightEl,
-  source,
-  style,
-  styleText,
-  styleImage,
-}: IBox) => {
-  const navigation = useNavigation();
-
-  const handleSettings = async title => {
-    if (typeof rightEl !== 'object') {
-      console.log(title, 'title');
-
-      navigation.navigate(`${title}`, {title: title});
-    }
-  };
-  return (
-    <TouchableOpacity
-      onPress={() => handleSettings(title)}
-      style={[styles.blog, style && style]}>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Image
-          style={{width: 15, height: 15, marginRight: 10}}
-          source={source}
-          resizeMode="contain"
-        />
-        <Text style={[styles.text, styleText && styleText]}>{title}</Text>
-      </View>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        {typeof rightEl == 'object' ? (
-          rightEl
-        ) : (
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={[styleText ? styleText : styles.textRight]}>
-              {rightEl}
-            </Text>
-            <Image
-              style={[
-                styleImage
-                  ? styleImage
-                  : {width: 9.27, height: 14.2, marginLeft: 10},
-              ]}
-              source={arrowRight}
-            />
-          </View>
-        )}
-      </View>
-    </TouchableOpacity>
-  );
-};
-export const SettingsAccount = () => {
-  const {formatWakeUpTime, formatTime, volume} = useSelector(
-    ({settings}) => settings,
-  );
-
-  return (
-    <ScrollView style={styles.container}>
-      <View style={{paddingBottom: 40}}>
-        <Blog title="Connection" rightEl="Connected" source={connection} />
-        <Blog title="Child Lock" rightEl={<Switch />} source={lock} />
-        <View style={{paddingLeft: 15}}>
-          <Text style={{color: '#2371AB', fontSize: 17}}>Display Settings</Text>
-        </View>
-        <Blog title="time" rightEl={`${formatTime}`} source={clock} />
-        <Blog
-          title="Wake Up Time"
-          source={wakeUp}
-          rightEl={`${formatWakeUpTime}`}
-        />
-        <Blog title="Colour Picker" source={colorPicker} rightEl={undefined} />
-        <Blog title="Dome Brightness" source={brightness} rightEl={'3%'} />
-        <Blog
-          title="Display Brightness"
-          source={displayBrightness}
-          rightEl={'25%'}
-        />
-        <Blog title="Temperature" source={Temperature} rightEl={'*C'} />
-        <View style={{paddingLeft: 15}}>
-          <Text style={{color: '#2371AB', fontSize: 17}}> Sound Settings</Text>
-        </View>
-        <Blog title="smartCRY Sensor" source={smartCRY} rightEl={<Switch />} />
-        <Blog
-          title="smartCRY Sensor Sensitivity"
-          source={smartSRYSensetivity}
-          rightEl={'Moder...'}
-        />
-        <Blog
-          title="Custom Recording"
-          source={music}
-          rightEl={'Dad reading s...'}
-        />
-        <Blog
-          title="Sound Playing Time"
-          source={musicTime}
-          rightEl={'20 mins'}
-        />
-        <Blog
-          title="Volume"
-          source={volumeImg}
-          rightEl={Number(volume.toFixed(1))}
-        />
-        <View style={{paddingLeft: 15}}>
-          <Text style={{color: '#2371AB', fontSize: 17}}>Notifications</Text>
-=======
 import background from '../../../assets/images/homeIcon/bacgroundHome.png';
-import COLORS from '../../../styles/Constants';
+import {COLORS} from '../../../styles/Constants';
 import {RootState} from '../../../redux/configureStore';
 export const SettingsAccount = ({route}) => {
   const [settingsData, setSettingsData] = useState(route.params.data);
@@ -162,7 +48,7 @@ export const SettingsAccount = ({route}) => {
   //   setValSwitch(true);
   // }, []);
   const Blog = ({title, rightEl, source, value, navigate}) => {
-    const navigation = useNavigation();
+    const navigation: any = useNavigation();
 
     const handleSettings = async title => {
       if (typeof rightEl !== 'object') {
@@ -212,8 +98,7 @@ export const SettingsAccount = ({route}) => {
     );
   };
   return (
-    <ImageBackground
-      source={background}>
+    <ImageBackground source={background}>
       <ScrollView style={styles.container}>
         <View style={{paddingBottom: 40}}>
           <Blog
@@ -361,7 +246,6 @@ export const SettingsAccount = ({route}) => {
             source={Temperature}
             rightEl={<Switch />}
           />
->>>>>>> main
         </View>
       </ScrollView>
     </ImageBackground>

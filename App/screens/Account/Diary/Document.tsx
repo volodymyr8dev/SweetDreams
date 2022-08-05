@@ -107,18 +107,7 @@ export const Document = () => {
     {title: '', date: ''},
   ]);
   const [points, setPoints] = useState([
-    {
-      date: '2022-07-13T05:00:00.000Z',
-      title: "It's a past thing!",
-    },
-    {
-      date: '2022-07-15T05:00:00.000Z',
-      title: "It's a today thing!",
-    },
-    {
-      date: '2022-07-18T05:00:00.000Z',
-      title: "It's a future thi!",
-    },
+
   ]);
   const handleClicked = () => {
     setShown(true);
