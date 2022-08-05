@@ -29,6 +29,8 @@ import {useSelector} from 'react-redux';
 import background from '../../../assets/images/homeIcon/bacgroundHome.png';
 import COLORS from '../../../styles/Constants';
 import {RootState} from '../../../redux/configureStore';
+import {GetRecord} from '../../../api/Recording/Recording';
+
 export const SettingsAccount = ({route}) => {
   const [settingsData, setSettingsData] = useState(route.params.data);
   const {formatWakeUpTime, formatTime, volume} = useSelector(
@@ -61,7 +63,40 @@ export const SettingsAccount = ({route}) => {
           },
         });
       }
+      if (navigate === 'Custom Recording') {
+        getCustomRecord();
+      }
     };
+
+    const {user} = useSelector(
+      ({account}: RootState) => account.userInformation,
+    );
+
+    const getCustomRecord = () => {
+      navigation.navigate('Custom Recording', {
+        title: title,
+        value: value,
+        setValue: obj => {
+          setSettingsData(obj);
+        },
+      });
+      // GetRecord(user.accounts[0].id)
+      //   .then(res => {
+      //     console.log(res);
+      //     navigation.navigate('Custom Recording',{
+      //       title: title,
+      //       value: value,
+      //       setValue: obj => {
+      //         setSettingsData(obj);
+      //       },
+      //       data: res.data.recordings,
+      //     });
+      //   })
+      //   .catch(res => {
+      //     console.log(res);
+      //   });
+    };
+
     return (
       <TouchableOpacity
         onPress={() => handleSettings(title)}
@@ -98,8 +133,7 @@ export const SettingsAccount = ({route}) => {
     );
   };
   return (
-    <ImageBackground
-      source={background}>
+    <ImageBackground source={background}>
       <ScrollView style={styles.container}>
         <View style={{paddingBottom: 40}}>
           <Blog
@@ -206,13 +240,13 @@ export const SettingsAccount = ({route}) => {
             ).toFixed(0)}
           />
           <Blog
-            title="custom Recording"
+            title="custom recording"
             navigate="Custom Recording"
             source={music}
             rightEl={'Dad reading s...'}
           />
           <Blog
-            title="sound Playing Time"
+            title="sound playing time"
             navigate="Sound Playing Time"
             source={musicTime}
             value={settingsData['Sound Playing Time']}

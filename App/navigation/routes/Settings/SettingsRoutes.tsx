@@ -12,6 +12,9 @@ import {SettingsNewRecording} from '../../../screens/Account/Settings/SettingsNe
 import {SettingsTimePlaying} from '../../../screens/Account/Settings/SettingsTimePlaying';
 import {SettingsVolume} from '../../../screens/Account/Settings/SettingsVolume';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {useSelector} from 'react-redux';
+import {ConnectDevice, GetRecord} from '../../../api/Recording/Recording';
+import {RootState} from '../../../redux/configureStore';
 
 const customTabBarStyle = {
   activeTintColor: '#0091EA',
@@ -28,10 +31,12 @@ const navigationOptionAccount = () => ({
   },
   tabBarOptions: {customTabBarStyle},
 });
+
 const navigationOptions = navigation => {
-  console.log(navigation.route?.params?.title);
+  console.log('qqqqqqqq', navigation.route?.params?.title);
+  let params = navigation.route?.params;
   return {
-    title: `${navigation.route?.params?.title}`,
+    title: `${params.title}`,
     headerShown: true,
     headerTintColor: '#2371AB',
     headerTitleStyle: {
@@ -42,22 +47,13 @@ const navigationOptions = navigation => {
       backgroundColor: '#2A305A',
     },
     headerLeft: () => {
-      console.log(navigation);
-      return (
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigation.goBack();
-          }}
-          style={{alignItems: 'center'}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
+      console.log('params', params);
+      if (params.record) {
+        return (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigation.goBack();
             }}>
-            <Image
-              source={require('../../../assets/images/backButton.png')}
-              style={{width: 12.3, height: 18.86, marginRight: 10}}
-            />
             <Text
               style={{
                 fontSize: 19,
@@ -65,17 +61,65 @@ const navigationOptions = navigation => {
                 fontFamily: 'AntagometricaBT-Regular',
                 paddingBottom: 4,
               }}>
-              settings
+              Cancel
             </Text>
-          </View>
-        </TouchableOpacity>
-      );
+          </TouchableOpacity>
+        );
+      } else {
+        return (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigation.goBack();
+            }}
+            style={{alignItems: 'center'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Image
+                source={require('../../../assets/images/backButton.png')}
+                style={{width: 12.3, height: 18.86, marginRight: 10}}
+              />
+              <Text
+                style={{
+                  fontSize: 19,
+                  color: 'white',
+                  fontFamily: 'AntagometricaBT-Regular',
+                  paddingBottom: 4,
+                }}>
+                settings
+              </Text>
+            </View>
+          </TouchableOpacity>
+        );
+      }
+    },
+    headerRight: () => {
+      if (params.record) {
+        return (
+          <TouchableOpacity
+            onPress={() => {
+              params.sendRecord();
+            }}>
+            <Text
+              style={{
+                fontSize: 19,
+                color: 'white',
+                fontFamily: 'AntagometricaBT-Regular',
+                paddingBottom: 4,
+              }}>
+              Save
+            </Text>
+          </TouchableOpacity>
+        );
+      }
     },
   };
 };
 const StackRoutes = () => {
-  const Stack = createNativeStackNavigator();
 
+  const Stack = createNativeStackNavigator();
   return (
     <>
       <Stack.Screen

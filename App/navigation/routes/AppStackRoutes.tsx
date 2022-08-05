@@ -292,7 +292,7 @@ const AppStackRoutes = () => {
       <Stack.Screen
         name="forgotPassword"
         component={ForgotPassword}
-        options={navigationOptions}
+        options={forgotPasswordOptions}
       />
       {/*<Stack.Screen*/}
       {/*  name="ConfirmConnection"*/}

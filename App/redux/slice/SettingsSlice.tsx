@@ -13,7 +13,7 @@ const SettingsSlice = createSlice({
     volume: 0.5,
     temperatureNew: '',
     playingTime: '',
-
+    recordingFile: '',
   },
   reducers: {
     setTemperature(state, action: PayloadAction<number>) {
@@ -21,6 +21,9 @@ const SettingsSlice = createSlice({
     },
     setBrightness(state, action: PayloadAction<number>) {
       state.brightness = action.payload;
+    },
+    setRecording(state, action: PayloadAction<any>) {
+      state.recordingFile = action.payload;
     },
     setWakeUpTime(state, action: PayloadAction<any>) {
       state.wakeUpTime = action.payload.value;
@@ -42,6 +45,14 @@ const SettingsSlice = createSlice({
   },
 });
 
-export const {setTemperature, setBrightness, setWakeUpTime, setTime, setVolume, setTemperatureNew, setPlayingTime} =
-  SettingsSlice.actions;
+export const {
+  setTemperature,
+  setBrightness,
+  setWakeUpTime,
+  setTime,
+  setVolume,
+  setTemperatureNew,
+  setPlayingTime,
+  setRecording,
+} = SettingsSlice.actions;
 export default SettingsSlice.reducer;

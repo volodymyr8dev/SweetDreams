@@ -26,7 +26,7 @@ export const SettingsVolume = ({route}) => {
   useEffect(() => {
     let isActive = false;
     const handleChange = async () => {
-      await timeout(1000);
+      await timeout(500);
       if (!isActive) {
         console.log('activeeee');
         SettingsDevice({Volume: active2}, user.accounts[0].id).then(res => {
