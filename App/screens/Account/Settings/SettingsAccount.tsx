@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import arrowRight from '../../..//assets/images/settings/arrowRight.png';
+import arrowRight from '../../../assets/images/settings/arrowRight.png';
 import connection from '../../../assets/images/settings/connection.png';
 import lock from '../../../assets/images/settings/lock.png';
 import clock from '../../../assets/images/settings/clock.png';
@@ -27,7 +27,7 @@ import {Switch} from '../../../components/Switch/Switch';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import background from '../../../assets/images/homeIcon/bacgroundHome.png';
-import COLORS from '../../../styles/Constants';
+import {COLORS} from '../../../styles/Constants';
 import {RootState} from '../../../redux/configureStore';
 import {GetRecord} from '../../../api/Recording/Recording';
 
@@ -50,7 +50,7 @@ export const SettingsAccount = ({route}) => {
   //   setValSwitch(true);
   // }, []);
   const Blog = ({title, rightEl, source, value, navigate}) => {
-    const navigation = useNavigation();
+    const navigation: any = useNavigation();
 
     const handleSettings = async title => {
       if (typeof rightEl !== 'object') {
@@ -302,5 +302,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
+  },
+  text: {
+    color: '#2371AB',
+    fontSize: 16,
+    fontFamily: 'AntagometricaBT-Regular',
+  },
+  textRight: {
+    color: '#2371AB',
+    fontSize: 15,
+    fontFamily: 'AntagometricaBT-Regular',
   },
 });

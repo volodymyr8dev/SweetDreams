@@ -8,7 +8,9 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {EventInformation} from '../../../screens/Account/Diary/EventInformation';
 import back from '../../../assets/images/backButton.png';
 import {Location} from '../../../screens/Account/Diary/Location';
-import {LongestPeriod} from '../../../screens/Account/Nursery/properties/LongestPeriod';
+import {AverageTempature} from '../../../screens/Account/Nursery/properties/AverageTempature';
+import {TotalTimeComp} from '../../../screens/Account/Nursery/properties/TotalTimeComp';
+import { LongestPeriod } from '../../../screens/Account/Nursery/properties/LongestPeriod';
 interface IParam {
   title: string;
   isHide: boolean;
@@ -142,28 +144,22 @@ const navigationOptionsDoc = navigation => {
     },
   };
 };
-export const DiaryRoutes = () => {
+export const NurseryRoutes = () => {
   const Stack = createNativeStackNavigator();
 
   return (
     <>
       <Stack.Screen
-        name="addEvent"
-        component={NewEvent}
+        name="Average Temperature"
+        component={AverageTempature}
         options={navigationOptionsDoc}
       />
       <Stack.Screen
-        name="entry details"
-        component={EventInformation}
-        options={navigationOptionsDoc}
-      />
+        name="Total Time Without Activation"
+        component={TotalTimeComp}
+        options={navigationOptionsDoc}></Stack.Screen>
       <Stack.Screen
-        name="Location event"
-        component={Location}
-        options={navigationOptionsLocation}
-      />
-      <Stack.Screen
-        name="LongestPeriod"
+        name="Longest Period Without Activation"
         component={LongestPeriod}
         options={navigationOptionsLocation}
       />

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SettingsTemperature} from '../../../screens/Account/Settings/SettingsTemperature';
@@ -11,10 +12,6 @@ import {SettingsRecording} from '../../../screens/Account/Settings/SettingsRecor
 import {SettingsNewRecording} from '../../../screens/Account/Settings/SettingsNewRecording';
 import {SettingsTimePlaying} from '../../../screens/Account/Settings/SettingsTimePlaying';
 import {SettingsVolume} from '../../../screens/Account/Settings/SettingsVolume';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
-import {useSelector} from 'react-redux';
-import {ConnectDevice, GetRecord} from '../../../api/Recording/Recording';
-import {RootState} from '../../../redux/configureStore';
 
 const customTabBarStyle = {
   activeTintColor: '#0091EA',
@@ -128,7 +125,7 @@ const StackRoutes = () => {
         options={navigationOptions}
       />
       <Stack.Screen
-        name="Time"
+        name="time"
         component={SettingsTime}
         options={navigationOptions}
       />

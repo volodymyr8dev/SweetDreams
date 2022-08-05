@@ -21,16 +21,14 @@ import {GetSalt} from '../../api/Device/Device';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/configureStore';
 
-type Nav = {
-  navigate: (value: string) => void;
-};
+
 
 export const ConnectionStep2 = () => {
   const {user} = useSelector(({account}: RootState) => account.userInformation);
   const [currentPosition, setCurrentPosition] = useState(1);
   const [serialNumber, setSerialNumber] = useState('');
   const [loader, setLoader] = useState(false);
-  const navigation = useNavigation<Nav>();
+  const navigation = useNavigation<any>();
   const [salt, setSalt] = useState('');
 
   const handleGoToStep3 = () => {
@@ -45,6 +43,9 @@ export const ConnectionStep2 = () => {
             GetSalt('misty').then(res => {
               // console.log(res);
               setSalt(res.data.data.salt);
+                  navigation.navigate('conectionStep3', {
+                    title: 'connect misty',
+                  });
               ConnectToNetwork()
               setLoader(false);
             });

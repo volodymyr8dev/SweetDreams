@@ -1,17 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {View, Text, StyleSheet, Image, ImageBackground} from 'react-native';
-import {COLORS} from '../../styles/Constants';
+import {COLORS} from '../../../styles/Constants';
 
-import happy from '../../assets/images/graph/iconList/happy.png';
-import sad from '../../assets/images/graph/iconList/sad.png';
-import tempretute from '../../assets/images/graph/iconList/tempreture.png';
-import book from '../../assets/images/graph/iconList/book.png';
-import arrowRight from '../../assets/images/settings/arrowRight.png';
+import happy from '../../../assets/images/graph/iconList/happy.png';
+import sad from '../../../assets/images/graph/iconList/sad.png';
+import tempretute from '../../../assets/images/graph/iconList/tempreture.png';
+import book from '../../../assets/images/graph/iconList/book.png';
+import arrowRight from '../../../assets/images/settings/arrowRight.png';
 import {useNavigation} from '@react-navigation/native';
-import back from '../../assets/images/homeIcon/bacgroundHome.png';
+import back from '../../../assets/images/homeIcon/bacgroundHome.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import carousel from 'react-native-anchor-carousel/src/carousel';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../redux/configureStore';
 
 const options24 = {
   value1: {
@@ -80,9 +82,13 @@ const optionsD28 = {
   },
 };
 
-export const Graphics = () => {
+export const NurseryData = () => {
   const navigation = useNavigation();
   const [activeTime, setActiveTime] = useState('last 24 hours');
+  const {accounts} = useSelector(
+    ({account}: RootState) => account.userInformation.user,
+  );
+  console.log('account', accounts);
   const getToken = async () => {
     const value = await AsyncStorage.getItem('@storage_Key');
     console.log('valueeee', value);
@@ -107,7 +113,11 @@ export const Graphics = () => {
         <TouchableOpacity onPress={() => handleChangeTime('last 24 hours')}>
           <View style={{}}>
             <View style={{paddingHorizontal: 20}}>
-              <Text style={{color: 'white', paddingVertical: 4}}>
+              <Text
+                style={{
+                  color: activeTime == 'last 24 hours' ? '#CE9B51' : '#fff',
+                  paddingVertical: 4,
+                }}>
                 last 24 hours
               </Text>
             </View>
@@ -124,7 +134,11 @@ export const Graphics = () => {
         <TouchableOpacity onPress={() => handleChangeTime('last 7 days')}>
           <View>
             <View style={{paddingHorizontal: 20}}>
-              <Text style={{color: 'white', paddingVertical: 4}}>
+              <Text
+                style={{
+                  color: activeTime == 'last 7 days' ? '#CE9B51' : '#fff',
+                  paddingVertical: 4,
+                }}>
                 last 7 days
               </Text>
             </View>
@@ -141,7 +155,11 @@ export const Graphics = () => {
         <TouchableOpacity onPress={() => handleChangeTime('last 28 days')}>
           <View>
             <View style={{paddingHorizontal: 20}}>
-              <Text style={{color: 'white', paddingVertical: 4}}>
+              <Text
+                style={{
+                  color: activeTime == 'last 28 days' ? '#CE9B51' : '#fff',
+                  paddingVertical: 4,
+                }}>
                 last 28 days
               </Text>
             </View>
@@ -202,8 +220,7 @@ export const Graphics = () => {
     const handleSettings = async title => {
       if (typeof rightEl !== 'object') {
         console.log(title, 'title');
-
-        navigation.navigate(`${title}`, {title: title});
+        navigation.navigate(`${title}`, {title: title, childId: accounts[0].id});
       }
     };
     return (
@@ -264,7 +281,7 @@ export const Graphics = () => {
   return (
     <ImageBackground
       source={back}
-      style={{flex: 1, backgroundColor: COLORS.backGround}}>
+      style={{flex: 1, backgroundColor: COLORS.back}}>
       <HeaderNavigation />
       <ContentNavigation options={activeDay()} />
     </ImageBackground>

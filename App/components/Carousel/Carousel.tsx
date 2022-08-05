@@ -43,7 +43,7 @@ const INITIAL_INDEX = 0;
 export default function ImageCarousel(props) {
   const [data, setData] = useState([
     {
-      uri: <TemperatureAccount style={{}}/>,
+      uri: <TemperatureAccount />,
       title: 'temperature',
       content: 'Thermometer',
       backUri: BackgroundTemperature,
@@ -116,18 +116,10 @@ export default function ImageCarousel(props) {
       array[index].items[indexChild].active =
         !array[index].items[indexChild].active;
       setData(array);
-      // let array = data.map((obj, indexObj) => {
-      //   if ((indexObj = index)) {
-      //     console.log('zzzz',obj);
-      //     return {...obj,obj.active:!obj.active };
-      //   }
-      //   return obj;
-      // });
     };
 
     return (
       <TouchableOpacity
-        // activeOpacity={1}
         disabled={index === currentIndex}
         style={styles.item}
         onPress={() => {
@@ -136,7 +128,6 @@ export default function ImageCarousel(props) {
         }}>
         <View style={{paddingTop: 10, alignItems: 'center'}}>
           <ImageBackground style={styles.shadowImage} source={backUri}>
-            {/*<Image source={uri} />*/}
             {uri}
           </ImageBackground>
         </View>
@@ -161,7 +152,6 @@ export default function ImageCarousel(props) {
                   style={[
                     styles.card,
                     {
-                      // backgroundColor: 'rgba(255,255,255,0.2)',
                       backgroundColor: power
                         ? item.active
                           ? '#72D3DB'
@@ -169,10 +159,6 @@ export default function ImageCarousel(props) {
                         : 'rgba(255,255,255,0.2)',
                     },
                   ]}>
-                  {/* <Svg>
-                    <Image source={item.img} />{' '}
-                  </Svg> */}
-                  {/* <SvgUri width="200" height="200" svgXmlData={item.img} /> */}
                   <Text
                     style={[
                       styles.contentText,
