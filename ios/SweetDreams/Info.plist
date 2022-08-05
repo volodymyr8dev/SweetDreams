@@ -78,5 +78,7 @@
 	<false/>
 	<key>com.apple.developer.networking.HotspotConfiguration</key>
 	<string>com.apple.developer.networking.wifi-info</string>
+	<key>NSMicrophoneUsageDescription</key>
+    <string>Give permission to use your microphone. Your record wont be shared without your permission.</string>
 </dict>
 </plist>

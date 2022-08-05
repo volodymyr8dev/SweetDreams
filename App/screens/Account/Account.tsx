@@ -44,7 +44,7 @@ import Sheep from '../../assets/images/svg/Sheep';
 import ArrowRight from '../../assets/images/svg/ArrowRight';
 import ArrowLeft from '../../assets/images/svg/ArrowLeft';
 import Play from '../../assets/images/svg/Play';
-import {getSettingsDevice, SettingsDevice} from '../../api/Settings/SettingsApi';
+import {getSettingsDevice} from '../../api/Settings/SettingsApi';
 import {RootState} from '../../redux/configureStore';
 import {setAllSettings} from '../../redux/slice/SettingsSlice';
 
@@ -76,10 +76,6 @@ export const Account = () => {
   // console.log(123456)
 
   const openSettings = async () => {
-    // const data = await SettingsDevice(
-    //   {"Child Lock": false},
-    //   user.accounts[0].id,
-    // );
     getSettingsDevice(user.accounts[0].id)
       .then(res => {
         console.log(res);
@@ -88,15 +84,8 @@ export const Account = () => {
       .catch(res => {
         console.log(res);
       });
-
-    // SettingsDevice({Connection: 'connected'}, user.accounts[0].id)
-    //   .then((res) => {
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //     // Alert.alert(err.response.data.error);
-    //   });
   };
+
   // useEffect(() => {
   //   if (netInfo.isConnected) {
   //     console.log('ifcon', netInfo);

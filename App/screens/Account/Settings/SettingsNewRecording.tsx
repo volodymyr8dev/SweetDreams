@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,8 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
 interface PropsBox {
   title: string;
@@ -14,66 +16,164 @@ interface PropsBox {
 }
 import {COLORS} from '../../../styles/Constants';
 import play from '../../../assets/images/player/Group_7506.png';
+import paused from '../../../assets/images/player/Paused.png';
 import record from '../../../assets/images/player/Component.png';
 import stop from '../../../assets/images/player/stop_recording.png';
-import { TextInput } from 'react-native';
+import playOn from '../../../assets/images/player/PlayOn.png';
+import {TextInput} from 'react-native';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import {useDispatch, useSelector} from 'react-redux';
+import {setRecording} from '../../../redux/slice/SettingsSlice';
+import {useNavigation} from '@react-navigation/native';
+import {RootState} from '../../../redux/configureStore';
+import {GetRecord, NewRecording} from '../../../api/Recording/Recording';
+import {CustomInput} from '../../../components/CustomInput/CustomInput';
+
+const audioRecorderPlayer = new AudioRecorderPlayer();
+audioRecorderPlayer.setSubscriptionDuration(0.09);
+
 
 export const SettingsNewRecording = () => {
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const recordingFile = useSelector(
+    ({settings}: RootState) => settings.recordingFile,
+  );
+  const dispatch = useDispatch();
+  const navigation = useNavigation<any>();
+  const [audioo, setAudioo] = useState(false);
+  const [pausedd, setPausedd] = useState(false);
+
   const [startRecording, setStartRecording] = useState(false);
+  const [nameFile, setNameFile] = useState('');
+  const [stating, setStating] = useState({
+    recordSecs: 0,
+    recordTime: '00:00:00',
+  });
+  useEffect(() => {
+    navigation.setParams({
+      sendRecord: sendRecordingOnBack,
+    });
+  }, [startRecording, nameFile]);
+
+  const onStartRecord = async () => {
+    await audioRecorderPlayer.startRecorder();
+    audioRecorderPlayer.addRecordBackListener(e => {
+      console.log('Recording . . . ', e.currentPosition);
+      setStating({
+        recordSecs: e.currentPosition,
+        recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
+      });
+    });
+    handleStartRecord();
+  };
+
+  const onStopRecord = async () => {
+    const audio = await audioRecorderPlayer.stopRecorder();
+    audioRecorderPlayer.removeRecordBackListener();
+    console.log(audio);
+    setStating({recordSecs: 0, recordTime: stating.recordTime});
+
+    dispatch(setRecording(audio));
+    handleStartRecord();
+    setAudioo(true);
+  };
+
+  const onStartPlay = async () => {
+    console.log('onStartPlay');
+    const msg = await audioRecorderPlayer.startPlayer();
+    console.log(msg);
+    setPausedd(true);
+    audioRecorderPlayer.addPlayBackListener(e => {
+      // return;
+    });
+  };
+
+  const onPausedPlay = async e => {
+    console.log('onPausedPlay');
+    setPausedd(false);
+    await audioRecorderPlayer.pausePlayer();
+  };
+
   const handleStartRecord = () => {
     setStartRecording(!startRecording);
   };
-  const Box = ({title, nameField, placeholder}: PropsBox) => {
-    return (
-      <View style={styles.input}>
-        <View>
-          <Text style={{color: COLORS.text, fontSize: 18}}>{placeholder}:</Text>
-        </View>
 
-        <TextInput style={{width: '100%', paddingLeft: 10, color: COLORS.text}}>
-          <Text>{nameField}</Text>
-        </TextInput>
-      </View>
-    );
+  const sendRecordingOnBack = () => {
+    console.log(user.accounts[0].id, recordingFile, 'DAAA');
+    NewRecording(user.accounts[0].id, recordingFile, nameFile)
+      .then(() => {
+        navigation.goBack();
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
   };
-  const Player = () => {
-
-    return (
+  return (
+    <View style={styles.container}>
+      <CustomInput
+        styling={styles.input}
+        text={'Recording name'}
+        value={nameFile}
+        onChangeText={text => setNameFile(text)}
+      />
+      {/*<Player />*/}
       <View style={styles.input}>
         <View
           style={{
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'space-between',
+            alignItems: 'center',
           }}>
-          <View style={{justifyContent: 'center'}}>
-
-            <Image style={{width: 35, height: 35}} source={play} />
+          <View style={{width: 80}}>
+            {!pausedd ? (
+              <TouchableOpacity
+                style={{justifyContent: 'center'}}
+                onPress={audioo ? onStartPlay : () => {}}>
+                <Image
+                  style={{width: 35, height: 35}}
+                  source={audioo ? playOn : play}
+                />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={{justifyContent: 'center'}}
+                onPress={onPausedPlay}>
+                <Image
+                  style={{width: 46, height: 41, top: 3}}
+                  source={paused}
+                />
+              </TouchableOpacity>
+            )}
           </View>
           <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
+              marginLeft: 10,
             }}>
-            <TouchableOpacity onPress={handleStartRecord}>
-              <Image
-                style={{width: 45, height: 45}}
-                source={startRecording ? stop : record}
-              />
-            </TouchableOpacity>
-            <Text style={{fontSize: 20, color: '#707070', marginLeft: 60}}>
-              00:00:00
+            {startRecording ? (
+              <TouchableOpacity onPress={() => onStopRecord()}>
+                <Image style={{width: 45, height: 45}} source={stop} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={() => onStartRecord()}>
+                <Image style={{width: 45, height: 45}} source={record} />
+              </TouchableOpacity>
+            )}
+          </View>
+          <View>
+            <Text
+              style={{
+                fontSize: 20,
+                color: '#707070',
+                width: 85,
+              }}>
+              {stating.recordTime}
             </Text>
           </View>
         </View>
       </View>
-    );
-  };
-
-  return (
-    <View style={styles.container}>
-      <Box title={'Recording name'} placeholder={'Recording name'} />
-      <Player />
       <View style={{paddingHorizontal: 20, marginTop: 15}}>
         <Text style={{color: COLORS.text}}>
           Record a custom sound for up to 5 minutes
