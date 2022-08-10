@@ -1,0 +1,18 @@
+import * as React from 'react';
+import {SvgXml} from 'react-native-svg';
+
+const xml = `
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Group_4983" data-name="Group 4983" transform="translate(-124.324 -588.231)">
+    <path id="Path_7225" data-name="Path 7225" d="M124.324,588.231h24v24h-24Z" fill="none"/>
+    <path id="Path_7226" data-name="Path 7226" d="M127.324,600.231h1m8-9v1m8,8h1m-15.4-6.4.7.7m12.1-.7-.7.7" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    <path id="Path_7227" data-name="Path 7227" d="M133.324,604.231a5,5,0,1,1,6,0,3.5,3.5,0,0,0-1,3,2,2,0,0,1-4,0,3.5,3.5,0,0,0-1-3" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    <line id="Line_19" data-name="Line 19" x2="4.6" transform="translate(134.024 605.231)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    <path id="Path_7229" data-name="Path 7229" d="M136.324,598.231v3h2" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+  </g>
+</svg>
+
+
+`;
+
+export default ({style}) => <SvgXml xml={xml} style={style} />;

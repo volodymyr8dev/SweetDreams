@@ -6,6 +6,7 @@ const PowerSlice = createSlice({
   initialState: {
     power: true,
     isConnected: false,
+    CarouselItem: '',
   },
   reducers: {
     setPower(state, action: PayloadAction<boolean>) {

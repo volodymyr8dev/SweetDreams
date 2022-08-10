@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState, useEffect} from 'react';
-import WifiManager from "react-native-wifi-reborn";
+import WifiManager from 'react-native-wifi-reborn';
 import {
   View,
   StyleSheet,
@@ -45,11 +45,10 @@ export const ConnectionStep2 = () => {
             GetSalt('misty').then(res => {
               // console.log(res);
               setSalt(res.data.data.salt);
-              ConnectToNetwork()
+              ConnectToNetwork();
               setLoader(false);
             });
             // dispatch(setSerialNumber(res.data.success))
-
           }
         })
         .catch(res => {
@@ -61,22 +60,22 @@ export const ConnectionStep2 = () => {
 
   const ConnectToNetwork = async () => {
     WifiManager.connectToProtectedSSID(
-      `Misty - ${serialNumber}`,
+      `Misty-${serialNumber}`,
       `${salt}`,
       false,
     ).then(
-      () => {
+      (res) => {
+        console.log(res);
         console.log('Connected successfully!');
         navigation.navigate('conectionStep3', {
           title: 'connect misty',
         });
       },
-      (rej) => {
+      rej => {
         console.log('Connection failed!', rej);
       },
     );
   };
-
 
   return (
     <>
@@ -122,9 +121,13 @@ export const ConnectionStep2 = () => {
             </Text>
           </View>
           <View style={{alignItems: 'center', marginTop: 32}}>
+            {/*<Image*/}
+            {/*  style={{width: 236, height: 236}}*/}
+            {/*  source={serialNumberImage}*/}
+            {/*/>*/}
             <Image
+              source={require('../../assets/images/gif/SerialNumberGifCloud.gif')}
               style={{width: 236, height: 236}}
-              source={serialNumberImage}
             />
           </View>
         </View>

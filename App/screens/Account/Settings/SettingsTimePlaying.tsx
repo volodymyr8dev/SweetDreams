@@ -22,7 +22,7 @@ export const SettingsTimePlaying = ({route}) => {
       if (value !== 'Ukraine') {
         const valueString = value.replace(/\D/g, '');
         SettingsDevice(
-          {'Sound Playing Time': valueString},
+          {'sound_playing_time': valueString},
           user.accounts[0].id,
         ).then(res => {
           route.params.setValue(res.data.data);

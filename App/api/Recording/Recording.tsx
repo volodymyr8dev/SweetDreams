@@ -2,9 +2,9 @@ import React from 'react';
 import axiosInstance from '../index';
 
 interface IRecord {
-  uri:string | object,
-  name:string,
-  type:string
+  uri: string | object;
+  name: string;
+  type: string;
 }
 export const NewRecording = async (accountId, recording2, nameFile) => {
   // const body = {
@@ -31,3 +31,9 @@ export const DeleteRecording = async (accountId, recordingId) => {
     `/api/accounts/${accountId}/recordings/${recordingId}`,
   );
 };
+
+export const PlayRecordSound = async path_name => {
+  return await axiosInstance.delete(`/upload/files/recording/${path_name}`);
+};
+
+// https://staging.mistythecloudserver.com/upload/files/recording/{path_name}

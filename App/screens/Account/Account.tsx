@@ -47,6 +47,12 @@ import Play from '../../assets/images/svg/Play';
 import {getSettingsDevice} from '../../api/Settings/SettingsApi';
 import {RootState} from '../../redux/configureStore';
 import {setAllSettings} from '../../redux/slice/SettingsSlice';
+import AsleepImg from '../../assets/images/cloudImage/Asleep.png';
+import Awake from '../../assets/images/cloudImage/Awake.png';
+import Idle from '../../assets/images/cloudImage/Idle.png';
+import SunSet from '../../assets/images/cloudImage/SunSet.png';
+import NothernLights from '../../assets/images/cloudImage/NothernLights.png';
+import {Content} from '../../components/Carousel/Content';
 
 const {width: windowWidth} = Dimensions.get('window');
 
@@ -68,12 +74,20 @@ export const Account = () => {
   const navigation = useNavigation<Nav>();
   const [isActive, setISActive] = useState(true);
   const [isInternet, setIsInternet] = useState<boolean>(true);
+  const [temperatureImage, setTemperatureImage] = useState('20.0');
   const handleConnect = () => {};
   const dispatch = useDispatch();
+  // const [carouselItem, setCarouselItem] = useState('');
   const netInfo = useNetInfo();
   const {user} = useSelector(({account}: RootState) => account.userInformation);
-  // const state = useSelector(state => state);
-  // console.log(123456)
+
+  // const cloudImage = [
+  //   Idle: Idle,
+  //   Asleep: AsleepImg,
+  //   Awake: Awake,
+  //   Sunset: SunSet,
+  //   Northern lights: NothernLights
+  // ]
 
   const openSettings = async () => {
     getSettingsDevice(user.accounts[0].id)
@@ -114,7 +128,7 @@ export const Account = () => {
 
   const HeaderUI = () => {
     return (
-      <>
+      <View>
         <View style={styles.headerContainer}>
           <View style={{width: 21}} />
           <View style={{paddingRight: 10}}>
@@ -123,7 +137,8 @@ export const Account = () => {
           </View>
           <TouchableOpacity onPress={openSettings}>
             {/*<Image source={settings} />*/}
-            <TopGear />
+            <View style={{height: 20, width: 20}} />
+            <TopGear style={{bottom: 22, right: 2}} />
           </TouchableOpacity>
         </View>
         <View
@@ -147,15 +162,27 @@ export const Account = () => {
                   width: 120,
                 }}>
                 <Thermometer />
-                <Text
-                  style={{
-                    color: '#fff',
-                    fontSize: 24,
-                    fontFamily: 'AntagometricaBT-Regular',
-                    fontWeight: 'bold',
-                  }}>
-                  18.0°C
-                </Text>
+                {!isActive ? (
+                  <Text
+                    style={{
+                      color: '#fff',
+                      fontSize: 24,
+                      fontFamily: 'AntagometricaBT-Regular',
+                      fontWeight: 'bold',
+                    }}>
+                    N/A
+                  </Text>
+                ) : (
+                  <Text
+                    style={{
+                      color: '#fff',
+                      fontSize: 24,
+                      fontFamily: 'AntagometricaBT-Regular',
+                      fontWeight: 'bold',
+                    }}>
+                    {temperatureImage}°C
+                  </Text>
+                )}
               </View>
               <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                 <Image style={{marginHorizontal: 15}} source={line} />
@@ -169,161 +196,36 @@ export const Account = () => {
                 {/*<Image source={childControl} />*/}
                 <CryChild />
                 <View style={{marginLeft: 10}}>
-                  <Text
-                    style={{
-                      color: '#fff',
-                      fontSize: 24,
-                      fontFamily: 'AntagometricaBT-Regular',
-                      fontWeight: 'bold',
-                    }}>
-                    OFF
-                  </Text>
+                  {!isActive ? (
+                    <Text
+                      style={{
+                        color: '#fff',
+                        fontSize: 24,
+                        fontFamily: 'AntagometricaBT-Regular',
+                        fontWeight: 'bold',
+                      }}>
+                      N/A
+                    </Text>
+                  ) : (
+                    <Text
+                      style={{
+                        color: '#fff',
+                        fontSize: 24,
+                        fontFamily: 'AntagometricaBT-Regular',
+                        fontWeight: 'bold',
+                      }}>
+                      OFF
+                    </Text>
+                  )}
                 </View>
               </View>
             </View>
           </View>
         </View>
-      </>
+      </View>
     );
   };
-  const CardItem = () => {
-    return (
-      // <ScrollView>
-      //   <View style={styles.cardCarousel}>
-      //     <Image source={lightShow} />
-      //     <Text style={{textAlign: 'center', color: 'white'}}>Light show</Text>
-      //     <View style={{justifyContent: 'center', alignItems: 'center'}}>
-      //       <TouchableOpacity
-      //         style={{
-      //           width: 140,
-      //           height: 56,
-      //           backgroundColor: '#72D3DB',
-      //           borderRadius: 8,
-      //           justifyContent: 'center',
-      //           marginBottom: 8,
-      //         }}>
-      //         <Text style={{textAlign: 'center', alignItems: 'center'}}>
-      //           Sunset
-      //         </Text>
-      //       </TouchableOpacity>
-      //       <TouchableOpacity
-      //         style={{
-      //           width: 140,
-      //           height: 56,
-      //           backgroundColor: '#72D3DB',
-      //           borderRadius: 8,
-      //           justifyContent: 'center',
-      //           marginBottom: 8,
-      //         }}>
-      //         <Text style={{textAlign: 'center', alignItems: 'center'}}>
-      //           Northern {'\n'} lights
-      //         </Text>
-      //       </TouchableOpacity>
-      //       <TouchableOpacity
-      //         style={{
-      //           width: 140,
-      //           height: 56,
-      //           backgroundColor: '#72D3DB',
-      //           borderRadius: 8,
-      //           justifyContent: 'center',
-      //           marginBottom: 8,
-      //         }}>
-      //         <Text style={{textAlign: 'center', alignItems: 'center'}}>
-      //           Northern {'\n'} lights
-      //         </Text>
-      //       </TouchableOpacity>
-      //     </View>
-      //   </View>
-      // </ScrollView>
-      <ShopCarousel />
-    );
-  };
-  const ControlCard = () => {
-    const [activeType, setActiveType] = useState({
-      name: typeOfTemp[0],
-      index: 0,
-    });
-    console.log(activeType);
 
-    const switchLeft = () => {
-      if (activeType.index === 0) {
-        setActiveType({
-          name: typeOfTemp[typeOfTemp.length - 1],
-          index: typeOfTemp.length - 1,
-        });
-      } else {
-        setActiveType({
-          name: typeOfTemp[activeType.index - 1],
-          index: activeType.index - 1,
-        });
-      }
-    };
-    const switchRight = () => {
-      console.log(typeOfTemp[0]);
-      if (activeType.index == typeOfTemp.length - 1) {
-        setActiveType({
-          name: typeOfTemp[0],
-          index: 0,
-        });
-      } else {
-        setActiveType({
-          name: typeOfTemp[activeType.index + 1],
-          index: activeType.index + 1,
-        });
-      }
-    };
-    return (
-      <View style={[styles.modalContainer, {}]}>
-        <TouchableOpacity style={{flexDirection: 'row'}}>
-          {/*<Image style={{width: 16, height: 16}} source={play} />*/}
-          <Play />
-        </TouchableOpacity>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TouchableOpacity onPress={switchLeft}>
-            {/*<Image style={{width: 25, height: 25}} source={arrowBack} />*/}
-            <ArrowLeft />
-          </TouchableOpacity>
-          <View style={{width: 95}}>
-            <Text
-              style={{
-                color: '#fff',
-                textAlign: 'center',
-                fontFamily: 'AntagometricaBT-Bold',
-                fontWeight: '400',
-                fontSize: 16,
-              }}>
-              {typeOfTemp.length && activeType.name.length > 10
-                ? activeType.name.substring(0, 10).trim() + '...'
-                : activeType.name}
-            </Text>
-          </View>
-          <TouchableOpacity onPress={switchRight}>
-            {/*<Image style={{width: 25, height: 25}} source={arrowRight} />*/}
-            <ArrowRight />
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity style={{flexDirection: 'row'}}>
-          <Image source={timer} />
-        </TouchableOpacity>
-      </View>
-    );
-  };
-  const Content = () => (
-    <>
-      <View style={{alignItems: 'center'}}>
-        <TouchableOpacity
-          onPress={handlePower}
-          style={{marginTop: '40%', width: 50}}>
-          {/*<Image source={isActive ? power : powerOff}/>*/}
-          {isActive ? <PowerOn /> : <PowerOff />}
-        </TouchableOpacity>
-      </View>
-      <ControlCard />
-      <View style={styles.containerCarousel}>
-        <ShopCarousel />
-      </View>
-    </>
-  );
   return (
     <ImageBackground
       style={{backgroundColor: COLORS.backGround}}
@@ -335,7 +237,11 @@ export const Account = () => {
         ) : (
           <>
             <HeaderUI />
-            <Content />
+            <Content
+              setISActive={setISActive}
+              isActive={isActive}
+              temperatureImage={temperatureImage}
+            />
           </>
         )}
       </View>

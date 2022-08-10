@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,82 +12,107 @@ import {
 // import SvgUri from 'react-native-svg-uri';
 import Carousel from 'react-native-anchor-carousel';
 import {SimplePaginationDot} from './component';
-import mainTemp from '../../assets/images/controlChild/carosel/mainTemp.png';
-import {mainTemp_temp} from '../../assets/images/controlChild/carosel/mainTemp_temp.svg';
-import Bottle from '../../assets/images/svg/Bottle'
 
-import sleapTrainer from '../../assets/images/controlChild/carosel/sleapTrainer.png';
-import sun from '../../assets/images/controlChild/carosel/sun.png';
-
-import greenTemp from '../../assets/images/controlChild/greentemp.png';
-import tempGreen from '../../assets/images/controlChild/tempGreen.png';
-import lightShadow from '../../assets/images/controlChild/lightShadow.png';
-import light from '../../assets/images/controlChild/lightsShow.png';
-import clock from '../../assets/images/controlChild/clock.png';
-import clockShadow from '../../assets/images/controlChild/clockShadow.png';
-import {useSelector} from 'react-redux';
-import {COLORS} from '../../styles/Constants';
+import {useDispatch, useSelector} from 'react-redux';
 import ScrollViewIndicator from 'react-native-scroll-indicator';
-import ArrowRight from '../../assets/images/svg/ArrowRight';
-import Play from '../../assets/images/svg/Play';
 import TemperatureAccount from '../../assets/images/svg/TemperatureAccount';
 import BackgroundTemperature from '../../assets/images/BackgroundTemperature.png';
 import Sun from '../../assets/images/svg/Sun';
 import Timer from '../../assets/images/svg/Timer';
 import BackgroundTimer2 from '../../assets/images/BackgroundTimer2.png';
-import BackgroundSun from '../../assets/images/BackgroundSun.png'
+import BackgroundSun from '../../assets/images/BackgroundSun.png';
+import IdleWhiteImage from '../../assets/images/svg/IdleWhite';
+import AsleepWhiteImage from '../../assets/images/svg/AsleepWhite';
+import AwakeWhiteImage from '../../assets/images/svg/AwakeWhite';
+import TemperatureWhiteImage from '../../assets/images/svg/TemperatureWhite';
+import SunsetWhiteImage from '../../assets/images/svg/SunsetWhite';
+import NorthernWhiteImage from '../../assets/images/svg/NorthernWhite';
+import PulsingWhiteImage from '../../assets/images/svg/PulsingWhite';
+import PickerWhiteImage from '../../assets/images/svg/PickerWhite';
+import IdleImage from '../../assets/images/svg/Idle';
+import SunsetImage from '../../assets/images/svg/Sunset';
+import AsleepImage from '../../assets/images/svg/Asleep';
+import AwakeImage from '../../assets/images/svg/Awake';
+import NorthernImage from '../../assets/images/svg/Northern';
+import PulsingImage from '../../assets/images/svg/Pulsing';
+import TemperatureImage from '../../assets/images/svg/Temperature';
+import PickerImage from '../../assets/images/svg/Picker';
+import {setCarouselItem} from '../../redux/slice/SettingsSlice';
 
 const {width: windowWidth} = Dimensions.get('window');
 
 const INITIAL_INDEX = 0;
-export default function ImageCarousel(props) {
+export default React.memo(function ShopCarousel(props) {
   const [data, setData] = useState([
     {
-      uri: <TemperatureAccount style={{}}/>,
+      uri: <TemperatureAccount style={{}} />,
       title: 'temperature',
       content: 'Thermometer',
       backUri: BackgroundTemperature,
       items: [
         {
-          img: tempGreen,
-          text: 'something',
+          img: <TemperatureImage style={{marginRight: 5}} />,
+          imgActive: <TemperatureWhiteImage style={{marginRight: 5}} />,
+          text: 'Temperature',
           active: false,
         },
       ],
     },
     {
-      uri: <Sun style={{}}/>,
+      uri: <Sun style={{}} />,
       title: 'light show',
       backUri: BackgroundSun,
       content: 'Thermometer',
       items: [
         {
-          img: tempGreen,
-          text: 'something',
+          img: <SunsetWhiteImage style={{marginRight: 5}} />,
+          imgActive: <SunsetImage style={{marginRight: 5}} />,
+          text: 'Sunset',
           active: false,
         },
         {
-          img: tempGreen,
-          text: 'Nestor',
-          active: true,
+          img: <NorthernWhiteImage style={{marginRight: 5}} />,
+          imgActive: <NorthernImage style={{marginRight: 5}} />,
+          text: 'Northern lights',
+          active: false,
         },
         {
-          img: tempGreen,
-          text: 'something',
+          img: <PulsingWhiteImage style={{marginRight: 5}} />,
+          imgActive: <PulsingImage style={{marginRight: 5}} />,
+          text: 'Pulsing',
+          active: false,
+        },
+        {
+          img: <PickerImage style={{marginRight: 5}} />,
+          imgActive: <PickerWhiteImage style={{marginRight: 5}} />,
+          text: 'Colour picker',
           active: false,
         },
       ],
     },
     {
-      uri: <Timer style={{}}/>,
+      uri: <Timer style={{}} />,
       title: 'sleep trainer',
       backUri: BackgroundTimer2,
       content: 'Thermometer',
 
       items: [
         {
-          img: tempGreen,
-          text: 'something',
+          img: <IdleImage style={{marginRight: 5}} />,
+          imgActive: <IdleWhiteImage style={{marginRight: 5}} />,
+          text: 'Idle',
+          active: false,
+        },
+        {
+          img: <AsleepWhiteImage style={{marginRight: 5}} />,
+          imgActive: <AsleepImage style={{marginRight: 5}} />,
+          text: 'Asleep',
+          active: false,
+        },
+        {
+          img: <AwakeWhiteImage style={{marginRight: 5}} />,
+          imgActive: <AwakeImage style={{marginRight: 5}} />,
+          text: 'Awake',
           active: false,
         },
       ],
@@ -99,15 +124,19 @@ export default function ImageCarousel(props) {
   const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
   const [isActive, setIsActive] = useState({arrayIndex: null, index: null});
   const [activeComponent, setActiveComponent] = useState(0);
-  console.log(power);
+  const dispatch = useDispatch();
+
   function handleCarouselScrollEnd(item, index) {
     setCurrentIndex(index);
   }
 
   function renderItem({item, index}) {
     const {backUri, uri, title, content, items} = item;
-    console.log('item',item)
+    console.log('item', item);
     const handleActiveItem = (item, indexChild) => {
+      // props.setCarouselItem(item.text);
+      dispatch(setCarouselItem(item.text));
+      // setItemText(item.text);
       let array = [...data];
       array.map(it => {
         return it.items.map(child => (child.active = false));
@@ -136,7 +165,6 @@ export default function ImageCarousel(props) {
         }}>
         <View style={{paddingTop: 10, alignItems: 'center'}}>
           <ImageBackground style={styles.shadowImage} source={backUri}>
-            {/*<Image source={uri} />*/}
             {uri}
           </ImageBackground>
         </View>
@@ -147,7 +175,6 @@ export default function ImageCarousel(props) {
             height: '60%',
           }}
           style={{paddinHorizontal: 220}}
-          // scrollIndicatorStyle={{backgroundColor: '#fff'}}
           scrollIndicatorContainerStyle={{
             backgroundColor: 'rgba(0, 0, 0, 0.1)',
           }}>
@@ -169,10 +196,7 @@ export default function ImageCarousel(props) {
                         : 'rgba(255,255,255,0.2)',
                     },
                   ]}>
-                  {/* <Svg>
-                    <Image source={item.img} />{' '}
-                  </Svg> */}
-                  {/* <SvgUri width="200" height="200" svgXmlData={item.img} /> */}
+                  {item.active ? item.img : item.imgActive}
                   <Text
                     style={[
                       styles.contentText,
@@ -190,7 +214,7 @@ export default function ImageCarousel(props) {
               );
             })}
           </View>
-          <View></View>
+          <View />
         </ScrollViewIndicator>
       </TouchableOpacity>
     );
@@ -213,7 +237,7 @@ export default function ImageCarousel(props) {
       </View>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {

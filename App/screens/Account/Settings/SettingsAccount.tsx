@@ -71,6 +71,7 @@ export const SettingsAccount = ({route}) => {
     const {user} = useSelector(
       ({account}: RootState) => account.userInformation,
     );
+    console.log(user, 'dadadadada');
 
     const getCustomRecord = () => {
       navigation.navigate('Custom Recording', {
@@ -147,8 +148,8 @@ export const SettingsAccount = ({route}) => {
             navigate="Child Lock"
             rightEl={
               <Switch
-                title={'Child Lock'}
-                val={settingsData['Child Lock']}
+                title={'child_lock'}
+                val={settingsData['child_lock']}
                 valueSmart={null}
                 setData={setSettingsData}
               />
@@ -169,16 +170,16 @@ export const SettingsAccount = ({route}) => {
           <Blog
             title="time"
             navigate="Time"
-            rightEl={settingsData.Time}
-            value={settingsData.Time}
+            rightEl={settingsData.time}
+            value={settingsData.time}
             source={clock}
           />
           <Blog
             title="wake Up Time"
             navigate="Wake Up Time"
-            value={settingsData['Wake Up Time']}
+            value={settingsData['wake_up_time']}
             source={wakeUp}
-            rightEl={settingsData['Wake Up Time']}
+            rightEl={settingsData['wake_up_time']}
           />
           <Blog
             title="colour Picker"
@@ -202,8 +203,8 @@ export const SettingsAccount = ({route}) => {
             title="temperature"
             navigate="Temperature"
             source={Temperature}
-            rightEl={`°${settingsData.Temperature}`}
-            value={settingsData.Temperature}
+            rightEl={`°${settingsData.temperature}`}
+            value={settingsData.temperature}
           />
           <View style={{paddingLeft: 15, marginVertical: 15}}>
             <Text
@@ -224,8 +225,8 @@ export const SettingsAccount = ({route}) => {
             rightEl={
               <Switch
                 val={null}
-                valueSmart={settingsData['smartCRY Sensor']}
-                title={'smartCRY Sensor'}
+                valueSmart={settingsData['smartCRY_sensor']}
+                title={'smartCRY_sensor'}
                 setData={setSettingsData}
               />
             }
@@ -234,9 +235,9 @@ export const SettingsAccount = ({route}) => {
             title="smartCRY Sensor Sensitivity"
             navigate="smartCRY Sensor Sensitivity"
             source={smartSRYSensetivity}
-            value={settingsData['smartCRY Sensor Sensitivity']}
+            value={settingsData['smartCRY_sensor_sensitivity']}
             rightEl={Number(
-              settingsData['smartCRY Sensor Sensitivity'],
+              settingsData['smartCRY_sensor_sensitivity'],
             ).toFixed(0)}
           />
           <Blog
@@ -249,14 +250,14 @@ export const SettingsAccount = ({route}) => {
             title="sound playing time"
             navigate="Sound Playing Time"
             source={musicTime}
-            value={settingsData['Sound Playing Time']}
-            rightEl={settingsData['Sound Playing Time']}
+            value={settingsData['sound_playing_time']}
+            rightEl={settingsData['sound_playing_time']}
           />
           <Blog
             title="volume"
             navigate="Volume"
             source={volumeImg}
-            rightEl={Number(settingsData.Volume).toFixed(0)}
+            rightEl={Number(settingsData.volume).toFixed(0)}
           />
           <View style={{paddingLeft: 15, marginVertical: 15}}>
             <Text
@@ -270,16 +271,28 @@ export const SettingsAccount = ({route}) => {
             </Text>
           </View>
           <Blog
-            title="smartCRY Sensor Activation"
+            title="smartCRY_sensor_activation"
             navigate="smartCRY Sensor Activation"
             source={smartCRY}
-            rightEl={<Switch />}
+            rightEl={<Switch
+                val={null}
+                valueSmart={settingsData['smartCRY_sensor_activation']}
+                title={'smartCRY_sensor_activation'}
+                setData={setSettingsData}
+              />
+            }
           />
           <Blog
             title="temperature"
             navigate="Temperature"
             source={Temperature}
-            rightEl={<Switch />}
+            rightEl={<Switch
+                val={null}
+                valueSmart={settingsData['temperature_notification']}
+                title={'temperature_notification'}
+                setData={setSettingsData}
+              />
+            }
           />
         </View>
       </ScrollView>
