@@ -162,11 +162,6 @@ export const DiaryRoutes = () => {
         component={Location}
         options={navigationOptionsLocation}
       />
-      <Stack.Screen
-        name="LongestPeriod"
-        component={LongestPeriod}
-        options={navigationOptionsLocation}
-      />
     </>
   );
 };

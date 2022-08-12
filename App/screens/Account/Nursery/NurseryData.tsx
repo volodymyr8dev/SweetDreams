@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import carousel from 'react-native-anchor-carousel/src/carousel';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/configureStore';
+import { NureseryTemperatureApi } from '../../../api/Nursery/Nuresery';
 
 const options24 = {
   value1: {
@@ -83,7 +84,8 @@ const optionsD28 = {
 };
 
 export const NurseryData = () => {
-  const navigation = useNavigation();
+
+  const navigation = useNavigation<any>();
   const [activeTime, setActiveTime] = useState('last 24 hours');
   const {accounts} = useSelector(
     ({account}: RootState) => account.userInformation.user,
@@ -95,6 +97,9 @@ export const NurseryData = () => {
   };
   useEffect(() => {
     getToken();
+    NureseryTemperatureApi(accounts[0].id).then(({data})=>{
+      console.log('get nerseryId',data)
+    });
   }, []);
   const handleChangeTime = time => {
     console.log(time);

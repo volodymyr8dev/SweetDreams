@@ -14,52 +14,30 @@ import arrowRight from '../../../../assets/images/nersery/arrowRight.png';
 import sleepDiary from '../../../../assets/images/nersery/sleepDiary.png';
 import alertUp from '../../../../assets/images/nersery/alertUp.png';
 import alertDown from '../../../../assets/images/nersery/alertDown.png';
-import {COLORS, timeIndex, time} from '../../../../styles/Constants';
+import {
+  COLORS,
+  timeIndex,
+  time,
+  chooseDate,
+  chooseTimeOrIndex,
+} from '../../../../styles/Constants';
 import {LineChart} from 'react-native-chart-kit';
 import {Blog} from '../../../../components/Touchable/TouchableInput';
 import {NureseryTemperatureApi} from '../../../../api/Nursery/Nuresery';
 import moment from 'moment';
 
 export const AverageTempature = ({route}) => {
-  const [array, setArray] = useState([22.5, 23, 15, 30, 28]);
+  const [array, setArray] = useState([0]);
   const [labels, setLabels] = useState<string[]>(['']);
   const [activeTime, setActiveTime] = useState('last 24 hours');
+  const [start, setStart] = useState(
+    moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD'),
+  );
+  const [end, setEnd] = useState(moment(new Date()).format('YYYY-MM-DD'));
 
-  const chooseDate = start => {
-    console.log('chooseDate', start);
-    let date = new Date();
-    switch (start) {
-      case 'last 24 hours':
-        return moment(date).format('YYYY-MM-DD HH:mm:ss');
-      case '2 days ago':
-        return moment(date).subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '3 days ago':
-        return moment(date).subtract(2, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '4 days ago':
-        return moment(date).subtract(3, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '5 days ago':
-        return moment(date).subtract(4, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '6 days ago':
-        return moment(date).subtract(5, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '7 days ago':
-        return moment(date).subtract(6, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '7 days - 14':
-        return moment(date).subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '7 days - 14':
-        return moment(date).subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '7 days - 21':
-        return moment(date).subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '2 weeks ago':
-        return moment(date).subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '3 weeks ago':
-        return moment(date).subtract(14, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '4 weeks ago':
-        return moment(date).subtract(21, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '2 month ago':
-        return moment(date).subtract(28, 'days').format('YYYY-MM-DD HH:mm:ss');
-    }
-  };
   useEffect(() => {
+    setStart(moment(start).format('YYYY-MM-DD'));
+    setEnd(moment(end).format('YYYY-MM-DD'));
     NureseryTemperatureApi(
       route.params.childId,
       moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss'),
@@ -85,39 +63,19 @@ export const AverageTempature = ({route}) => {
         setArray([0]);
       });
   }, []);
-  const chooseTimeOrIndex = (type, direction) => {
-    console.log('active', time.length - 1);
-    if (direction === 'left') {
-      if (type == 'time') {
-        return time.indexOf(activeTime) == 0
-          ? time[time.length - 1]
-          : time[time.indexOf(activeTime) - 1];
-      } else {
-        return time.indexOf(activeTime) == 0
-          ? timeIndex[time.length - 1]
-          : timeIndex[time.indexOf(activeTime) - 1];
-      }
-    } else {
-      if (type == 'time') {
-        return time.indexOf(activeTime) == time.length - 1
-          ? time[0]
-          : time[time.indexOf(activeTime) + 1];
-      } else {
-        return time.indexOf(activeTime) == 0
-          ? timeIndex[time.length - 1]
-          : timeIndex[time.indexOf(activeTime) - 1];
-      }
-    }
-  };
 
   //left arrow
   const handleLeftData = () => {
+    setValue(data => ({...data, value: 0}));
+
     time.indexOf(activeTime) == 0
       ? setActiveTime(time[activeTime.length - 1])
       : setActiveTime(time[time.indexOf(activeTime) - 1]);
 
-    let start = chooseTimeOrIndex('timeIndex', 'left');
-    let end = chooseDate(chooseTimeOrIndex('time', 'left'));
+    let start = chooseTimeOrIndex('timeIndex', 'left', activeTime);
+    let end = chooseDate(chooseTimeOrIndex('time', 'left', activeTime));
+    setStart(moment(start).format('YYYY-MM-DD'));
+    setEnd(moment(end).format('YYYY-MM-DD'));
     console.log('start', start);
     console.log('end', end);
     NureseryTemperatureApi(route.params.childId, start, end)
@@ -144,14 +102,18 @@ export const AverageTempature = ({route}) => {
 
   //right arrow
   const handleRightData = () => {
+    setValue(data => ({...data, value: 0}));
     time.indexOf(activeTime) == time.length - 1
       ? setActiveTime(time[0])
       : setActiveTime(time[time.indexOf(activeTime) + 1]);
 
-    let start = chooseTimeOrIndex('timeIndex', 'right');
-    let end = chooseDate(chooseTimeOrIndex('time', 'right'));
+    let start = chooseTimeOrIndex('timeIndex', 'right', activeTime);
+    let end = chooseDate(chooseTimeOrIndex('time', 'right', activeTime));
+    setStart(moment(start).format('YYYY-MM-DD'));
+    setEnd(moment(end).format('YYYY-MM-DD'));
     console.log('start ', start);
-    console.log('end ', start);
+    console.log('end ', end);
+
     NureseryTemperatureApi(route.params.childId, start, end)
       .then(({data}) => {
         console.log('success', data);
@@ -175,19 +137,19 @@ export const AverageTempature = ({route}) => {
   };
   const [value, setValue] = useState({value: 0, y: 0, x: 0, yMax: 0, xMax: 0});
   useEffect(() => {
-    let min = Math.min(...array);
-    let max = Math.max(...array);
-    let indexMin = array.indexOf(min);
-    let indexMax = array.indexOf(max);
-    console.log('min', min);
-    console.log('--------------------', indexMax * 70 + 43);
-    setValue(prev => ({
-      ...prev,
-      y: min * 10 + 90,
-      x: indexMin * 100 + 43,
-      xMax: indexMax * 70 + 43,
-      yMax: (max * 8.97501) / array.length + 90,
-    }));
+    // let min = Math.min(...array);
+    // let max = Math.max(...array);
+    // let indexMin = array.indexOf(min);
+    // let indexMax = array.indexOf(max);
+    // console.log('min', min);
+    // console.log('--------------------', indexMax * 70 + 43);
+    // setValue(prev => ({
+    //   ...prev,
+    //   y: min * 10 + 90,
+    //   x: indexMin * 100 + 43,
+    //   xMax: indexMax * 70 + 43,
+    //   yMax: (max * 8.97501) / array.length + 90,
+    // }));
   }, []);
   return (
     <View style={styles.container}>
@@ -200,7 +162,7 @@ export const AverageTempature = ({route}) => {
           </TouchableOpacity>
           <View style={styles.headerWraper}>
             <Text style={styles.headerText}>{activeTime}</Text>
-            <Text style={styles.headerTextTime}>24 hours - 1 day</Text>
+            <Text style={styles.headerTextTime}>{`${start} - ${end}`}</Text>
           </View>
           <TouchableOpacity
             style={{paddingHorizontal: 5, paddingVertical: 5}}
@@ -281,6 +243,7 @@ export const AverageTempature = ({route}) => {
         <ImageBackground
           source={alertUp}
           style={{
+            opacity: value.value,
             position: 'absolute',
             top: value.y - 10,
             left: value.x - 20,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -7,11 +7,17 @@ import {
   View,
   Image,
 } from 'react-native';
-import {COLORS} from '../../../../styles/Constants';
+import {
+  chooseDate,
+  chooseTimeOrIndex,
+  COLORS,
+  time,
+} from '../../../../styles/Constants';
 import {BarChart} from 'react-native-chart-kit';
 import arrowLeft from '../../../../assets/images/nersery/arrowLeft.png';
 import {Blog} from '../../../../components/Touchable/TouchableInput';
 import sleepDiary from '../../../../assets/images/nersery/sleepDiary.png';
+import moment from 'moment';
 
 const chartConfig = {
   topRadius: 8,
@@ -44,18 +50,53 @@ const data = {
     },
   ],
 };
+
 export const LongestPeriod = () => {
+  const [activeTime, setActiveTime] = useState('last 24 hours');
+  const [start, setStart] = useState(
+    moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD'),
+  );
+  const [end, setEnd] = useState(moment(new Date()).format('YYYY-MM-DD'));
+
+  useEffect(() => {
+    setStart(moment(start).format('YYYY-MM-DD'));
+    setEnd(moment(end).format('YYYY-MM-DD'));
+  }, []);
+  const handleChangeLeft = () => {
+    time.indexOf(activeTime) == 0
+      ? setActiveTime(time[activeTime.length - 1])
+      : setActiveTime(time[time.indexOf(activeTime) - 1]);
+
+    let start = chooseTimeOrIndex('timeIndex', 'left', activeTime);
+    let end = chooseDate(chooseTimeOrIndex('time', 'left', activeTime));
+    setStart(moment(start).format('YYYY-MM-DD'));
+    setEnd(moment(end).format('YYYY-MM-DD'));
+    console.log('start', start);
+    console.log('end', end);
+  };
+  const handleChangeRight = () => {
+    time.indexOf(activeTime) == time.length - 1
+      ? setActiveTime(time[0])
+      : setActiveTime(time[time.indexOf(activeTime) + 1]);
+
+    let start = chooseTimeOrIndex('timeIndex', 'right', activeTime);
+    let end = chooseDate(chooseTimeOrIndex('time', 'right', activeTime));
+    setStart(moment(start).format('YYYY-MM-DD'));
+    setEnd(moment(end).format('YYYY-MM-DD'));
+    console.log('start ', start);
+    console.log('end ', end);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.headerContent}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={handleChangeLeft}>
           <Image style={{width: 10.77, height: 18.86}} source={arrowLeft} />
         </TouchableOpacity>
         <View style={styles.headerWraper}>
-          <Text style={styles.headerText}>{'activeTime'}</Text>
-          <Text style={styles.headerTextTime}>24.08.2018 - 25/08.2018</Text>
+          <Text style={styles.headerText}>{activeTime}</Text>
+          <Text style={styles.headerTextTime}>{`${start} - ${end}`}</Text>
         </View>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={handleChangeRight}>
           <Image
             style={{
               width: 10.77,
@@ -90,6 +131,8 @@ export const LongestPeriod = () => {
         height={364.21}
         chartConfig={chartConfig}
         verticalLabelRotation={0}
+        yAxisLabel={''}
+        yAxisSuffix={''}
       />
       <View style={styles.InputUnit}>
         <Blog

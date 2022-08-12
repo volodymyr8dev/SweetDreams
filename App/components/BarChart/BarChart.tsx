@@ -9,9 +9,32 @@ import {
 import React, {useState} from 'react';
 import alertUp from '../../assets/images/nersery/alertUp.png';
 import {COLORS} from '../../styles/Constants';
+import {BarChart} from 'react-native-chart-kit';
 
+const chartConfig = {
+  topRadius: 8,
+  bottomRadius: 20,
+  backgroundGradientFrom: '#272854',
+  backgroundGradientTo: '#272854',
+  barPercentage: 0.7,
+  decimalPlaces: 1,
+  height: 400,
+  color: (opacity = 1) => `rgb(184, 101, 193)`,
+  labelColor: (opacity = 1) => COLORS.text,
+  fillShadowGradient: `rgb(184, 101, 193)`,
+  fillShadowGradientOpacity: 1,
+  style: {borderRadius: 16},
+  propsForBackgroundLines: {
+    strokeWidth: 1,
+    stroke: '#efefef',
+    strokeDasharray: '.005',
+  },
+  propsForLabels: {
+    fontSize: 13,
+  },
+};
 const lines = [
-  {start: 15, end: 16.9, isActive: false},
+  {start: 12.5, end: 13.9, isActive: false},
   {start: 0, end: 0, isActive: false},
   {start: 18.1, end: 19, isActive: false},
   {start: 21, end: 22.32, isActive: false},
@@ -27,16 +50,47 @@ const lines = [
 ];
 const koef = 0.2625;
 const lines2 = [{starts: 13, ends: 15}];
-export const BarChartComp = () => {
+export const BarChartComp = ({activeLabels}) => {
+  // console.log(
+  //   'sort',
+  //   lines.sort((a, b) => a.start - b.start),
+  // );
   const [state, setState] = useState(lines);
   const [location, setLocation] = useState({
     x: 0,
     y: 0,
   });
-  console.log('state', state);
+
+  const data = {
+    labels: activeLabels,
+    // legend: ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'],
+    datasets: [
+      {
+        data: [10, 0, 10, 10, 0, 10, 10, 10, 0, 10, 10, 10],
+      },
+      {
+        data: [5], // min
+      },
+      {
+        data: [25], // max
+      },
+    ],
+  };
+  const handlePress = (e, index) => {
+    setState(
+      state.map((item, indexMap) => {
+        index == indexMap ? (item.isActive = true) : (item.isActive = false);
+        return item;
+      }),
+    );
+    setLocation({
+      x: e.nativeEvent.locationX,
+      y: e.nativeEvent.locationY,
+    });
+  };
   return (
     <View style={styles.container}>
-      <View style={styles.containerGraph}>
+      {/* <View style={styles.containerGraph}>
         {state.map((item, index) => {
           const time = item.end - item.start;
           let timeForModal = time.toFixed(2);
@@ -53,25 +107,13 @@ export const BarChartComp = () => {
                 <View style={styles.verticalCont}>
                   {item.end - item.start > 0 && (
                     <TouchableOpacity
-                      onPress={e => {
-                        setState(
-                          state.map((item, indexMap) => {
-                            index == indexMap
-                              ? (item.isActive = true)
-                              : (item.isActive = false);
-                            return item;
-                          }),
-                        );
-                        setLocation({
-                          x: e.nativeEvent.locationX,
-                          y: e.nativeEvent.locationY,
-                        });
-                      }}
+                      onPress={e => handlePress(e, index)}
                       style={[
                         styles.blockActivity,
                         item?.start
                           ? {
                               width: w,
+                              zIndex: item.isActive ? 100 : 50,
                             }
                           : null,
                       ]}>
@@ -88,7 +130,7 @@ export const BarChartComp = () => {
 
                           transform: [{translateX: -25}, {translateY: -42}],
                           height: 35,
-                          zIndex: item.isActive ? 150 : 100,
+                          // zIndex: item.isActive ? 10 : 1,
                         }}>
                         {item.isActive ? (
                           <ImageBackground
@@ -99,6 +141,7 @@ export const BarChartComp = () => {
                               alignItems: 'center',
                               paddingBottom: 12,
                               paddingHorizontal: 5,
+                              zIndex: 200,
                             }}
                             source={alertUp}>
                             <Text
@@ -166,7 +209,21 @@ export const BarChartComp = () => {
           }}>
           12
         </Text>
-      </View>
+      </View> */}
+
+      <BarChart
+        style={styles.graphStyle}
+        showBarTops={false}
+        showValuesOnTopOfBars={false}
+        withInnerLines={true}
+        // segments={2}
+        data={data}
+        width={Dimensions.get('window').width - 40}
+        height={364.21}
+        chartConfig={chartConfig}
+        withHorizontalLabels={false}
+        // verticalLabelRotation={0}
+      />
     </View>
   );
 };
@@ -177,6 +234,9 @@ const styles = StyleSheet.create({
   },
   graphStyle: {
     flex: 1,
+    paddingRight: -15,
+    // marginRight: 10,
+    // paddingLeft: -15,
   },
   chartTitle: {
     paddingLeft: 20,
@@ -210,6 +270,6 @@ const styles = StyleSheet.create({
   },
   verticalCont: {
     // alignItems: 'flext-start',
-    backgroundColor: 'red'
-},
+    backgroundColor: 'red',
+  },
 });

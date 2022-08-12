@@ -1,6 +1,13 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import axiosInstance from '../index';
+
+export const NureseryGetChartsApi = (account, nursery,start,end) => {
+  return axiosInstance.get(
+    `/api/accounts/${account}/nursery/${nursery}/temperature/charts?starts_at=${start}&ends_at=${end}`,
+  );
+};
+
 export const NureseryTemperatureApi = (accountId, start?, end?) => {
   if (start) {
     return axiosInstance.get(

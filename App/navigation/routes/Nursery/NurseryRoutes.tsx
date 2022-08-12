@@ -10,7 +10,7 @@ import back from '../../../assets/images/backButton.png';
 import {Location} from '../../../screens/Account/Diary/Location';
 import {AverageTempature} from '../../../screens/Account/Nursery/properties/AverageTempature';
 import {TotalTimeComp} from '../../../screens/Account/Nursery/properties/TotalTimeComp';
-import { LongestPeriod } from '../../../screens/Account/Nursery/properties/LongestPeriod';
+import {LongestPeriod} from '../../../screens/Account/Nursery/properties/LongestPeriod';
 interface IParam {
   title: string;
   isHide: boolean;
@@ -21,9 +21,10 @@ interface IParam {
   editEvent: Function;
 }
 const navigationOptionsLocation = navigation => {
+  let param: any = navigation.route?.params;
   const nav = useNavigation();
   return {
-    title: 'location',
+    title: param.title,
     headerShown: true,
     headerTintColor: COLORS.textLight,
     headerTitleStyle: {
