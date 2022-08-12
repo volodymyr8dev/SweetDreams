@@ -20,6 +20,7 @@ import {ConnectDevice} from '../../api/Device/Device';
 import {GetSalt} from '../../api/Device/Device';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/configureStore';
+import { setDeviceIdSerialNumber } from '../../redux/slice/slice';
 
 type Nav = {
   navigate: (value: string) => void;
@@ -32,6 +33,7 @@ export const ConnectionStep2 = () => {
   const [loader, setLoader] = useState(false);
   const navigation = useNavigation<Nav>();
   const [salt, setSalt] = useState('');
+  const dispatch = useDispatch();
 
   const handleGoToStep3 = () => {
     if (!serialNumber) {
@@ -41,7 +43,8 @@ export const ConnectionStep2 = () => {
       ConnectDevice(user.accounts[0].id, serialNumber)
         .then(res => {
           if (res.data.success) {
-            // console.log(res.data.success, 'datadatadata');
+            console.log(res.data.success, 'datadatadata');
+            dispatch(setDeviceIdSerialNumber(res.data))
             GetSalt('misty').then(res => {
               // console.log(res);
               setSalt(res.data.data.salt);
@@ -53,6 +56,7 @@ export const ConnectionStep2 = () => {
         })
         .catch(res => {
           setLoader(false);
+
           Alert.alert(res.response.data.error);
         });
     }
@@ -72,6 +76,7 @@ export const ConnectionStep2 = () => {
         });
       },
       rej => {
+
         console.log('Connection failed!', rej);
       },
     );

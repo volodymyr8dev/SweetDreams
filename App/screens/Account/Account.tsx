@@ -80,14 +80,8 @@ export const Account = () => {
   // const [carouselItem, setCarouselItem] = useState('');
   const netInfo = useNetInfo();
   const {user} = useSelector(({account}: RootState) => account.userInformation);
-
-  // const cloudImage = [
-  //   Idle: Idle,
-  //   Asleep: AsleepImg,
-  //   Awake: Awake,
-  //   Sunset: SunSet,
-  //   Northern lights: NothernLights
-  // ]
+  const [is_deluxe, setIsDeluxe] = useState(user.accounts[0].is_deluxe);
+  console.log(user.accounts[0].is_deluxe, 'dadadadad');
 
   const openSettings = async () => {
     getSettingsDevice(user.accounts[0].id)
@@ -136,7 +130,6 @@ export const Account = () => {
             <Sheep />
           </View>
           <TouchableOpacity onPress={openSettings}>
-            {/*<Image source={settings} />*/}
             <View style={{height: 20, width: 20}} />
             <TopGear style={{bottom: 22, right: 2}} />
           </TouchableOpacity>
@@ -194,9 +187,11 @@ export const Account = () => {
                   width: 120,
                 }}>
                 {/*<Image source={childControl} />*/}
-                <CryChild />
+                {is_deluxe === 0 ? <View /> : <CryChild />}
                 <View style={{marginLeft: 10}}>
-                  {!isActive ? (
+                  {is_deluxe === 0 ? (
+                    <View />
+                  ) : !isActive ? (
                     <Text
                       style={{
                         color: '#fff',

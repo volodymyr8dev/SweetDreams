@@ -33,11 +33,13 @@ import {GetRecord} from '../../../api/Recording/Recording';
 
 export const SettingsAccount = ({route}) => {
   const [settingsData, setSettingsData] = useState(route.params.data);
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const [is_deluxe, setIsDeluxe] = useState(user.accounts[0].is_deluxe);
   const {formatWakeUpTime, formatTime, volume} = useSelector(
     ({settings}) => settings,
   );
-  const {temperatureNew} = useSelector(({settings}) => settings);
-  const {playingTime} = useSelector(({settings}) => settings);
+  // const {temperatureNew} = useSelector(({settings}) => settings);
+  // const {playingTime} = useSelector(({settings}) => settings);
   // const {volume} = useSelector(
   //   ({settings}) => settings,
   // );
@@ -68,9 +70,6 @@ export const SettingsAccount = ({route}) => {
       }
     };
 
-    const {user} = useSelector(
-      ({account}: RootState) => account.userInformation,
-    );
     console.log(user, 'dadadadada');
 
     const getCustomRecord = () => {
@@ -149,7 +148,7 @@ export const SettingsAccount = ({route}) => {
             rightEl={
               <Switch
                 title={'child_lock'}
-                val={settingsData['child_lock']}
+                val={settingsData.child_lock}
                 valueSmart={null}
                 setData={setSettingsData}
               />
@@ -177,16 +176,18 @@ export const SettingsAccount = ({route}) => {
           <Blog
             title="wake Up Time"
             navigate="Wake Up Time"
-            value={settingsData['wake_up_time']}
+            value={settingsData.wake_up_time}
             source={wakeUp}
-            rightEl={settingsData['wake_up_time']}
+            rightEl={settingsData.wake_up_time}
           />
-          <Blog
-            title="colour Picker"
-            navigate="Colour Picker"
-            source={colorPicker}
-            rightEl={undefined}
-          />
+          {is_deluxe === 0 ? null : (
+            <Blog
+              title="colour Picker"
+              navigate="Colour Picker"
+              source={colorPicker}
+              rightEl={undefined}
+            />
+          )}
           <Blog
             title="dome Brightness"
             navigate="Dome Brightness"
@@ -206,59 +207,71 @@ export const SettingsAccount = ({route}) => {
             rightEl={`°${settingsData.temperature}`}
             value={settingsData.temperature}
           />
-          <View style={{paddingLeft: 15, marginVertical: 15}}>
-            <Text
-              style={{
-                color: '#2371AB',
-                fontSize: 20,
-                fontWeight: 'bold',
-                fontFamily: 'AntagometricaBT-Bold',
-              }}>
-              {' '}
-              Sound Settings
-            </Text>
-          </View>
-          <Blog
-            title="smartCRY Sensor"
-            navigate="smartCRY Sensor"
-            source={smartCRY}
-            rightEl={
-              <Switch
-                val={null}
-                valueSmart={settingsData['smartCRY_sensor']}
-                title={'smartCRY_sensor'}
-                setData={setSettingsData}
-              />
-            }
-          />
-          <Blog
-            title="smartCRY Sensor Sensitivity"
-            navigate="smartCRY Sensor Sensitivity"
-            source={smartSRYSensetivity}
-            value={settingsData['smartCRY_sensor_sensitivity']}
-            rightEl={Number(
-              settingsData['smartCRY_sensor_sensitivity'],
-            ).toFixed(0)}
-          />
-          <Blog
-            title="custom recording"
-            navigate="Custom Recording"
-            source={music}
-            rightEl={'Dad reading s...'}
-          />
-          <Blog
-            title="sound playing time"
-            navigate="Sound Playing Time"
-            source={musicTime}
-            value={settingsData['sound_playing_time']}
-            rightEl={settingsData['sound_playing_time']}
-          />
-          <Blog
-            title="volume"
-            navigate="Volume"
-            source={volumeImg}
-            rightEl={Number(settingsData.volume).toFixed(0)}
-          />
+          {is_deluxe === 0 ? null : (
+            <View style={{paddingLeft: 15, marginVertical: 15}}>
+              <Text
+                style={{
+                  color: '#2371AB',
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  fontFamily: 'AntagometricaBT-Bold',
+                }}>
+                {' '}
+                Sound Settings
+              </Text>
+            </View>
+          )}
+          {is_deluxe === 0 ? null : (
+            <Blog
+              title="smartCRY Sensor"
+              navigate="smartCRY Sensor"
+              source={smartCRY}
+              rightEl={
+                <Switch
+                  val={null}
+                  valueSmart={settingsData.smartCRY_sensor}
+                  title={'smartCRY_sensor'}
+                  setData={setSettingsData}
+                />
+              }
+            />
+          )}
+          {is_deluxe === 0 ? null : (
+            <Blog
+              title="smartCRY Sensor Sensitivity"
+              navigate="smartCRY Sensor Sensitivity"
+              source={smartSRYSensetivity}
+              value={settingsData.smartCRY_sensor_sensitivity}
+              rightEl={Number(settingsData.smartCRY_sensor_sensitivity).toFixed(
+                0,
+              )}
+            />
+          )}
+          {is_deluxe === 0 ? null : (
+            <Blog
+              title="custom recording"
+              navigate="Custom Recording"
+              source={music}
+              rightEl={'Dad reading s...'}
+            />
+          )}
+          {is_deluxe === 0 ? null : (
+            <Blog
+              title="sound playing time"
+              navigate="Sound Playing Time"
+              source={musicTime}
+              value={settingsData.sound_playing_time}
+              rightEl={settingsData.sound_playing_time}
+            />
+          )}
+          {is_deluxe === 0 ? null : (
+            <Blog
+              title="volume"
+              navigate="Volume"
+              source={volumeImg}
+              rightEl={Number(settingsData.volume).toFixed(0)}
+            />
+          )}
           <View style={{paddingLeft: 15, marginVertical: 15}}>
             <Text
               style={{
@@ -270,25 +283,29 @@ export const SettingsAccount = ({route}) => {
               Notifications
             </Text>
           </View>
-          <Blog
-            title="smartCRY_sensor_activation"
-            navigate="smartCRY Sensor Activation"
-            source={smartCRY}
-            rightEl={<Switch
-                val={null}
-                valueSmart={settingsData['smartCRY_sensor_activation']}
-                title={'smartCRY_sensor_activation'}
-                setData={setSettingsData}
-              />
-            }
-          />
+          {is_deluxe === 0 ? null : (
+            <Blog
+              title="smartCRY_sensor_activation"
+              navigate="smartCRY Sensor Activation"
+              source={smartCRY}
+              rightEl={
+                <Switch
+                  val={null}
+                  valueSmart={settingsData.smartCRY_sensor_activation}
+                  title={'smartCRY_sensor_activation'}
+                  setData={setSettingsData}
+                />
+              }
+            />
+          )}
           <Blog
             title="temperature"
             navigate="Temperature"
             source={Temperature}
-            rightEl={<Switch
+            rightEl={
+              <Switch
                 val={null}
-                valueSmart={settingsData['temperature_notification']}
+                valueSmart={settingsData.temperature_notification}
                 title={'temperature_notification'}
                 setData={setSettingsData}
               />

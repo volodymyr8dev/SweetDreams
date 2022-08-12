@@ -23,6 +23,9 @@ const messageSlice = createSlice({
     setBabyInformation(state, action: PayloadAction<any>) {
       state.userInformation.user.accounts[0] = action.payload;
     },
+    setDeviceIdSerialNumber(state, action: PayloadAction<any>) {
+      state.userInformation.user.accounts[0] = action.payload;
+    },
     updateVerifiedEmail(state, action: PayloadAction<boolean>) {
       state.userInformation = state.userInformation;
       state.userInformation.verified = action.payload;
@@ -45,6 +48,7 @@ export const {
   setUserInformation,
   updateVerifiedEmail,
   setBabyInformation,
-  setLocationEvent
+  setLocationEvent,
+  setDeviceIdSerialNumber,
 } = messageSlice.actions;
 export default messageSlice.reducer;

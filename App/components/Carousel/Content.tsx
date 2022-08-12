@@ -24,8 +24,11 @@ import ActiveOff from '../../assets/images/cloudImage/ActiveOff.png';
 import TemperatureMore22 from '../../assets/images/cloudImage/TemperatureMore22.png';
 import blue from '../../assets/images/cloudImage/blue.png';
 import Yellow from '../../assets/images/cloudImage/Yellow.png';
+import {RootState} from "../../redux/configureStore";
 
 export const Content = props => {
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const deluxeDevice = user.accounts[0].is_deluxe
   const {carouselItem} = useSelector(({settings}) => settings);
   // console.log(carouselItem.split(' ').join(''));
   let itemImg = carouselItem.split(' ').join('');
@@ -69,7 +72,7 @@ export const Content = props => {
         </TouchableOpacity>
       </View>
       <View style={{bottom: '37%'}}>
-        <ControlCard />
+        {deluxeDevice === 0 ? (<View style={{height: 100}}/>) : <ControlCard/>}
       </View>
       <View style={styles.containerCarousel}>
         <ShopCarousel />

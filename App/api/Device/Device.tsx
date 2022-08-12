@@ -11,3 +11,12 @@ export const ConnectDevice = async (accountId, serialNumber) => {
 export const GetSalt = async type => {
   return await axiosInstance.get(`/api/setup/${type}/wifi-salt`);
 };
+
+export const DeviceCertificate = async () => {
+  const body = {
+    password: "mistypwd",
+  };
+  return await axiosInstance.post(`/api/setup/misty/device-certificate`, body);
+};
+
+// /api/setup/{type}/device-certificate

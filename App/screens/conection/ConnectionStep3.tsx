@@ -15,7 +15,7 @@ import {customStyles} from '../../components/StepIndicator/StepIndicator';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 import {Loader} from '../../components/Loader/Loader';
 import NetInfo from '@react-native-community/netinfo';
-import {GetSalt} from "../../api/Device/Device";
+import {DeviceCertificate, GetSalt} from "../../api/Device/Device";
 // import WifiManager from 'react-native-wifi-reborn';
 
 export const ConnectionStep3 = () => {
@@ -26,17 +26,21 @@ export const ConnectionStep3 = () => {
   // const [salt, setSalt] = useState();
 
   const navigation = useNavigation();
-  const isFocused = useIsFocused();
-  const route = useRoute<any>();
-  const serialNumber = route.params.serial_number.serial_number;
-
-  // useEffect(() => {
-  //   GetSalt('misty').then(res => {
-  //     setSalt(res.data.data.salt);
-  //   });
-  // }, []);
+  // const isFocused = useIsFocused();
+  // const route = useRoute<any>();
+  // const serialNumber = route.params.serial_number.serial_number;
 
 
+
+useEffect(()=> {
+  setLoader(true)
+  DeviceCertificate().then(res => {
+    console.log(res);
+    setLoader(false)
+  }).catch(rej => {
+    console.log(rej);
+  })
+},[])
 
   //  const ConnectToNetwork = async () => {
   //   WifiManager.connectToProtectedSSID(wifiName, wifiPassword, false).then(
@@ -55,24 +59,24 @@ export const ConnectionStep3 = () => {
   //     Alert.alert('You are connected ');
   //   });
   // }, []);
-  const ConnectToNetwork = async () => {
-    try {
-      console.log(wifiName, wifiPassword)
-      WifiManager.connectToProtectedSSID(wifiName, wifiPassword, false)
-        .then(
-          () => {
-            console.log('connectToProtectedSSID successfully!');
-          },
-          reason => {
-            console.log('connectToProtectedSSID failed!');
-            console.log(reason);
-          },
-        )
-        .catch(err => console.log('WIFI ERROR', err));
-    } catch (err) {
-      console.log('ERR', err);
-    }
-  };
+  // const ConnectToNetwork = async () => {
+  //   try {
+  //     console.log(wifiName, wifiPassword)
+  //     WifiManager.connectToProtectedSSID(wifiName, wifiPassword, false)
+  //       .then(
+  //         () => {
+  //           console.log('connectToProtectedSSID successfully!');
+  //         },
+  //         reason => {
+  //           console.log('connectToProtectedSSID failed!');
+  //           console.log(reason);
+  //         },
+  //       )
+  //       .catch(err => console.log('WIFI ERROR', err));
+  //   } catch (err) {
+  //     console.log('ERR', err);
+  //   }
+  // };
 
 
 
@@ -152,7 +156,7 @@ export const ConnectionStep3 = () => {
       </ScrollView>
 
       {loader && (
-        <Loader text={`connecting your phone ${'\n'}to your misty unit`} />
+        <Loader text={`Pilling the certificates`} />
       )}
 
       {/* <TouchableOpacity onPress={handleGoToStep2} style={styles.buttonDown}>

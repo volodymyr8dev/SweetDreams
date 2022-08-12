@@ -12,6 +12,8 @@ import {useNavigation} from '@react-navigation/native';
 import back from '../../assets/images/homeIcon/bacgroundHome.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import carousel from 'react-native-anchor-carousel/src/carousel';
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/configureStore";
 
 const options24 = {
   value1: {
@@ -83,6 +85,10 @@ const optionsD28 = {
 export const Graphics = () => {
   const navigation = useNavigation();
   const [activeTime, setActiveTime] = useState('last 24 hours');
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  console.log(user.accounts[0].is_deluxe, 'isdecdsede');
+  const [is_deluxe, setIsDeluxe] = useState(user.accounts[0].is_deluxe);
+  console.log(is_deluxe, 'nasasas');
   const getToken = async () => {
     const value = await AsyncStorage.getItem('@storage_Key');
     console.log('valueeee', value);
@@ -161,23 +167,31 @@ export const Graphics = () => {
     console.log(options);
     return (
       <View style={styles.container}>
+        {is_deluxe===0 ? null : (<Blog
+            title="Total Time Without Activation"
+            subTitle={options.value1.subTitle}
+            source={happy}
+            rightEl={options.value1.value}
+        />)}
+        {is_deluxe===0 ? null : (<Blog
+            title="Longest Period Without Activation"
+            subTitle={options.value2.subTitle}
+            source={happy}
+            rightEl={options.value2.value}
+        />)}
+        {is_deluxe===0 ? null : (<Blog
+            title="Number of smartCRY Activations"
+            subTitle={options.value3.subTitle}
+            source={sad}
+            rightEl={options.value3.value}
+        />)}
         <Blog
-          title="Total Time Without Activation"
-          subTitle={options.value1.subTitle}
-          source={happy}
-          rightEl={options.value1.value}
-        />
-        <Blog
-          title="Longest Period Without Activation"
-          subTitle={options.value2.subTitle}
-          source={happy}
-          rightEl={options.value2.value}
-        />
-        <Blog
-          title="Number of smartCRY Activations"
-          subTitle={options.value3.subTitle}
-          source={sad}
-          rightEl={options.value3.value}
+            title="Average Temperature"
+            subTitle={options.value5.subTitle}
+            source={tempretute}
+            rightEl={options.value5.value}
+            width={30}
+            height={27}
         />
         <Blog
           title="Diary Entries"
@@ -186,14 +200,6 @@ export const Graphics = () => {
           rightEl={options.value4.value}
           width={30}
           height={26}
-        />
-        <Blog
-          title="Average Temperature"
-          subTitle={options.value5.subTitle}
-          source={tempretute}
-          rightEl={options.value5.value}
-          width={30}
-          height={27}
         />
       </View>
     );

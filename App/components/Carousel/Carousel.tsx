@@ -38,11 +38,14 @@ import PulsingImage from '../../assets/images/svg/Pulsing';
 import TemperatureImage from '../../assets/images/svg/Temperature';
 import PickerImage from '../../assets/images/svg/Picker';
 import {setCarouselItem} from '../../redux/slice/SettingsSlice';
+import {RootState} from "../../redux/configureStore";
 
 const {width: windowWidth} = Dimensions.get('window');
 
 const INITIAL_INDEX = 0;
 export default React.memo(function ShopCarousel(props) {
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const [is_deluxe, setIsDeluxe] = useState(user.accounts[0].is_deluxe);
   const [data, setData] = useState([
     {
       uri: <TemperatureAccount style={{}} />,
@@ -118,7 +121,68 @@ export default React.memo(function ShopCarousel(props) {
       ],
     },
   ]);
+  const [copyData, setCopyData] = useState([{
+    uri: <TemperatureAccount style={{}} />,
+    title: 'temperature',
+    content: 'Thermometer',
+    backUri: BackgroundTemperature,
+    items: [
+      {
+        img: <TemperatureImage style={{marginRight: 5}} />,
+        imgActive: <TemperatureWhiteImage style={{marginRight: 5}} />,
+        text: 'Temperature',
+        active: false,
+      },
+    ],
+  },
+    {
+      uri: <Sun style={{}} />,
+      title: 'light show',
+      backUri: BackgroundSun,
+      content: 'Thermometer',
+      items: [
+        {
+          img: <SunsetWhiteImage style={{marginRight: 5}} />,
+          imgActive: <SunsetImage style={{marginRight: 5}} />,
+          text: 'Sunset',
+          active: false,
+        },
+        {
+          img: <NorthernWhiteImage style={{marginRight: 5}} />,
+          imgActive: <NorthernImage style={{marginRight: 5}} />,
+          text: 'Northern lights',
+          active: false,
+        }
+      ],
+    },
+    {
+      uri: <Timer style={{}} />,
+      title: 'sleep trainer',
+      backUri: BackgroundTimer2,
+      content: 'Thermometer',
 
+      items: [
+        {
+          img: <IdleImage style={{marginRight: 5}} />,
+          imgActive: <IdleWhiteImage style={{marginRight: 5}} />,
+          text: 'Idle',
+          active: false,
+        },
+        {
+          img: <AsleepWhiteImage style={{marginRight: 5}} />,
+          imgActive: <AsleepImage style={{marginRight: 5}} />,
+          text: 'Asleep',
+          active: false,
+        },
+        {
+          img: <AwakeWhiteImage style={{marginRight: 5}} />,
+          imgActive: <AwakeImage style={{marginRight: 5}} />,
+          text: 'Awake',
+          active: false,
+        },
+      ],
+    },
+  ])
   const {power} = useSelector(({power}) => power);
   const carouselRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
@@ -137,7 +201,7 @@ export default React.memo(function ShopCarousel(props) {
       // props.setCarouselItem(item.text);
       dispatch(setCarouselItem(item.text));
       // setItemText(item.text);
-      let array = [...data];
+      let array =  [...data];
       array.map(it => {
         return it.items.map(child => (child.active = false));
       });
@@ -145,18 +209,10 @@ export default React.memo(function ShopCarousel(props) {
       array[index].items[indexChild].active =
         !array[index].items[indexChild].active;
       setData(array);
-      // let array = data.map((obj, indexObj) => {
-      //   if ((indexObj = index)) {
-      //     console.log('zzzz',obj);
-      //     return {...obj,obj.active:!obj.active };
-      //   }
-      //   return obj;
-      // });
     };
 
     return (
       <TouchableOpacity
-        // activeOpacity={1}
         disabled={index === currentIndex}
         style={styles.item}
         onPress={() => {
@@ -181,37 +237,74 @@ export default React.memo(function ShopCarousel(props) {
           <View style={styles.lowerContainer}>
             <Text style={styles.titleText}>{title}</Text>
             {items.map((item, indexChild) => {
-              return (
-                <TouchableOpacity
-                  disabled={index !== currentIndex || !power}
-                  onPress={() => handleActiveItem(item, indexChild)}
-                  style={[
-                    styles.card,
-                    {
-                      // backgroundColor: 'rgba(255,255,255,0.2)',
-                      backgroundColor: power
-                        ? item.active
-                          ? '#72D3DB'
-                          : 'rgba(255,255,255,0.2)'
-                        : 'rgba(255,255,255,0.2)',
-                    },
-                  ]}>
-                  {item.active ? item.img : item.imgActive}
-                  <Text
-                    style={[
-                      styles.contentText,
-                      {
-                        color: power
-                          ? item.active
-                            ? '#000'
-                            : 'rgba(255,255,255,1)'
-                          : 'rgba(255,255,255,1)',
-                      },
-                    ]}>
-                    {item.text}
-                  </Text>
-                </TouchableOpacity>
-              );
+              console.log(item)
+              if(is_deluxe === 1){
+                return (
+                    <TouchableOpacity
+                        disabled={index !== currentIndex || !power}
+                        onPress={() => handleActiveItem(item, indexChild)}
+                        style={[
+                          styles.card,
+                          {
+                            backgroundColor: power
+                                ? item.active
+                                    ? '#72D3DB'
+                                    : 'rgba(255,255,255,0.2)'
+                                : 'rgba(255,255,255,0.2)',
+                          },
+                        ]}>
+                      {item.active ? item.img : item.imgActive}
+                      <Text
+                          style={[
+                            styles.contentText,
+                            {
+                              color: power
+                                  ? item.active
+                                      ? '#000'
+                                      : 'rgba(255,255,255,1)'
+                                  : 'rgba(255,255,255,1)',
+                            },
+                          ]}>
+                        {item.text}
+                      </Text>
+                    </TouchableOpacity>
+                );
+              } else{
+                if(item.text === 'Pulsing' || item.text === 'Colour picker'){
+
+                }else{
+                  return (
+                      <TouchableOpacity
+                          disabled={index !== currentIndex || !power}
+                          onPress={() => handleActiveItem(item, indexChild)}
+                          style={[
+                            styles.card,
+                            {
+                              backgroundColor: power
+                                  ? item.active
+                                      ? '#72D3DB'
+                                      : 'rgba(255,255,255,0.2)'
+                                  : 'rgba(255,255,255,0.2)',
+                            },
+                          ]}>
+                        {item.active ? item.img : item.imgActive}
+                        <Text
+                            style={[
+                              styles.contentText,
+                              {
+                                color: power
+                                    ? item.active
+                                        ? '#000'
+                                        : 'rgba(255,255,255,1)'
+                                    : 'rgba(255,255,255,1)',
+                              },
+                            ]}>
+                          {item.text}
+                        </Text>
+                      </TouchableOpacity>
+                  );
+                }
+              }
             })}
           </View>
           <View />
