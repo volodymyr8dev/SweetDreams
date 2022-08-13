@@ -15,6 +15,9 @@ const messageSlice = createSlice({
       user: {accounts: [{}]},
       verified: false,
     },
+    nersery: {
+      id: '',
+    },
   },
   reducers: {
     setUserInformation(state, action: PayloadAction<any>) {
@@ -26,6 +29,7 @@ const messageSlice = createSlice({
     setBabyInformation(state, action: PayloadAction<any>) {
       state.userInformation.user.accounts[0] = action.payload;
     },
+
     updateVerifiedEmail(state, action: PayloadAction<boolean>) {
       state.userInformation = state.userInformation;
       state.userInformation.verified = action.payload;
@@ -40,6 +44,9 @@ const messageSlice = createSlice({
       state.events.location.name = action.payload.name;
       state.events.location.locate = action.payload.location;
     },
+    setNerseryId(state, action: PayloadAction<any>) {
+      state.nersery.id = action.payload;
+    },
   },
 });
 
@@ -50,5 +57,6 @@ export const {
   updateVerifiedEmail,
   setBabyInformation,
   setLocationEvent,
+  setNerseryId,
 } = messageSlice.actions;
 export default messageSlice.reducer;

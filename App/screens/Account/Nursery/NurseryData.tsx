@@ -12,9 +12,10 @@ import {useNavigation} from '@react-navigation/native';
 import back from '../../../assets/images/homeIcon/bacgroundHome.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import carousel from 'react-native-anchor-carousel/src/carousel';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../redux/configureStore';
 import { NureseryTemperatureApi } from '../../../api/Nursery/Nuresery';
+import { setNerseryId } from '../../../redux/slice/slice';
 
 const options24 = {
   value1: {
@@ -84,7 +85,7 @@ const optionsD28 = {
 };
 
 export const NurseryData = () => {
-
+const dispatch = useDispatch();
   const navigation = useNavigation<any>();
   const [activeTime, setActiveTime] = useState('last 24 hours');
   const {accounts} = useSelector(
@@ -97,9 +98,17 @@ export const NurseryData = () => {
   };
   useEffect(() => {
     getToken();
-    NureseryTemperatureApi(accounts[0].id).then(({data})=>{
-      console.log('get nerseryId',data)
-    });
+    if (accounts){
+     NureseryTemperatureApi(accounts[0].id)
+       .then(({data}) => {
+         console.log('get nerseryId', data);
+         dispatch(setNerseryId(data[1].id))
+       })
+       .catch(err => {
+         console.log('ERR', err);
+       });
+    }
+ 
   }, []);
   const handleChangeTime = time => {
     console.log(time);

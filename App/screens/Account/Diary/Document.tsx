@@ -165,7 +165,7 @@ export const Document = () => {
     ) : null;
   };
   console.log('points here', points);
-  useEffect(() => {
+  useEffect(() => { 
     console.log('update', global);
     GetEventApi(global.id)
       .then(({data}) => {

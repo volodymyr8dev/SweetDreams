@@ -25,6 +25,7 @@ import arrowLeft from '../../../../assets/images/nersery/arrowLeft.png';
 import AlertData from '../../../../assets/images/nersery/alertData.png';
 import {NureseryGetChartsApi} from '../../../../api/Nursery/Nuresery';
 import {array} from 'yup/lib/locale';
+import {useSelector} from 'react-redux';
 
 const chartConfig = {
   topRadius: 8,
@@ -69,7 +70,8 @@ export const TotalTimeComp = ({route}) => {
   const [end, setEnd] = useState(moment(date).format('YYYY-MM-DD'));
   const [average, setAverage] = useState();
   const [total, setTotal] = useState();
-
+  const nerseryId = useSelector(({account}) => account.nersery.id);
+  console.log('nId', nerseryId);
   useEffect(() => {
     setStart(moment(start).format('YYYY-MM-DD'));
     setEnd(moment(end).format('YYYY-MM-DD'));
@@ -86,13 +88,22 @@ export const TotalTimeComp = ({route}) => {
   }, [start]);
   useEffect(() => {
     const getData = async () => {
+      console.log('---------', route.params.childId, nerseryId, start,end);
       try {
-        // const result = await NureseryGetChartsApi(route.params.childId,start,end);
+        if (nerseryId && start && end) {
+          const {data} = await NureseryGetChartsApi(
+            route.params.childId,
+            nerseryId,
+            start,
+            end,
+          );
+          console.log('result', data[`${end}_${end}`]);
+        }
         // setAverage(result[`${start}_${end}`]['average over 28 days']);
         // setTotal(
         //   result[`${start}_${end}`]['total_28days_time_without_activation'],
         // );
-        // // Object.keys()
+        // Object.keys()
       } catch (err) {
         console.log(err);
       }
@@ -123,7 +134,7 @@ export const TotalTimeComp = ({route}) => {
     } else {
       let daysStart = Number(moment(start).format('D'));
       let daysEnd = Number(moment(end).format('D'));
-      let arr :string[] = [];
+      let arr: string[] = [];
       let countOfDays = Number(moment(start).daysInMonth());
       console.log('daysStart', daysStart);
       console.log('daysEnd', daysEnd);
@@ -250,8 +261,8 @@ export const TotalTimeComp = ({route}) => {
           height={364.21}
           chartConfig={chartConfig}
           verticalLabelRotation={0}
-          yAxisLabel=''
-           yAxisSuffix=''
+          yAxisLabel=""
+          yAxisSuffix=""
         />
       )}
 
