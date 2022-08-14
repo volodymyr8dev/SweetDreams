@@ -91,25 +91,25 @@ const dispatch = useDispatch();
   const {accounts} = useSelector(
     ({account}: RootState) => account.userInformation.user,
   );
-  console.log('account', accounts);
   const getToken = async () => {
     const value = await AsyncStorage.getItem('@storage_Key');
     console.log('valueeee', value);
   };
   useEffect(() => {
     getToken();
-    if (accounts){
-     NureseryTemperatureApi(accounts[0].id)
-       .then(({data}) => {
-         console.log('get nerseryId', data);
-         dispatch(setNerseryId(data[1].id))
-       })
-       .catch(err => {
-         console.log('ERR', err);
-       });
+    console.log(accounts[0].id);
+    if (accounts[0].id) {
+      console.log('id', accounts[0].id);
+      NureseryTemperatureApi(accounts[0].id)
+        .then(({data}) => {
+          console.log('get nerseryId', data);
+          dispatch(setNerseryId(data[1].id));
+        })
+        .catch(err => {
+          console.log('ERR', err);
+        });
     }
- 
-  }, []);
+  }, [accounts[0].id]);
   const handleChangeTime = time => {
     console.log(time);
     setActiveTime(time);

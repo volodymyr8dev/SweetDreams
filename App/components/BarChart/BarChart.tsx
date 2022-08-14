@@ -67,6 +67,7 @@ export const BarChartComp = ({activeLabels}) => {
     datasets: [
       {
         data: [10, 0, 10, 10, 0, 10, 10, 10, 0, 10, 10, 10],
+        // data:[[10,5],[5,3],[2,1]]
       },
       {
         data: [5], // min

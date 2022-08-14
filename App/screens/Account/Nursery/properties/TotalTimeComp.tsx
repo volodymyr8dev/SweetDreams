@@ -24,7 +24,7 @@ import sleepDiary from '../../../../assets/images/nersery/sleepDiary.png';
 import arrowLeft from '../../../../assets/images/nersery/arrowLeft.png';
 import AlertData from '../../../../assets/images/nersery/alertData.png';
 import {NureseryGetChartsApi} from '../../../../api/Nursery/Nuresery';
-import {array} from 'yup/lib/locale';
+import {array, object} from 'yup/lib/locale';
 import {useSelector} from 'react-redux';
 
 const chartConfig = {
@@ -71,7 +71,7 @@ export const TotalTimeComp = ({route}) => {
   const [average, setAverage] = useState();
   const [total, setTotal] = useState();
   const nerseryId = useSelector(({account}) => account.nersery.id);
-  console.log('nId', nerseryId);
+  console.log('average', average);
   useEffect(() => {
     setStart(moment(start).format('YYYY-MM-DD'));
     setEnd(moment(end).format('YYYY-MM-DD'));
@@ -88,7 +88,6 @@ export const TotalTimeComp = ({route}) => {
   }, [start]);
   useEffect(() => {
     const getData = async () => {
-      console.log('---------', route.params.childId, nerseryId, start,end);
       try {
         if (nerseryId && start && end) {
           const {data} = await NureseryGetChartsApi(
@@ -97,7 +96,8 @@ export const TotalTimeComp = ({route}) => {
             start,
             end,
           );
-          console.log('result', data[`${end}_${end}`]);
+
+          // setTotal(data[`${end}_${end}`][`${end}_${end}`]);
         }
         // setAverage(result[`${start}_${end}`]['average over 28 days']);
         // setTotal(
@@ -117,6 +117,44 @@ export const TotalTimeComp = ({route}) => {
     return dateOne.diff(dateTwo, 'days');
   }
 
+  const getValuesApi = async (start, end) => {
+    try {
+      const {data} = await NureseryGetChartsApi(
+        route.params.childId,
+        nerseryId,
+        start,
+        end,
+      );
+      if (getDayDiff(end, start) == 1 && !Array.isArray(data)) {
+        console.log('data', data);
+
+        let temperature = [];
+        let twoDays = data[`${start}_${end}`][`${start}_${end}`];
+
+        setAverage(
+          twoDays[`${start}`] !== null
+            ? twoDays[`${start}`]['average_over_24hours']
+            : twoDays[`${end}`]['average_over_24hours'],
+        );
+
+        if (twoDays[`${start}`]) {
+          Object.values(twoDays[`${start}`]).forEach((item: any) => {
+            item?.temperature ? temperature.push(item) : '';
+          });
+          console.log('temperature', temperature)
+        }
+      }
+
+      // setTotal(
+      //   result[`${start}_${end}`]['total_28days_time_without_activation'],
+      // );
+      // Object.keys()
+    } catch (err) {
+      console.log('getValuesError', err);
+    }
+  };
+
+  //left
   const handleLeftTime = () => {
     time.indexOf(activeTime) == 0
       ? setActiveTime(time[activeTime.length - 1])
@@ -128,6 +166,10 @@ export const TotalTimeComp = ({route}) => {
     setStart(moment(start).format('YYYY-MM-DD'));
     setEnd(moment(end).format('YYYY-MM-DD'));
 
+    getValuesApi(
+      moment(start).format('YYYY-MM-DD'),
+      moment(end).format('YYYY-MM-DD'),
+    );
     let diff = getDayDiff(end, start);
     if (diff == 1) {
       setActivelabels(['12', '16', '20', '24', '4', '8']);
@@ -175,17 +217,10 @@ export const TotalTimeComp = ({route}) => {
         }
         setActivelabels(arr);
       }
-      console.log('arr', arr);
     }
-    console.log('start', start);
-    console.log('end', end);
-
-    console.log('startLabel', moment(start).format('D'));
-    console.log('endLabel', moment(end).format('D'));
-
-    //   console.log('diff', diff);
   };
 
+  //right
   const handleRightTime = () => {
     time.indexOf(activeTime) == time.length - 1
       ? setActiveTime(time[0])
@@ -244,7 +279,7 @@ export const TotalTimeComp = ({route}) => {
       <View style={styles.borderBlock}></View>
       <View style={styles.headerDown}>
         <Text style={styles.totalTime}>Total for this 24h</Text>
-        <Text style={styles.totalTop}>Total for this 24h</Text>
+        <Text style={styles.totalTop}>{average}</Text>
       </View>
 
       {value ? (
