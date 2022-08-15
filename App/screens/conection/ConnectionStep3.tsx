@@ -15,44 +15,48 @@ import {customStyles} from '../../components/StepIndicator/StepIndicator';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 import {Loader} from '../../components/Loader/Loader';
 import NetInfo from '@react-native-community/netinfo';
-import {DeviceCertificate, GetSalt} from "../../api/Device/Device";
-// import WifiManager from 'react-native-wifi-reborn';
+import {
+  ConnectDevice,
+  ConnectHomeWifi,
+  DeviceCertificate,
+} from '../../api/Device/Device';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../redux/configureStore';
+import {setDeviceIdSerialNumber} from '../../redux/slice/slice';
 
 export const ConnectionStep3 = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
   const [loader, setLoader] = useState(false);
+  const [loader1, setLoader1] = useState(false);
+  const [loaderDiscconect, setloaderDiscconect] = useState(false);
+  const [loaderConnectionHome, setloaderConnectionHome] = useState(false);
   const [wifiName, setWifiName] = useState('');
   const [wifiPassword, setWififPassword] = useState('');
-  // const [salt, setSalt] = useState();
+  const [randomString, setRandomString] = useState('');
+  const [randomString16, setRandomString16] = useState('');
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const dispatch = useDispatch();
 
   const navigation = useNavigation();
   // const isFocused = useIsFocused();
-  // const route = useRoute<any>();
-  // const serialNumber = route.params.serial_number.serial_number;
+  const route = useRoute<any>();
+  const serialNumber = route.params.serial_number;
+  // console.log(route.params.serial_number);
 
+  useEffect(() => {
+    setLoader(true);
+    DeviceCertificate()
+      .then(res => {
+        console.log(res);
+        setLoader(false);
+        generateRandomString36(36);
+        generateRandomString16(16);
+      })
+      .catch(rej => {
+        console.log(rej);
+      });
+  }, []);
 
-
-useEffect(()=> {
-  setLoader(true)
-  DeviceCertificate().then(res => {
-    console.log(res);
-    setLoader(false)
-  }).catch(rej => {
-    console.log(rej);
-  })
-},[])
-
-  //  const ConnectToNetwork = async () => {
-  //   WifiManager.connectToProtectedSSID(wifiName, wifiPassword, false).then(
-  //     () => {
-  //       //console.log("connectToProtectedSSID successfully!");
-  //     },
-  //     reason => {
-  //       //console.log("connectToProtectedSSID failed!");
-  //       //console.log(reason);
-  //     },
-  //   );
-  // };
   // useEffect(() => {
   //   NetInfo.fetch().then(res => {
   //     console.log(res);
@@ -70,7 +74,7 @@ useEffect(()=> {
   //         reason => {
   //           console.log('connectToProtectedSSID failed!');
   //           console.log(reason);
-  //         },
+  //         },Qwerty12#
   //       )
   //       .catch(err => console.log('WIFI ERROR', err));
   //   } catch (err) {
@@ -78,14 +82,108 @@ useEffect(()=> {
   //   }
   // };
 
+  const generateRandomString36 = lenth => {
+    const char =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    const random = Array.from(
+      {length: lenth},
+      () => char[Math.floor(Math.random() * char.length)],
+    );
+    const randomString = random.join('');
+    return setRandomString(randomString);
+  };
 
+  const generateRandomString16 = lenth => {
+    const char =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    const random = Array.from(
+      {length: lenth},
+      () => char[Math.floor(Math.random() * char.length)],
+    );
+    const randomString16 = random.join('');
+    return setRandomString16(randomString16);
+  };
 
-  const handleGoToStep2 = () => {
-    setLoader(true);
-    setTimeout(() => {
-      setLoader(false);
-    }, 1000);
-    navigation.navigate('account');
+  console.log(randomString, 'randomStrin2gg36');
+  console.log(randomString16, 'randomString16');
+
+  // const handleGoToStep2 = () => {
+  //   setLoader(true);
+  //   setTimeout(() => {
+  //     setLoader(false);
+  //   }, 1000);
+  //   navigation.navigate('account');
+  // };
+  const wifiConnect = () => {
+    // const arrayJson = [
+    //   {'Wi-Fi': 'SSID', name: `${wifiName}`},
+    //   {'Wi-Fi': 'SSID', pass: `${wifiPassword}`},
+    //   {MQTT: 'server', IPv4: '167.172.50.187'},
+    //   {MQTT: 'server', host: 'mistythecloudserver.com'},
+    //   {MQTT: 'server', port: '8883'},
+    //   {MQTT: 'server', authpass: `${randomString}`},
+    //   {MQTT: 'server', mqttUser: `${randomString16}`},
+    // ];
+    // ConnectHomeWifi(arrayJson)
+    //   .then(res => {
+    //     console.log(res);
+    //     // “MDIxe-12345678”
+    //   })
+    //   .catch(rej => {
+    //     console.log(rej);
+    //   });
+    ConnectDevice(
+      user.accounts[0].id,
+      serialNumber,
+      randomString,
+      randomString16,
+    )
+      .then(res => {
+        console.log(res);
+        console.log(user.accounts);
+        dispatch(setDeviceIdSerialNumber(res.data));
+        setloaderDiscconect(true);
+        disconnectFromSSid();
+
+        setloaderConnectionHome(true);
+        ConnectToHomeNetwork();
+      })
+      .catch(rej => {
+        console.log(rej);
+      });
+  };
+
+  const ConnectToHomeNetwork = async () => {
+    WifiManager.connectToProtectedSSID(
+      `${wifiName}`,
+      `${wifiPassword}`,
+      false,
+    ).then(
+      res => {
+        console.log(res);
+        console.log('Connected successfully!');
+        setloaderConnectionHome(false);
+        navigation.navigate('Account');
+      },
+      rej => {
+        setloaderConnectionHome(false);
+        console.log('Connection failed!', rej);
+      },
+    );
+  };
+
+  const disconnectFromSSid = async () => {
+    WifiManager.disconnectFromSSID(`Misty-${serialNumber}`).then(
+      res => {
+        console.log(res);
+        console.log('Connected successfully!');
+        setloaderDiscconect(false);
+      },
+      rej => {
+        setloaderDiscconect(false);
+        console.log('Connection failed!', rej);
+      },
+    );
   };
 
   return (
@@ -150,14 +248,22 @@ useEffect(()=> {
           {/*</TouchableOpacity>*/}
         </View>
 
-        <TouchableOpacity onPress={handleGoToStep2}>
-          <Text style={{color: '#fff'}}>Skip this step</Text>
+        {/*<TouchableOpacity onPress={handleGoToStep2}>*/}
+        {/*  <Text style={{color: '#fff'}}>Skip this step</Text>*/}
+        {/*</TouchableOpacity>*/}
+
+        <TouchableOpacity
+          onPress={wifiConnect}
+          style={{backgroundColor: 'red'}}>
+          <Text style={{color: 'white'}}>SAVEEEEEE</Text>
         </TouchableOpacity>
       </ScrollView>
 
-      {loader && (
-        <Loader text={`Pilling the certificates`} />
+      {loader && <Loader text={'Pilling the certificates'} />}
+      {loaderDiscconect && (
+        <Loader text={'Disconneting from the device network'} />
       )}
+      {loader2 && <Loader text={'Pilling the certificates'} />}
 
       {/* <TouchableOpacity onPress={handleGoToStep2} style={styles.buttonDown}>
         <View>

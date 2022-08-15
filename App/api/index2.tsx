@@ -4,8 +4,8 @@ const getToken = async () => {
   let token = await AsyncStorage.getItem('@storage_Key');
   return token;
 };
-const instance = axios.create({
-  baseURL: 'https://staging.mistythecloudserver.com',
+const instance2 = axios.create({
+  baseURL: 'http://192.168.4.1/:80',
   headers: {
     //  "content-type": "application/json"
     // Authorization: `Bearer ${getToken()}`,
@@ -13,11 +13,11 @@ const instance = axios.create({
 });
 
 
-instance.interceptors.request.use(async config => {
+instance2.interceptors.request.use(async config => {
   const token = await AsyncStorage.getItem('@storage_Key');
   console.log('tokennnnnnn', token);
   config.headers.Authorization = `Bearer ${await getToken()}`;
   return config;
 });
 
-export default instance;
+export default instance2;

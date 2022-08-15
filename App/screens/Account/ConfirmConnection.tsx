@@ -21,7 +21,11 @@ const ConfirmConnection = ({setToggleButton}) => {
       setToggleButton(true);
     } else {
       navigation.goBack();
+        console.log(user, 'sssdsdsdsd');
     }
+    //   navigation.navigate('conectionStep3', {
+    //       title: 'connect misty',
+    //   })
 
     // setConnect(!conect);
     // console.log('xxx', netInfo.isConnected);

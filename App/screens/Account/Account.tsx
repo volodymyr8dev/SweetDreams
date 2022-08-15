@@ -227,7 +227,7 @@ export const Account = () => {
       source={isActive ? background : backgroundGrey}>
       <View style={styles.container}>
         {/*{!netInfo.isConnected || !isInternet*/}
-        {!toggleButton ? (
+        {user.accounts[0].device === null ? (
           <ConfirmConnection setToggleButton={setToggleButton} />
         ) : (
           <>

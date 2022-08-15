@@ -20,7 +20,7 @@ import {ConnectDevice} from '../../api/Device/Device';
 import {GetSalt} from '../../api/Device/Device';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/configureStore';
-import { setDeviceIdSerialNumber } from '../../redux/slice/slice';
+import {setDeviceIdSerialNumber} from '../../redux/slice/slice';
 
 type Nav = {
   navigate: (value: string) => void;
@@ -33,34 +33,47 @@ export const ConnectionStep2 = () => {
   const [loader, setLoader] = useState(false);
   const navigation = useNavigation<Nav>();
   const [salt, setSalt] = useState('');
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const handleGoToStep3 = () => {
     if (!serialNumber) {
       Alert.alert('Serial Number is required');
     } else {
       setLoader(true);
-      ConnectDevice(user.accounts[0].id, serialNumber)
+      GetSalt('misty')
         .then(res => {
-          if (res.data.success) {
-            console.log(res.data.success, 'datadatadata');
-            dispatch(setDeviceIdSerialNumber(res.data))
-            GetSalt('misty').then(res => {
-              // console.log(res);
-              setSalt(res.data.data.salt);
-              ConnectToNetwork();
-              setLoader(false);
-            });
-            // dispatch(setSerialNumber(res.data.success))
-          }
+          setSalt(res.data.data.salt);
+          ConnectToNetwork();
+          setLoader(false);
         })
         .catch(res => {
           setLoader(false);
-
           Alert.alert(res.response.data.error);
         });
+      // setLoader(true);
+      // ConnectDevice(user.accounts[0].id, serialNumber)
+      //   .then(res => {
+      //     if (res.data.success) {
+      //       console.log(res.data.success, 'datadatadata');
+      //       dispatch(setDeviceIdSerialNumber(res.data))
+      //       GetSalt('misty').then(res => {
+      //         // console.log(res);
+      //         setSalt(res.data.data.salt);
+      //         ConnectToNetwork();
+      //         setLoader(false);
+      //       });
+      //       // dispatch(setSerialNumber(res.data.success))
+      //     }
+      //   })
+      //   .catch(res => {
+      //     setLoader(false);
+      //
+      //     Alert.alert(res.response.data.error);
+      //   });
     }
   };
+
+  // disconnectFromSSID(ssid: string): Promise
 
   const ConnectToNetwork = async () => {
     WifiManager.connectToProtectedSSID(
@@ -68,16 +81,17 @@ export const ConnectionStep2 = () => {
       `${salt}`,
       false,
     ).then(
-      (res) => {
+      res => {
         console.log(res);
         console.log('Connected successfully!');
         navigation.navigate('conectionStep3', {
           title: 'connect misty',
+          serial_number: `${serialNumber}`
         });
       },
       rej => {
-
         console.log('Connection failed!', rej);
+        Alert.alert('Connection failed!');
       },
     );
   };
