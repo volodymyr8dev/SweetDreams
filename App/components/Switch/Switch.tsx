@@ -9,7 +9,6 @@ export const Switch = ({val, setVal, setData, valueSmart, title}) => {
   const {user} = useSelector(({account}: RootState) => account.userInformation);
   const setValue = async () => {
     const data = await SettingsDevice(
-      // val !== null ? {'Child Lock': !val} : {'smartCRY Sensor': "0"},
       {[title]: val !== null ? !val : valueSmart === '0' ? '1' : '0'},
       user.accounts[0].id,
     );

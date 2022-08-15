@@ -29,10 +29,12 @@ export const SettingsSmartCRY = ({route}) => {
       if (!isActive) {
         console.log('activeeee');
         SettingsDevice(
-          {'smartCRY Sensor Sensitivity': active2},
+          {smartCRY_sensor_sensitivity: active2},
           user.accounts[0].id,
         ).then(res => {
           route.params.setValue(res.data.data);
+        }).catch(res => {
+          console.log(res);
         });
       }
     };
@@ -55,6 +57,7 @@ export const SettingsSmartCRY = ({route}) => {
               brightness={brightness}
               value={route.params.value}
               setValue={setValue}
+              name={'Sensor'}
             />
           </View>
           <Image

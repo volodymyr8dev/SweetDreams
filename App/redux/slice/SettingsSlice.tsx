@@ -14,6 +14,7 @@ const SettingsSlice = createSlice({
     temperatureNew: '',
     playingTime: '',
     recordingFile: '',
+    carouselItem: 'Temperature',
   },
   reducers: {
     setTemperature(state, action: PayloadAction<number>) {
@@ -42,6 +43,9 @@ const SettingsSlice = createSlice({
     setPlayingTime(state, action: PayloadAction<any>) {
       state.playingTime = action.payload;
     },
+    setCarouselItem(state, action: PayloadAction<any>) {
+      state.carouselItem = action.payload;
+    },
   },
 });
 
@@ -54,5 +58,6 @@ export const {
   setTemperatureNew,
   setPlayingTime,
   setRecording,
+  setCarouselItem,
 } = SettingsSlice.actions;
 export default SettingsSlice.reducer;
