@@ -5,7 +5,7 @@ const getToken = async () => {
   return token;
 };
 const instance2 = axios.create({
-  baseURL: 'http://192.168.4.1/:80',
+  baseURL: 'http://192.168.4.1:80',
   headers: {
     //  "content-type": "application/json"
     // Authorization: `Bearer ${getToken()}`,

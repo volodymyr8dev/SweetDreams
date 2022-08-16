@@ -2,7 +2,12 @@ import React from 'react';
 import axiosInstance from '../index';
 import axiosInstance2 from '../index2';
 
-export const ConnectDevice = async (accountId, serialNumber, mqttUser, mqttPassword) => {
+export const ConnectDevice = async (
+  accountId,
+  serialNumber,
+  mqttUser,
+  mqttPassword,
+) => {
   const body = {
     serial_number: serialNumber,
     mqttUser: mqttUser,
