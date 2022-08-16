@@ -30,6 +30,7 @@ export const AverageTempature = ({route}) => {
   const [array, setArray] = useState([0]);
   const [labels, setLabels] = useState<string[]>(['']);
   const [activeTime, setActiveTime] = useState('last 24 hours');
+  const [ diary, setDiary] = useState('');
   const [start, setStart] = useState(
     moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD'),
   );
@@ -45,6 +46,7 @@ export const AverageTempature = ({route}) => {
     )
       .then(({data}) => {
         console.log('success', data);
+        setDiary(data[0].diaries);
         let labels: string[] = [];
         let points = data
           .map(item => item.temperature[0])
@@ -95,7 +97,7 @@ export const AverageTempature = ({route}) => {
         setArray(points.sort((a, b) => a - b));
       })
       .catch(err => {
-        console.log('err', err);
+        console.log('err', err.response);
         setArray([0]);
       });
   };
@@ -256,21 +258,6 @@ export const AverageTempature = ({route}) => {
           }}>
           <Text style={{color: COLORS.text}}>{value.value}</Text>
         </ImageBackground>
-        {/* <ImageBackground
-          source={alertUp}
-          style={{
-            position: 'absolute',
-            bottom: value.yMax,
-            left: value.xMax,
-            width: 40.25,
-            height: 32.97,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'flex-start',
-            paddingTop: 2,
-          }}>
-          <Text style={{color: COLORS.text}}>{value.value}</Text>
-        </ImageBackground> */}
       </View>
       <View style={styles.InputUnit}>
         <Blog
@@ -278,7 +265,7 @@ export const AverageTempature = ({route}) => {
           styleImage={styles.styleImage}
           style={styles.bottomButton}
           title={'Sleep Diary'}
-          rightEl={'2 entries'}
+          rightEl={`${diary} entries`}
           source={sleepDiary}
         />
       </View>

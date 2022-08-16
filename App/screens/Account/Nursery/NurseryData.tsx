@@ -12,9 +12,11 @@ import {useNavigation} from '@react-navigation/native';
 import back from '../../../assets/images/homeIcon/bacgroundHome.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import carousel from 'react-native-anchor-carousel/src/carousel';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../redux/configureStore';
 import { NureseryTemperatureApi } from '../../../api/Nursery/Nuresery';
+import { setNerseryId } from '../../../redux/slice/slice';
+import { ContentNavigation } from './ContentNavigation';
 
 const options24 = {
   value1: {
@@ -84,18 +86,17 @@ const optionsD28 = {
 };
 
 export const NurseryData = () => {
-
+const dispatch = useDispatch();
   const navigation = useNavigation<any>();
   const [activeTime, setActiveTime] = useState('last 24 hours');
 
   const {accounts} = useSelector(
     ({account}: RootState) => account.userInformation.user,
   );
-  console.log('account', accounts);
+console.log('account', accounts);
 
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
-  console.log(user.accounts[0].is_deluxe, 'isdecdsede');
-
+const {user} = useSelector(({account}: RootState) => account.userInformation);
+console.log(user.accounts[0].is_deluxe, 'isdecdsede');
 
 
   const getToken = async () => {
@@ -104,10 +105,19 @@ export const NurseryData = () => {
   };
   useEffect(() => {
     getToken();
-    NureseryTemperatureApi(accounts[0].id).then(({data})=>{
-      console.log('get nerseryId',data)
-    });
-  }, []);
+    console.log(accounts[0].id);
+    if (accounts[0].id) {
+      console.log('id', accounts[0].id);
+      NureseryTemperatureApi(accounts[0].id)
+        .then(({data}) => {
+          console.log('get nerseryId', data);
+          dispatch(setNerseryId(data[1].id));
+        })
+        .catch(err => {
+          console.log('ERR', err);
+        });
+    }
+  }, [accounts[0].id]);
   const handleChangeTime = time => {
     console.log(time);
     setActiveTime(time);
@@ -287,6 +297,7 @@ export const NurseryData = () => {
       </TouchableOpacity>
     );
   };
+
 
   const activeDay = () => {
     switch (activeTime) {

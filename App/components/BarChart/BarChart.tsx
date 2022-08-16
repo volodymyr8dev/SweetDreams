@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import alertUp from '../../assets/images/nersery/alertUp.png';
 import {COLORS} from '../../styles/Constants';
 import {BarChart} from 'react-native-chart-kit';
@@ -16,7 +16,7 @@ const chartConfig = {
   bottomRadius: 20,
   backgroundGradientFrom: '#272854',
   backgroundGradientTo: '#272854',
-  barPercentage: 0.7,
+  barPercentage: 0.65,
   decimalPlaces: 1,
   height: 400,
   color: (opacity = 1) => `rgb(184, 101, 193)`,
@@ -50,11 +50,16 @@ const lines = [
 ];
 const koef = 0.2625;
 const lines2 = [{starts: 13, ends: 15}];
-export const BarChartComp = ({activeLabels}) => {
+export const BarChartComp = ({activeLabels, activeData}) => {
+  const [dataTemerature, setDataTemp] = useState([10, 0, 10, 10, 0, 10, 10, 10, 0, 10, 10, 10, 10, 10]);
   // console.log(
   //   'sort',
   //   lines.sort((a, b) => a.start - b.start),
   // );
+  useEffect(() => {
+    console.log('activeData',activeData)
+    setDataTemp(activeData);
+  }, [activeData]);
   const [state, setState] = useState(lines);
   const [location, setLocation] = useState({
     x: 0,
@@ -66,7 +71,8 @@ export const BarChartComp = ({activeLabels}) => {
     // legend: ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'],
     datasets: [
       {
-        data: [10, 0, 10, 10, 0, 10, 10, 10, 0, 10, 10, 10],
+        data: dataTemerature,
+        // data:[[10,5],[5,3],[2,1]]
       },
       {
         data: [5], // min
