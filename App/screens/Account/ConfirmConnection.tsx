@@ -20,8 +20,8 @@ const ConfirmConnection = ({setToggleButton}) => {
     if (user.accounts[0].device !== null) {
       setToggleButton(true);
     } else {
-      navigation.goBack();
-        console.log(user, 'sssdsdsdsd');
+      navigation.navigate('connection', {title: 'connection'});
+      console.log(user, 'sssdsdsdsd');
     }
     //   navigation.navigate('conectionStep3', {
     //       title: 'connect misty',

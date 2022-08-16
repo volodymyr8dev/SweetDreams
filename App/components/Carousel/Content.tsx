@@ -28,7 +28,6 @@ import {RootState} from "../../redux/configureStore";
 
 export const Content = props => {
   const {user} = useSelector(({account}: RootState) => account.userInformation);
-  const deluxeDevice = user.accounts[0].is_deluxe
   const {carouselItem} = useSelector(({settings}) => settings);
   // console.log(carouselItem.split(' ').join(''));
   let itemImg = carouselItem.split(' ').join('');
@@ -72,7 +71,7 @@ export const Content = props => {
         </TouchableOpacity>
       </View>
       <View style={{bottom: '37%'}}>
-        {deluxeDevice === 0 ? (<View style={{height: 100}}/>) : <ControlCard/>}
+        {user.accounts[0].is_deluxe === 0 ? (<View style={{height: 100}}/>) : <ControlCard/>}
       </View>
       <View style={styles.containerCarousel}>
         <ShopCarousel />

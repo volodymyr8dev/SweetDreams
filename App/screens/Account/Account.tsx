@@ -80,8 +80,6 @@ export const Account = () => {
   // const [carouselItem, setCarouselItem] = useState('');
   const netInfo = useNetInfo();
   const {user} = useSelector(({account}: RootState) => account.userInformation);
-  const [is_deluxe, setIsDeluxe] = useState(user.accounts[0].is_deluxe);
-  console.log(user.accounts[0].is_deluxe, 'dadadadad');
 
   const openSettings = async () => {
     getSettingsDevice(user.accounts[0].id)
@@ -187,9 +185,9 @@ export const Account = () => {
                   width: 120,
                 }}>
                 {/*<Image source={childControl} />*/}
-                {is_deluxe === 0 ? <View /> : <CryChild />}
+                {user.accounts[0].is_deluxe === 0 ? <View /> : <CryChild />}
                 <View style={{marginLeft: 10}}>
-                  {is_deluxe === 0 ? (
+                  {user.accounts[0].is_deluxe === 0 ? (
                     <View />
                   ) : !isActive ? (
                     <Text

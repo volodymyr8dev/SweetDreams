@@ -45,7 +45,6 @@ const {width: windowWidth} = Dimensions.get('window');
 const INITIAL_INDEX = 0;
 export default React.memo(function ShopCarousel(props) {
   const {user} = useSelector(({account}: RootState) => account.userInformation);
-  const [is_deluxe, setIsDeluxe] = useState(user.accounts[0].is_deluxe);
   const [data, setData] = useState([
     {
       uri: <TemperatureAccount style={{}} />,
@@ -238,7 +237,7 @@ export default React.memo(function ShopCarousel(props) {
             <Text style={styles.titleText}>{title}</Text>
             {items.map((item, indexChild) => {
               console.log(item)
-              if(is_deluxe === 1){
+              if(user.accounts[0].is_deluxe === 1){
                 return (
                     <TouchableOpacity
                         disabled={index !== currentIndex || !power}
