@@ -34,7 +34,6 @@ import {GetRecord} from '../../../api/Recording/Recording';
 export const SettingsAccount = ({route}) => {
   const [settingsData, setSettingsData] = useState(route.params.data);
   const {user} = useSelector(({account}: RootState) => account.userInformation);
-  const [is_deluxe, setIsDeluxe] = useState(user.accounts[0].is_deluxe);
   const {formatWakeUpTime, formatTime, volume} = useSelector(
     ({settings}) => settings,
   );
@@ -180,7 +179,7 @@ export const SettingsAccount = ({route}) => {
             source={wakeUp}
             rightEl={settingsData.wake_up_time}
           />
-          {is_deluxe === 0 ? null : (
+          {user.accounts[0].is_deluxe === 0 ? null : (
             <Blog
               title="colour Picker"
               navigate="Colour Picker"
@@ -207,7 +206,7 @@ export const SettingsAccount = ({route}) => {
             rightEl={`°${settingsData.temperature}`}
             value={settingsData.temperature}
           />
-          {is_deluxe === 0 ? null : (
+          {user.accounts[0].is_deluxe === 0 ? null : (
             <View style={{paddingLeft: 15, marginVertical: 15}}>
               <Text
                 style={{
@@ -221,7 +220,7 @@ export const SettingsAccount = ({route}) => {
               </Text>
             </View>
           )}
-          {is_deluxe === 0 ? null : (
+          {user.accounts[0].is_deluxe === 0 ? null : (
             <Blog
               title="smartCRY Sensor"
               navigate="smartCRY Sensor"
@@ -236,7 +235,7 @@ export const SettingsAccount = ({route}) => {
               }
             />
           )}
-          {is_deluxe === 0 ? null : (
+          {user.accounts[0].is_deluxe === 0 ? null : (
             <Blog
               title="smartCRY Sensor Sensitivity"
               navigate="smartCRY Sensor Sensitivity"
@@ -247,7 +246,7 @@ export const SettingsAccount = ({route}) => {
               )}
             />
           )}
-          {is_deluxe === 0 ? null : (
+          {user.accounts[0].is_deluxe === 0 ? null : (
             <Blog
               title="custom recording"
               navigate="Custom Recording"
@@ -255,7 +254,7 @@ export const SettingsAccount = ({route}) => {
               rightEl={'Dad reading s...'}
             />
           )}
-          {is_deluxe === 0 ? null : (
+          {user.accounts[0].is_deluxe === 0 ? null : (
             <Blog
               title="sound playing time"
               navigate="Sound Playing Time"
@@ -264,7 +263,7 @@ export const SettingsAccount = ({route}) => {
               rightEl={settingsData.sound_playing_time}
             />
           )}
-          {is_deluxe === 0 ? null : (
+          {user.accounts[0].is_deluxe === 0 ? null : (
             <Blog
               title="volume"
               navigate="Volume"
@@ -283,7 +282,7 @@ export const SettingsAccount = ({route}) => {
               Notifications
             </Text>
           </View>
-          {is_deluxe === 0 ? null : (
+          {user.accounts[0].is_deluxe === 0 ? null : (
             <Blog
               title="smartCRY_sensor_activation"
               navigate="smartCRY Sensor Activation"

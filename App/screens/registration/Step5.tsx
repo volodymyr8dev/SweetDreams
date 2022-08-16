@@ -45,7 +45,13 @@ export const Step5 = () => {
           </Text>
         </View>
         <View>
-          <Text style={{color: '#25558C', fontSize: 18, textAlign: 'center', fontFamily: 'AntagometricaBT-Regular'}}>
+          <Text
+            style={{
+              color: '#25558C',
+              fontSize: 18,
+              textAlign: 'center',
+              fontFamily: 'AntagometricaBT-Regular',
+            }}>
             Now let's get your device paired so you can start collecting sleep
             data{' '}
           </Text>

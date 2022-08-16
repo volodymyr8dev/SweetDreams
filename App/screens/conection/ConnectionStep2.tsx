@@ -20,6 +20,7 @@ import {ConnectDevice} from '../../api/Device/Device';
 import {GetSalt} from '../../api/Device/Device';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/configureStore';
+import {sha256} from 'react-native-sha256';
 import {setDeviceIdSerialNumber} from '../../redux/slice/slice';
 
 type Nav = {
@@ -33,7 +34,31 @@ export const ConnectionStep2 = () => {
   const [loader, setLoader] = useState(false);
   const navigation = useNavigation<Nav>();
   const [salt, setSalt] = useState('');
+  const [newSaltUpperSha, setNewSaltUpperSha] = useState('');
+  const [mistySerialNumber, setMistySerialNumber] = useState('');
+  const [shaSalt, setShaSalt] = useState('');
   // const dispatch = useDispatch();
+
+  console.log(newSaltUpperSha, 'newSaltUpperSha1');
+  console.log(mistySerialNumber, 'mistySerialNumber1');
+
+  React.useEffect(() => {
+    if (newSaltUpperSha && mistySerialNumber) {
+      sha256(`${newSaltUpperSha}${mistySerialNumber}`).then(hash => {
+        setShaSalt(hash.toUpperCase().slice(0, 32));
+      });
+    }
+  }, [newSaltUpperSha, mistySerialNumber]);
+
+  // const combineUpperSha = React.useCallback(() => {
+  //   console.log(newSaltUpperSha, 'newSaltUpperSha');
+  //   console.log(mistySerialNumber, 'mistySerialNumber');
+  //   sha256(`${newSaltUpperSha}${mistySerialNumber}`.toUpperCase()).then(
+  //     hash => {
+  //       console.log(hash.toUpperCase().slice(0, 32), 'dadadadada');
+  //     },
+  //   );
+  // }, [newSaltUpperSha, mistySerialNumber]);
 
   const handleGoToStep3 = () => {
     if (!serialNumber) {
@@ -43,12 +68,22 @@ export const ConnectionStep2 = () => {
       GetSalt('misty')
         .then(res => {
           setSalt(res.data.data.salt);
+          sha256(res.data.data.salt).then(hash => {
+            console.log(hash, 'hash1');
+            setNewSaltUpperSha(hash.toUpperCase());
+          });
+          sha256(`Misty-${serialNumber}`).then(hash => {
+            console.log(hash, 'hash2');
+            setMistySerialNumber(hash.toUpperCase());
+          });
+          console.log(res);
           ConnectToNetwork();
           setLoader(false);
         })
-        .catch(res => {
+        .catch(rej => {
           setLoader(false);
-          Alert.alert(res.response.data.error);
+          console.log(rej);
+          Alert.alert(rej.response.data.error);
         });
       // setLoader(true);
       // ConnectDevice(user.accounts[0].id, serialNumber)
@@ -75,10 +110,11 @@ export const ConnectionStep2 = () => {
 
   // disconnectFromSSID(ssid: string): Promise
 
+
   const ConnectToNetwork = async () => {
     WifiManager.connectToProtectedSSID(
       `Misty-${serialNumber}`,
-      `${salt}`,
+      `${shaSalt}`,
       false,
     ).then(
       res => {
@@ -86,7 +122,7 @@ export const ConnectionStep2 = () => {
         console.log('Connected successfully!');
         navigation.navigate('conectionStep3', {
           title: 'connect misty',
-          serial_number: `${serialNumber}`
+          serial_number: `${serialNumber}`,
         });
       },
       rej => {
