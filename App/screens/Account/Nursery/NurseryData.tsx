@@ -87,10 +87,17 @@ export const NurseryData = () => {
 
   const navigation = useNavigation<any>();
   const [activeTime, setActiveTime] = useState('last 24 hours');
+
   const {accounts} = useSelector(
     ({account}: RootState) => account.userInformation.user,
   );
   console.log('account', accounts);
+
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  console.log(user.accounts[0].is_deluxe, 'isdecdsede');
+
+
+
   const getToken = async () => {
     const value = await AsyncStorage.getItem('@storage_Key');
     console.log('valueeee', value);
@@ -132,7 +139,8 @@ export const NurseryData = () => {
                 activeTime == 'last 24 hours'
                   ? styles.borderActive
                   : styles.border,
-              ]}></View>
+              ]}
+            />
           </View>
         </TouchableOpacity>
 
@@ -153,7 +161,8 @@ export const NurseryData = () => {
                 activeTime == 'last 7 days'
                   ? styles.borderActive
                   : styles.border,
-              ]}></View>
+              ]}
+            />
           </View>
         </TouchableOpacity>
 
@@ -174,7 +183,8 @@ export const NurseryData = () => {
                 activeTime == 'last 28 days'
                   ? styles.borderActive
                   : styles.border,
-              ]}></View>
+              ]}
+            />
           </View>
         </TouchableOpacity>
       </View>
@@ -184,23 +194,37 @@ export const NurseryData = () => {
     console.log(options);
     return (
       <View style={styles.container}>
+        {user.accounts[0].is_deluxe === 0 ? null : (
+          <Blog
+            title="Total Time Without Activation"
+            subTitle={options.value1.subTitle}
+            source={happy}
+            rightEl={options.value1.value}
+          />
+        )}
+        {user.accounts[0].is_deluxe === 0 ? null : (
+          <Blog
+            title="Longest Period Without Activation"
+            subTitle={options.value2.subTitle}
+            source={happy}
+            rightEl={options.value2.value}
+          />
+        )}
+        {user.accounts[0].is_deluxe === 0 ? null : (
+          <Blog
+            title="Number of smartCRY Activations"
+            subTitle={options.value3.subTitle}
+            source={sad}
+            rightEl={options.value3.value}
+          />
+        )}
         <Blog
-          title="Total Time Without Activation"
-          subTitle={options.value1.subTitle}
-          source={happy}
-          rightEl={options.value1.value}
-        />
-        <Blog
-          title="Longest Period Without Activation"
-          subTitle={options.value2.subTitle}
-          source={happy}
-          rightEl={options.value2.value}
-        />
-        <Blog
-          title="Number of smartCRY Activations"
-          subTitle={options.value3.subTitle}
-          source={sad}
-          rightEl={options.value3.value}
+          title="Average Temperature"
+          subTitle={options.value5.subTitle}
+          source={tempretute}
+          rightEl={options.value5.value}
+          width={30}
+          height={27}
         />
         <Blog
           title="Diary Entries"
@@ -209,14 +233,6 @@ export const NurseryData = () => {
           rightEl={options.value4.value}
           width={30}
           height={26}
-        />
-        <Blog
-          title="Average Temperature"
-          subTitle={options.value5.subTitle}
-          source={tempretute}
-          rightEl={options.value5.value}
-          width={30}
-          height={27}
         />
       </View>
     );
@@ -254,7 +270,7 @@ export const NurseryData = () => {
           </View>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {typeof rightEl == 'object' ? (
+          {typeof rightEl === 'object' ? (
             rightEl
           ) : (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>

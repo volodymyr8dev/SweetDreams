@@ -8,14 +8,25 @@ import {useNavigation} from '@react-navigation/native';
 import {AlertComp} from '../../components/Alert/AlertComp';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {setConnection} from '../../redux/slice/powerSlice';
+import {RootState} from '../../redux/configureStore';
 const ConfirmConnection = ({setToggleButton}) => {
   const netInfo = useNetInfo();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const dispatch = useDispatch();
   const [conect, setConnect] = useState(false);
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
   //   const conection = useSelector()
   const handleCheckInternet = () => {
-    setToggleButton(true);
+    if (user.accounts[0].device !== null) {
+      setToggleButton(true);
+    } else {
+      navigation.navigate('connection', {title: 'connection'});
+      console.log(user, 'sssdsdsdsd');
+    }
+    //   navigation.navigate('conectionStep3', {
+    //       title: 'connect misty',
+    //   })
+
     // setConnect(!conect);
     // console.log('xxx', netInfo.isConnected);
     // if (netInfo.isConnected) {

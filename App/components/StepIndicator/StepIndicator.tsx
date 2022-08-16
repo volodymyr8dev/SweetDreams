@@ -25,7 +25,5 @@ export const customStyles = {
 };
 
 export const StepIndicator = () => {
-
-    
   return <View>StepIndicator</View>;
 };

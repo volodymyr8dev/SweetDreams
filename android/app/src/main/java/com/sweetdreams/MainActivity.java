@@ -3,6 +3,7 @@ package com.sweetdreams;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
+import com.reactlibrary.rnwifi.RNWifiPackage;
 
 public class MainActivity extends ReactActivity {
 
@@ -20,9 +21,17 @@ public class MainActivity extends ReactActivity {
    * you can specify the rendered you wish to use (Fabric or the older renderer).
    */
   @Override
-  protected ReactActivityDelegate createReactActivityDelegate() {
+  protected ReactActivityDelegate createReactActivityDelegate()  {
     return new MainActivityDelegate(this, getMainComponentName());
   }
+
+  public class RNWifiPackage implements ReactPackage {
+      @Override
+      public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
+          List<NativeModule> modules = new ArrayList<>();
+          modules.add(new RNWifiModule(reactContext));
+          return modules;
+      }
 
   public static class MainActivityDelegate extends ReactActivityDelegate {
     public MainActivityDelegate(ReactActivity activity, String mainComponentName) {

@@ -18,7 +18,11 @@ import BouncyCheckboxGroup, {
 } from 'react-native-bouncy-checkbox-group';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/configureStore';
-import {DeleteRecording, GetRecord} from '../../../api/Recording/Recording';
+import {
+  DeleteRecording,
+  GetRecord,
+  PlayRecordSound,
+} from '../../../api/Recording/Recording';
 import {useIsFocused} from '@react-navigation/native';
 
 export const SettingsRecording = ({route}) => {
@@ -45,6 +49,7 @@ export const SettingsRecording = ({route}) => {
         console.log(res);
       });
   }, [isFocused]);
+
   const deleteRecording = id => {
     DeleteRecording(user.accounts[0].id, id).then(() => {
       GetRecord(user.accounts[0].id).then(res => {
@@ -52,6 +57,16 @@ export const SettingsRecording = ({route}) => {
         setData(res.data.recordings);
       });
     });
+  };
+
+  const playSoundRecording = path => {
+    PlayRecordSound(path)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(rej => {
+        console.log(rej);
+      });
   };
 
   return (
@@ -89,15 +104,20 @@ export const SettingsRecording = ({route}) => {
                       delete
                     </Text>
                   </TouchableOpacity>
-                  <View
-                    style={{
-                      borderWidth: 3,
-                      width: 45,
-                      height: 45,
-                      borderRadius: 50,
-                      borderColor: '#707070',
-                    }}
-                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      playSoundRecording(e.path);
+                    }}>
+                    <View
+                      style={{
+                        borderWidth: 3,
+                        width: 45,
+                        height: 45,
+                        borderRadius: 50,
+                        borderColor: '#707070',
+                      }}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
             );

@@ -24,7 +24,7 @@ export const SettingsTemperature = ({route}) => {
   const {user} = useSelector(({account}: RootState) => account.userInformation);
   const setNewValue = () => {
     SettingsDevice(
-      {Temperature: route.params.value === 'C' ? 'F' : 'C'},
+      {temperature: route.params.value === 'C' ? 'F' : 'C'},
       user.accounts[0].id,
     ).then(res => {
       route.params.setValue(res.data.data);

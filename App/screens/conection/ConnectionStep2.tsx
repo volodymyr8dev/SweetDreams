@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState, useEffect} from 'react';
-import WifiManager from "react-native-wifi-reborn";
+import WifiManager from 'react-native-wifi-reborn';
 import {
   View,
   StyleSheet,
@@ -20,6 +20,8 @@ import {ConnectDevice} from '../../api/Device/Device';
 import {GetSalt} from '../../api/Device/Device';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/configureStore';
+import {sha256} from 'react-native-sha256';
+import {setDeviceIdSerialNumber} from '../../redux/slice/slice';
 
 
 
@@ -30,54 +32,103 @@ export const ConnectionStep2 = () => {
   const [loader, setLoader] = useState(false);
   const navigation = useNavigation<any>();
   const [salt, setSalt] = useState('');
+  const [newSaltUpperSha, setNewSaltUpperSha] = useState('');
+  const [mistySerialNumber, setMistySerialNumber] = useState('');
+  const [shaSalt, setShaSalt] = useState('');
+  // const dispatch = useDispatch();
+
+  console.log(newSaltUpperSha, 'newSaltUpperSha1');
+  console.log(mistySerialNumber, 'mistySerialNumber1');
+
+  React.useEffect(() => {
+    if (newSaltUpperSha && mistySerialNumber) {
+      sha256(`${newSaltUpperSha}${mistySerialNumber}`).then(hash => {
+        setShaSalt(hash.toUpperCase().slice(0, 32));
+      });
+    }
+  }, [newSaltUpperSha, mistySerialNumber]);
+
+  // const combineUpperSha = React.useCallback(() => {
+  //   console.log(newSaltUpperSha, 'newSaltUpperSha');
+  //   console.log(mistySerialNumber, 'mistySerialNumber');
+  //   sha256(`${newSaltUpperSha}${mistySerialNumber}`.toUpperCase()).then(
+  //     hash => {
+  //       console.log(hash.toUpperCase().slice(0, 32), 'dadadadada');
+  //     },
+  //   );
+  // }, [newSaltUpperSha, mistySerialNumber]);
 
   const handleGoToStep3 = () => {
     if (!serialNumber) {
       Alert.alert('Serial Number is required');
     } else {
       setLoader(true);
-      ConnectDevice(user.accounts[0].id, serialNumber)
+      GetSalt('misty')
         .then(res => {
-          if (res.data.success) {
-            // console.log(res.data.success, 'datadatadata');
-            GetSalt('misty').then(res => {
-              // console.log(res);
-              setSalt(res.data.data.salt);
-                  navigation.navigate('conectionStep3', {
-                    title: 'connect misty',
-                  });
-              ConnectToNetwork()
-              setLoader(false);
-            });
-            // dispatch(setSerialNumber(res.data.success))
-
-          }
-        })
-        .catch(res => {
+          setSalt(res.data.data.salt);
+          sha256(res.data.data.salt).then(hash => {
+            console.log(hash, 'hash1');
+            setNewSaltUpperSha(hash.toUpperCase());
+          });
+          sha256(`Misty-${serialNumber}`).then(hash => {
+            console.log(hash, 'hash2');
+            setMistySerialNumber(hash.toUpperCase());
+          });
+          console.log(res);
+          ConnectToNetwork();
           setLoader(false);
-          Alert.alert(res.response.data.error);
+        })
+        .catch(rej => {
+          setLoader(false);
+          console.log(rej);
+          Alert.alert(rej.response.data.error);
         });
+      // setLoader(true);
+      // ConnectDevice(user.accounts[0].id, serialNumber)
+      //   .then(res => {
+      //     if (res.data.success) {
+      //       console.log(res.data.success, 'datadatadata');
+      //       dispatch(setDeviceIdSerialNumber(res.data))
+      //       GetSalt('misty').then(res => {
+      //         // console.log(res);
+      //         setSalt(res.data.data.salt);
+      //         ConnectToNetwork();
+      //         setLoader(false);
+      //       });
+      //       // dispatch(setSerialNumber(res.data.success))
+      //     }
+      //   })
+      //   .catch(res => {
+      //     setLoader(false);
+      //
+      //     Alert.alert(res.response.data.error);
+      //   });
     }
   };
 
+  // disconnectFromSSID(ssid: string): Promise
+
+
   const ConnectToNetwork = async () => {
     WifiManager.connectToProtectedSSID(
-      `Misty - ${serialNumber}`,
-      `${salt}`,
+      `Misty-${serialNumber}`,
+      `${shaSalt}`,
       false,
     ).then(
-      () => {
+      res => {
+        console.log(res);
         console.log('Connected successfully!');
         navigation.navigate('conectionStep3', {
           title: 'connect misty',
+          serial_number: `${serialNumber}`,
         });
       },
-      (rej) => {
+      rej => {
         console.log('Connection failed!', rej);
+        Alert.alert('Connection failed!');
       },
     );
   };
-
 
   return (
     <>
@@ -123,9 +174,13 @@ export const ConnectionStep2 = () => {
             </Text>
           </View>
           <View style={{alignItems: 'center', marginTop: 32}}>
+            {/*<Image*/}
+            {/*  style={{width: 236, height: 236}}*/}
+            {/*  source={serialNumberImage}*/}
+            {/*/>*/}
             <Image
+              source={require('../../assets/images/gif/SerialNumberGifCloud.gif')}
               style={{width: 236, height: 236}}
-              source={serialNumberImage}
             />
           </View>
         </View>

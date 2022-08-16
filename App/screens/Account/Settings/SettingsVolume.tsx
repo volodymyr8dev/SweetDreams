@@ -29,9 +29,14 @@ export const SettingsVolume = ({route}) => {
       await timeout(500);
       if (!isActive) {
         console.log('activeeee');
-        SettingsDevice({Volume: active2}, user.accounts[0].id).then(res => {
-          route.params.setValue(res.data.data);
-        });
+        SettingsDevice({volume: active2}, user.accounts[0].id)
+          .then(res => {
+            console.log(res, 'daaaa');
+            route.params.setValue(res.data.data);
+          })
+          .catch(res => {
+            console.log(res);
+          });
       }
     };
     handleChange();
