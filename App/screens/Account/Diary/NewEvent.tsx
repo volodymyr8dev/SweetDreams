@@ -1,63 +1,62 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, StyleSheet, Alert, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {CustomInput} from '../../../components/CustomInput/CustomInput';
 import {InputUnit} from '../../../components/InputUnit/InputUnit';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, monthNames} from '../../../styles/Constants';
 import {DatePickerComponent} from '../../../components/DatePicker/DatePicker';
-import moment from 'moment';
+import moment, {Moment} from 'moment';
 import {EditEventApi, NewEventApi} from '../../../api/Diary/calendar';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/configureStore';
-import {navigationOptions} from '../../../navigation/routes/AppStackRoutes';
-import {ChildInformation} from '../../../redux/selectors/AccountSelector';
 
+interface ILocation {
+  name: string;
+  locate: string;
+}
 export const NewEvent = ({route}) => {
   let params = route.params;
-  const navigation = useNavigation();
+  let feedType = 'feed';
+  let regType = 'regular';
+  const navigation = useNavigation<any>();
   const [title, setTitle] = useState('');
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState<ILocation | string>('');
   const [allDay, setAllDay] = useState(false);
   const [starts, setStarts] = useState('');
-  const [ends, setEnds] = useState('');
+  const [ends, setEnds] = useState<Moment | string>('');
   const [notes, setNotes] = useState('');
-
+  const [breast, setBreast] = useState('left');
   const global = useSelector(
     ({account}: RootState) => account.userInformation.user.accounts[0],
   );
   const eventSelector = useSelector(
     ({account}: RootState) => account.events.location,
   );
-  console.log('eventSelector,', eventSelector);
-  console.log('params,', params.event);
-  // useEffect(() => {
-  //   if (params?.event) {
-  //     setStarts(
-  //       moment(params.event.starts_at).format('YYYY-MM-DD hh:mm'),
-  //     );
-  //     console.log('params.event.ends_at', params.event.ends_at);
-  //     setEnds(moment(params.event.ends_at));
-  //   }
-  // }, [params.event]);
+
   const addEvent = () => {
     console.log('location22222', location);
-    NewEventApi(global.id, title, location, allDay, starts, ends, notes)
-      .then(({data}) => {
-        console.log('%c React', 'color:white;background-color:#61dbfb', data);
-        navigation.navigate('document');
-        Alert.alert('Event successfully added');
-      })
-      .catch(err => {
-        console.log('error', err.response.data.message);
-        Alert.alert(err.response.data.message);
-      });
+    console.log('breast', breast);
+    console.log('type*******', params.type);
+      NewEventApi(
+        global.id,
+        title,
+        location,
+        params.type,
+        allDay,
+        starts,
+        ends,
+        notes,
+        breast
+      )
+        .then(({data}: any) => {
+          console.log('%c React', 'color:white;background-color:#61dbfb', data);
+          navigation.navigate('document');
+          Alert.alert('Event successfully added');
+        })
+        .catch(err => {
+          console.log('error', err.response.data.message);
+          Alert.alert(err.response.data.message);
+        });
   };
   const hadleEditEvent = () => {
     if (params?.event?.id) {
@@ -80,7 +79,6 @@ export const NewEvent = ({route}) => {
     }
   };
   useEffect(() => {
-    console.log('title', params.title);
     if (params.title) {
       navigation.setParams({
         editEvent: hadleEditEvent,
@@ -105,20 +103,14 @@ export const NewEvent = ({route}) => {
     }
   }, [eventSelector.name.description]);
   useEffect(() => {
-    let selected = new Date(params.selectedDate);
-    if (params.event) {
+    if (params.event && params.type == regType) {
       setTitle(params.event.title);
       setLocation(params.event.location);
       setNotes(params.event.notes);
       setStarts(moment(params.event.starts_at).format('YYYY-MM-DD hh:mm'));
-      console.log('3333333', params.event.ends_at);
       setEnds(moment(params.event.ends_at));
     }
-    // let selectedDate = `
-    //   ${selected.getDate()} ${
-    //   monthNames[selected.getMonth()]
-    // }  ${selected.getFullYear()}`;
-    if (params.selectedDate) {
+    if (params.selectedDate && params.type == regType) {
       setStarts(params.selectedDate);
       console.log('ffffff', params.event?.ends_at);
       if (params.rightText == 'add') {
@@ -126,7 +118,13 @@ export const NewEvent = ({route}) => {
       }
     }
   }, [params.selectedDate]);
-  console.log('222222', eventSelector.name.description);
+
+  useEffect(() => {
+    if (params.type == feedType) {
+      setStarts(moment(new Date()).format('YYYY-MM-DD hh:mm'));
+      setEnds(moment(new Date()).format('YYYY-MM-DD hh:mm'));
+    }
+  }, []);
   return (
     <View style={styles.container}>
       <InputUnit
@@ -134,7 +132,7 @@ export const NewEvent = ({route}) => {
         value={title}
         setValueName={value => setTitle(value)}
         nameOfBox={'input'}
-        placeholder={'Title'}
+        placeholder={params.type == feedType ? 'Feed' : 'Title'}
       />
       <TouchableOpacity
         style={styles.box}
@@ -161,37 +159,38 @@ export const NewEvent = ({route}) => {
           </View>
         </View>
       </TouchableOpacity>
-      <InputUnit
-        event={true}
-        value={allDay}
-        setValueName={value => setAllDay(value)}
-        nameOfBox={'switch'}
-        placeholder={'All-day'}
-        rightContent="switch"
-      />
+      {params.type == regType ? (
+        <InputUnit
+          event={true}
+          value={allDay}
+          setValueName={value => setAllDay(value)}
+          nameOfBox={'switch'}
+          placeholder={'All-day'}
+          rightContent="switch"
+        />
+      ) : null}
       <DatePickerComponent
         min={starts}
         allDay={allDay}
-        mode="time"
+        mode={params.type == regType ? 'time' : 'datetime'}
         time={true}
         type="Starts"
         value={
-          allDay
-            ? moment(starts).format('YYYY-MM-DD')
+          params.type == regType
+            ? allDay
+              ? moment(starts).format('YYYY-MM-DD')
+              : moment(starts).format('YYYY-MM-DD hh:mm')
             : moment(starts).format('YYYY-MM-DD hh:mm')
         }
         changeDate={date => {
-          let time = new Date(date);
-          let res = `${time.getHours()}:${time.getMinutes()}`;
-          console.log('res', res);
-          console.log('startsssssss', starts);
-          let start = moment(starts).format('YYYY-MM-DD');
-          console.log('start', start);
-
-          setStarts(
-            // moment(date).format('YYYY-MM-DD hh:mm'),
-            moment(start + ' ' + res).format('YYYY-MM-DD hh:mm'),
-          );
+          if (params.type == regType) {
+            let time = new Date(date);
+            let res = `${time.getHours()}:${time.getMinutes()}`;
+            let start = moment(starts).format('YYYY-MM-DD');
+            setStarts(moment(start + ' ' + res).format('YYYY-MM-DD hh:mm'));
+          } else {
+            setStarts(moment(date).format('YYYY-MM-DD hh:mm'));
+          }
         }}
       />
       <DatePickerComponent
@@ -200,8 +199,10 @@ export const NewEvent = ({route}) => {
         time={true}
         type="Ends"
         value={
-          allDay
-            ? moment(ends).format('YYYY-MM-DD')
+          params.type == regType
+            ? allDay
+              ? moment(ends).format('YYYY-MM-DD')
+              : moment(ends).format('YYYY-MM-DD hh:mm')
             : moment(ends).format('YYYY-MM-DD hh:mm')
         }
         changeDate={date => {
@@ -210,6 +211,18 @@ export const NewEvent = ({route}) => {
         }}
         min={starts}
       />
+      {params.type == feedType && (
+        <InputUnit
+          event={true}
+          value={breast}
+          style={styles.notes}
+          setValueName={value => setBreast(value)}
+          nameOfBox={'handleSwitch'}
+          placeholder={'Breast'}
+          multiline={true}
+        />
+      )}
+
       <InputUnit
         event={true}
         value={notes}

@@ -13,6 +13,7 @@ import {
   chooseDate,
   chooseTimeOrIndex,
   COLORS,
+  temperatureFilter,
   time,
 } from '../../../../styles/Constants';
 import {BarChartComp} from '../../../../components/BarChart/BarChart';
@@ -26,6 +27,12 @@ import AlertData from '../../../../assets/images/nersery/alertData.png';
 import {NureseryGetChartsApi} from '../../../../api/Nursery/Nuresery';
 import {array, object} from 'yup/lib/locale';
 import {useSelector} from 'react-redux';
+import {ITempItem} from '../interface/IProperties';
+import {
+  filterArray,
+  filterTemperature,
+  handleCreateFullData,
+} from '../../../../utils/helper';
 
 const chartConfig = {
   topRadius: 8,
@@ -64,6 +71,7 @@ export const TotalTimeComp = ({route}) => {
   const [value, setValue] = useState(true);
   const [activeTime, setActiveTime] = useState('last 24 hours');
   const [activeLabels, setActivelabels] = useState(labels);
+  const [activeData, setActiveData] = useState([0, 5]);
   const [start, setStart] = useState(
     moment(date).subtract(1, 'days').format('YYYY-MM-DD'),
   );
@@ -71,7 +79,7 @@ export const TotalTimeComp = ({route}) => {
   const [average, setAverage] = useState();
   const [total, setTotal] = useState();
   const nerseryId = useSelector(({account}) => account.nersery.id);
-  console.log('average', average);
+
   useEffect(() => {
     setStart(moment(start).format('YYYY-MM-DD'));
     setEnd(moment(end).format('YYYY-MM-DD'));
@@ -125,9 +133,8 @@ export const TotalTimeComp = ({route}) => {
         start,
         end,
       );
+      console.log('data before', data);
       if (getDayDiff(end, start) == 1 && !Array.isArray(data)) {
-        console.log('data', data);
-
         let temperature = [];
         let twoDays = data[`${start}_${end}`][`${start}_${end}`];
 
@@ -136,19 +143,16 @@ export const TotalTimeComp = ({route}) => {
             ? twoDays[`${start}`]['average_over_24hours']
             : twoDays[`${end}`]['average_over_24hours'],
         );
+        console.log('two days', twoDays);
+        handleCreateFullData(twoDays, temperature, start, end);
 
-        if (twoDays[`${start}`]) {
-          Object.values(twoDays[`${start}`]).forEach((item: any) => {
-            item?.temperature ? temperature.push(item) : '';
-          });
-          console.log('temperature', temperature)
-        }
-      }
+        let filteredresult = filterTemperature(temperature);
+        console.log('filteredresult', filteredresult);
 
-      // setTotal(
-      //   result[`${start}_${end}`]['total_28days_time_without_activation'],
-      // );
-      // Object.keys()
+        setActiveData(filteredresult.map(item => item.temperature));
+      } else if (getDayDiff(end, start) > 1) {
+        console.log('diff greater than 2')
+      } else if (data.length == 0) setActiveData([]);
     } catch (err) {
       console.log('getValuesError', err);
     }
@@ -172,51 +176,51 @@ export const TotalTimeComp = ({route}) => {
     );
     let diff = getDayDiff(end, start);
     if (diff == 1) {
-      setActivelabels(['12', '16', '20', '24', '4', '8']);
+      setActivelabels(['10', '14', '18', '22', '2', '6', '10']);
     } else {
-      let daysStart = Number(moment(start).format('D'));
-      let daysEnd = Number(moment(end).format('D'));
-      let arr: string[] = [];
-      let countOfDays = Number(moment(start).daysInMonth());
-      console.log('daysStart', daysStart);
-      console.log('daysEnd', daysEnd);
-      console.log('activeTime', activeTime);
-      if (activeTime == 'last 24 hours') {
-        console.log('2 month', moment(start).add(5, 'days').format('DD'));
-        arr.push(`${daysStart}-${moment(start).add(7, 'days').format('DD')}`);
-        arr.push(
-          `${moment(start).add(7, 'days').format('DD')}-${moment(start)
-            .add(14, 'days')
-            .format('DD')}`,
-        );
-        arr.push(
-          `${moment(start).add(14, 'days').format('DD')}-${moment(start)
-            .add(21, 'days')
-            .format('DD')}`,
-        );
-        arr.push(
-          `${moment(start).add(21, 'days').format('DD')}-${moment(start)
-            .add(28, 'days')
-            .format('DD')}`,
-        );
-        setActivelabels(arr);
-      } else if (daysEnd > daysStart) {
-        console.log('countOfDays', countOfDays);
-        for (let i = daysStart; i < daysEnd; i++) {
-          console.log('i', i);
-          arr.push(`${i}`);
-        }
-        setActivelabels(arr);
-      } else {
-        for (let i = daysStart; i < countOfDays; i++) {
-          console.log('i', i);
-          arr.push(`${i}`);
-        }
-        for (let i = 1; i < daysEnd; i++) {
-          arr.push(`${i}`);
-        }
-        setActivelabels(arr);
-      }
+      // let daysStart = Number(moment(start).format('D'));
+      // let daysEnd = Number(moment(end).format('D'));
+      // let arr: string[] = [];
+      // let countOfDays = Number(moment(start).daysInMonth());
+      // console.log('daysStart', daysStart);
+      // console.log('daysEnd', daysEnd);
+      // console.log('activeTime', activeTime);
+      // if (activeTime == 'last 24 hours') {
+      //   console.log('2 month', moment(start).add(5, 'days').format('DD'));
+      //   arr.push(`${daysStart}-${moment(start).add(7, 'days').format('DD')}`);
+      //   arr.push(
+      //     `${moment(start).add(7, 'days').format('DD')}-${moment(start)
+      //       .add(14, 'days')
+      //       .format('DD')}`,
+      //   );
+      //   arr.push(
+      //     `${moment(start).add(14, 'days').format('DD')}-${moment(start)
+      //       .add(21, 'days')
+      //       .format('DD')}`,
+      //   );
+      //   arr.push(
+      //     `${moment(start).add(21, 'days').format('DD')}-${moment(start)
+      //       .add(28, 'days')
+      //       .format('DD')}`,
+      //   );
+      //   setActivelabels(arr);
+      // } else if (daysEnd > daysStart) {
+      //   console.log('countOfDays', countOfDays);
+      //   for (let i = daysStart; i < daysEnd; i++) {
+      //     console.log('i', i);
+      //     arr.push(`${i}`);
+      //   }
+      //   setActivelabels(arr);
+      // } else {
+      //   for (let i = daysStart; i < countOfDays; i++) {
+      //     console.log('i', i);
+      //     arr.push(`${i}`);
+      //   }
+      //   for (let i = 1; i < daysEnd; i++) {
+      //     arr.push(`${i}`);
+      //   }
+      //   setActivelabels(arr);
+      // }
     }
   };
 
@@ -232,9 +236,17 @@ export const TotalTimeComp = ({route}) => {
     setStart(moment(start).format('YYYY-MM-DD'));
     setEnd(moment(end).format('YYYY-MM-DD'));
 
+    getValuesApi(
+      moment(start).format('YYYY-MM-DD'),
+      moment(end).format('YYYY-MM-DD'),
+    );
     console.log('start ', start);
     console.log('end ', end);
-
+    let diff = getDayDiff(end, start);
+    if (diff == 1) {
+      setActivelabels(['10', '14', '18', '22', '2', '6', '10']);
+    } else {
+    }
     //   NureseryTemperatureApi(route.params.childId, start, end)
     //     .then(({data}) => {
     //       console.log('success', data);
@@ -257,7 +269,7 @@ export const TotalTimeComp = ({route}) => {
 
   useEffect(() => {
     if (value) {
-      setActivelabels(['12', '16', '20', '24', '4', '8']);
+      // setActivelabels(['12', '16', '20', '24', '4', '8']);
     } else {
       setActivelabels(['']);
     }
@@ -283,7 +295,7 @@ export const TotalTimeComp = ({route}) => {
       </View>
 
       {value ? (
-        <BarChartComp activeLabels={activeLabels} />
+        <BarChartComp activeLabels={activeLabels} activeData={activeData} />
       ) : (
         <BarChart
           style={styles.graphStyle}

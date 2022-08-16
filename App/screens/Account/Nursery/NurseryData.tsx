@@ -16,6 +16,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../redux/configureStore';
 import { NureseryTemperatureApi } from '../../../api/Nursery/Nuresery';
 import { setNerseryId } from '../../../redux/slice/slice';
+import { ContentNavigation } from './ContentNavigation';
 
 const options24 = {
   value1: {
@@ -189,97 +190,7 @@ const dispatch = useDispatch();
       </View>
     );
   };
-  const ContentNavigation = ({options}) => {
-    console.log(options);
-    return (
-      <View style={styles.container}>
-        <Blog
-          title="Total Time Without Activation"
-          subTitle={options.value1.subTitle}
-          source={happy}
-          rightEl={options.value1.value}
-        />
-        <Blog
-          title="Longest Period Without Activation"
-          subTitle={options.value2.subTitle}
-          source={happy}
-          rightEl={options.value2.value}
-        />
-        <Blog
-          title="Number of smartCRY Activations"
-          subTitle={options.value3.subTitle}
-          source={sad}
-          rightEl={options.value3.value}
-        />
-        <Blog
-          title="Diary Entries"
-          subTitle={options.value4.subTitle}
-          source={book}
-          rightEl={options.value4.value}
-          width={30}
-          height={26}
-        />
-        <Blog
-          title="Average Temperature"
-          subTitle={options.value5.subTitle}
-          source={tempretute}
-          rightEl={options.value5.value}
-          width={30}
-          height={27}
-        />
-      </View>
-    );
-  };
-  const Blog = ({title, rightEl, source, subTitle, width, height}) => {
-    const handleSettings = async title => {
-      if (typeof rightEl !== 'object') {
-        console.log(title, 'title');
-        navigation.navigate(`${title}`, {title: title, childId: accounts[0].id});
-      }
-    };
-    return (
-      <TouchableOpacity
-        onPress={() => handleSettings(title)}
-        style={styles.blog}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
-            style={{
-              width: width ? width : 30,
-              height: height ? height : 30,
-              marginRight: 10,
-            }}
-            source={source}
-            resizeMode="contain"
-          />
-          <View>
-            <Text
-              style={{color: '#2371AB', fontSize: title.length > 20 ? 17 : 20}}>
-              {title}
-            </Text>
-
-            {subTitle ? (
-              <Text style={{color: '#2371AB', fontSize: 12}}>{subTitle}</Text>
-            ) : null}
-          </View>
-        </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {typeof rightEl == 'object' ? (
-            rightEl
-          ) : (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{color: COLORS.textLight, fontSize: 18}}>
-                {rightEl}
-              </Text>
-              <Image
-                style={{width: 10, height: 11, marginLeft: 10}}
-                source={arrowRight}
-              />
-            </View>
-          )}
-        </View>
-      </TouchableOpacity>
-    );
-  };
+ 
 
   const activeDay = () => {
     switch (activeTime) {

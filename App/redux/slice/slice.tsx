@@ -5,6 +5,7 @@ const messageSlice = createSlice({
   name: 'account',
   initialState: {
     loader: false,
+    email:"",
     events: {
       location: {
         name: '',

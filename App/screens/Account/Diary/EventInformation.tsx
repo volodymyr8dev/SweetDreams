@@ -34,15 +34,13 @@ export const EventInformation = ({route}) => {
     ({account}: RootState) => account.events.location,
   );
 
-  console.log(
-    'location-----------------------------------------------',
-    locationEvent,
-  );
   useEffect(() => {
     setEvent(route.params.event);
     setLocationEvent(route.params.event.location);
   }, []);
   console.log('evemnt', event);
+  console.log('location------', locationEvent);
+  console.log('route.params.event', route.params.event);
   const goToEdit = () => {
     navigation.navigate('addEvent', {
       title: 'edit entry',
@@ -87,6 +85,16 @@ export const EventInformation = ({route}) => {
         </View>
 
         <View style={styles.containerTextNotes}>
+          <View style={{flexDirection: 'row'}}>
+            {
+              (event.breast  && (
+                <>
+                  <Text style={styles.subTitleNotes}>breast: </Text>
+                  <Text style={styles.subTitleNotes}>{event.breast}</Text>
+                </>
+              ))
+            }
+          </View>
           <View>
             <Text style={styles.subTitleNotes}>notes:</Text>
           </View>

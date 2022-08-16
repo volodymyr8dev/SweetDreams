@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import moment from 'moment';
 import {COLORS, monthNames} from '../../../styles/Constants';
-import eventDateImg from '../../../assets/images/documents/dateEventVertical.png';
 import eventDateimportant from '../../../assets/images/documents/dateEventVerticalImportant.png';
 import backImg from '../../../assets/images/documents/background.png';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
@@ -23,6 +22,8 @@ import {useSelector} from 'react-redux';
 import {GetEventApi} from '../../../api/Diary/calendar';
 import {RootState} from '../../../redux/configureStore';
 import SearchBar from '../../../components/SearchBar';
+import {EventHtml} from './EventHtml';
+import {Item} from 'react-native-paper/lib/typescript/components/List/List';
 
 interface IPoints {
   title: string;
@@ -73,12 +74,12 @@ LocaleConfig.defaultLocale = 'en';
 const formatDate = (date = new Date()) => {
   return moment(date).format('YYYY-MM-DD');
 };
-
 const getMarkedDates = (baseDate, appointments) => {
+  console.log('appointments', appointments);
   const markedDates = {};
-
+  
   markedDates[formatDate(baseDate)] = {selected: true};
-
+  
   appointments.forEach(appointment => {
     const formattedDate = formatDate(new Date(appointment.date));
     markedDates[formattedDate] = {
@@ -89,13 +90,13 @@ const getMarkedDates = (baseDate, appointments) => {
       fontSize: 19,
     };
   });
-
+  
   return markedDates;
 };
 
 export const Document = () => {
   const isFocused = useIsFocused();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const [shown, setShown] = useState(false);
 
   const [selectedDate, setSelectedDate] = useState(new Date(2022, 6, 12));
@@ -106,9 +107,8 @@ export const Document = () => {
   const [filteredPoints, setFilteredPoints] = useState<IPoints[] | ['']>([
     {title: '', date: ''},
   ]);
-  const [points, setPoints] = useState([
+  const [points, setPoints] = useState([]);
 
-  ]);
   const handleClicked = () => {
     setShown(true);
     setClicked(false);
@@ -119,7 +119,7 @@ export const Document = () => {
       headerShown: clicked,
       searchClicked: handleClicked,
     });
-  }, []);
+  }, [isFocused]);
   function isJsonString(str) {
     try {
       JSON.parse(str);
@@ -128,55 +128,20 @@ export const Document = () => {
     }
     return true;
   }
-  const EventHtml = item => {
-    let date = moment(item.starts_at).format('hh:mm');
 
-    return item ? (
-      <TouchableOpacity
-        onPress={() => goToEvent(item)}
-        style={styles.eventContainer}>
-        <View style={styles.eventLeftC}>
-          <View style={styles.eventDate}>
-            <Text style={{color: COLORS.textLight, fontSize: 10}}>
-              {moment(item.starts_at).format('hh:mm').trim()}
-            </Text>
-          </View>
-          <View style={styles.eventDate}>
-            <Text style={{color: COLORS.textLight, fontSize: 10}}>
-              {moment(item.ends_at).format('hh:mm').trim()}
-            </Text>
-          </View>
-        </View>
-        <View>
-          <Image style={{width: 0.77, height: 40}} source={eventDateImg} />
-        </View>
-        <View
-          style={{
-            paddingLeft: 7.67,
-          }}>
-          <View>
-            <Text style={styles.eventText}>{item.title}</Text>
-          </View>
-          <Text style={styles.eventSubText}>
-            {item.location?.name ? item.location.name : ''}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    ) : null;
-  };
   console.log('points here', points);
-  useEffect(() => { 
+  useEffect(() => {
     console.log('update', global);
     GetEventApi(global.id)
       .then(({data}) => {
         console.log('daat', data);
         let res = data.map(item => {
-          // item.location = JSON.parse(item.location)
           if (isJsonString(item.location)) {
             item.location = JSON.parse(item.location);
           }
           item.date = item.starts_at;
           item.date = moment(item.date).format('YYYY-MM-DD');
+          if (item.type == 'feed') item.title = 'Feed';
           return item;
         });
         console.log('ressss', res);
@@ -190,24 +155,7 @@ export const Document = () => {
     navigation.setParams({
       addEvent: sendSelectedDate,
     });
-  }, [selectedDate]);
-
-  const goToEvent = async EventItem => {
-    let d = new Date(selectedDate);
-    console.log('points', points);
-    let res = points.filter(
-      item =>
-        moment(item.date).format('YYYY-MM-DD') ==
-        moment(selectedDate).format('YYYY-MM-DD'),
-    );
-    console.log('res//////////////////', EventItem);
-    navigation.navigate('entry details', {
-      title: 'entry details',
-      backTitle: `${monthNames[d.getMonth()]} ${d.getFullYear()}`,
-      event: EventItem,
-      rightText: 'edit',
-    });
-  };
+  }, [selectedDate, isFocused]);
 
   const sendSelectedDate = () => {
     console.log('selectedDate2', selectedDate);
@@ -217,9 +165,9 @@ export const Document = () => {
       backTitle: 'entry type',
       global,
       rightText: 'add',
+      type: 'regular',
     });
   };
-
   const [searchPhrase, setSearchPhrase] = useState('');
   const [clicked, setClicked] = useState(true);
   const [fakeData, setFakeData] = useState();
@@ -235,12 +183,16 @@ export const Document = () => {
   }, []);
   console.log('%c Filtered Data', 'background-color:blue', filteredPoints);
   useEffect(() => {
-    let res = points.filter(item => {
-      if (item.title.toLowerCase().includes(searchPhrase.toLowerCase())) {
-        return item;
-      }
-    });
-    setFilteredPoints(res);
+    console.log('shown', shown);
+    if (shown) {
+      let res = points?.filter(item => {
+        console.log('item f', item);
+        if (item?.title?.toLowerCase().includes(searchPhrase.toLowerCase())) {
+          return item;
+        }
+      });
+      setFilteredPoints(res);
+    }
   }, [searchPhrase]);
   useEffect(() => {
     if (!shown) {
@@ -249,6 +201,8 @@ export const Document = () => {
       setFilteredPoints(['']);
     }
   }, [shown]);
+  console.log('getMarkedDates', getMarkedDates(selectedDate, points));
+
   return (
     <ImageBackground source={backImg} style={styles.container}>
       <SafeAreaView style={{alignItems: 'center', marginTop: 10}}>
@@ -435,10 +389,10 @@ export const Document = () => {
               {(filteredPoints.length > 0 ? filteredPoints : points).map(
                 item => {
                   return filteredPoints.length > 0
-                    ? EventHtml(item)
+                    ? EventHtml(item, selectedDate, points)
                     : moment(item.date).format('YYYY-MM-DD') ==
                         moment(selectedDate).format('YYYY-MM-DD') &&
-                        EventHtml(item);
+                        EventHtml(item, selectedDate, points);
                 },
               )}
             </View>
@@ -490,29 +444,5 @@ const styles = StyleSheet.create({
 
   dateIcon: {
     padding: 10,
-  },
-  eventContainer: {
-    paddingHorizontal: 35.24,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    width: '100%',
-    borderBottomWidth: 0.3,
-    borderBottomColor: 'rgba(35, 113, 171, .4)',
-  },
-  eventText: {
-    fontSize: 18,
-    color: COLORS.textLight,
-    fontFamily: 'AntagometricaBT-Bold',
-  },
-  eventDate: {},
-  eventSubText: {
-    fontSize: 10,
-    color: COLORS.textLight,
-    fontFamily: 'AntagometricaBT-Bold',
-  },
-  eventLeftC: {
-    // paddingTop: 11.55,
-    paddingRight: 12,
-    justifyContent: 'center',
   },
 });
