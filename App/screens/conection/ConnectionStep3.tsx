@@ -115,23 +115,23 @@ export const ConnectionStep3 = () => {
   //   navigation.navigate('account');
   // };
   const wifiConnect = () => {
-    // const arrayJson = [
-    //   {'Wi-Fi': 'SSID', name: `${wifiName}`},
-    //   {'Wi-Fi': 'SSID', pass: `${wifiPassword}`},
-    //   {MQTT: 'server', IPv4: '167.172.50.187'},
-    //   {MQTT: 'server', host: 'mistythecloudserver.com'},
-    //   {MQTT: 'server', port: '8883'},
-    //   {MQTT: 'server', authpass: `${randomString}`},
-    //   {MQTT: 'server', mqttUser: `${randomString16}`},
-    // ];
-    // ConnectHomeWifi(arrayJson)
-    //   .then(res => {
-    //     console.log(res);
-    //     // “MDIxe-12345678”
-    //   })
-    //   .catch(rej => {
-    //     console.log(rej);
-    //   });
+    const arrayJson = [
+      {'Wi-Fi': 'SSID', name: `${wifiName}`},
+      {'Wi-Fi': 'SSID', pass: `${wifiPassword}`},
+      {MQTT: 'server', IPv4: '167.172.50.187'},
+      {MQTT: 'server', host: 'mistythecloudserver.com'},
+      {MQTT: 'server', port: '8883'},
+      {MQTT: 'server', authpass: `${randomString}`},
+      {MQTT: 'server', mqttUser: `${randomString16}`},
+    ];
+    ConnectHomeWifi(arrayJson)
+      .then(res => {
+        console.log(res);
+        // “MDIxe-12345678”
+      })
+      .catch(rej => {
+        console.log(rej);
+      });
     ConnectDevice(
       user.accounts[0].id,
       serialNumber,
