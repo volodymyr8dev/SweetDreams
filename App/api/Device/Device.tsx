@@ -2,11 +2,9 @@ import React from 'react';
 import axiosInstance from '../index';
 import axiosInstance2 from '../index2';
 
-export const ConnectDevice = async (accountId, serialNumber, mqttUser, mqttPassword) => {
+export const ConnectDevice = async (accountId, serialNumber) => {
   const body = {
     serial_number: serialNumber,
-    mqttUser: mqttUser,
-    mqttPassword: mqttPassword,
   };
   return await axiosInstance.post(`/api/accounts/${accountId}/device`, body);
 };
