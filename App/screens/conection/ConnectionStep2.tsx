@@ -50,6 +50,8 @@ export const ConnectionStep2 = () => {
     }
   }, [newSaltUpperSha, mistySerialNumber]);
 
+
+
   // const combineUpperSha = React.useCallback(() => {
   //   console.log(newSaltUpperSha, 'newSaltUpperSha');
   //   console.log(mistySerialNumber, 'mistySerialNumber');
@@ -67,8 +69,7 @@ export const ConnectionStep2 = () => {
       setLoader(true);
       GetSalt('misty')
         .then(res => {
-          setSalt(res.data.data.salt);
-          sha256(res.data.data.salt).then(hash => {
+          sha256('mkg3434nbn23mn4nb5bnv').then(hash => {
             console.log(hash, 'hash1');
             setNewSaltUpperSha(hash.toUpperCase());
           });
