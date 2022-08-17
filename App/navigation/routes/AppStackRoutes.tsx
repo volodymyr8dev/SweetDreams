@@ -30,11 +30,10 @@ import {ForgotPassword2} from '../../screens/registration/ForgotPassword2';
 import {ForgotPassword3} from '../../screens/registration/ForgotPassword3';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ConfirmConnection from '../../screens/Account/ConfirmConnection';
-import {Account} from "../../screens/Account/Account";
-import { DiaryRoutes } from './Diary/DiaryRoutes';
-import { getProfile } from '../../api/Profile/ProfileApi';
-import { useDispatch } from 'react-redux';
-import { NurseryRoutes } from './Nursery/NurseryRoutes';
+import {Account} from '../../screens/Account/Account';
+import {DiaryRoutes} from './Diary/DiaryRoutes';
+import {getProfile} from '../../api/Profile/ProfileApi';
+import {useDispatch} from 'react-redux';
 export type RootStackParamList = {
   step2: {
     position: any;
@@ -50,7 +49,7 @@ const customTabBarStyle = {
 };
 
 //   // headerShown: true,
-  // tabBarColor: '#ddd',
+// tabBarColor: '#ddd',
 //   tabBarLabel: '',
 //   headerTintColor: '#000',
 //   style: {
@@ -84,12 +83,14 @@ const forgotPasswordOptions = navigation => ({
   },
 });
 export const navigationOptions = navigation => ({
-  title: navigation.route?.params?.title ? navigation.route?.params.title : 'App',
+  title: navigation.route?.params?.title
+    ? navigation.route?.params.title
+    : 'App',
   headerShown: true,
   headerTintColor: '#2371AB',
   headerTitleStyle: {
     fontFamily: 'AntagometricaBT-Bold',
-    fontSize: 20
+    fontSize: 20,
   },
   headerStyle: {
     backgroundColor: '#2A305A',
@@ -101,7 +102,7 @@ export const navigationOptions = navigation => ({
   // headerLeft: () => null,
   headerLeft: () => {
     const params = navigation.route?.params;
-    return (
+    return ( params?.connectionStep !== 0 &&
       !params?.hide && (
         <TouchableOpacity onPress={() => navigation.navigation.goBack()}>
           <Image style={{width: 12.3, height: 18.86}} source={backButton} />
@@ -115,8 +116,7 @@ export const navigationOptions = navigation => ({
     return params?.title == 'connection'
       ? params?.show && (
           <TouchableOpacity
-            onPress={
-              () => {
+            onPress={() => {
               // navigation.navigation.navigate(
               //   `conectionStep${params?.connectionStep + 1}`,
               // );
@@ -218,15 +218,15 @@ const AppStackRoutes = () => {
     getToken();
   }, []);
   if (token) {
-        getProfile()
-          .then(async ({data}) => {
-            console.log('all information about user', data);
-            dispatch(setUserInformation(data.user));
-          })
-          .catch(err => {
-            console.log('what error', err.response.data);
-          });
-    navigation.navigate('account');
+    getProfile()
+      .then(async ({data}) => {
+        console.log('all information about user', data);
+        dispatch(setUserInformation(data.user));
+      })
+      .catch(err => {
+        console.log('what error', err.response.data);
+      });
+    navigation.navigate('Account');
   }
   return (
     <Stack.Navigator

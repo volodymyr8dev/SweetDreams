@@ -9,6 +9,9 @@ import {AlertComp} from '../../components/Alert/AlertComp';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {setConnection} from '../../redux/slice/powerSlice';
 import {RootState} from '../../redux/configureStore';
+import ConnectionCloud from '../../assets/images/svg/ConnectionCloud'
+import ConnectionCloud2 from '../../assets/images/svg/ConnectionCloud2'
+import Sheep from '../../assets/images/svg/Sheep';
 const ConfirmConnection = ({setToggleButton}) => {
   const netInfo = useNetInfo();
   const navigation = useNavigation<any>();
@@ -44,17 +47,21 @@ const ConfirmConnection = ({setToggleButton}) => {
   //     }
   //   }, [conect]);
   return (
-    <View style={{marginTop: 40}}>
-      <View style={{alignItems: 'center', justifyContent: 'center'}}>
-        <Image resizeMode="contain" source={connectionStatus} />
+    <View style={{}}>
+      <View style={{alignItems: 'center'}}>
+        {/*<Image resizeMode="contain" source={connectionStatus} />*/}
+          <Sheep style={{bottom: '10%'}}/>
+          <ConnectionCloud2 style={{top: '5%'}}/>
+          <ConnectionCloud style={{bottom: '15%'}}/>
       </View>
-      <View>
+      <View style={{bottom: '15%'}}>
         <Text
           style={{
             color: '#fff',
             fontSize: 24,
             textAlign: 'center',
             marginBottom: 15,
+            fontFamily: 'AntagometricaBT-Regular',
           }}>
           confirm connection
         </Text>
@@ -64,6 +71,7 @@ const ConfirmConnection = ({setToggleButton}) => {
             fontSize: 14,
             textAlign: 'center',
             marginBottom: 7,
+            fontFamily: 'AntagometricaBT-Regular',
           }}>
           Please check your connection
         </Text>
@@ -72,11 +80,12 @@ const ConfirmConnection = ({setToggleButton}) => {
             color: '#fff',
             fontSize: 14,
             textAlign: 'center',
+            fontFamily: 'AntagometricaBT-Regular',
           }}>
           Ensure you have a stable internet connection
         </Text>
       </View>
-      <View style={{marginTop: 35, alignItems: 'center'}}>
+      <View style={{marginTop: 35, alignItems: 'center', bottom: '15%'}}>
         <TouchableOpacity onPress={handleCheckInternet}>
           <View
             style={{
@@ -85,7 +94,7 @@ const ConfirmConnection = ({setToggleButton}) => {
               borderRadius: 50,
               borderColor: '#2C8AD0',
             }}>
-            <Text style={{color: '#fff', fontSize: 18}}>check connection</Text>
+            <Text style={{color: '#fff', fontSize: 18,  fontFamily: 'AntagometricaBT-Regular'}}>check connection</Text>
           </View>
         </TouchableOpacity>
       </View>

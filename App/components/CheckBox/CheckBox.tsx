@@ -22,7 +22,7 @@ export const CheckBox: FC<PropsCheckBox> = ({text, value, setValue}) => {
       iconStyle={{
         borderColor: '#CCC',
         borderWidth: 3,
-        marginRight: -2,
+        marginRight: -13,
         marginLeft: 15,
       }}
       isChecked={value}

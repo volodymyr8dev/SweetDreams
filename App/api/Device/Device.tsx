@@ -10,8 +10,6 @@ export const ConnectDevice = async (
 ) => {
   const body = {
     serial_number: serialNumber,
-    mqttUser: mqttUser,
-    mqttPassword: mqttPassword,
   };
   return await axiosInstance.post(`/api/accounts/${accountId}/device`, body);
 };

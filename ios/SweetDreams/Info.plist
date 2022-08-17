@@ -42,6 +42,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>This app need to access your calendar events</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Misty the Cloud uses this to a autofill the address when you create a calendar event.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -49,7 +51,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Misty the Cloud uses this to a autofill the address when you create a calendar event.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Misty the Cloud uses the nicrophone to record sounds for Russell</string>
+	<string>Give permission to use your microphone. Your record wont be shared without your permission.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>JosefinSans.ttf</string>
@@ -78,7 +80,5 @@
 	<false/>
 	<key>com.apple.developer.networking.HotspotConfiguration</key>
 	<string>com.apple.developer.networking.wifi-info</string>
-	<key>NSMicrophoneUsageDescription</key>
-    <string>Give permission to use your microphone. Your record wont be shared without your permission.</string>
 </dict>
 </plist>

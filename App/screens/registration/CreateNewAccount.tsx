@@ -206,7 +206,7 @@ export const CreateNewAccount = () => {
                   setEmail(name);
                 }}
                 styling={styles.input}
-                text={'Your email Address'}
+                text={'Your email address'}
               />
 
               <CustomInput
@@ -266,7 +266,7 @@ export const CreateNewAccount = () => {
                 </View>
               </View>
               <View style={styles.citizen}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{flexDirection: 'row'}}>
                   <CheckBox
                     value={terms}
                     setValue={value => setTerms(value)}
@@ -295,7 +295,7 @@ export const CreateNewAccount = () => {
                 </TouchableOpacity>
               </View>
               <View style={styles.citizen}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{flexDirection: 'row'}}>
                   <CheckBox
                     value={privacy}
                     setValue={value => setPrivacy(value)}
