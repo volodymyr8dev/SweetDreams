@@ -24,6 +24,7 @@ import {
 import SettingsRoutes from './Settings/SettingsRoutes';
 import SettingsAccountStackRoutes from './Settings/SettingsAccountRouter';
 import GraphicRoutes from './Graphics/GraphicsRoutes';
+import {NurseryRoutes} from './Nursery/NurseryRoutes';
 import backButton from '../../assets/images/backButton.png';
 import {ForgotPassword} from '../../screens/registration/ForgotPassword';
 import {ForgotPassword2} from '../../screens/registration/ForgotPassword2';
