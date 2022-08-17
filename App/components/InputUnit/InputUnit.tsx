@@ -19,7 +19,7 @@ interface PropsBox {
   rightEl?: string;
   placeholder?: string;
   security?: boolean;
-  value?: string;
+  value?: string | boolean;
   setValueName?: Function;
   date?: boolean;
   rightArrow?: boolean;
@@ -82,15 +82,15 @@ export const InputUnit = ({
     case 'input':
       return (
         <View style={[styles.input, style]}>
-          <View style={{}}>
+          <View>
             <Text style={styles.inputT}>
               {placeholder}
               {!event ? ':' : ''}
             </Text>
           </View>
           <TextInput
-            value={value}
-            onChangeText={setValueName}
+            value={value as any}
+            onChangeText={setValueName as any}
             secureTextEntry={security}
             style={styles.inputI}
             multiline={multiline ? true : false}
@@ -109,17 +109,16 @@ export const InputUnit = ({
           <View>
             <Text style={styles.inputT}>{placeholder}</Text>
           </View>
-
           <TextInput
-            value={value}
-            onChangeText={setValueName}
+            value={value as any}
+            onChangeText={setValueName as any}
             secureTextEntry={security}
             style={styles.switchI}>
             {/* <Text>{nameField && value}</Text> */}
           </TextInput>
           {rightContent == 'switch' ? (
             <View style={styles.rightContainerSwitch}>
-              <Switch val={value} setVal={setValueName} />
+              <Switch val={value as any} setVal={setValueName} />
             </View>
           ) : (
             <View style={styles.rightContainer}>
@@ -138,8 +137,8 @@ export const InputUnit = ({
             </Text>
           </View>
           <TextInput
-            value={value}
-            onChangeText={setValueName}
+            value={value as any}
+            onChangeText={setValueName as any}
             secureTextEntry={security}
             style={styles.inputI}></TextInput>
 
@@ -148,6 +147,36 @@ export const InputUnit = ({
               <Text style={{color: COLORS.text, fontSize: 18}}>{date}</Text>
             </View>
           )}
+        </View>
+      );
+    case 'handleSwitch':
+      return (
+        <View style={[styles.input, {justifyContent: 'space-between'}]}>
+          <View>
+            <Text style={styles.inputT}>{placeholder}</Text>
+          </View>
+
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity onPress={() => setValueName?.('left')}>
+              <Text
+                style={[
+                  styles.customText,
+                  {color: value == 'left' ? '#fff' : COLORS.text},
+                ]}>
+                Left / 
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => setValueName?.('right')}>
+              <Text
+                style={
+                  [styles.customText,
+                  {color: value == 'right' ? '#fff' : COLORS.text}]
+                }>
+              {" "}Right
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       );
   }
@@ -235,7 +264,7 @@ const styles = StyleSheet.create({
     color: COLORS.text,
     fontSize: 18,
     fontFamily: 'AntagometricaBT-Regular',
-    paddingTop:-8,
+    paddingTop: -8,
   },
   inputT: {
     color: COLORS.text,
@@ -251,5 +280,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontFamily: 'AntagometricaBT-Regular',
+  },
+  customText: {
+    color: COLORS.text,
+    fontSize: 18,
   },
 });

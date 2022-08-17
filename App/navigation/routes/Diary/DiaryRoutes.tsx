@@ -17,6 +17,7 @@ interface IParam {
   goToEdit: Function;
   addEvent: Function;
   editEvent: Function;
+  type:string
 }
 const navigationOptionsLocation = navigation => {
   const nav = useNavigation();
@@ -70,10 +71,10 @@ const navigationOptionsLocation = navigation => {
   };
 };
 const navigationOptionsDoc = navigation => {
-  const nav = useNavigation();
+  const nav = useNavigation<any>();
   // console.log('paramsDoc', navigation.route?.params);
   let param: IParam = navigation.route?.params;
-  console.log(param);
+  console.log('paramNEwEvent', param);
   return {
     title: `${param?.title}`,
     headerShown: true,
@@ -93,7 +94,7 @@ const navigationOptionsDoc = navigation => {
         <TouchableOpacity
           style={{flexDirection: 'row', alignItems: 'center'}}
           onPress={() => {
-            nav.goBack();
+            param.type == 'feed' ? nav.navigate('document') : nav.goBack();
           }}>
           {!param.isHide && (
             <Image
@@ -160,11 +161,6 @@ export const DiaryRoutes = () => {
       <Stack.Screen
         name="Location event"
         component={Location}
-        options={navigationOptionsLocation}
-      />
-      <Stack.Screen
-        name="LongestPeriod"
-        component={LongestPeriod}
         options={navigationOptionsLocation}
       />
     </>

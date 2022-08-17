@@ -3,25 +3,14 @@ import {Text, Image, View, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Account} from '../../screens/Account/Account';
 import {Settings} from '../../screens/Account/SettingsAccount/Settings';
-import childActive from '../../assets/images/controlChild/childActive.png';
-import personIcon from '../../assets/images/homeIcon/person.png';
-import graphActive from '../../assets/images/graph/Group1.png';
-import graphGroup from '../../assets/images/graph/graphGroup.png';
-import graphUnActive from '../../assets/images/graph/graphUnActive.png';
 import document from '../../assets/images/documents/document1.png';
 import documentActive from '../../assets/images/documents/documentActive.png';
-import location from '../../assets/images/homeIcon/location.png';
-import childUnActive from '../../assets/images/controlChild/childUnActive.png';
-import niple from '../../assets/images/niple/niple.png';
 import {NurseryData} from '../../screens/Account/Nursery/NurseryData';
 import {Document} from '../../screens/Account/Diary/Document';
-import {Location} from '../../screens/Account/Location';
-import {COLORS} from '../../styles/Constants';
+import {Feed} from '../../screens/Account/Feed/Feed';
 import backButton from '../../assets/images/backButton.png';
 import Schedule from '../../assets/images/svg/Schedule';
 import ScheduleActive from '../../assets/images/svg/ScheduleActive';
-import Calendar from '../../assets/images/svg/Calendar';
-import CalendarActive from '../../assets/images/svg/CalendarActive';
 import Child from '../../assets/images/svg/Child';
 import ChildActive from '../../assets/images/svg/ChildActive';
 import Bottle from '../../assets/images/svg/Bottle';
@@ -30,7 +19,6 @@ import SettingsAccount from '../../assets/images/svg/Settings';
 import SettingsActive from '../../assets/images/svg/SettingsActive';
 import plus from '../../assets/images/documents/plus.png';
 import search from '../../assets/images/documents/search.png';
-import {useDispatch} from 'react-redux';
 
 const iconGr = (focused, iconActive, icon, size = 30) => {
   return (
@@ -54,9 +42,6 @@ const navigationOptions = navigation => ({
     backgroundColor: '#2A305A',
     shadowColor: 'transparent', // this covers iOS
     elevation: 0,
-    headerTransparent: true,
-    // borderBottomWidth:2,
-    // borderBottomColor: COLORS.backGround
   },
   headerTitleStyle: {
     fontFamily: 'AntagometricaBT-Bold',
@@ -94,7 +79,6 @@ const navigationOptions = navigation => ({
       </TouchableOpacity>
     );
   },
-  // headerShown: false,
   tabBarLabel: '',
   tabBarStyle: {
     backgroundColor: 'rgba(52, 52, 90, 0.97)',
@@ -112,7 +96,7 @@ const navigationDocument = ({navigation, route}) => ({
         <TouchableOpacity
           style={{paddingRight: 13.76, paddingLeft: 5, paddingVertical: 5}}
           onPress={() => {
-            console.log('route',route.params)
+            console.log('route', route.params);
             route.params?.searchClicked();
           }}>
           <Image style={{width: 18.58, height: 18.58}} source={search} />
@@ -136,26 +120,43 @@ const navigationDocument = ({navigation, route}) => ({
     shadowColor: 'transparent',
     elevation: 0,
   },
-
-  headerTitleStyle: {
-    fontSize: 20,
-  },
+  headerTitleStyle: {fontSize: 20},
   tabBarStyle: {
     backgroundColor: 'rgba(52, 52, 90, 0.97)',
   },
   tabBarIcon: ({color, focused}) => iconGr(focused, documentActive, document),
 });
+
+const feedOptions = () => ({
+  headerShown: true,
+  headerTitle: 'new feed entry',
+  headerTintColor: '#2371AB',
+  headerStyle: {
+    backgroundColor: '#242247',
+    shadowColor: 'transparent',
+  },
+  headerTitleStyle: {
+    fontSize: 18,
+  },
+  headerRight: () => {
+    return (
+      <TouchableOpacity style={{marginRight: 18.58, flexDirection: 'row'}}>
+        <Text style={{color: '#fff', fontSize: 18}}>save</Text>
+      </TouchableOpacity>
+    );
+  },
+  tabBarLabel: '',
+  tabBarStyle: {
+    backgroundColor: 'rgba(52, 52, 90, 0.97)',
+  },
+  tabBarIcon: ({focused}) => (focused ? <BottleActive /> : <Bottle />),
+});
+
 const Tab = createBottomTabNavigator();
-// const TabNav = createTabNavigator()
 const customTabBarStyle = {
   borderBottomWidth: 0,
-  // activeTintColor: '#707070',
-  // inactiveTintColor: 'gray',
-  tabStyle: {
-    paddingTop: 25,
-  },
+  tabStyle: {paddingTop: 25},
   labelStyle: {},
-  // style: {backgroundColor: '#707070'},
 };
 export const MyTabs = () => {
   return (
@@ -171,7 +172,6 @@ export const MyTabs = () => {
           },
           tabBarIcon: ({focused}) =>
             focused ? <ScheduleActive /> : <Schedule />,
-          // iconGr(focused, graphActive, graphUnActive),
         }}
       />
       <Tab.Screen
@@ -189,22 +189,9 @@ export const MyTabs = () => {
             backgroundColor: 'rgba(52, 52, 90, 0.97)',
           },
           tabBarIcon: ({focused}) => (focused ? <ChildActive /> : <Child />),
-          // iconGr(focused, childActive, childUnActive, 45),
         }}
       />
-      <Tab.Screen
-        name="location"
-        component={Location}
-        options={{
-          headerShown: false,
-          tabBarLabel: '',
-          tabBarStyle: {
-            backgroundColor: 'rgba(52, 52, 90, 0.97)',
-          },
-          tabBarIcon: ({focused}) => (focused ? <BottleActive /> : <Bottle />),
-          // iconGr(focused, niple, niple),
-        }}
-      />
+      <Tab.Screen name="feed" component={Feed} options={feedOptions} />
       <Tab.Screen
         name="settings"
         component={Settings}
