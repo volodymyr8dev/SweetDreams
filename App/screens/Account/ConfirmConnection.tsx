@@ -14,7 +14,6 @@ import {useNavigation} from '@react-navigation/native';
 import {AlertComp} from '../../components/Alert/AlertComp';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {setConnection} from '../../redux/slice/powerSlice';
-import {RootState} from '../../redux/configureStore';
 import ConnectionCloud from '../../assets/images/svg/ConnectionCloud';
 import ConnectionCloud2 from '../../assets/images/svg/ConnectionCloud2';
 import background from '../../assets/images/homeIcon/bacgroundHome.png';

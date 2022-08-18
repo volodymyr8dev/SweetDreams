@@ -21,7 +21,7 @@ import {setNerseryId} from '../../../redux/slice/slice';
 import {ContentNavigation} from './ContentNavigation';
 import moment from 'moment';
 import {RootState} from '../../../redux/interfaceRootState';
-import {dateFormat} from '../../../utils/time';
+import {dateFormat, dateTimeFormat} from '../../../utils/time';
 
 const options24 = {
   value1: {
@@ -128,8 +128,23 @@ export const NurseryData = () => {
     if (accounts[0].id) {
       console.log('id', accounts[0].id);
       let dataStart = startDate[arrayHeader.indexOf(activeTime)];
-      let dataEnd = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-      id;
+      let dataEnd = dateTimeFormat(new Date());
+      if (id) {
+        Promise.all([
+          NureseryTemperatureApi(accounts[0].id, dataStart, dataEnd),
+          NureseryTemperatureGetApi(accounts[0].id, id, dataStart, dataEnd),
+        ]).then((data) => {
+           setDiaries(data[0].data[0].diaries);
+               !Array.isArray(data[1].data)
+                 ? setAvarageTemp(
+                     data[1].data[
+                       `${dateFormat(dataStart)}_${dateFormat(dataEnd)}`
+                     ][averageTotaltemp[arrayHeader.indexOf(activeTime)]],
+                   )
+                 : setAvarageTemp(0);
+          console.log('dataPromiseAll', data);
+        }).catch((Err)=>console.log('Promise All',Err));
+      }else{
       NureseryTemperatureApi(accounts[0].id, dataStart, dataEnd)
         .then(({data}) => {
           console.log('get nerseryId', data);
@@ -143,7 +158,7 @@ export const NurseryData = () => {
             dataEnd,
           )
             .then(({data}) => {
-              console.log('finished', data);
+              // console.log('finished', data);
               !Array.isArray(data)
                 ? setAvarageTemp(
                     data[`${dateFormat(dataStart)}_${dateFormat(dataEnd)}`][
@@ -155,6 +170,8 @@ export const NurseryData = () => {
             .catch(err => console.log('finishedError', err));
         })
         .catch(err => console.log('ERR', err));
+      }
+
     }
   }, [activeTime, accounts[0].id]);
 
