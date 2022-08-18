@@ -30,7 +30,8 @@ export const ConnectionStep2 = () => {
   const [currentPosition, setCurrentPosition] = useState(1);
   const [serialNumber, setSerialNumber] = useState('');
   const [loader, setLoader] = useState(false);
-  const navigation = useNavigation<any>();
+  const [loader1, setLoader1] = useState(false);
+  const navigation = useNavigation<Nav>();
   const [salt, setSalt] = useState('');
   const [newSaltUpperSha, setNewSaltUpperSha] = useState('');
   const [mistySerialNumber, setMistySerialNumber] = useState('');
@@ -47,8 +48,6 @@ export const ConnectionStep2 = () => {
       });
     }
   }, [newSaltUpperSha, mistySerialNumber]);
-
-
 
   // const combineUpperSha = React.useCallback(() => {
   //   console.log(newSaltUpperSha, 'newSaltUpperSha');
@@ -109,14 +108,15 @@ export const ConnectionStep2 = () => {
 
   // disconnectFromSSID(ssid: string): Promise
 
-
   const ConnectToNetwork = async () => {
+    setLoader1(true);
     WifiManager.connectToProtectedSSID(
       `Misty-${serialNumber}`,
       `${shaSalt}`,
       false,
     ).then(
       res => {
+        setLoader1(false);
         console.log(res);
         console.log('Connected successfully!');
         navigation.navigate('conectionStep3', {
@@ -125,6 +125,7 @@ export const ConnectionStep2 = () => {
         });
       },
       rej => {
+        setLoader1(false);
         console.log('Connection failed!', rej);
         Alert.alert('Connection failed!');
       },
@@ -203,6 +204,9 @@ export const ConnectionStep2 = () => {
       </TouchableOpacity>
       {loader && (
         <Loader text={`connecting your phone ${'\n'}to your misty unit`} />
+      )}
+      {loader1 && (
+        <Loader text={'Connecting to the device'} />
       )}
     </>
   );

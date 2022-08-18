@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text, Image, View, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Account} from '../../screens/Account/Account';
@@ -23,6 +23,10 @@ import Search from '../../assets/images/svg/diary/Search';
 import Plus from '../../assets/images/svg/diary/Plus';
 import BottomIcon from '../../assets/images/svg/diary/BottomIcon';
 import BottomUnActive from '../../assets/images/svg/diary/BottomUnActive';
+import {useDispatch, useSelector} from 'react-redux';
+import ConfirmConnection from '../../screens/Account/ConfirmConnection';
+import {RootState} from '../../redux/configureStore';
+import {useNavigation} from '@react-navigation/native';
 
 const iconGr = (focused, iconActive, icon, size = 30) => {
   return (
@@ -159,6 +163,12 @@ const customTabBarStyle = {
   labelStyle: {},
 };
 export const MyTabs = () => {
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const navigation = useNavigation<Nav>();
+  useEffect(() => {
+    navigation.navigate('Accountt');
+  }, []);
+  console.log('accountsaccountsadsv', user.accounts[0].device);
   return (
     <Tab.Navigator tabBarOptions={customTabBarStyle}>
       <Tab.Screen
@@ -180,8 +190,10 @@ export const MyTabs = () => {
         options={navigationDocument}
       />
       <Tab.Screen
-        name="account"
-        component={Account}
+        name="Accountt"
+        component={
+          user.accounts[0].device === null ? ConfirmConnection : Account
+        }
         options={{
           headerShown: false,
           tabBarLabel: '',
