@@ -13,4 +13,4 @@ const xml = `
 
 `;
 
-export default ({style}) => <SvgXml xml={xml} style={style} />;
+export default () => <SvgXml xml={xml} />;

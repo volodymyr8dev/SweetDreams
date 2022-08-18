@@ -1,6 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import axiosInstance from '../index';
+import moment from 'moment';
 
 export const NureseryGetChartsApi = (account, nursery,start,end) => {
   return axiosInstance.get(
@@ -28,8 +29,13 @@ export const NureseryTemperaturePostApi = (accountId, start, end) => {
 export const NureseryTemperaturePatchApi = accountId => {
   return axiosInstance.patch(`/api/accounts/${accountId}/nursery/{nurseryId}`);
 };
-export const NureseryTemperatureGetApi = (accountId, nurseryId) => {
-  return axiosInstance.patch(
-    `/api/accounts/${accountId}/nursery/${nurseryId}/temperature/charts`,
+
+export const NureseryTemperatureGetApi = (accountId, nurseryId, start, end) => {
+  let startF = moment(start).format('YYYY-MM-DD')
+  let endF = moment(end).format('YYYY-MM-DD');
+  console.log('startF',startF)
+  console.log('endF', endF);
+  return axiosInstance.get(
+    `/api/accounts/${accountId}/nursery/${nurseryId}/temperature/charts?start=${startF}&end=${endF}`,
   );
 };

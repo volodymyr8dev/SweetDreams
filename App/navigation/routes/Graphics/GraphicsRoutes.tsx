@@ -32,7 +32,6 @@ const navigationOptionAccount = () => ({
   tabBarOptions: {customTabBarStyle},
 });
 const navigationOptions = navigation => {
-  console.log('here', navigation.route?.params?.title);
   return {
     title: `${navigation.route?.params?.title}`,
     headerShown: true,

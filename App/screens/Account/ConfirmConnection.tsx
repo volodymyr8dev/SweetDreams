@@ -8,7 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import {AlertComp} from '../../components/Alert/AlertComp';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {setConnection} from '../../redux/slice/powerSlice';
-import {RootState} from '../../redux/configureStore';
+import { RootState } from '../../redux/interfaceRootState';
 const ConfirmConnection = ({setToggleButton}) => {
   const netInfo = useNetInfo();
   const navigation = useNavigation<any>();

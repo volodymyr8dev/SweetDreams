@@ -13,10 +13,15 @@ import back from '../../../assets/images/homeIcon/bacgroundHome.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import carousel from 'react-native-anchor-carousel/src/carousel';
 import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../../../redux/configureStore';
-import { NureseryTemperatureApi } from '../../../api/Nursery/Nuresery';
-import { setNerseryId } from '../../../redux/slice/slice';
-import { ContentNavigation } from './ContentNavigation';
+import {
+  NureseryTemperatureApi,
+  NureseryTemperatureGetApi,
+} from '../../../api/Nursery/Nuresery';
+import {setNerseryId} from '../../../redux/slice/slice';
+import {ContentNavigation} from './ContentNavigation';
+import moment from 'moment';
+import {RootState} from '../../../redux/interfaceRootState';
+import {dateFormat} from '../../../utils/time';
 
 const options24 = {
   value1: {
@@ -84,44 +89,99 @@ const optionsD28 = {
     subTitle: '',
   },
 };
+const startDate = [
+  moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss'),
+  moment(new Date()).subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss'),
+  moment(new Date()).subtract(27, 'days').format('YYYY-MM-DD HH:mm:ss'),
+];
+
+const arrayHeader = ['last 24 hours', 'last 7 days', 'last 28 days'];
+const averageTotaltemp = [
+  'average_over_24hours',
+  'average_over_7days',
+  'average_over_28days',
+];
 
 export const NurseryData = () => {
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigation = useNavigation<any>();
   const [activeTime, setActiveTime] = useState('last 24 hours');
-
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
+  const [diaries, setDiaries] = useState(0);
+  const [averageTemp, setAvarageTemp] = useState(0);
+  const [id, setId] = useState(null);
   const {accounts} = useSelector(
     ({account}: RootState) => account.userInformation.user,
   );
-console.log('account', accounts);
+  console.log('account', accounts);
 
-const {user} = useSelector(({account}: RootState) => account.userInformation);
-console.log(user.accounts[0].is_deluxe, 'isdecdsede');
-
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  console.log(user.accounts[0].is_deluxe, 'isdecdsede');
 
   const getToken = async () => {
     const value = await AsyncStorage.getItem('@storage_Key');
     console.log('valueeee', value);
   };
+  console.log('avavavaav', averageTemp);
   useEffect(() => {
-    getToken();
-    console.log(accounts[0].id);
     if (accounts[0].id) {
       console.log('id', accounts[0].id);
-      NureseryTemperatureApi(accounts[0].id)
+      let dataStart = startDate[arrayHeader.indexOf(activeTime)];
+      let dataEnd = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+      id;
+      NureseryTemperatureApi(accounts[0].id, dataStart, dataEnd)
         .then(({data}) => {
           console.log('get nerseryId', data);
+          setId(data[1].id);
+          setDiaries(data[0].diaries);
           dispatch(setNerseryId(data[1].id));
+          NureseryTemperatureGetApi(
+            accounts[0].id,
+            data[1].id,
+            dataStart,
+            dataEnd,
+          )
+            .then(({data}) => {
+              console.log('finished', data);
+              !Array.isArray(data)
+                ? setAvarageTemp(
+                    data[`${dateFormat(dataStart)}_${dateFormat(dataEnd)}`][
+                      averageTotaltemp[arrayHeader.indexOf(activeTime)]
+                    ],
+                  )
+                : setAvarageTemp(0);
+            })
+            .catch(err => console.log('finishedError', err));
         })
-        .catch(err => {
-          console.log('ERR', err);
-        });
+        .catch(err => console.log('ERR', err));
     }
-  }, [accounts[0].id]);
+  }, [activeTime, accounts[0].id]);
+
+  // useEffect(() => {
+  //   getToken();
+  //   if (accounts[0].id) {
+  //     console.log('id', accounts[0].id);
+  //     NureseryTemperatureApi(accounts[0].id, start, end)
+  //       .then(({data}) => {
+  //         console.log('get nerseryId', data);
+  //         dispatch(setNerseryId(data[1].id));
+  //         NureseryTemperatureGetApi(accounts[0].id, data[1].id, start, end)
+  //           .then(({data}) => {
+  //             console.log('finished', data);
+  //           })
+  //           .catch(err => {
+  //             console.log('finised error', err);
+  //           });
+  //       })
+  //       .catch(err => {
+  //         console.log('ERR', err);
+  //       });
+  //   }
+  // }, [accounts[0].id]);
   const handleChangeTime = time => {
     console.log(time);
     setActiveTime(time);
-    // navigation.navigate(time);
   };
   const HeaderNavigation = () => {
     return (
@@ -132,173 +192,31 @@ console.log(user.accounts[0].is_deluxe, 'isdecdsede');
           flexDirection: 'row',
           paddingTop: 100,
         }}>
-        <TouchableOpacity onPress={() => handleChangeTime('last 24 hours')}>
-          <View style={{}}>
-            <View style={{paddingHorizontal: 20}}>
-              <Text
-                style={{
-                  color: activeTime == 'last 24 hours' ? '#CE9B51' : '#fff',
-                  paddingVertical: 4,
-                }}>
-                last 24 hours
-              </Text>
-            </View>
-
-            <View
-              style={[
-                activeTime == 'last 24 hours'
-                  ? styles.borderActive
-                  : styles.border,
-              ]}
-            />
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => handleChangeTime('last 7 days')}>
-          <View>
-            <View style={{paddingHorizontal: 20}}>
-              <Text
-                style={{
-                  color: activeTime == 'last 7 days' ? '#CE9B51' : '#fff',
-                  paddingVertical: 4,
-                }}>
-                last 7 days
-              </Text>
-            </View>
-
-            <View
-              style={[
-                activeTime == 'last 7 days'
-                  ? styles.borderActive
-                  : styles.border,
-              ]}
-            />
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => handleChangeTime('last 28 days')}>
-          <View>
-            <View style={{paddingHorizontal: 20}}>
-              <Text
-                style={{
-                  color: activeTime == 'last 28 days' ? '#CE9B51' : '#fff',
-                  paddingVertical: 4,
-                }}>
-                last 28 days
-              </Text>
-            </View>
-
-            <View
-              style={[
-                activeTime == 'last 28 days'
-                  ? styles.borderActive
-                  : styles.border,
-              ]}
-            />
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-  const ContentNavigation = ({options}) => {
-    console.log(options);
-    return (
-      <View style={styles.container}>
-        {user.accounts[0].is_deluxe === 0 ? null : (
-          <Blog
-            title="Total Time Without Activation"
-            subTitle={options.value1.subTitle}
-            source={happy}
-            rightEl={options.value1.value}
-          />
-        )}
-        {user.accounts[0].is_deluxe === 0 ? null : (
-          <Blog
-            title="Longest Period Without Activation"
-            subTitle={options.value2.subTitle}
-            source={happy}
-            rightEl={options.value2.value}
-          />
-        )}
-        {user.accounts[0].is_deluxe === 0 ? null : (
-          <Blog
-            title="Number of smartCRY Activations"
-            subTitle={options.value3.subTitle}
-            source={sad}
-            rightEl={options.value3.value}
-          />
-        )}
-        <Blog
-          title="Average Temperature"
-          subTitle={options.value5.subTitle}
-          source={tempretute}
-          rightEl={options.value5.value}
-          width={30}
-          height={27}
-        />
-        <Blog
-          title="Diary Entries"
-          subTitle={options.value4.subTitle}
-          source={book}
-          rightEl={options.value4.value}
-          width={30}
-          height={26}
-        />
-      </View>
-    );
-  };
-  const Blog = ({title, rightEl, source, subTitle, width, height}) => {
-    const handleSettings = async title => {
-      if (typeof rightEl !== 'object') {
-        console.log(title, 'title');
-        navigation.navigate(`${title}`, {title: title, childId: accounts[0].id});
-      }
-    };
-    return (
-      <TouchableOpacity
-        onPress={() => handleSettings(title)}
-        style={styles.blog}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
-            style={{
-              width: width ? width : 30,
-              height: height ? height : 30,
-              marginRight: 10,
-            }}
-            source={source}
-            resizeMode="contain"
-          />
-          <View>
-            <Text
-              style={{color: '#2371AB', fontSize: title.length > 20 ? 17 : 20}}>
-              {title}
-            </Text>
-
-            {subTitle ? (
-              <Text style={{color: '#2371AB', fontSize: 12}}>{subTitle}</Text>
-            ) : null}
-          </View>
-        </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {typeof rightEl === 'object' ? (
-            rightEl
-          ) : (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{color: COLORS.textLight, fontSize: 18}}>
-                {rightEl}
-              </Text>
-              <Image
-                style={{width: 10, height: 11, marginLeft: 10}}
-                source={arrowRight}
+        {arrayHeader.map(item => (
+          <TouchableOpacity onPress={() => handleChangeTime(item)}>
+            <View style={{}}>
+              <View style={{paddingHorizontal: 20}}>
+                <Text
+                  style={{
+                    color: activeTime == item ? '#CE9B51' : '#fff',
+                    paddingVertical: 4,
+                    fontFamily: 'AntagometricaBT-Bold',
+                  }}>
+                  {item}
+                </Text>
+              </View>
+              <View
+                style={[
+                  activeTime == item ? styles.borderActive : styles.border,
+                ]}
               />
             </View>
-          )}
-        </View>
-      </TouchableOpacity>
+          </TouchableOpacity>
+        ))}
+      </View>
     );
   };
-
-
+  // const ContentNavigation = ({options,account}) => {
   const activeDay = () => {
     switch (activeTime) {
       case 'last 24 hours':
@@ -315,7 +233,11 @@ console.log(user.accounts[0].is_deluxe, 'isdecdsede');
       source={back}
       style={{flex: 1, backgroundColor: COLORS.back}}>
       <HeaderNavigation />
-      <ContentNavigation options={activeDay()} />
+      <ContentNavigation
+        averageTemp={averageTemp}
+        diaries={diaries}
+        options={activeDay()}
+      />
     </ImageBackground>
   );
 };

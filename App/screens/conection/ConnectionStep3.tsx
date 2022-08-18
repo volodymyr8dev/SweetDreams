@@ -57,31 +57,6 @@ export const ConnectionStep3 = () => {
       });
   }, []);
 
-  // useEffect(() => {
-  //   NetInfo.fetch().then(res => {
-  //     console.log(res);
-  //     Alert.alert('You are connected ');
-  //   });
-  // }, []);
-  // const ConnectToNetwork = async () => {
-  //   try {
-  //     console.log(wifiName, wifiPassword)
-  //     WifiManager.connectToProtectedSSID(wifiName, wifiPassword, false)
-  //       .then(
-  //         () => {
-  //           console.log('connectToProtectedSSID successfully!');
-  //         },
-  //         reason => {
-  //           console.log('connectToProtectedSSID failed!');
-  //           console.log(reason);
-  //         },Qwerty12#
-  //       )
-  //       .catch(err => console.log('WIFI ERROR', err));
-  //   } catch (err) {
-  //     console.log('ERR', err);
-  //   }
-  // };
-
   const generateRandomString36 = lenth => {
     const char =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';

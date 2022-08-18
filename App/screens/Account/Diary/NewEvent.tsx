@@ -1,18 +1,17 @@
 import {View, Text, StyleSheet, Alert, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {CustomInput} from '../../../components/CustomInput/CustomInput';
 import {InputUnit} from '../../../components/InputUnit/InputUnit';
 import {useNavigation} from '@react-navigation/native';
-import {COLORS, monthNames} from '../../../styles/Constants';
+import {COLORS} from '../../../styles/Constants';
 import {DatePickerComponent} from '../../../components/DatePicker/DatePicker';
 import moment, {Moment} from 'moment';
 import {EditEventApi, NewEventApi} from '../../../api/Diary/calendar';
 import {useSelector} from 'react-redux';
-import {RootState} from '../../../redux/configureStore';
+import {RootState} from '../../../redux/interfaceRootState';
 
 interface ILocation {
   name: string;
-  locate: string;
+  locate: {lat: string; lng: string};
 }
 export const NewEvent = ({route}) => {
   let params = route.params;
@@ -37,26 +36,26 @@ export const NewEvent = ({route}) => {
     console.log('location22222', location);
     console.log('breast', breast);
     console.log('type*******', params.type);
-      NewEventApi(
-        global.id,
-        title,
-        location,
-        params.type,
-        allDay,
-        starts,
-        ends,
-        notes,
-        breast
-      )
-        .then(({data}: any) => {
-          console.log('%c React', 'color:white;background-color:#61dbfb', data);
-          navigation.navigate('document');
-          Alert.alert('Event successfully added');
-        })
-        .catch(err => {
-          console.log('error', err.response.data.message);
-          Alert.alert(err.response.data.message);
-        });
+    NewEventApi(
+      global.id,
+      title,
+      location,
+      params.type,
+      allDay,
+      starts,
+      ends,
+      notes,
+      breast,
+    )
+      .then(({data}: any) => {
+        console.log('%c React', 'color:white;background-color:#61dbfb', data);
+        navigation.navigate('document');
+        Alert.alert('Event successfully added');
+      })
+      .catch(err => {
+        console.log('error', err.response.data.message);
+        Alert.alert(err.response.data.message);
+      });
   };
   const hadleEditEvent = () => {
     if (params?.event?.id) {
@@ -148,7 +147,7 @@ export const NewEvent = ({route}) => {
         }}>
         <View style={styles.touchC}>
           <View>
-            <Text style={styles.touchT}>location</Text>
+            <Text style={styles.touchT}>Location</Text>
           </View>
           <View>
             <Text style={{color: COLORS.text}}>

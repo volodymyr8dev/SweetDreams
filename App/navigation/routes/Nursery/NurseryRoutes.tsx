@@ -74,9 +74,7 @@ const navigationOptionsLocation = navigation => {
 };
 const navigationOptionsDoc = navigation => {
   const nav = useNavigation();
-  // console.log('paramsDoc', navigation.route?.params);
   let param: IParam = navigation.route?.params;
-  console.log(param);
   return {
     title: `${param?.title}`,
     headerShown: true,
@@ -119,7 +117,6 @@ const navigationOptionsDoc = navigation => {
       return (
         <TouchableOpacity
           onPress={() => {
-            console.log('-----here------', param.rightText);
             if (param.rightText === 'add') {
               param.addEvent();
             } else if (param.rightText == 'edit') {

@@ -92,7 +92,6 @@ export const CreateNewAccount = () => {
   const [terms, setTerms] = useState(false);
   const [privacy, setPrivacy] = useState(false);
   const state = useSelector(state => state?.account);
-  console.log('ssss', state);
   const navigation = useNavigation<Nav>();
   const isFocused = useIsFocused();
   const global = useSelector(({account}: RootState) => account);

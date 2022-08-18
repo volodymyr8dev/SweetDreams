@@ -29,10 +29,10 @@ import {array, object} from 'yup/lib/locale';
 import {useSelector} from 'react-redux';
 import {ITempItem} from '../interface/IProperties';
 import {
-  filterArray,
   filterTemperature,
   handleCreateFullData,
 } from '../../../../utils/helper';
+import { RootState } from '../../../../redux/interfaceRootState';
 
 const chartConfig = {
   topRadius: 8,
@@ -78,7 +78,7 @@ export const TotalTimeComp = ({route}) => {
   const [end, setEnd] = useState(moment(date).format('YYYY-MM-DD'));
   const [average, setAverage] = useState();
   const [total, setTotal] = useState();
-  const nerseryId = useSelector(({account}) => account.nersery.id);
+  const nerseryId = useSelector(({account}:RootState) => account.nersery.id);
 
   useEffect(() => {
     setStart(moment(start).format('YYYY-MM-DD'));
@@ -149,7 +149,7 @@ export const TotalTimeComp = ({route}) => {
         let filteredresult = filterTemperature(temperature);
         console.log('filteredresult', filteredresult);
 
-        setActiveData(filteredresult.map(item => item.temperature));
+        setActiveData(filteredresult.map((item:any) => item.temperature));
       } else if (getDayDiff(end, start) > 1) {
         console.log('diff greater than 2')
       } else if (data.length == 0) setActiveData([]);

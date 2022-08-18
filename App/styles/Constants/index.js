@@ -92,9 +92,7 @@ export const chooseDate = start => {
 };
 
 export const chooseTimeOrIndex = (type, direction, activeTime) => {
-  console.log('active', activeTime);
   let indexActiveTime = time.indexOf(activeTime);
-  console.log('indexActiveTime', indexActiveTime);
   if (direction === 'left') {
     if (type == 'time') {
       return indexActiveTime == 0

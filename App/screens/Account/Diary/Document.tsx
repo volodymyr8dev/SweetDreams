@@ -1,29 +1,25 @@
 import React, {useEffect, useState} from 'react';
-import {Calendar, CalendarList} from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 import {Dimensions} from 'react-native';
 
 import {LocaleConfig} from 'react-native-calendars';
 import {
-  Text,
   View,
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  TouchableOpacity,
-  Image,
   ImageBackground,
 } from 'react-native';
 import moment from 'moment';
-import {COLORS, monthNames} from '../../../styles/Constants';
+import {COLORS} from '../../../styles/Constants';
 import eventDateimportant from '../../../assets/images/documents/dateEventVerticalImportant.png';
 import backImg from '../../../assets/images/documents/background.png';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {GetEventApi} from '../../../api/Diary/calendar';
-import {RootState} from '../../../redux/configureStore';
 import SearchBar from '../../../components/SearchBar';
 import {EventHtml} from './EventHtml';
-import {Item} from 'react-native-paper/lib/typescript/components/List/List';
+import { RootState } from '../../../redux/interfaceRootState';
 
 interface IPoints {
   title: string;
@@ -185,7 +181,7 @@ export const Document = () => {
   useEffect(() => {
     console.log('shown', shown);
     if (shown) {
-      let res = points?.filter(item => {
+      let res = points?.filter((item:any) => {
         console.log('item f', item);
         if (item?.title?.toLowerCase().includes(searchPhrase.toLowerCase())) {
           return item;

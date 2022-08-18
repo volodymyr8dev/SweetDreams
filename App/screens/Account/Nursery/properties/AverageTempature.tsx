@@ -6,17 +6,14 @@ import {
   Image,
   Dimensions,
   ImageBackground,
-  Alert,
   TouchableOpacity,
 } from 'react-native';
 import arrowLeft from '../../../../assets/images/nersery/arrowLeft.png';
 import arrowRight from '../../../../assets/images/nersery/arrowRight.png';
 import sleepDiary from '../../../../assets/images/nersery/sleepDiary.png';
 import alertUp from '../../../../assets/images/nersery/alertUp.png';
-import alertDown from '../../../../assets/images/nersery/alertDown.png';
 import {
   COLORS,
-  timeIndex,
   time,
   chooseDate,
   chooseTimeOrIndex,
@@ -25,12 +22,13 @@ import {LineChart} from 'react-native-chart-kit';
 import {Blog} from '../../../../components/Touchable/TouchableInput';
 import {NureseryTemperatureApi} from '../../../../api/Nursery/Nuresery';
 import moment from 'moment';
+import { AnyAction } from 'redux';
 
 export const AverageTempature = ({route}) => {
   const [array, setArray] = useState([0]);
   const [labels, setLabels] = useState<string[]>(['']);
   const [activeTime, setActiveTime] = useState('last 24 hours');
-  const [ diary, setDiary] = useState('');
+  const [diary, setDiary] = useState('');
   const [start, setStart] = useState(
     moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD'),
   );
@@ -137,7 +135,7 @@ export const AverageTempature = ({route}) => {
         setArray([0]);
       });
   };
-  const [value, setValue] = useState({value: 0, y: 0, x: 0, yMax: 0, xMax: 0});
+  const [value, setValue] = useState<any>({value: 0, y: 0, x: 0, yMax: 0, xMax: 0});
   useEffect(() => {
     // let min = Math.min(...array);
     // let max = Math.max(...array);
@@ -186,7 +184,7 @@ export const AverageTempature = ({route}) => {
       <View>
         <Text style={{paddingTop: 12}}></Text>
         <LineChart
-          onDataPointClick={(value, dataset, getColor) => {
+          onDataPointClick={value => {
             console.log('value', value);
             setValue(value);
 

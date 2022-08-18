@@ -30,7 +30,6 @@ const navigationOptionAccount = () => ({
 });
 
 const navigationOptions = navigation => {
-  console.log('qqqqqqqq', navigation.route?.params?.title);
   let params = navigation.route?.params;
   return {
     title: `${params.title}`,
@@ -44,7 +43,6 @@ const navigationOptions = navigation => {
       backgroundColor: '#2A305A',
     },
     headerLeft: () => {
-      console.log('params', params);
       if (params.record) {
         return (
           <TouchableOpacity

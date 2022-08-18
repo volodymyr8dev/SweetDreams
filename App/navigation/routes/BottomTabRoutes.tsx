@@ -19,6 +19,10 @@ import SettingsAccount from '../../assets/images/svg/Settings';
 import SettingsActive from '../../assets/images/svg/SettingsActive';
 import plus from '../../assets/images/documents/plus.png';
 import search from '../../assets/images/documents/search.png';
+import Search from '../../assets/images/svg/diary/Search';
+import Plus from '../../assets/images/svg/diary/Plus';
+import BottomIcon from '../../assets/images/svg/diary/BottomIcon';
+import BottomUnActive from '../../assets/images/svg/diary/BottomUnActive';
 
 const iconGr = (focused, iconActive, icon, size = 30) => {
   return (
@@ -49,6 +53,7 @@ const navigationOptions = navigation => ({
   },
   tabBarStyle: {
     elevation: 0,
+    backgroundColor: 'rgba(52, 52, 90, 0.97)',
   },
   headerLeft: () => {
     return (
@@ -61,7 +66,6 @@ const navigationOptions = navigation => ({
   },
   headerRight: () => {
     const params = navigation.route?.params;
-    console.log('parapms', params);
     return (
       <TouchableOpacity
         onPress={() => {
@@ -80,9 +84,6 @@ const navigationOptions = navigation => ({
     );
   },
   tabBarLabel: '',
-  tabBarStyle: {
-    backgroundColor: 'rgba(52, 52, 90, 0.97)',
-  },
   tabBarIcon: ({focused}) =>
     focused ? <SettingsActive /> : <SettingsAccount />,
 });
@@ -94,20 +95,18 @@ const navigationDocument = ({navigation, route}) => ({
     return (
       <View style={{marginRight: 18.58, flexDirection: 'row'}}>
         <TouchableOpacity
-          style={{paddingRight: 13.76, paddingLeft: 5, paddingVertical: 5}}
+          style={{paddingRight: 23.5, paddingLeft: 5, paddingVertical: 5.5}}
           onPress={() => {
-            console.log('route', route.params);
             route.params?.searchClicked();
           }}>
-          <Image style={{width: 18.58, height: 18.58}} source={search} />
+          <Search style={{width: 15, height: 15}} />
         </TouchableOpacity>
         <TouchableOpacity
           style={{paddingVertical: 5}}
           onPress={() => {
-            console.log('route', route?.params.addEvent);
             route?.params.addEvent();
           }}>
-          <Image style={{width: 18.58, height: 18.58}} source={plus} />
+          <Plus style={undefined} />
         </TouchableOpacity>
       </View>
     );
@@ -124,7 +123,8 @@ const navigationDocument = ({navigation, route}) => ({
   tabBarStyle: {
     backgroundColor: 'rgba(52, 52, 90, 0.97)',
   },
-  tabBarIcon: ({color, focused}) => iconGr(focused, documentActive, document),
+  // tabBarIcon: ({color, focused}) => iconGr(focused, documentActive, document),
+  tabBarIcon: ({focused}) => (focused ? <BottomIcon /> : <BottomUnActive />),
 });
 
 const feedOptions = () => ({

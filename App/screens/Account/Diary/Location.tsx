@@ -1,39 +1,70 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   Image,
   Dimensions,
-  ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 import {COLORS} from '../../../styles/Constants';
 import backLocation from '../../../assets/images/documents/backLocation.png';
 import point from '../../../assets/images/documents/pointEvent.png';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setLocationEvent} from '../../../redux/slice/slice';
 import {useNavigation} from '@react-navigation/native';
+import {getRecentLocation} from '../../../api/Diary/locations';
+import { RootState } from '../../../redux/interfaceRootState';
+
+export interface ILocation {
+  name: string;
+  locate: {lat: number; lng: number};
+}
+const CardItem = ({name, locate}: ILocation) => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation<any>();
+  console.log('name', name);
+  const handleSetLocation = () => {
+    const res = {
+      name: {description: name},
+      location: locate,
+    };
+    dispatch(setLocationEvent(res));
+    navigation.goBack();
+  };
+  return (
+    <TouchableOpacity onPress={handleSetLocation} style={styles.itemcard}>
+      <View style={{paddingBottom: 11.44, paddingTop: 13.75}}>
+        <Image style={{width: 26.16, height: 26.16}} source={point} />
+      </View>
+      <View style={styles.rightBlockLocation}>
+        <Text style={styles.textLocation}>{name}</Text>
+        {/* <Text style={styles.textSubLocation}>34dsdfds</Text> */}
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 export const Location = ({route}) => {
   const location = route.params.location;
+  const [recentLocation, setRecentLocation] = useState([]);
   const navigation = useNavigation();
-  console.log('location2 ', route);
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+
+  useEffect(() => {
+    getRecentLocation(user.accounts[0].id)
+      .then(({data}) => {
+        setRecentLocation(data.map(loc => JSON.parse(loc.location)));
+        console.log('recent location', JSON.parse(data[0].location));
+      })
+      .catch(err => {
+        console.log('err recent location', err);
+      });
+  }, []);
+  console.log('---', recentLocation);
   const dispatch = useDispatch();
-  const CardItem = () => {
-    return (
-      <View style={styles.itemcard}>
-        <View style={{paddingBottom: 11.44, paddingTop: 13.75}}>
-          <Image style={{width: 26.16, height: 26.16}} source={point} />
-        </View>
-        <View style={styles.rightBlockLocation}>
-          <Text style={styles.textLocation}>sadasd</Text>
-          <Text style={styles.textSubLocation}>34dsdfds</Text>
-        </View>
-      </View>
-    );
-  };
+
   return (
     <View style={styles.container}>
       <GooglePlacesAutocomplete
@@ -46,13 +77,12 @@ export const Location = ({route}) => {
         fetchDetails={true}
         listViewDisplayed="auto"
         onPress={(data, details = null) => {
-          console.log('GooglePlacesAutocomplete', data, details);
+          console.log('GoogleAutocomplete', data, details);
           const res = {
             name: data,
             location: details?.geometry?.location,
           };
-            dispatch(setLocationEvent(res));
-              //  console.log('hereeeee',JSON.stringify(details?.geometry?.location));
+          dispatch(setLocationEvent(res));
           navigation.goBack();
         }}
         onFail={error => console.log('error', error)}
@@ -62,17 +92,16 @@ export const Location = ({route}) => {
         }}
         currentLocation={true}
         currentLocationLabel="Current location"
+     
       />
 
       <View style={styles.recentsContainer}>
         <View style={{paddingTop: 6.03, paddingBottom: 7.47}}>
-          <Text style={styles.textRecent}>Recents</Text>
+          <Text style={styles.textRecent}>Location suggestions</Text>
         </View>
         <View style={styles.cardResents}>
-          <CardItem />
-          <CardItem />
-          <CardItem />
-          <CardItem />
+          {recentLocation.length > 0 &&
+            recentLocation.map((item: ILocation) => <CardItem {...item} />)}
         </View>
       </View>
     </View>
@@ -82,19 +111,49 @@ export const Location = ({route}) => {
 const stylesInput = StyleSheet.create({
   container: {
     position: 'absolute',
-    width:"100%",
+    width: '100%',
     top: 0,
     height: 400,
     zIndex: 1051,
   },
+  // textInputContainer: {
+  //   backgroundColor: 'grey',
+  // },
   textInput: {
     // width: Dimensions.get('window').width,
     marginLeft: 0,
     marginRight: 0,
-    height: 76.67,
+    height: 75.67,
     color: COLORS.text,
     fontSize: 16,
     backgroundColor: '#1A172D',
+  },
+  predefinedPlacesDescription: {
+    color: '#1faadb',
+  },
+  poweredContainer: {
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderColor: COLORS.text,
+    borderTopWidth: 0.5,
+    backgroundColor: COLORS.back,
+  },
+  row: {
+    backgroundColor: COLORS.back,
+    padding: 13,
+    height: 43,
+    color: '#fff',
+  },
+  separator: {
+    height: 0.5,
+    backgroundColor: COLORS.text,
+  },
+  description: {
+    color:"#ddd"
+  },
+  listView: {},
+  powered: {
+    color: '#fff',
   },
 });
 
@@ -109,6 +168,7 @@ const styles = StyleSheet.create({
     marginTop: 82.77,
     paddingHorizontal: 12.97,
   },
+  
   input: {
     width: '100%',
     height: 76.77,
@@ -132,7 +192,7 @@ const styles = StyleSheet.create({
   },
   textLocation: {
     color: COLORS.textLight,
-    fontSize: 19,
+    fontSize: 18,
     fontFamily: 'AntagometricaBT-Bold',
   },
   textSubLocation: {

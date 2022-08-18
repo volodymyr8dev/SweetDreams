@@ -52,10 +52,7 @@ const koef = 0.2625;
 const lines2 = [{starts: 13, ends: 15}];
 export const BarChartComp = ({activeLabels, activeData}) => {
   const [dataTemerature, setDataTemp] = useState([10, 0, 10, 10, 0, 10, 10, 10, 0, 10, 10, 10, 10, 10]);
-  // console.log(
-  //   'sort',
-  //   lines.sort((a, b) => a.start - b.start),
-  // );
+
   useEffect(() => {
     console.log('activeData',activeData)
     setDataTemp(activeData);

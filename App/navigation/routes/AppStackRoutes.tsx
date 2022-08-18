@@ -49,8 +49,8 @@ const customTabBarStyle = {
   style: {backgroundColor: '#000'},
 };
 
-//   // headerShown: true,
-  // tabBarColor: '#ddd',
+// headerShown: true,
+// tabBarColor: '#ddd',
 //   tabBarLabel: '',
 //   headerTintColor: '#000',
 //   style: {

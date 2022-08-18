@@ -72,9 +72,7 @@ const navigationOptionsLocation = navigation => {
 };
 const navigationOptionsDoc = navigation => {
   const nav = useNavigation<any>();
-  // console.log('paramsDoc', navigation.route?.params);
   let param: IParam = navigation.route?.params;
-  console.log('paramNEwEvent', param);
   return {
     title: `${param?.title}`,
     headerShown: true,
@@ -108,7 +106,8 @@ const navigationOptionsDoc = navigation => {
               fontSize: 19,
               fontFamily: 'AntagometricaBT-Regular',
             }}>
-            {param?.backTitle}
+              back
+            {/* {param?.backTitle} */}
           </Text>
         </TouchableOpacity>
       );

@@ -3,7 +3,7 @@ import ToggleSwitch from 'toggle-switch-react-native';
 import {COLORS} from '../../styles/Constants/index';
 import {SettingsDevice} from '../../api/Settings/SettingsApi';
 import {useSelector} from 'react-redux';
-import {RootState} from '../../redux/configureStore';
+import { RootState } from '../../redux/interfaceRootState';
 
 interface ISwitch {
   val: any;

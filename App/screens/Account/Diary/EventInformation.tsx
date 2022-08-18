@@ -15,8 +15,9 @@ import {useNavigation} from '@react-navigation/native';
 import {DeleteEventApi} from '../../../api/Diary/calendar';
 import moment from 'moment';
 import {useSelector} from 'react-redux';
-import {RootState} from '../../../redux/configureStore';
 import {navigationOptions} from '../../../navigation/routes/AppStackRoutes';
+import { RootState } from '../../../redux/interfaceRootState';
+import { ILocation } from './Location';
 type Nav = {
   navigate: (value: string, obj?: any) => void;
   setParams: (value: any) => void;
@@ -25,7 +26,7 @@ type Nav = {
 
 export const EventInformation = ({route}) => {
   const navigation = useNavigation<Nav>();
-  const [locationEvent, setLocationEvent] = useState('');
+  const [locationEvent, setLocationEvent] = useState<ILocation>();
   const [event, setEvent] = useState(route.params.event);
   const global = useSelector(
     ({account}: RootState) => account.userInformation.user.accounts[0],
@@ -33,7 +34,7 @@ export const EventInformation = ({route}) => {
   const location = useSelector(
     ({account}: RootState) => account.events.location,
   );
-
+console.log('event location', location);
   useEffect(() => {
     setEvent(route.params.event);
     setLocationEvent(route.params.event.location);
@@ -74,7 +75,7 @@ export const EventInformation = ({route}) => {
             <Text style={styles.textTitle}>{event.title}</Text>
           </View>
           <View style={styles.containerText}>
-            <Text style={styles.subTitle}>{locationEvent.name}</Text>
+            <Text style={styles.subTitle}>{locationEvent?.name}</Text>
           </View>
           <View style={styles.containerTime}>
             <Text style={styles.subTitle}>{event.starts_at}</Text>

@@ -13,7 +13,7 @@ import feedLine from '../../../assets/images/documents/feedLine.png';
 
 export const EventHtml = (item, selectedDate, points) => {
   let date = moment(item.starts_at).format('hh:mm');
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   console.log('points+++++=', points);
 
   const goToEvent = async EventItem => {
