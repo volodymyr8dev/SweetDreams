@@ -12,11 +12,10 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		186B2CBD338476E272986ED9 /* libPods-SweetDreams.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AD1C6F04236031D56F87F9 /* libPods-SweetDreams.a */; };
 		18CB0A8FAD0D493CB0E2BF99 /* AntagometricaBT-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F639432EEE674EB4999DE80B /* AntagometricaBT-Bold.ttf */; };
 		48C1EDCC5248406E86F1FCFA /* antagorg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 752D5B56253349D8AFC079E8 /* antagorg.otf */; };
+		490232F7E39FDEF567F775FC /* libPods-SweetDreams.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB25F1446D0116B706C88423 /* libPods-SweetDreams.a */; };
 		55960B8AEAFB4285A43E92BC /* AntagometricaBT-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 276F8CB864494676A96876E6 /* AntagometricaBT-Regular.ttf */; };
-		751129FA4D89A79AF5EDAD8B /* libPods-SweetDreams-SweetDreamsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E048058F97FC9B82EF9B33 /* libPods-SweetDreams-SweetDreamsTests.a */; };
 		817F2959F06F4D2582DC6756 /* Nuosu SIL.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 82A5668C02FD46AF9F627EB6 /* Nuosu SIL.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8214585707664372967A3CFB /* antagobd.otf in Resources */ = {isa = PBXBuildFile; fileRef = A3F387B95E9C468E89380E3B /* antagobd.otf */; };
@@ -25,6 +24,7 @@
 		91838237883248539B590ECE /* antagolt.otf in Resources */ = {isa = PBXBuildFile; fileRef = D198655F40214BF58FAB7732 /* antagolt.otf */; };
 		9312D8D861FC47B09D3CAA5A /* DuffyScript_Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7D3DF4263D5A423BB4E89615 /* DuffyScript_Bold.otf */; };
 		B4041BF4B224452799AEEB5A /* DuffyScript_DemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A0FBD42D99D741D8895C47D8 /* DuffyScript_DemiBold.otf */; };
+		BB6115AACD709D4B331CEE04 /* libPods-SweetDreams-SweetDreamsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FC2A6C8614A1DC66E1D14C8 /* libPods-SweetDreams-SweetDreamsTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,11 +51,10 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SweetDreams/main.m; sourceTree = "<group>"; };
 		276F8CB864494676A96876E6 /* AntagometricaBT-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AntagometricaBT-Regular.ttf"; path = "../assets/fonts/AntagometricaBT-Regular.ttf"; sourceTree = "<group>"; };
 		2933DF6EA2B54F808A885318 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		322C1B18A9FCB95505082C1A /* Pods-SweetDreams.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SweetDreams.debug.xcconfig"; path = "Target Support Files/Pods-SweetDreams/Pods-SweetDreams.debug.xcconfig"; sourceTree = "<group>"; };
 		32F2D72212674E74A01CD8E2 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		3ACBF35C352C4E37A5E43201 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
-		40895545E8610236F62F99BE /* Pods-SweetDreams.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SweetDreams.release.xcconfig"; path = "Target Support Files/Pods-SweetDreams/Pods-SweetDreams.release.xcconfig"; sourceTree = "<group>"; };
-		43C1D62386D2BE115F46B1E5 /* Pods-SweetDreams-SweetDreamsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SweetDreams-SweetDreamsTests.release.xcconfig"; path = "Target Support Files/Pods-SweetDreams-SweetDreamsTests/Pods-SweetDreams-SweetDreamsTests.release.xcconfig"; sourceTree = "<group>"; };
-		6D73EF2640B108B2EFED62D8 /* Pods-SweetDreams.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SweetDreams.debug.xcconfig"; path = "Target Support Files/Pods-SweetDreams/Pods-SweetDreams.debug.xcconfig"; sourceTree = "<group>"; };
+		3C93C88181120E9E93F5A6CE /* Pods-SweetDreams.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SweetDreams.release.xcconfig"; path = "Target Support Files/Pods-SweetDreams/Pods-SweetDreams.release.xcconfig"; sourceTree = "<group>"; };
 		6DAFC9F9B0C14A0EA7FA0598 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		722B15006F254D57866967AA /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		736AFC21385F4EB6ACDCFBDD /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
@@ -67,20 +66,21 @@
 		84F8E49A28893CB000AABB25 /* SweetDreams.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SweetDreams.entitlements; path = SweetDreams/SweetDreams.entitlements; sourceTree = "<group>"; };
 		84F8E49B28893CB100AABB25 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		84F8E49D28893CCF00AABB25 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
-		95B212E3177BB7D1F8DFF5FD /* Pods-SweetDreams-SweetDreamsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SweetDreams-SweetDreamsTests.debug.xcconfig"; path = "Target Support Files/Pods-SweetDreams-SweetDreamsTests/Pods-SweetDreams-SweetDreamsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		966DC823B07049828B39710A /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		9FC2A6C8614A1DC66E1D14C8 /* libPods-SweetDreams-SweetDreamsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SweetDreams-SweetDreamsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0FBD42D99D741D8895C47D8 /* DuffyScript_DemiBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = DuffyScript_DemiBold.otf; path = ../assets/fonts/DuffyScript_DemiBold.otf; sourceTree = "<group>"; };
 		A3F387B95E9C468E89380E3B /* antagobd.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = antagobd.otf; path = ../assets/fonts/antagobd.otf; sourceTree = "<group>"; };
+		A7CA12A61232A8AB4572EE57 /* Pods-SweetDreams-SweetDreamsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SweetDreams-SweetDreamsTests.release.xcconfig"; path = "Target Support Files/Pods-SweetDreams-SweetDreamsTests/Pods-SweetDreams-SweetDreamsTests.release.xcconfig"; sourceTree = "<group>"; };
+		AB25F1446D0116B706C88423 /* libPods-SweetDreams.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SweetDreams.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE230FF2B22E410ABDF8E5C0 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		AF52831FE9574181A2EEBD28 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		B27871633512F81762D2006E /* Pods-SweetDreams-SweetDreamsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SweetDreams-SweetDreamsTests.debug.xcconfig"; path = "Target Support Files/Pods-SweetDreams-SweetDreamsTests/Pods-SweetDreams-SweetDreamsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B8FF7BCC33F0433CA446A89E /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		D198655F40214BF58FAB7732 /* antagolt.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = antagolt.otf; path = ../assets/fonts/antagolt.otf; sourceTree = "<group>"; };
-		D1AD1C6F04236031D56F87F9 /* libPods-SweetDreams.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SweetDreams.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E25B965799364F5EBFC829A1 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		E52D1DEAF5E34407AD6596B3 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		ECF17703619B4A51A7040041 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F0E048058F97FC9B82EF9B33 /* libPods-SweetDreams-SweetDreamsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SweetDreams-SweetDreamsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3E7BE565B58408A857B6F5F /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		F639432EEE674EB4999DE80B /* AntagometricaBT-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AntagometricaBT-Bold.ttf"; path = "../assets/fonts/AntagometricaBT-Bold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				751129FA4D89A79AF5EDAD8B /* libPods-SweetDreams-SweetDreamsTests.a in Frameworks */,
+				BB6115AACD709D4B331CEE04 /* libPods-SweetDreams-SweetDreamsTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,7 +100,7 @@
 			files = (
 				84F8E49C28893CB100AABB25 /* ExternalAccessory.framework in Frameworks */,
 				84F8E49E28893CCF00AABB25 /* NetworkExtension.framework in Frameworks */,
-				186B2CBD338476E272986ED9 /* libPods-SweetDreams.a in Frameworks */,
+				490232F7E39FDEF567F775FC /* libPods-SweetDreams.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,8 +144,8 @@
 				84F8E49D28893CCF00AABB25 /* NetworkExtension.framework */,
 				84F8E49B28893CB100AABB25 /* ExternalAccessory.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				D1AD1C6F04236031D56F87F9 /* libPods-SweetDreams.a */,
-				F0E048058F97FC9B82EF9B33 /* libPods-SweetDreams-SweetDreamsTests.a */,
+				AB25F1446D0116B706C88423 /* libPods-SweetDreams.a */,
+				9FC2A6C8614A1DC66E1D14C8 /* libPods-SweetDreams-SweetDreamsTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -186,10 +186,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6D73EF2640B108B2EFED62D8 /* Pods-SweetDreams.debug.xcconfig */,
-				40895545E8610236F62F99BE /* Pods-SweetDreams.release.xcconfig */,
-				95B212E3177BB7D1F8DFF5FD /* Pods-SweetDreams-SweetDreamsTests.debug.xcconfig */,
-				43C1D62386D2BE115F46B1E5 /* Pods-SweetDreams-SweetDreamsTests.release.xcconfig */,
+				322C1B18A9FCB95505082C1A /* Pods-SweetDreams.debug.xcconfig */,
+				3C93C88181120E9E93F5A6CE /* Pods-SweetDreams.release.xcconfig */,
+				B27871633512F81762D2006E /* Pods-SweetDreams-SweetDreamsTests.debug.xcconfig */,
+				A7CA12A61232A8AB4572EE57 /* Pods-SweetDreams-SweetDreamsTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -232,12 +232,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SweetDreamsTests" */;
 			buildPhases = (
-				991082A58BEA8C4DD0D0E60B /* [CP] Check Pods Manifest.lock */,
+				375BED1F706BD574C8AC3A85 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				F4FA1BA0BE4C095C264317D2 /* [CP] Embed Pods Frameworks */,
-				4121267126A621B8C633E961 /* [CP] Copy Pods Resources */,
+				7D52ED2B37080A108BFA4CEA /* [CP] Embed Pods Frameworks */,
+				DFC63030543FF1DB5D6AD60A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -253,14 +253,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SweetDreams" */;
 			buildPhases = (
-				7FD3ABEA24E8DCFCC1DCB747 /* [CP] Check Pods Manifest.lock */,
+				949E839E4CB42E11278DBA08 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				3F1EB22E9D887F21F927D470 /* [CP] Embed Pods Frameworks */,
-				12E46869D3443A8B73885E35 /* [CP] Copy Pods Resources */,
+				7E75FDC426C15059D4EBCE16 /* [CP] Embed Pods Frameworks */,
+				420C6DFF783143470AD7268C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -350,80 +350,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		12E46869D3443A8B73885E35 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SweetDreams/Pods-SweetDreams-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SweetDreams/Pods-SweetDreams-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SweetDreams/Pods-SweetDreams-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3F1EB22E9D887F21F927D470 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SweetDreams/Pods-SweetDreams-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SweetDreams/Pods-SweetDreams-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SweetDreams/Pods-SweetDreams-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4121267126A621B8C633E961 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SweetDreams-SweetDreamsTests/Pods-SweetDreams-SweetDreamsTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SweetDreams-SweetDreamsTests/Pods-SweetDreams-SweetDreamsTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SweetDreams-SweetDreamsTests/Pods-SweetDreams-SweetDreamsTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7FD3ABEA24E8DCFCC1DCB747 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SweetDreams-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		991082A58BEA8C4DD0D0E60B /* [CP] Check Pods Manifest.lock */ = {
+		375BED1F706BD574C8AC3A85 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -445,7 +372,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F4FA1BA0BE4C095C264317D2 /* [CP] Embed Pods Frameworks */ = {
+		420C6DFF783143470AD7268C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SweetDreams/Pods-SweetDreams-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SweetDreams/Pods-SweetDreams-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SweetDreams/Pods-SweetDreams-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7D52ED2B37080A108BFA4CEA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -460,6 +404,62 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SweetDreams-SweetDreamsTests/Pods-SweetDreams-SweetDreamsTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7E75FDC426C15059D4EBCE16 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SweetDreams/Pods-SweetDreams-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SweetDreams/Pods-SweetDreams-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SweetDreams/Pods-SweetDreams-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		949E839E4CB42E11278DBA08 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SweetDreams-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DFC63030543FF1DB5D6AD60A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SweetDreams-SweetDreamsTests/Pods-SweetDreams-SweetDreamsTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SweetDreams-SweetDreamsTests/Pods-SweetDreams-SweetDreamsTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SweetDreams-SweetDreamsTests/Pods-SweetDreams-SweetDreamsTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -514,7 +514,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 95B212E3177BB7D1F8DFF5FD /* Pods-SweetDreams-SweetDreamsTests.debug.xcconfig */;
+			baseConfigurationReference = B27871633512F81762D2006E /* Pods-SweetDreams-SweetDreamsTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -541,7 +541,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 43C1D62386D2BE115F46B1E5 /* Pods-SweetDreams-SweetDreamsTests.release.xcconfig */;
+			baseConfigurationReference = A7CA12A61232A8AB4572EE57 /* Pods-SweetDreams-SweetDreamsTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -565,12 +565,12 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6D73EF2640B108B2EFED62D8 /* Pods-SweetDreams.debug.xcconfig */;
+			baseConfigurationReference = 322C1B18A9FCB95505082C1A /* Pods-SweetDreams.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SweetDreams/SweetDreams.entitlements;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = JH7TL6C3VF;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = SweetDreams/Info.plist;
@@ -593,12 +593,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 40895545E8610236F62F99BE /* Pods-SweetDreams.release.xcconfig */;
+			baseConfigurationReference = 3C93C88181120E9E93F5A6CE /* Pods-SweetDreams.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SweetDreams/SweetDreams.entitlements;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = JH7TL6C3VF;
 				INFOPLIST_FILE = SweetDreams/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

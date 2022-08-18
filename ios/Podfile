@@ -23,6 +23,8 @@ target 'SweetDreams' do
 
   pod 'RNWifi', :path => '../node_modules/react-native-wifi-reborn'
 
+  pod 'RNSha256', :path => '../node_modules/react-native-sha256'
+
   target 'SweetDreamsTests' do
     inherit! :complete
     # Pods for testing
