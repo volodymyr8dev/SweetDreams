@@ -1,13 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text, Image, View, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Account} from '../../screens/Account/Account';
 import {Settings} from '../../screens/Account/SettingsAccount/Settings';
-import childActive from '../../assets/images/controlChild/childActive.png';
-import personIcon from '../../assets/images/homeIcon/person.png';
-import graphActive from '../../assets/images/graph/Group1.png';
-import graphGroup from '../../assets/images/graph/graphGroup.png';
-import graphUnActive from '../../assets/images/graph/graphUnActive.png';
 import document from '../../assets/images/documents/document1.png';
 import documentActive from '../../assets/images/documents/documentActive.png';
 import location from '../../assets/images/homeIcon/location.png';
@@ -30,7 +25,10 @@ import SettingsAccount from '../../assets/images/svg/Settings';
 import SettingsActive from '../../assets/images/svg/SettingsActive';
 import plus from '../../assets/images/documents/plus.png';
 import search from '../../assets/images/documents/search.png';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import ConfirmConnection from '../../screens/Account/ConfirmConnection';
+import {RootState} from '../../redux/configureStore';
+import {useNavigation} from '@react-navigation/native';
 
 const iconGr = (focused, iconActive, icon, size = 30) => {
   return (
@@ -157,6 +155,12 @@ const customTabBarStyle = {
   // style: {backgroundColor: '#707070'},
 };
 export const MyTabs = () => {
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const navigation = useNavigation<Nav>();
+  useEffect(() => {
+    navigation.navigate('Accountt');
+  }, []);
+  console.log('accountsaccountsadsv', user.accounts[0].device);
   return (
     <Tab.Navigator tabBarOptions={customTabBarStyle}>
       <Tab.Screen
@@ -179,8 +183,10 @@ export const MyTabs = () => {
         options={navigationDocument}
       />
       <Tab.Screen
-        name="account"
-        component={Account}
+        name="Accountt"
+        component={
+          user.accounts[0].device === null ? ConfirmConnection : Account
+        }
         options={{
           headerShown: false,
           tabBarLabel: '',

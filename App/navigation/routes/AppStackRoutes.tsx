@@ -102,7 +102,8 @@ export const navigationOptions = navigation => ({
   // headerLeft: () => null,
   headerLeft: () => {
     const params = navigation.route?.params;
-    return ( params?.connectionStep !== 0 &&
+    return (
+      params?.connectionStep !== 0 &&
       !params?.hide && (
         <TouchableOpacity onPress={() => navigation.navigation.goBack()}>
           <Image style={{width: 12.3, height: 18.86}} source={backButton} />
@@ -120,7 +121,7 @@ export const navigationOptions = navigation => ({
               // navigation.navigation.navigate(
               //   `conectionStep${params?.connectionStep + 1}`,
               // );
-              navigation.navigation.navigate('Account');
+              navigation.navigation.navigate('Accountt');
             }}>
             <Text
               style={{
@@ -222,11 +223,11 @@ const AppStackRoutes = () => {
       .then(async ({data}) => {
         console.log('all information about user', data);
         dispatch(setUserInformation(data.user));
+        navigation.navigate('account');
       })
       .catch(err => {
         console.log('what error', err.response.data);
       });
-    navigation.navigate('Account');
   }
   return (
     <Stack.Navigator
@@ -319,6 +320,11 @@ const AppStackRoutes = () => {
         name="account"
         component={MyTabs}
         options={{headerShown: false, contentStyle: {backgroundColor: '#000'}}}
+      />
+      <Stack.Screen
+        name="ConfirmConnection"
+        component={ConfirmConnection}
+        options={{headerShown: false}}
       />
       {DiaryRoutes()}
       {SettingsRoutes()}

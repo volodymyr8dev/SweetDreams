@@ -38,7 +38,7 @@ import PulsingImage from '../../assets/images/svg/Pulsing';
 import TemperatureImage from '../../assets/images/svg/Temperature';
 import PickerImage from '../../assets/images/svg/Picker';
 import {setCarouselItem} from '../../redux/slice/SettingsSlice';
-import {RootState} from "../../redux/configureStore";
+import {RootState} from '../../redux/configureStore';
 
 const {width: windowWidth} = Dimensions.get('window');
 
@@ -120,20 +120,21 @@ export default React.memo(function ShopCarousel(props) {
       ],
     },
   ]);
-  const [copyData, setCopyData] = useState([{
-    uri: <TemperatureAccount style={{}} />,
-    title: 'temperature',
-    content: 'Thermometer',
-    backUri: BackgroundTemperature,
-    items: [
-      {
-        img: <TemperatureImage style={{marginRight: 5}} />,
-        imgActive: <TemperatureWhiteImage style={{marginRight: 5}} />,
-        text: 'Temperature',
-        active: false,
-      },
-    ],
-  },
+  const [copyData, setCopyData] = useState([
+    {
+      uri: <TemperatureAccount style={{}} />,
+      title: 'temperature',
+      content: 'Thermometer',
+      backUri: BackgroundTemperature,
+      items: [
+        {
+          img: <TemperatureImage style={{marginRight: 5}} />,
+          imgActive: <TemperatureWhiteImage style={{marginRight: 5}} />,
+          text: 'Temperature',
+          active: false,
+        },
+      ],
+    },
     {
       uri: <Sun style={{}} />,
       title: 'light show',
@@ -151,7 +152,7 @@ export default React.memo(function ShopCarousel(props) {
           imgActive: <NorthernImage style={{marginRight: 5}} />,
           text: 'Northern lights',
           active: false,
-        }
+        },
       ],
     },
     {
@@ -181,7 +182,7 @@ export default React.memo(function ShopCarousel(props) {
         },
       ],
     },
-  ])
+  ]);
   const {power} = useSelector(({power}) => power);
   const carouselRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
@@ -200,7 +201,7 @@ export default React.memo(function ShopCarousel(props) {
       // props.setCarouselItem(item.text);
       dispatch(setCarouselItem(item.text));
       // setItemText(item.text);
-      let array =  [...data];
+      let array = [...data];
       array.map(it => {
         return it.items.map(child => (child.active = false));
       });
@@ -236,71 +237,70 @@ export default React.memo(function ShopCarousel(props) {
           <View style={styles.lowerContainer}>
             <Text style={styles.titleText}>{title}</Text>
             {items.map((item, indexChild) => {
-              console.log(item)
-              if(user.accounts[0].is_deluxe === 1){
+              console.log(item);
+              if (user.accounts[0].is_deluxe === 1) {
                 return (
+                  <TouchableOpacity
+                    disabled={index !== currentIndex || !power}
+                    onPress={() => handleActiveItem(item, indexChild)}
+                    style={[
+                      styles.card,
+                      {
+                        backgroundColor: power
+                          ? item.active
+                            ? '#72D3DB'
+                            : 'rgba(255,255,255,0.2)'
+                          : 'rgba(255,255,255,0.2)',
+                      },
+                    ]}>
+                    {item.active ? item.img : item.imgActive}
+                    <Text
+                      style={[
+                        styles.contentText,
+                        {
+                          color: power
+                            ? item.active
+                              ? '#000'
+                              : 'rgba(255,255,255,1)'
+                            : 'rgba(255,255,255,1)',
+                        },
+                      ]}>
+                      {item.text}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              } else {
+                if (item.text === 'Pulsing' || item.text === 'Colour picker') {
+                } else {
+                  return (
                     <TouchableOpacity
-                        disabled={index !== currentIndex || !power}
-                        onPress={() => handleActiveItem(item, indexChild)}
-                        style={[
-                          styles.card,
-                          {
-                            backgroundColor: power
-                                ? item.active
-                                    ? '#72D3DB'
-                                    : 'rgba(255,255,255,0.2)'
-                                : 'rgba(255,255,255,0.2)',
-                          },
-                        ]}>
+                      disabled={index !== currentIndex || !power}
+                      onPress={() => handleActiveItem(item, indexChild)}
+                      style={[
+                        styles.card,
+                        {
+                          backgroundColor: power
+                            ? item.active
+                              ? '#72D3DB'
+                              : 'rgba(255,255,255,0.2)'
+                            : 'rgba(255,255,255,0.2)',
+                        },
+                      ]}>
                       {item.active ? item.img : item.imgActive}
                       <Text
-                          style={[
-                            styles.contentText,
-                            {
-                              color: power
-                                  ? item.active
-                                      ? '#000'
-                                      : 'rgba(255,255,255,1)'
-                                  : 'rgba(255,255,255,1)',
-                            },
-                          ]}>
+                        style={[
+                          styles.contentText,
+                          {
+                            color: power
+                              ? item.active
+                                ? '#000'
+                                : 'rgba(255,255,255,1)'
+                              : 'rgba(255,255,255,1)',
+                          },
+                        ]}>
                         {item.text}
                       </Text>
                     </TouchableOpacity>
-                );
-              } else{
-                if(item.text === 'Pulsing' || item.text === 'Colour picker'){
-
-                }else{
-                  return (
-                      <TouchableOpacity
-                          disabled={index !== currentIndex || !power}
-                          onPress={() => handleActiveItem(item, indexChild)}
-                          style={[
-                            styles.card,
-                            {
-                              backgroundColor: power
-                                  ? item.active
-                                      ? '#72D3DB'
-                                      : 'rgba(255,255,255,0.2)'
-                                  : 'rgba(255,255,255,0.2)',
-                            },
-                          ]}>
-                        {item.active ? item.img : item.imgActive}
-                        <Text
-                            style={[
-                              styles.contentText,
-                              {
-                                color: power
-                                    ? item.active
-                                        ? '#000'
-                                        : 'rgba(255,255,255,1)'
-                                    : 'rgba(255,255,255,1)',
-                              },
-                            ]}>
-                          {item.text}
-                        </Text>
-                      </TouchableOpacity>
                   );
                 }
               }
@@ -319,10 +319,11 @@ export default React.memo(function ShopCarousel(props) {
         data={data}
         renderItem={renderItem}
         itemWidth={0.4 * windowWidth}
-        inActiveOpacity={0.4}
+        inActiveOpacity={0.6}
         containerWidth={windowWidth - 20}
         onScrollEnd={handleCarouselScrollEnd}
         ref={carouselRef}
+        minScrollDistance={10}
       />
       <View style={{alignItems: 'center'}}>
         <SimplePaginationDot currentIndex={currentIndex} length={data.length} />

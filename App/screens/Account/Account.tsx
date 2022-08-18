@@ -146,16 +146,22 @@ export const Account = () => {
                 alignItems: 'center',
               }}>
               <View
-                style={user.accounts[0].is_deluxe === 0 ? {flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                  width: 120,
-                left: '17%'} :{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                  width: 120,
-                }}>
+                style={
+                  user.accounts[0].is_deluxe === 0
+                    ? {
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        width: 120,
+                        left: '17%',
+                      }
+                    : {
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        width: 120,
+                      }
+                }>
                 <Thermometer />
                 {!isActive ? (
                   <Text
@@ -180,7 +186,14 @@ export const Account = () => {
                 )}
               </View>
               <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                <Image style={user.accounts[0].is_deluxe === 0 ? {bottom: 1000} : {marginHorizontal: 15}} source={line} />
+                <Image
+                  style={
+                    user.accounts[0].is_deluxe === 0
+                      ? {bottom: 1000}
+                      : {marginHorizontal: 15}
+                  }
+                  source={line}
+                />
               </View>
               <View
                 style={{
