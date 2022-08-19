@@ -26,6 +26,7 @@ export const ConnectHomeWifi = async data => {
   const body = {
     data: [...data],
   };
+  
   console.log(body);
 
   return await axiosInstance2.post('', body);

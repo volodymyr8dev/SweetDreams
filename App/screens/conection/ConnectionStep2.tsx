@@ -23,8 +23,6 @@ import {RootState} from '../../redux/configureStore';
 import {sha256} from 'react-native-sha256';
 import {setDeviceIdSerialNumber} from '../../redux/slice/slice';
 
-
-
 export const ConnectionStep2 = () => {
   const {user} = useSelector(({account}: RootState) => account.userInformation);
   const [currentPosition, setCurrentPosition] = useState(1);
@@ -89,6 +87,12 @@ export const ConnectionStep2 = () => {
         },
         rej => {
           setLoader1(false);
+
+          navigation.navigate('conectionStep3', {
+            title: 'connect misty',
+            serial_number: `${serialNumber}`,
+          });
+
           console.log('Connection failed!', rej);
           Alert.alert('Connection failed!');
         },

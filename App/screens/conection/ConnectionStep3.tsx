@@ -34,6 +34,7 @@ export const ConnectionStep3 = () => {
   const [wifiPassword, setWififPassword] = useState('');
   const [randomString, setRandomString] = useState('');
   const [randomString16, setRandomString16] = useState('');
+  const [authCert, setAuthCert] = useState('');
   const {user} = useSelector(({account}: RootState) => account.userInformation);
   const dispatch = useDispatch();
 
@@ -47,10 +48,11 @@ export const ConnectionStep3 = () => {
     setLoader(true);
     DeviceCertificate()
       .then(res => {
-        console.log(res);
+        console.log(res.data.data);
         setLoader(false);
         generateRandomString36(36);
         generateRandomString16(16);
+        setAuthCert(res.data.data)
       })
       .catch(rej => {
         console.log(rej);
@@ -79,16 +81,6 @@ export const ConnectionStep3 = () => {
     return setRandomString16(randomString16);
   };
 
-  console.log(randomString, 'randomStrin2gg36');
-  console.log(randomString16, 'randomString16');
-
-  // const handleGoToStep2 = () => {
-  //   setLoader(true);
-  //   setTimeout(() => {
-  //     setLoader(false);
-  //   }, 1000);
-  //   navigation.navigate('account');
-  // };
   const wifiConnect = () => {
     const arrayJson = [
       {'Wi-Fi': 'SSID', name: `${wifiName}`},
@@ -96,24 +88,20 @@ export const ConnectionStep3 = () => {
       {MQTT: 'server', IPv4: '167.172.50.187'},
       {MQTT: 'server', host: 'mistythecloudserver.com'},
       {MQTT: 'server', port: '8883'},
+      {MQTT: 'server', authcert: `${authCert}`},
       {MQTT: 'server', authpass: `${randomString}`},
       {MQTT: 'server', mqttUser: `${randomString16}`},
     ];
-    ConnectHomeWifi(arrayJson)
-      .then(res => {
-        console.log(res);
-        // “MDIxe-12345678”
-      })
-      .catch(rej => {
-        console.log(rej);
-      });
-    ConnectDevice(
-      user.accounts[0].id,
-      serialNumber,
-      randomString,
-      randomString16,
-    )
-      .then(res => {
+
+    ConnectHomeWifi(arrayJson).then(res => {
+      console.log(res);
+
+      ConnectDevice(
+        user.accounts[0].id,
+        serialNumber,
+        randomString,
+        randomString16,
+      ).then(res => {
         console.log(res);
         console.log(user.accounts);
         dispatch(setDeviceIdSerialNumber(res.data));
@@ -126,6 +114,10 @@ export const ConnectionStep3 = () => {
       .catch(rej => {
         console.log(rej);
       });
+    })
+    .catch(rej => {
+      console.log(rej);
+    });
   };
 
   const ConnectToHomeNetwork = async () => {
@@ -204,6 +196,7 @@ export const ConnectionStep3 = () => {
             hidden={true}
             value={wifiPassword}
             onChangeText={password => setWififPassword(password)}
+            secure={true}
           />
           <View style={{marginTop: 15}}>
             <Text style={styles.answer}>
@@ -216,16 +209,7 @@ export const ConnectionStep3 = () => {
               of the misty unit.
             </Text>
           </View>
-          {/*<TouchableOpacity*/}
-          {/*  onPress={ConnectToNetwork}*/}
-          {/*  style={{marginLeft: 100, width: 80, height: 20, marginBottom: 10}}>*/}
-          {/*  <Text style={{color: '#fff'}}>1010100101010100</Text>*/}
-          {/*</TouchableOpacity>*/}
         </View>
-
-        {/*<TouchableOpacity onPress={handleGoToStep2}>*/}
-        {/*  <Text style={{color: '#fff'}}>Skip this step</Text>*/}
-        {/*</TouchableOpacity>*/}
 
         <TouchableOpacity
           onPress={wifiConnect}
@@ -238,9 +222,8 @@ export const ConnectionStep3 = () => {
       {loaderDiscconect && (
         <Loader text={'Disconneting from the device network'} />
       )}
-      {loader2 && <Loader text={'Pilling the certificates'} />}
 
-      {/* <TouchableOpacity onPress={handleGoToStep2} style={styles.buttonDown}>
+      <TouchableOpacity onPress={wifiConnect} style={styles.buttonDown}>
         <View>
           <Text
             style={{
@@ -252,7 +235,7 @@ export const ConnectionStep3 = () => {
             next
           </Text>
         </View>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </>
   );
 };
