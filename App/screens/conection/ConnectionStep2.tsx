@@ -33,8 +33,6 @@ export const ConnectionStep2 = () => {
   const [loader1, setLoader1] = useState(false);
   const navigation = useNavigation<Nav>();
   const [salt, setSalt] = useState('');
-  const [newSaltUpperSha, setNewSaltUpperSha] = useState('');
-  const [mistySerialNumber, setMistySerialNumber] = useState('');
   // const dispatch = useDispatch();
 
   const handleGoToStep3 = () => {
@@ -45,18 +43,17 @@ export const ConnectionStep2 = () => {
       GetSalt('misty') .then(res => {
         console.log('Wi-Fi Salt', res.data.data.salt);
 
-        sha256(res.data.data.salt).then(hash => {
-          console.log('Hash 1', hash);
-          setNewSaltUpperSha(hash.toUpperCase());
-        });
+        sha256(res.data.data.salt).then(hash1 => {
+          console.log('Hash 1', hash1);
 
-        sha256(`Misty-${serialNumber}`).then(hash => {
-          console.log('Hash 2', hash);
-          setMistySerialNumber(hash.toUpperCase());
-        });
+          sha256(`Misty-${serialNumber}`).then(hash2 => {
+            console.log('Hash 2', hash2);
 
-        ConnectToNetwork();
-        setLoader(false);
+            setLoader(false);
+
+            ConnectToNetwork(hash1.toUpperCase(), hash2.toUpperCase());
+          });
+        });
       })
       .catch(rej => {
         setLoader(false);
@@ -68,13 +65,13 @@ export const ConnectionStep2 = () => {
 
   // disconnectFromSSID(ssid: string): Promise
 
-  const ConnectToNetwork = async () => {
+  const ConnectToNetwork = async (newSaltUpperSha, mistySerialNumberSha) => {
     setLoader1(true);
 
-    sha256(`${newSaltUpperSha}${mistySerialNumber}`).then(hash => {
+    sha256(`${newSaltUpperSha}${mistySerialNumberSha}`).then(hash => {
       let passphrase = hash.toUpperCase().slice(0, 32)
 
-      console.log('PASSPHRASE HASH', `${newSaltUpperSha}${mistySerialNumber}`, '->', hash);
+      console.log('PASSPHRASE HASH', `${newSaltUpperSha}${mistySerialNumberSha}`, '->', hash);
       console.log('Connecting to Wi-Fi', `Misty-${serialNumber}`, `${passphrase}`)
     
       WifiManager.connectToProtectedSSID(
@@ -170,7 +167,7 @@ export const ConnectionStep2 = () => {
         </View>
       </TouchableOpacity>
       {loader && (
-        <Loader text={`connecting your phone ${'\n'}to your misty unit`} />
+        <Loader text={`Connecting your phone ${'\n'}to your misty unit`} />
       )}
       {loader1 && (
         <Loader text={'Connecting to the device'} />
