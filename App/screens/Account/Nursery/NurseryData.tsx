@@ -17,7 +17,7 @@ import {
   NurseryTemperatureApi,
   NurseryTemperatureGetApi,
 } from '../../../api/Nursery/Nursery';
-import {setNerseryId} from '../../../redux/slice/slice';
+import {setNurseryId} from '../../../redux/slice/slice';
 import {ContentNavigation} from './ContentNavigation';
 import moment from 'moment';
 import {RootState} from '../../../redux/interfaceRootState';
@@ -147,10 +147,10 @@ export const NurseryData = () => {
       }else{
       NurseryTemperatureApi(accounts[0].id, dataStart, dataEnd)
         .then(({data}) => {
-          console.log('get nerseryId', data);
+          console.log('get nurseryId', data);
           setId(data[1].id);
           setDiaries(data[0].diaries);
-          dispatch(setNerseryId(data[1].id));
+          dispatch(setNurseryId(data[1].id));
           NurseryTemperatureGetApi(
             accounts[0].id,
             data[1].id,
@@ -175,27 +175,6 @@ export const NurseryData = () => {
     }
   }, [activeTime, accounts[0].id]);
 
-  // useEffect(() => {
-  //   getToken();
-  //   if (accounts[0].id) {
-  //     console.log('id', accounts[0].id);
-  //     NurseryTemperatureApi(accounts[0].id, start, end)
-  //       .then(({data}) => {
-  //         console.log('get nerseryId', data);
-  //         dispatch(setNerseryId(data[1].id));
-  //         NurseryTemperatureGetApi(accounts[0].id, data[1].id, start, end)
-  //           .then(({data}) => {
-  //             console.log('finished', data);
-  //           })
-  //           .catch(err => {
-  //             console.log('finised error', err);
-  //           });
-  //       })
-  //       .catch(err => {
-  //         console.log('ERR', err);
-  //       });
-  //   }
-  // }, [accounts[0].id]);
   const handleChangeTime = time => {
     console.log(time);
     setActiveTime(time);

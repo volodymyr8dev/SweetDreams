@@ -13,7 +13,6 @@ export const AlertComp = (
     {
       text: `${buttonTextLeft}`,
       onPress: () => {
-        console.log('wwww');
         if (handle == 'delete') {
           navigation &&
             deleteAccount()

@@ -7,7 +7,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import alertUp from '../../assets/images/nersery/alertUp.png';
+import alertUp from '../../assets/images/nursery/alertUp.png';
 import {COLORS} from '../../styles/Constants';
 import {BarChart} from 'react-native-chart-kit';
 

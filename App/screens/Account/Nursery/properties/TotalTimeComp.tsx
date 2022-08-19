@@ -21,9 +21,9 @@ import {Blog} from '../../../../components/Touchable/TouchableInput';
 import {BarChart} from 'react-native-chart-kit';
 
 //assets
-import sleepDiary from '../../../../assets/images/nersery/sleepDiary.png';
-import arrowLeft from '../../../../assets/images/nersery/arrowLeft.png';
-import AlertData from '../../../../assets/images/nersery/alertData.png';
+import sleepDiary from '../../../../assets/images/nursery/sleepDiary.png';
+import arrowLeft from '../../../../assets/images/nursery/arrowLeft.png';
+import AlertData from '../../../../assets/images/nursery/alertData.png';
 import {NurseryGetChartsApi} from '../../../../api/Nursery/Nursery';
 import {array, object} from 'yup/lib/locale';
 import {useSelector} from 'react-redux';
@@ -78,7 +78,7 @@ export const TotalTimeComp = ({route}) => {
   const [end, setEnd] = useState(moment(date).format('YYYY-MM-DD'));
   const [average, setAverage] = useState();
   const [total, setTotal] = useState();
-  const nerseryId = useSelector(({account}:RootState) => account.nersery.id);
+  const nurseryId = useSelector(({account}:RootState) => account.nursery.id);
 
   useEffect(() => {
     setStart(moment(start).format('YYYY-MM-DD'));
@@ -97,10 +97,10 @@ export const TotalTimeComp = ({route}) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        if (nerseryId && start && end) {
+        if (nurseryId && start && end) {
           const {data} = await NurseryGetChartsApi(
             route.params.childId,
-            nerseryId,
+            nurseryId,
             start,
             end,
           );
@@ -129,7 +129,7 @@ export const TotalTimeComp = ({route}) => {
     try {
       const {data} = await NurseryGetChartsApi(
         route.params.childId,
-        nerseryId,
+        nurseryId,
         start,
         end,
       );

@@ -19,7 +19,7 @@ export interface RootState {
         };
       };
     };
-    nersery: {
+    nursery: {
       id: string | number;
     };
   };

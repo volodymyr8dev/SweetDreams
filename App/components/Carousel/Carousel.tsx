@@ -215,6 +215,7 @@ export default React.memo(function ShopCarousel(props) {
       <TouchableOpacity
         disabled={index === currentIndex}
         style={styles.item}
+        
         onPress={() => {
           carouselRef.current.scrollToIndex(index);
           setActiveComponent(index);

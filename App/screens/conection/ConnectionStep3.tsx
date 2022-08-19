@@ -13,11 +13,11 @@ import StepIndicator from 'react-native-step-indicator';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 import {Loader} from '../../components/Loader/Loader';
-import NetInfo from '@react-native-community/netinfo';
 import {ConnectDevice, PublishConfiguration} from '../../api/Device/Device';
+import {getProfile} from '../../api/Profile/Profile';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/configureStore';
-import {setDeviceIdSerialNumber} from '../../redux/slice/slice';
+import {setUserInformation, setDeviceIdSerialNumber} from '../../redux/slice/slice';
 
 export const ConnectionStep3 = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
@@ -36,6 +36,7 @@ export const ConnectionStep3 = () => {
   const [loaderDisconnectFromDeviceNetwork, setLoaderDisconnectFromDeviceNetwork] = useState(false);
   const [loaderConnectiongToAHomeNetwork,   setLoaderConnectiongToAHomeNetwork]   = useState(false);
   const [loaderAddingDeviceToAccount,       setLoaderAddingDeviceToAccount]       = useState(false);
+  const [loaderRetrievingProfileData,       setLoaderRetrievingProfileData]       = useState(false);
   
   const [wifiName,     setWifiName]      = useState(homeNetworkSSID);
   const [wifiPassword, setWififPassword] = useState('');
@@ -102,11 +103,31 @@ export const ConnectionStep3 = () => {
                     authPassword,
                   ).then(res => {
                     console.log('[DEVICE CONFIGURATION] Assigned device to the account', res);
+
                     dispatch(setDeviceIdSerialNumber(res.data));
 
                     setLoaderAddingDeviceToAccount(false);
 
-                    navigation.navigate('Account');
+                    setTimeout(function() {
+                      setLoaderRetrievingProfileData(true);
+
+                      getProfile().then(res => {
+                        console.log('[DEVICE CONFIGURATION] Retrieve profile data', res);
+
+                        dispatch(setUserInformation(res.data.user));
+
+                        setLoaderRetrievingProfileData(false);
+
+                        navigation.navigate('Account');
+                      })
+                      .catch(rej => {
+                        console.error('[DEVICE CONFIGURATION] Error while trying to retrive the profile data', rej);
+
+                        Alert.alert('There is a problem with retrieving profile data');
+
+                        setLoaderRetrievingProfileData(false);
+                      });
+                    }, 10);
                   })
                   .catch(rej => {
                     console.error('[DEVICE CONFIGURATION] Error while trying to assign device to the account', rej);
@@ -213,6 +234,7 @@ export const ConnectionStep3 = () => {
       {loaderDisconnectFromDeviceNetwork && <Loader text={'Disconnecting from tje device network'} />}
       {loaderConnectiongToAHomeNetwork && <Loader text={'Connecting to a home network'} />}
       {loaderAddingDeviceToAccount && <Loader text={'Saving the device state'} />}
+      {loaderRetrievingProfileData && <Loader text={'Retrieving profile data'} />}
 
       <TouchableOpacity onPress={wifiConnect} style={styles.buttonDown}>
         <View>

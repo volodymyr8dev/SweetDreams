@@ -37,7 +37,7 @@ export const ConnectionStep2 = () => {
       title:             'connect misty',
       serial_number:     `${serialNumber}`,
       certificate:       `${certificate}`,
-      home_network_ssid: `${homeNetworkSSID}`,
+      home_network_ssid: `${homeNetworkSSID}`
     });
   }
 
@@ -101,8 +101,10 @@ export const ConnectionStep2 = () => {
                               console.log('[DEVICE CONFIGURATION] Connected to the device network', res);
             
                               navigation.navigate('conectionStep3', {
-                                title: 'connect misty',
-                                serial_number: `${serialNumber}`,
+                                title:             'connect misty',
+                                serial_number:     `${serialNumber}`,
+                                certificate:       `${certificate}`,
+                                home_network_ssid: `${homeNetworkSSID}`
                               });
                             },
                             rej => {

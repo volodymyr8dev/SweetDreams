@@ -8,10 +8,10 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
-import arrowLeft from '../../../../assets/images/nersery/arrowLeft.png';
-import arrowRight from '../../../../assets/images/nersery/arrowRight.png';
-import sleepDiary from '../../../../assets/images/nersery/sleepDiary.png';
-import alertUp from '../../../../assets/images/nersery/alertUp.png';
+import arrowLeft from '../../../../assets/images/nursery/arrowLeft.png';
+import arrowRight from '../../../../assets/images/nursery/arrowRight.png';
+import sleepDiary from '../../../../assets/images/nursery/sleepDiary.png';
+import alertUp from '../../../../assets/images/nursery/alertUp.png';
 import {
   COLORS,
   time,

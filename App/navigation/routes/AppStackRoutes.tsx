@@ -205,37 +205,42 @@ export const navigationOptions = navigation => ({
 
 const AppStackRoutes = () => {
   const dispatch = useDispatch();
-  let value;
   const navigation = useNavigation();
   const [token, setToken] = useState();
   const Stack = createNativeStackNavigator<registerScreenProp>();
+
   const getToken = async () => {
-    value = await AsyncStorage.getItem('@storage_Key');
+    let value = await AsyncStorage.getItem('@storage_Key');
     setToken(value);
-    console.log('valueeee', value);
-    // navigation.navigate('account');
+    console.log('[ASYNC STORAGE] Token', value);
   };
 
-  useEffect(() => {
-    getToken();
-  }, []);
+  getToken();
+
   if (token) {
-    getProfile()
-      .then(async ({data}) => {
-        console.log('all information about user', data);
-        dispatch(setUserInformation(data.user));
-        navigation.navigate('account');
-      })
-      .catch(err => {
-        console.log('what error', err.response.data);
-      });
+    getProfile().then(res => {
+      dispatch(setUserInformation(res.data.user));
+      navigation.navigate('account');
+    })
+    .catch(err => {
+      console.error('what error', err.response.data);
+      navigation.navigate('Login');
+    });
+  } else {
+    navigation.navigate('Login');
   }
+
   return (
     <Stack.Navigator
       initialRouteName={token ? 'account' : 'Login'}
       screenOptions={{
-        headerShown: false,
+        headerShown: token ? true : false,
       }}>
+      <Stack.Screen
+        name="account"
+        component={MyTabs}
+        options={{headerShown: false, contentStyle: {backgroundColor: '#000'}}}
+      />
       <Stack.Screen
         name="Login"
         component={Login}
@@ -297,11 +302,6 @@ const AppStackRoutes = () => {
         component={ForgotPassword}
         options={forgotPasswordOptions}
       />
-      {/*<Stack.Screen*/}
-      {/*  name="ConfirmConnection"*/}
-      {/*  component={ConfirmConnection}*/}
-      {/*  options={navigationOptions}*/}
-      {/*/>*/}
       <Stack.Screen
         name="ForgotPassword2"
         component={ForgotPassword2}
@@ -316,11 +316,6 @@ const AppStackRoutes = () => {
         name="ForgotPassword3"
         component={ForgotPassword3}
         options={navigationOptions}
-      />
-      <Stack.Screen
-        name="account"
-        component={MyTabs}
-        options={{headerShown: false, contentStyle: {backgroundColor: '#000'}}}
       />
       <Stack.Screen
         name="ConfirmConnection"

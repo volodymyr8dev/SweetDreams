@@ -166,7 +166,7 @@ export const MyTabs = () => {
   const {user} = useSelector(({account}: RootState) => account.userInformation);
   const navigation = useNavigation<Nav>();
   useEffect(() => {
-    navigation.navigate('Accountt');
+    navigation.navigate('Account');
   }, []);
   console.log('accountsaccountsadsv', user.accounts[0].device);
   return (
