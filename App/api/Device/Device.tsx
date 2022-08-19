@@ -15,6 +15,7 @@ export const GetSalt = async type => {
   return await axiosInstance.get(`/api/setup/${type}/wifi-salt`);
 };
 
+
 export const DeviceCertificate = async () => {
   const body = {
     password: 'mistypwd',
