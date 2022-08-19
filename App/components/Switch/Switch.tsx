@@ -1,7 +1,7 @@
 import React from 'react';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {COLORS} from '../../styles/Constants/index';
-import {SettingsDevice} from '../../api/Settings/SettingsApi';
+import {SettingsDevice} from '../../api/Settings/Settings';
 import {useSelector} from 'react-redux';
 import { RootState } from '../../redux/interfaceRootState';
 

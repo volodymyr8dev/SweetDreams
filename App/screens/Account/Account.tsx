@@ -44,7 +44,7 @@ import Sheep from '../../assets/images/svg/Sheep';
 import ArrowRight from '../../assets/images/svg/ArrowRight';
 import ArrowLeft from '../../assets/images/svg/ArrowLeft';
 import Play from '../../assets/images/svg/Play';
-import {getSettingsDevice} from '../../api/Settings/SettingsApi';
+import {getSettingsDevice} from '../../api/Settings/Settings';
 import {RootState} from '../../redux/configureStore';
 import {setAllSettings} from '../../redux/slice/SettingsSlice';
 import AsleepImg from '../../assets/images/cloudImage/Asleep.png';

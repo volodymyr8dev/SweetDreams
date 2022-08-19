@@ -5,7 +5,7 @@ import {CustomInput} from '../../components/CustomInput/CustomInput';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
-import {ChangePassword} from '../../api/ForgotPassword/forgotPassword';
+import {ChangePassword} from '../../api/ForgotPassword/ForgotPassword';
 import checkButton from '../../assets/images/checkButton.png'
 
 export const ForgotPassword3 = () => {

@@ -27,7 +27,7 @@ import {
 import {setLoader} from '../../redux/slice/slice';
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
-import {forgotPassword} from '../../api/ForgotPassword/forgotPassword';
+import {forgotPassword} from '../../api/ForgotPassword/ForgotPassword';
 import {COLORS} from '../../styles/Constants';
 
 export const ForgotPassword = () => {

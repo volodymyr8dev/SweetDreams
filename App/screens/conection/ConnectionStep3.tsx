@@ -1,6 +1,6 @@
-import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import WifiManager from 'react-native-wifi-reborn';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -11,15 +11,10 @@ import {
 } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
-// import serialNumber from '../../images/images/misty-serial-number.png';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 import {Loader} from '../../components/Loader/Loader';
 import NetInfo from '@react-native-community/netinfo';
-import {
-  ConnectDevice,
-  PublishConfiguration,
-  DeviceCertificate,
-} from '../../api/Device/Device';
+import {ConnectDevice, PublishConfiguration} from '../../api/Device/Device';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/configureStore';
 import {setDeviceIdSerialNumber} from '../../redux/slice/slice';
@@ -27,20 +22,23 @@ import {setDeviceIdSerialNumber} from '../../redux/slice/slice';
 export const ConnectionStep3 = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
 
-  const [loaderRetrievingTheCertificates, setLoaderRetrievingTheCertificates] = useState(false);
-  const [loaderPushingTheConfiguration, setPushingTheConfiguration] = useState(false);
-  const [loaderDisconnectFromDeviceNetwork, setLoaderDisconnectFromDeviceNetwork] = useState(false);
-  const [loaderConnectiongToAHomeNetwork, setLoaderConnectiongToAHomeNetwork] = useState(false);
-  const [loaderAddingDeviceToAccount, setLoaderAddingDeviceToAccount] = useState(false);
-  
-  const [wifiName, setWifiName] = useState('');
-  const [wifiPassword, setWififPassword] = useState('');
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
-  const dispatch = useDispatch();
-
+  const dispatch   = useDispatch();
   const navigation = useNavigation();
-  const route = useRoute<any>();
-  const serialNumber = route.params.serial_number;
+  const route      = useRoute<any>();
+
+  const serialNumber    = route.params.serial_number;
+  const certificate     = route.params.certificate;
+  const homeNetworkSSID = route.params.home_network_ssid;
+
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+
+  const [loaderPushingTheConfiguration,     setPushingTheConfiguration]           = useState(false);
+  const [loaderDisconnectFromDeviceNetwork, setLoaderDisconnectFromDeviceNetwork] = useState(false);
+  const [loaderConnectiongToAHomeNetwork,   setLoaderConnectiongToAHomeNetwork]   = useState(false);
+  const [loaderAddingDeviceToAccount,       setLoaderAddingDeviceToAccount]       = useState(false);
+  
+  const [wifiName,     setWifiName]      = useState(homeNetworkSSID);
+  const [wifiPassword, setWififPassword] = useState('');
 
   const generateRandomString = length => {
     const char = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -54,114 +52,95 @@ export const ConnectionStep3 = () => {
   };
 
   const wifiConnect = () => {
-    setLoaderRetrievingTheCertificates(true);
+    setPushingTheConfiguration(true);
 
-    /* Retrieve the certificate */
-    DeviceCertificate().then(res => {
-      console.log('[DEVICE CONFIGURATION] Certificate response', res);
+    let authUser     = generateRandomString(16),
+        authPassword = generateRandomString(32)
 
-      let authUser     = generateRandomString(16),
-          authPassword = generateRandomString(32),
-          authCert     = res.data.data;
-      
-      setLoaderRetrievingTheCertificates(false);
+    /* Configure the device */
+    PublishConfiguration([
+      {'Wi-Fi': 'SSID',   name:     `${wifiName}`},
+      {'Wi-Fi': 'SSID',   pass:     `${wifiPassword}`},
+      {'MQTT':  'server', IPv4:     '167.172.50.187'},
+      {'MQTT':  'server', host:     'mistythecloudserver.com'},
+      {'MQTT':  'server', port:     '8883'},
+      {'MQTT':  'server', authcert: `${certificate}`},
+      {'MQTT':  'server', authpass: `${authPassword}`},
+      {'MQTT':  'server', mqttUser: `${authUser}`},
+    ]).then(res => {
+      console.log('[DEVICE CONFIGURATION] Configuration response', res);
+
+      setPushingTheConfiguration(false);
 
       setTimeout(function() {
-        setPushingTheConfiguration(true);
+        setLoaderDisconnectFromDeviceNetwork(true);
 
-        /* Configure the device */
-        PublishConfiguration([
-          {'Wi-Fi': 'SSID',   name:     `${wifiName}`},
-          {'Wi-Fi': 'SSID',   pass:     `${wifiPassword}`},
-          {'MQTT':  'server', IPv4:     '167.172.50.187'},
-          {'MQTT':  'server', host:     'mistythecloudserver.com'},
-          {'MQTT':  'server', port:     '8883'},
-          {'MQTT':  'server', authcert: `${authCert}`},
-          {'MQTT':  'server', authpass: `${authPassword}`},
-          {'MQTT':  'server', mqttUser: `${authUser}`},
-        ]).then(res => {
-          console.log('[DEVICE CONFIGURATION] Configuration response', res);
-
-          setPushingTheConfiguration(false);
+        WifiManager.disconnectFromSSID(`Misty-${serialNumber}`).then(res => {
+          console.log('[DEVICE CONFIGURATION] Disconneted from the device network', res);
+          setLoaderDisconnectFromDeviceNetwork(false);
 
           setTimeout(function() {
-            setLoaderDisconnectFromDeviceNetwork(true);
+            setLoaderConnectiongToAHomeNetwork(true);
 
-            WifiManager.disconnectFromSSID(`Misty-${serialNumber}`).then(res => {
-              console.log('[DEVICE CONFIGURATION] Disconneted from the device network', res);
-              setLoaderDisconnectFromDeviceNetwork(false);
+            WifiManager.connectToProtectedSSID(
+              `${wifiName}`,
+              `${wifiPassword}`,
+              false,
+            ).then(
+              res => {
+                console.log('[DEVICE CONFIGURATION] Connected to a home network', res);
 
-              setTimeout(function() {
-                setLoaderConnectiongToAHomeNetwork(true);
+                setLoaderConnectiongToAHomeNetwork(false);
 
-                WifiManager.connectToProtectedSSID(
-                  `${wifiName}`,
-                  `${wifiPassword}`,
-                  false,
-                ).then(
-                  res => {
-                    console.log('[DEVICE CONFIGURATION] Connected to a home network', res);
+                setTimeout(function() {
+                  setLoaderAddingDeviceToAccount(true);
 
-                    setLoaderConnectiongToAHomeNetwork(false);
+                  ConnectDevice(
+                    user.accounts[0].id,
+                    serialNumber,
+                    authUser,
+                    authPassword,
+                  ).then(res => {
+                    console.log('[DEVICE CONFIGURATION] Assigned device to the account', res);
+                    dispatch(setDeviceIdSerialNumber(res.data));
 
-                    setTimeout(function() {
-                      setLoaderAddingDeviceToAccount(true);
+                    setLoaderAddingDeviceToAccount(false);
 
-                      ConnectDevice(
-                        user.accounts[0].id,
-                        serialNumber,
-                        authUser,
-                        authPassword,
-                      ).then(res => {
-                        console.log('[DEVICE CONFIGURATION] Assigned device to the account', res);
-                        dispatch(setDeviceIdSerialNumber(res.data));
+                    navigation.navigate('Account');
+                  })
+                  .catch(rej => {
+                    console.error('[DEVICE CONFIGURATION] Error while trying to assign device to the account', rej);
 
-                        setLoaderAddingDeviceToAccount(false);
+                    Alert.alert('There is a problem with assigning device to the account');
 
-                        navigation.navigate('Account');
-                      })
-                      .catch(rej => {
-                        console.error('[DEVICE CONFIGURATION] Error while trying to assign device to the account', rej);
+                    setLoaderAddingDeviceToAccount(false);
+                  });
+                }, 10);
+              },
+              rej => {
+                console.error('[DEVICE CONFIGURATION] Error while connecting to a home network', rej);
 
-                        Alert.alert('There is a problem with assigning device to the account');
+                Alert.alert('There is a problem with dconnecting to a home network');
 
-                        setLoaderAddingDeviceToAccount(false);
-                      });
-                    }, 10);
-                  },
-                  rej => {
-                    console.error('[DEVICE CONFIGURATION] Error while connecting to a home network', rej);
-
-                    Alert.alert('There is a problem with dconnecting to a home network');
-
-                    setLoaderConnectiongToAHomeNetwork(false);
-                  },
-                );
-              }, 10);
-            }, rej => {
-              console.error('[DEVICE CONFIGURATION] Error while tying to disconnect from device network', rej);
-
-              Alert.alert('There is a problem with disconnecting from the device network');
-
-              setLoaderDisconnectFromDeviceNetwork(false);
-            });
+                setLoaderConnectiongToAHomeNetwork(false);
+              },
+            );
           }, 10);
-        })
-        .catch(rej => {
-          console.error('[DEVICE CONFIGURATION] Error while sending configuration request', rej);
+        }, rej => {
+          console.error('[DEVICE CONFIGURATION] Error while tying to disconnect from device network', rej);
 
-          Alert.alert('There is a problem with pushing a configuration to the device');
+          Alert.alert('There is a problem with disconnecting from the device network');
 
-          setPushingTheConfiguration(false);
+          setLoaderDisconnectFromDeviceNetwork(false);
         });
       }, 10);
     })
     .catch(rej => {
-      console.error('[DEVICE CONFIGURATION] Error while sending certificate request', rej);
+      console.error('[DEVICE CONFIGURATION] Error while sending configuration request', rej);
 
-      Alert.alert('There is a problem with retrieving certificate from the server');
+      Alert.alert('There is a problem with pushing a configuration to the device');
 
-      setLoaderRetrievingTheCertificates(false);
+      setPushingTheConfiguration(false);
     });
   };
 
@@ -230,7 +209,6 @@ export const ConnectionStep3 = () => {
         </TouchableOpacity>
       </ScrollView>
 
-      {loaderRetrievingTheCertificates && <Loader text={'Retrieving the certificates'} />}
       {loaderPushingTheConfiguration && <Loader text={'Pushing a config to the device'} />}
       {loaderDisconnectFromDeviceNetwork && <Loader text={'Disconnecting from tje device network'} />}
       {loaderConnectiongToAHomeNetwork && <Loader text={'Connecting to a home network'} />}

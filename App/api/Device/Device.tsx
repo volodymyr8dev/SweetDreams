@@ -1,5 +1,5 @@
-import axiosInstance from '../index';
-import axiosInstance2 from '../index2';
+import axiosInstance from '../apiAxios';
+import deviceAxios   from '../deviceAxios';
 
 export const GetSalt = async type => {
   console.log('[DEVICE CONFIGURATION] Salt request', type);
@@ -36,5 +36,5 @@ export const PublishConfiguration = async data => {
 
   console.log('[DEVICE CONFIGURATION] Configuration request', body);
 
-  return await axiosInstance2.post('', body);
+  return await deviceAxios.post('', body);
 };

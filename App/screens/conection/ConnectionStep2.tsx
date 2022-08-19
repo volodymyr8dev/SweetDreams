@@ -1,6 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState, useEffect} from 'react';
-import WifiManager from 'react-native-wifi-reborn';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -8,33 +7,37 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  Alert,
-  NativeModules,
+  Alert
 } from 'react-native';
-import StepIndicator from 'react-native-step-indicator';
-import {customStyles} from '../../components/StepIndicator/StepIndicator';
-import serialNumberImage from '../../assets/images/misty-serial-number.png';
-import {CustomInput} from '../../components/CustomInput/CustomInput';
-import {Loader} from '../../components/Loader/Loader';
-import {ConnectDevice} from '../../api/Device/Device';
-import {GetSalt} from '../../api/Device/Device';
-import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../../redux/configureStore';
-import {sha256} from 'react-native-sha256';
-import {setDeviceIdSerialNumber} from '../../redux/slice/slice';
+
+import WifiManager                  from 'react-native-wifi-reborn';
+import StepIndicator                from 'react-native-step-indicator';
+import {sha256}                     from 'react-native-sha256';
+
+import {customStyles}               from '../../components/StepIndicator/StepIndicator';
+import {CustomInput}                from '../../components/CustomInput/CustomInput';
+import {Loader}                     from '../../components/Loader/Loader';
+import {GetSalt, DeviceCertificate} from '../../api/Device/Device';
 
 export const ConnectionStep2 = () => {
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
-  const [currentPosition, setCurrentPosition] = useState(1);
-  const [serialNumber, setSerialNumber] = useState('');
-  const [loaderGettingSalt, setLoaderGettingSalt] = useState(false);
-  const [loaderConnectingToTheDeviceNetwork, setLoaderConnectingToTheDeviceNetwork] = useState(false);
   const navigation = useNavigation<Nav>();
+
+  const [currentPosition, setCurrentPosition] = useState(1);
+  const [serialNumber,    setSerialNumber]    = useState('');
+  const [certificate,     setCertificate]     = useState('');
+  const [homeNetworkSSID, setHomeNetworkSSID] = useState('');
+
+  const [loaderGettingSalt,                  setLoaderGettingSalt]                  = useState(false);
+  const [loaderRetrievingTheCertificates,    setLoaderRetrievingTheCertificates]    = useState(false);
+  const [loaderConnectingToTheDeviceNetwork, setLoaderConnectingToTheDeviceNetwork] = useState(false);
+  const [loaderDetectHomeNetwork,            setLoaderDetectHomeNetwork]            = useState(false);
 
   const skipStep = () => {
     navigation.navigate('conectionStep3', {
-      title: 'connect misty',
-      serial_number: `${serialNumber}`,
+      title:             'connect misty',
+      serial_number:     `${serialNumber}`,
+      certificate:       `${certificate}`,
+      home_network_ssid: `${homeNetworkSSID}`,
     });
   }
 
@@ -42,65 +45,104 @@ export const ConnectionStep2 = () => {
     if (!serialNumber) {
       Alert.alert('Serial Number is required');
     } else {
-      setLoaderGettingSalt(true);
+      setLoaderDetectHomeNetwork(true);
 
-      GetSalt('misty').then(res => {
-        console.log('[DEVICE CONFIGURATION] Wi-Fi Salt', res.data.data.salt);
+      WifiManager.getCurrentWifiSSID().then(
+        ssid => {
+          setHomeNetworkSSID(ssid);
+          console.log('[DEVICE CONFIGURATION] Retrieved the home network details', ssid);
 
-        setLoaderGettingSalt(false);
-        setTimeout(function() {
-          setLoaderConnectingToTheDeviceNetwork(true);
+          setLoaderDetectHomeNetwork(false);
 
-          sha256(res.data.data.salt).then(hash1 => {
-            console.log('[DEVICE CONFIGURATION] Hash 1', hash1);
-  
-            sha256(`Misty-${serialNumber}`).then(hash2 => {
-              console.log('[DEVICE CONFIGURATION] Hash 2', hash2);
-  
-              let hashString = hash1.toUpperCase() + hash2.toUpperCase();
-  
-              console.log('[DEVICE CONFIGURATION] Hash 3', hashString);
-              
-              sha256(hashString).then(hash => {
-                let passphrase = hash.toUpperCase().slice(0, 32)
-                
-                console.log('[DEVICE CONFIGURATION] Connecting to the device network', `Misty-${serialNumber}`, `${passphrase}`)
-              
-                WifiManager.connectToProtectedSSID(
-                  `Misty-${serialNumber}`,
-                  `${passphrase}`,
-                  false,
-                ).then(
-                  res => {
-                    setLoaderConnectingToTheDeviceNetwork(false);
-  
-                    console.log('[DEVICE CONFIGURATION] Connected to the device network', res);
-  
-                    navigation.navigate('conectionStep3', {
-                      title: 'connect misty',
-                      serial_number: `${serialNumber}`,
+          setTimeout(function() {
+            setLoaderGettingSalt(true);
+    
+            GetSalt('misty').then(res => {
+              console.log('[DEVICE CONFIGURATION] Retrieved the Wi-Fi Salt', res.data.data.salt);
+    
+              setLoaderGettingSalt(false);
+              setTimeout(function() {
+                setLoaderRetrievingTheCertificates(true);
+    
+                /* Retrieve the certificate */
+                DeviceCertificate().then(res => {
+                  setCertificate(res.data.data);
+                  console.log('[DEVICE CONFIGURATION] Certificate response', res);
+    
+                  setLoaderRetrievingTheCertificates(false);
+                  setTimeout(function() {
+                    setLoaderConnectingToTheDeviceNetwork(true);
+    
+                    sha256(res.data.data.salt).then(hash1 => {
+                      console.log('[DEVICE CONFIGURATION] Hash 1', hash1);
+            
+                      sha256(`Misty-${serialNumber}`).then(hash2 => {
+                        console.log('[DEVICE CONFIGURATION] Hash 2', hash2);
+            
+                        let hashString = hash1.toUpperCase() + hash2.toUpperCase();
+            
+                        console.log('[DEVICE CONFIGURATION] Hash 3', hashString);
+                        
+                        sha256(hashString).then(hash => {
+                          let passphrase = hash.toUpperCase().slice(0, 32)
+                          
+                          console.log('[DEVICE CONFIGURATION] Connecting to the device network', `Misty-${serialNumber}`, `${passphrase}`)
+                        
+                          WifiManager.connectToProtectedSSID(
+                            `Misty-${serialNumber}`,
+                            `${passphrase}`,
+                            false,
+                          ).then(
+                            res => {
+                              setLoaderConnectingToTheDeviceNetwork(false);
+            
+                              console.log('[DEVICE CONFIGURATION] Connected to the device network', res);
+            
+                              navigation.navigate('conectionStep3', {
+                                title: 'connect misty',
+                                serial_number: `${serialNumber}`,
+                              });
+                            },
+                            rej => {
+                              setLoaderConnectingToTheDeviceNetwork(false);
+            
+                              Alert.alert('There is a problem with connecting to the device network');
+            
+                              console.error('[DEVICE CONFIGURATION] Error while connecting to the device network', rej)
+                            },
+                          );
+                        });
+                      });
                     });
-                  },
-                  rej => {
-                    setLoaderConnectingToTheDeviceNetwork(false);
-  
-                    Alert.alert('There is a problem with connecting to the device network');
-  
-                    console.error('[DEVICE CONFIGURATION] Error while connecting to the device network', rej)
-                  },
-                );
-              });
+                  }, 10);
+                })
+                .catch(rej => {
+                  console.error('[DEVICE CONFIGURATION] Error while sending certificate request', rej);
+    
+                  Alert.alert('There is a problem with retrieving certificate from the server');
+    
+                  setLoaderRetrievingTheCertificates(false);
+                });
+              }, 10);
+            })
+            .catch(rej => {
+              setLoaderGettingSalt(false);
+    
+              Alert.alert('There is a problem with getting the Wi-Fi salt');
+    
+              console.error('[DEVICE CONFIGURATION] Error while getting the Wi-Fi salt', rej)
             });
-          });
-        }, 10);
-      })
-      .catch(rej => {
-        setLoaderGettingSalt(false);
+          }, 10);
+        },
+        () => {
+          setLoaderDetectHomeNetwork(false);
 
-        Alert.alert('There is a problem with getting the Wi-Fi salt');
-
-        console.error('[DEVICE CONFIGURATION] Error while getting the Wi-Fi salt', rej)
-      });
+          Alert.alert('There is a problem with your home network. Please, check your Wi-Fi connection.');
+    
+          console.error('[DEVICE CONFIGURATION] Error while getting the home network details');
+          
+        }
+      );
     }
   };
 
@@ -148,10 +190,6 @@ export const ConnectionStep2 = () => {
             </Text>
           </View>
           <View style={{alignItems: 'center', marginTop: 32}}>
-            {/*<Image*/}
-            {/*  style={{width: 236, height: 236}}*/}
-            {/*  source={serialNumberImage}*/}
-            {/*/>*/}
             <Image
               source={require('../../assets/images/gif/SerialNumberGifCloud.gif')}
               style={{width: 236, height: 236}}
@@ -180,6 +218,8 @@ export const ConnectionStep2 = () => {
         </View>
       </TouchableOpacity>
       {loaderGettingSalt && (<Loader text={`Retrieving the configuration`} />)}
+      {loaderRetrievingTheCertificates && <Loader text={'Retrieving the certificates'} />}
+      {loaderDetectHomeNetwork && <Loader text={'Retrieving home network details'} />}
       {loaderConnectingToTheDeviceNetwork && (<Loader text={`Connecting your phone ${'\n'}to your misty unit`} />)}
     </>
   );

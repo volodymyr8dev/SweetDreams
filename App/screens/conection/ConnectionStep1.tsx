@@ -11,17 +11,15 @@ import {
 import StepIndicator from 'react-native-step-indicator';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
 
-
 export const ConnectionStep1 = () => {
   const [currentPosition, setCurrentPosition] = useState(0);
-
-  const navigation = useNavigation<any>();
+  const navigation                            = useNavigation<any>();
 
   useEffect(() => {
     navigation.setParams({
       connectionStep: 1,
-      show: false,
-      title: 'connection',
+      show:           false,
+      title:          'connection',
     });
   }, []);
 

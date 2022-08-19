@@ -14,9 +14,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import carousel from 'react-native-anchor-carousel/src/carousel';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  NureseryTemperatureApi,
-  NureseryTemperatureGetApi,
-} from '../../../api/Nursery/Nuresery';
+  NurseryTemperatureApi,
+  NurseryTemperatureGetApi,
+} from '../../../api/Nursery/Nursery';
 import {setNerseryId} from '../../../redux/slice/slice';
 import {ContentNavigation} from './ContentNavigation';
 import moment from 'moment';
@@ -131,8 +131,8 @@ export const NurseryData = () => {
       let dataEnd = dateTimeFormat(new Date());
       if (id) {
         Promise.all([
-          NureseryTemperatureApi(accounts[0].id, dataStart, dataEnd),
-          NureseryTemperatureGetApi(accounts[0].id, id, dataStart, dataEnd),
+          NurseryTemperatureApi(accounts[0].id, dataStart, dataEnd),
+          NurseryTemperatureGetApi(accounts[0].id, id, dataStart, dataEnd),
         ]).then((data) => {
            setDiaries(data[0].data[0].diaries);
                !Array.isArray(data[1].data)
@@ -145,13 +145,13 @@ export const NurseryData = () => {
           console.log('dataPromiseAll', data);
         }).catch((Err)=>console.log('Promise All',Err));
       }else{
-      NureseryTemperatureApi(accounts[0].id, dataStart, dataEnd)
+      NurseryTemperatureApi(accounts[0].id, dataStart, dataEnd)
         .then(({data}) => {
           console.log('get nerseryId', data);
           setId(data[1].id);
           setDiaries(data[0].diaries);
           dispatch(setNerseryId(data[1].id));
-          NureseryTemperatureGetApi(
+          NurseryTemperatureGetApi(
             accounts[0].id,
             data[1].id,
             dataStart,
@@ -179,11 +179,11 @@ export const NurseryData = () => {
   //   getToken();
   //   if (accounts[0].id) {
   //     console.log('id', accounts[0].id);
-  //     NureseryTemperatureApi(accounts[0].id, start, end)
+  //     NurseryTemperatureApi(accounts[0].id, start, end)
   //       .then(({data}) => {
   //         console.log('get nerseryId', data);
   //         dispatch(setNerseryId(data[1].id));
-  //         NureseryTemperatureGetApi(accounts[0].id, data[1].id, start, end)
+  //         NurseryTemperatureGetApi(accounts[0].id, data[1].id, start, end)
   //           .then(({data}) => {
   //             console.log('finished', data);
   //           })

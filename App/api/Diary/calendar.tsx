@@ -1,5 +1,5 @@
 import moment from 'moment';
-import axiosInstance from '../index';
+import axiosInstance from '../apiAxios';
 
 interface IEvent {
   accoundId: number;

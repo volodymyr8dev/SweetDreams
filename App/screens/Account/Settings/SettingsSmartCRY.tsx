@@ -5,7 +5,7 @@ import {SliderComp} from '../../../components/Slider/SliderComp';
 import {COLORS} from '../../../styles/Constants';
 import wifiSmall from '../../../assets/images/settings/wifiSmall.png';
 import wifiBig from '../../../assets/images/settings/WifiBig.png';
-import {SettingsDevice} from '../../../api/Settings/SettingsApi';
+import {SettingsDevice} from '../../../api/Settings/Settings';
 import {RootState} from '../../../redux/configureStore';
 import background from '../../../assets/images/homeIcon/bacgroundHome.png';
 

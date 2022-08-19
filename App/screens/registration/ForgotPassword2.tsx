@@ -16,7 +16,7 @@ import {Loader} from '../../components/Loader/Loader';
 import {
   forgotPassword,
   VerifyEmailResetPassword,
-} from '../../api/ForgotPassword/forgotPassword';
+} from '../../api/ForgotPassword/ForgotPassword';
 export const ForgotPassword2 = () => {
   const navigation = useNavigation();
   const [code, setCode] = useState('');

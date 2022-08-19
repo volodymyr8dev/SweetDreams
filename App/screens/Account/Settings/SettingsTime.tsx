@@ -5,7 +5,7 @@ import {COLORS} from '../../../styles/Constants';
 import DatePicker from 'react-native-date-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {setTime, setWakeUpTime} from '../../../redux/slice/SettingsSlice';
-import {SettingsDevice} from '../../../api/Settings/SettingsApi';
+import {SettingsDevice} from '../../../api/Settings/Settings';
 import {RootState} from '../../../redux/configureStore';
 import background from '../../../assets/images/homeIcon/bacgroundHome.png';
 

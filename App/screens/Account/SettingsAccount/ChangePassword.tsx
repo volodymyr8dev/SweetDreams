@@ -13,11 +13,11 @@ import arrowRight from '../../../assets/images/settings/arrowRight.png';
 import {useNavigation} from '@react-navigation/native';
 import {TextInput} from 'react-native';
 import {InputUnit} from '../../../components/InputUnit/InputUnit';
-import {ChangePasswordApi} from '../../../api/ForgotPassword/forgotPassword';
+import {ChangePasswordApi} from '../../../api/ForgotPassword/ForgotPassword';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/configureStore';
 import {AccountSelector} from '../../../redux/selectors/AccountSelector';
-import {UpdateProfile} from '../../../api/Profile/ProfileApi';
+import {UpdateProfile} from '../../../api/Profile/Profile';
 
 interface PropsBox {
   nameOfBox: string;

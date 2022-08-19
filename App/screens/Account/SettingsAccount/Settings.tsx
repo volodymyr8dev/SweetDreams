@@ -13,7 +13,7 @@ import {
   getProfile,
   UpdateProfile,
   UpdateProfileChild,
-} from '../../../api/Profile/ProfileApi';
+} from '../../../api/Profile/Profile';
 
 import {InputUnit} from '../../../components/InputUnit/InputUnit';
 import {COLORS} from '../../../styles/Constants';

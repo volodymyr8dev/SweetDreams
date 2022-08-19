@@ -11,7 +11,7 @@ import SettingsSlice, {
   setTemperatureNew,
 } from '../../../redux/slice/SettingsSlice';
 import {useSelector} from 'react-redux';
-import {SettingsDevice} from '../../../api/Settings/SettingsApi';
+import {SettingsDevice} from '../../../api/Settings/Settings';
 import {RootState} from '../../../redux/configureStore';
 import background from '../../../assets/images/homeIcon/bacgroundHome.png';
 

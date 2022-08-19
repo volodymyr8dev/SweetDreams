@@ -1,20 +1,21 @@
-import axios from 'axios';
+import axios        from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const getToken = async () => {
-  let token = await AsyncStorage.getItem('@storage_Key');
-  return token;
+  return await AsyncStorage.getItem('@storage_Key');
 };
-const instance = axios.create({
+
+const apiAxios = axios.create({
   baseURL: 'https://staging.mistythecloudserver.com',
   headers: {
     "content-type": "application/json"
   },
 });
 
-instance.interceptors.request.use(async config => {
-  const token = await AsyncStorage.getItem('@storage_Key');
+apiAxios.interceptors.request.use(async config => {
   config.headers.Authorization = `Bearer ${await getToken()}`;
+
   return config;
 });
 
-export default instance;
+export default apiAxios;

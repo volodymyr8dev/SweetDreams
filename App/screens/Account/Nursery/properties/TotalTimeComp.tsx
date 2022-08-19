@@ -24,7 +24,7 @@ import {BarChart} from 'react-native-chart-kit';
 import sleepDiary from '../../../../assets/images/nersery/sleepDiary.png';
 import arrowLeft from '../../../../assets/images/nersery/arrowLeft.png';
 import AlertData from '../../../../assets/images/nersery/alertData.png';
-import {NureseryGetChartsApi} from '../../../../api/Nursery/Nuresery';
+import {NurseryGetChartsApi} from '../../../../api/Nursery/Nursery';
 import {array, object} from 'yup/lib/locale';
 import {useSelector} from 'react-redux';
 import {ITempItem} from '../interface/IProperties';
@@ -98,7 +98,7 @@ export const TotalTimeComp = ({route}) => {
     const getData = async () => {
       try {
         if (nerseryId && start && end) {
-          const {data} = await NureseryGetChartsApi(
+          const {data} = await NurseryGetChartsApi(
             route.params.childId,
             nerseryId,
             start,
@@ -127,7 +127,7 @@ export const TotalTimeComp = ({route}) => {
 
   const getValuesApi = async (start, end) => {
     try {
-      const {data} = await NureseryGetChartsApi(
+      const {data} = await NurseryGetChartsApi(
         route.params.childId,
         nerseryId,
         start,
@@ -247,7 +247,7 @@ export const TotalTimeComp = ({route}) => {
       setActivelabels(['10', '14', '18', '22', '2', '6', '10']);
     } else {
     }
-    //   NureseryTemperatureApi(route.params.childId, start, end)
+    //   NurseryTemperatureApi(route.params.childId, start, end)
     //     .then(({data}) => {
     //       console.log('success', data);
     //       let labels: string[] = [];

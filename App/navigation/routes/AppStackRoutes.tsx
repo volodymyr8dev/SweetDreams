@@ -33,7 +33,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ConfirmConnection from '../../screens/Account/ConfirmConnection';
 import {Account} from '../../screens/Account/Account';
 import {DiaryRoutes} from './Diary/DiaryRoutes';
-import {getProfile} from '../../api/Profile/ProfileApi';
+import {getProfile} from '../../api/Profile/Profile';
 import {useDispatch} from 'react-redux';
 export type RootStackParamList = {
   step2: {

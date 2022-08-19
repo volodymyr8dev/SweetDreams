@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 10,
     top: 0,
-    opacity: 0.7,
+    opacity: 0.9,
     backgroundColor: 'transparent',
   },
   content: {
