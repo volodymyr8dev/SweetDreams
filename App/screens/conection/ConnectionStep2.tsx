@@ -64,45 +64,27 @@ export const ConnectionStep2 = () => {
       Alert.alert('Serial Number is required');
     } else {
       setLoader(true);
-      GetSalt('misty')
-        .then(res => {
-          sha256('mkg3434nbn23mn4nb5bnv').then(hash => {
-            console.log(hash, 'hash1');
-            setNewSaltUpperSha(hash.toUpperCase());
-          });
-          sha256(`Misty-${serialNumber}`).then(hash => {
-            console.log(hash, 'hash2');
-            setMistySerialNumber(hash.toUpperCase());
-          });
-          console.log(res);
-          ConnectToNetwork();
-          setLoader(false);
-        })
-        .catch(rej => {
-          setLoader(false);
-          console.log(rej);
-          Alert.alert(rej.response.data.error);
+      GetSalt('misty') .then(res => {
+        console.log('Wi-Fi Salt', res.data.data.salt);
+
+        sha256(res.data.data.salt).then(hash => {
+          console.log('Hash 1', hash);
+          setNewSaltUpperSha(hash.toUpperCase());
         });
-      // setLoader(true);
-      // ConnectDevice(user.accounts[0].id, serialNumber)
-      //   .then(res => {
-      //     if (res.data.success) {
-      //       console.log(res.data.success, 'datadatadata');
-      //       dispatch(setDeviceIdSerialNumber(res.data))
-      //       GetSalt('misty').then(res => {
-      //         // console.log(res);
-      //         setSalt(res.data.data.salt);
-      //         ConnectToNetwork();
-      //         setLoader(false);
-      //       });
-      //       // dispatch(setSerialNumber(res.data.success))
-      //     }
-      //   })
-      //   .catch(res => {
-      //     setLoader(false);
-      //
-      //     Alert.alert(res.response.data.error);
-      //   });
+
+        sha256(`Misty-${serialNumber}`).then(hash => {
+          console.log('Hash 2', hash);
+          setMistySerialNumber(hash.toUpperCase());
+        });
+
+        ConnectToNetwork();
+        setLoader(false);
+      })
+      .catch(rej => {
+        setLoader(false);
+        console.log(rej);
+        Alert.alert(rej.response.data.error);
+      });
     }
   };
 
@@ -110,6 +92,9 @@ export const ConnectionStep2 = () => {
 
   const ConnectToNetwork = async () => {
     setLoader1(true);
+    
+    console.log('Connecting to Wi-Fi', `Misty-${serialNumber}`, `${shaSalt}`)
+    
     WifiManager.connectToProtectedSSID(
       `Misty-${serialNumber}`,
       `${shaSalt}`,
