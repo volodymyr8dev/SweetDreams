@@ -106,7 +106,7 @@ export const Step2 = () => {
           </View>
           <View style={{marginBottom: 5}}>
             <Text style={{color: '#26679F', fontSize: 19, fontWeight: 'bold', fontFamily: 'AntagometricaBT-Bold'}}>
-              Enter Verification Code
+              Enter verification code
             </Text>
           </View>
           {/* <View style={{marginBottom: 19}}>
@@ -116,8 +116,7 @@ export const Step2 = () => {
           </View> */}
           <View style={{marginBottom: 15}}>
             <Text style={{textAlign: 'center', color: '#26679F', fontFamily: 'AntagometricaBT-Regular'}}>
-              Please, enter verification code which has been sent to your email
-              address
+              Please, enter the verification code which is sent to your email address
             </Text>
           </View>
           <View style={{width: '110%'}}>
@@ -147,7 +146,7 @@ export const Step2 = () => {
         </TouchableOpacity>
         {/* </ImageBackground> */}
       </View>
-      {global?.loader && <Loader text={'Please wait for Verification'} />}
+      {global?.loader && <Loader text={'Please wait for a verification'} />}
     </>
   );
 };

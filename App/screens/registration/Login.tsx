@@ -62,7 +62,7 @@ export const Login = () => {
         });
     } else {
       dispatch(setLoader(false));
-      Alert.alert('Please, fill in all the required fields');
+      Alert.alert('Please, enter your email and password');
     }
   };
   const handleForgotPassword = () => {

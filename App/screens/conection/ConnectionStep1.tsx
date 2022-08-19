@@ -48,7 +48,7 @@ export const ConnectionStep1 = () => {
             </Text>
             <Text style={styles.cardListInfo}>
               We suggest moving your misty closer to your router during set up.
-              She’ll remember all your credentials if you wish to relocate her
+              She'll remember all your credentials if you wish to relocate her
               to the bedroom or nursery.
             </Text>
             <Text style={styles.cardList}>
@@ -85,7 +85,7 @@ export const ConnectionStep1 = () => {
           <View>
             <Text style={styles.question}>misty not flashing purple?</Text>
             <Text style={[styles.answer, {marginBottom: 17}]}>
-              If she is not flashing purple don’t worry, simply factory reset by
+              If she is not flashing purple don't worry, simply factory reset by
               holding the{' '}
               <Text
                 style={{

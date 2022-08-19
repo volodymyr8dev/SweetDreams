@@ -230,7 +230,7 @@ export const ConnectionStep3 = () => {
         <TouchableOpacity
           onPress={wifiConnect}
           style={{backgroundColor: 'red'}}>
-          <Text style={{color: 'white'}}>SAVEEEEEE</Text>
+          <Text style={{color: 'white'}}>Skip this step (DEV MODE)</Text>
         </TouchableOpacity>
       </ScrollView>
 
