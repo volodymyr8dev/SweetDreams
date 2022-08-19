@@ -163,7 +163,7 @@ export const ConnectionStep3 = () => {
         console.log(res);
         console.log('Connected successfully!');
         setloaderConnectionHome(false);
-        navigation.navigate('Account');
+        navigation.navigate('Accountt');
       },
       rej => {
         setloaderConnectionHome(false);
@@ -252,18 +252,33 @@ export const ConnectionStep3 = () => {
         {/*  <Text style={{color: '#fff'}}>Skip this step</Text>*/}
         {/*</TouchableOpacity>*/}
 
-        <TouchableOpacity
-          onPress={wifiConnect}
-          style={{backgroundColor: 'red'}}>
-          <Text style={{color: 'white'}}>SAVEEEEEE</Text>
-        </TouchableOpacity>
+        {/*<TouchableOpacity*/}
+        {/*  onPress={wifiConnect}*/}
+        {/*  style={{ alignItems: 'center'}}>*/}
+        {/*  <Text style={{color: '#fff',*/}
+        {/*    fontSize: 19,*/}
+        {/*    fontFamily: 'AntagometricaBT-Regular'}}>done</Text>*/}
+        {/*</TouchableOpacity>*/}
       </ScrollView>
+      <TouchableOpacity onPress={wifiConnect} style={styles.buttonDown}>
+        <View>
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 19,
+              textAlign: 'center',
+              fontWeight: 'bold',
+              fontFamily: 'AntagometricaBT-Bold',
+            }}>
+            next
+          </Text>
+        </View>
+      </TouchableOpacity>
 
       {loader && <Loader text={'Pilling the certificates'} />}
       {loaderDiscconect && (
         <Loader text={'Disconneting from the device network'} />
       )}
-      {loader2 && <Loader text={'Pilling the certificates'} />}
 
       {/* <TouchableOpacity onPress={handleGoToStep2} style={styles.buttonDown}>
         <View>

@@ -124,7 +124,6 @@ export const ConnectionStep2 = () => {
           serial_number: `${serialNumber}`,
         });
         setLoader(false);
-
       },
       rej => {
         console.log('Connection failed!', rej);
