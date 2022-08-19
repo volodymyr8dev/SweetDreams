@@ -61,6 +61,13 @@ export const ConnectionStep2 = () => {
     }
   };
 
+  const skipStep = () => {
+    navigation.navigate('conectionStep3', {
+      title: 'connect misty',
+      serial_number: `${serialNumber}`,
+    });
+  }
+
   // disconnectFromSSID(ssid: string): Promise
 
   const ConnectToNetwork = async (newSaltUpperSha, mistySerialNumberSha) => {
@@ -87,11 +94,6 @@ export const ConnectionStep2 = () => {
         },
         rej => {
           setLoader1(false);
-
-          navigation.navigate('conectionStep3', {
-            title: 'connect misty',
-            serial_number: `${serialNumber}`,
-          });
 
           console.log('Connection failed!', rej);
           Alert.alert('Connection failed!');
@@ -154,6 +156,11 @@ export const ConnectionStep2 = () => {
             />
           </View>
         </View>
+        <TouchableOpacity
+          onPress={skipStep}
+          style={{backgroundColor: 'red'}}>
+          <Text style={{color: 'white'}}>Skip this step (DEV MODE)</Text>
+        </TouchableOpacity>
       </ScrollView>
 
       <TouchableOpacity onPress={handleGoToStep3} style={styles.buttonDown}>
