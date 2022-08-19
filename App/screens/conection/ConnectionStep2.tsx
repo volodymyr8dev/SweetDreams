@@ -27,68 +27,9 @@ export const ConnectionStep2 = () => {
   const {user} = useSelector(({account}: RootState) => account.userInformation);
   const [currentPosition, setCurrentPosition] = useState(1);
   const [serialNumber, setSerialNumber] = useState('');
-  const [loader, setLoader] = useState(false);
-  const [loader1, setLoader1] = useState(false);
+  const [loaderGettingSalt, setLoaderGettingSalt] = useState(false);
+  const [loaderConnectingToTheDeviceNetwork, setLoaderConnectingToTheDeviceNetwork] = useState(false);
   const navigation = useNavigation<Nav>();
-  const [salt, setSalt] = useState('');
-  // const dispatch = useDispatch();
-
-  console.log(newSaltUpperSha, 'newSaltUpperSha1');
-  console.log(mistySerialNumber, 'mistySerialNumber1');
-
-  React.useEffect(() => {
-    if (newSaltUpperSha && mistySerialNumber) {
-      sha256(`${newSaltUpperSha}${mistySerialNumber}`).then(hash => {
-        setShaSalt(hash.toUpperCase().slice(0, 32));
-      });
-    }
-  }, [newSaltUpperSha, mistySerialNumber]);
-
-  // const combineUpperSha = React.useCallback(() => {
-  //   console.log(newSaltUpperSha, 'newSaltUpperSha');
-  //   console.log(mistySerialNumber, 'mistySerialNumber');
-  //   sha256(`${newSaltUpperSha}${mistySerialNumber}`.toUpperCase()).then(
-  //     hash => {
-  //       console.log(hash.toUpperCase().slice(0, 32), 'dadadadada');
-  //     },
-  //   );
-  // }, [newSaltUpperSha, mistySerialNumber]);
-  console.log(loader1, 'sssssssss');
-  const handleGoToStep3 = () => {
-    if (!serialNumber) {
-      Alert.alert('Serial Number is required');
-    } else {
-      setLoader(true);
-      GetSalt('misty') .then(res => {
-        console.log('Wi-Fi Salt', res.data.data.salt);
-
-        sha256(res.data.data.salt).then(hash1 => {
-          console.log('Hash 1', hash1);
-
-          sha256(`Misty-${serialNumber}`).then(hash2 => {
-            console.log('Hash 2', hash2);
-
-            setLoader(false);
-
-            ConnectToNetwork(hash1.toUpperCase(), hash2.toUpperCase());
-          });
-          console.log(res);
-          ConnectToNetwork();
-
-        })
-        .catch(rej => {
-          setLoader(false);
-          console.log(rej);
-          Alert.alert(rej.response.data.error);
-        });
-      })
-      .catch(rej => {
-        setLoader(false);
-        console.log(rej);
-        Alert.alert(rej.response.data.error);
-      });
-    }
-  };
 
   const skipStep = () => {
     navigation.navigate('conectionStep3', {
@@ -97,29 +38,70 @@ export const ConnectionStep2 = () => {
     });
   }
 
-  // disconnectFromSSID(ssid: string): Promise
+  const handleGoToStep3 = () => {
+    if (!serialNumber) {
+      Alert.alert('Serial Number is required');
+    } else {
+      setLoaderGettingSalt(true);
 
-  const ConnectToNetwork = async () => {
-    WifiManager.connectToProtectedSSID(
-      `Misty-${serialNumber}`,
-      `${shaSalt}`,
-      false,
-    ).then(
-      res => {
-        console.log(res);
-        console.log('Connected successfully!');
-        navigation.navigate('conectionStep3', {
-          title: 'connect misty',
-          serial_number: `${serialNumber}`,
-        });
-        setLoader(false);
-      },
-      rej => {
-        console.log('Connection failed!', rej);
-        Alert.alert('Connection failed!');
-        setLoader(false);
-      },
-    );
+      GetSalt('misty').then(res => {
+        console.log('[DEVICE CONFIGURATION] Wi-Fi Salt', res.data.data.salt);
+
+        setLoaderGettingSalt(false);
+        setTimeout(function() {
+          setLoaderConnectingToTheDeviceNetwork(true);
+
+          sha256(res.data.data.salt).then(hash1 => {
+            console.log('[DEVICE CONFIGURATION] Hash 1', hash1);
+  
+            sha256(`Misty-${serialNumber}`).then(hash2 => {
+              console.log('[DEVICE CONFIGURATION] Hash 2', hash2);
+  
+              let hashString = hash1.toUpperCase() + hash2.toUpperCase();
+  
+              console.log('[DEVICE CONFIGURATION] Hash 3', hashString);
+              
+              sha256(hashString).then(hash => {
+                let passphrase = hash.toUpperCase().slice(0, 32)
+                
+                console.log('[DEVICE CONFIGURATION] Connecting to the device network', `Misty-${serialNumber}`, `${passphrase}`)
+              
+                WifiManager.connectToProtectedSSID(
+                  `Misty-${serialNumber}`,
+                  `${passphrase}`,
+                  false,
+                ).then(
+                  res => {
+                    setLoaderConnectingToTheDeviceNetwork(false);
+  
+                    console.log('[DEVICE CONFIGURATION] Connected to the device network', res);
+  
+                    navigation.navigate('conectionStep3', {
+                      title: 'connect misty',
+                      serial_number: `${serialNumber}`,
+                    });
+                  },
+                  rej => {
+                    setLoaderConnectingToTheDeviceNetwork(false);
+  
+                    Alert.alert('There is a problem with connecting to the device network');
+  
+                    console.error('[DEVICE CONFIGURATION] Error while connecting to the device network', rej)
+                  },
+                );
+              });
+            });
+          });
+        }, 10);
+      })
+      .catch(rej => {
+        setLoaderGettingSalt(false);
+
+        Alert.alert('There is a problem with getting the Wi-Fi salt');
+
+        console.error('[DEVICE CONFIGURATION] Error while getting the Wi-Fi salt', rej)
+      });
+    }
   };
 
   return (
@@ -197,13 +179,8 @@ export const ConnectionStep2 = () => {
           </Text>
         </View>
       </TouchableOpacity>
-      {loader && (
-        <Loader text={`Connecting to the device`} />
-      )}
-      {loader1 && (
-        <Loader text={'Connecting to the device'} />
-      )}
-      {/*connecting your phone ${'\n'}to your misty unit*/}
+      {loaderGettingSalt && (<Loader text={`Retrieving the configuration`} />)}
+      {loaderConnectingToTheDeviceNetwork && (<Loader text={`Connecting your phone ${'\n'}to your misty unit`} />)}
     </>
   );
 };

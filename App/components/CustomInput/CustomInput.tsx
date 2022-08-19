@@ -39,10 +39,13 @@ export const CustomInput = ({
     fontFamily: 'AntagometricaBT-Regular',
     ...styling,
   };
-  const [showPassword, setShowPassword] = useState(false);
+
+  const [secureState, setSecureState] = useState(secure);
 
   const handleShowPassword = () => {
-    setShowPassword(!showPassword);
+    console.log('[CustomInput] Show password', !secureState);
+    
+    setSecureState(!secureState);
   };
 
   return (
@@ -52,13 +55,13 @@ export const CustomInput = ({
         placeholder={text}
         value={value}
         onChangeText={onChangeText}
-        secureTextEntry={secure}
+        secureTextEntry={secureState}
         style={container}
       />
       {hidden && (
         <TouchableOpacity style={styles.hide} onPress={handleShowPassword}>
           <View>
-            <Image style={{width: 28, height: 18}} source={eye} />
+            <Image style={{width: 28, height: 18, top: 12}} source={eye} />
           </View>
         </TouchableOpacity>
       )}
