@@ -69,7 +69,7 @@ const ConfirmConnection = ({setToggleButton}) => {
           <View style={{alignItems: 'center'}}>
             {/*<Image resizeMode="contain" source={connectionStatus} />*/}
             <Sheep style={{bottom: 20}} />
-            <ConnectionCloud2 style={{}} />
+            <ConnectionCloud2 style={{top: '15%'}} />
             <ConnectionCloud style={{}} />
           </View>
           <View style={{}}>

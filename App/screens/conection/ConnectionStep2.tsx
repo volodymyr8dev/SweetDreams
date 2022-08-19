@@ -33,6 +33,27 @@ export const ConnectionStep2 = () => {
   const [salt, setSalt] = useState('');
   // const dispatch = useDispatch();
 
+  console.log(newSaltUpperSha, 'newSaltUpperSha1');
+  console.log(mistySerialNumber, 'mistySerialNumber1');
+
+  React.useEffect(() => {
+    if (newSaltUpperSha && mistySerialNumber) {
+      sha256(`${newSaltUpperSha}${mistySerialNumber}`).then(hash => {
+        setShaSalt(hash.toUpperCase().slice(0, 32));
+      });
+    }
+  }, [newSaltUpperSha, mistySerialNumber]);
+
+  // const combineUpperSha = React.useCallback(() => {
+  //   console.log(newSaltUpperSha, 'newSaltUpperSha');
+  //   console.log(mistySerialNumber, 'mistySerialNumber');
+  //   sha256(`${newSaltUpperSha}${mistySerialNumber}`.toUpperCase()).then(
+  //     hash => {
+  //       console.log(hash.toUpperCase().slice(0, 32), 'dadadadada');
+  //     },
+  //   );
+  // }, [newSaltUpperSha, mistySerialNumber]);
+  console.log(loader1, 'sssssssss');
   const handleGoToStep3 = () => {
     if (!serialNumber) {
       Alert.alert('Serial Number is required');
@@ -51,6 +72,14 @@ export const ConnectionStep2 = () => {
 
             ConnectToNetwork(hash1.toUpperCase(), hash2.toUpperCase());
           });
+          console.log(res);
+          ConnectToNetwork();
+
+        })
+        .catch(rej => {
+          setLoader(false);
+          console.log(rej);
+          Alert.alert(rej.response.data.error);
         });
       })
       .catch(rej => {
@@ -70,36 +99,27 @@ export const ConnectionStep2 = () => {
 
   // disconnectFromSSID(ssid: string): Promise
 
-  const ConnectToNetwork = async (newSaltUpperSha, mistySerialNumberSha) => {
-    setLoader1(true);
-
-    sha256(`${newSaltUpperSha}${mistySerialNumberSha}`).then(hash => {
-      let passphrase = hash.toUpperCase().slice(0, 32)
-
-      console.log('PASSPHRASE HASH', `${newSaltUpperSha}${mistySerialNumberSha}`, '->', hash);
-      console.log('Connecting to Wi-Fi', `Misty-${serialNumber}`, `${passphrase}`)
-    
-      WifiManager.connectToProtectedSSID(
-        `Misty-${serialNumber}`,
-        `${passphrase}`,
-        false,
-      ).then(
-        res => {
-          setLoader1(false);
-          console.log('Connected successfully!', res);
-          navigation.navigate('conectionStep3', {
-            title: 'connect misty',
-            serial_number: `${serialNumber}`,
-          });
-        },
-        rej => {
-          setLoader1(false);
-
-          console.log('Connection failed!', rej);
-          Alert.alert('Connection failed!');
-        },
-      );
-    });
+  const ConnectToNetwork = async () => {
+    WifiManager.connectToProtectedSSID(
+      `Misty-${serialNumber}`,
+      `${shaSalt}`,
+      false,
+    ).then(
+      res => {
+        console.log(res);
+        console.log('Connected successfully!');
+        navigation.navigate('conectionStep3', {
+          title: 'connect misty',
+          serial_number: `${serialNumber}`,
+        });
+        setLoader(false);
+      },
+      rej => {
+        console.log('Connection failed!', rej);
+        Alert.alert('Connection failed!');
+        setLoader(false);
+      },
+    );
   };
 
   return (
@@ -178,11 +198,12 @@ export const ConnectionStep2 = () => {
         </View>
       </TouchableOpacity>
       {loader && (
-        <Loader text={`Connecting your phone ${'\n'}to your misty unit`} />
+        <Loader text={`Connecting to the device`} />
       )}
       {loader1 && (
         <Loader text={'Connecting to the device'} />
       )}
+      {/*connecting your phone ${'\n'}to your misty unit*/}
     </>
   );
 };
