@@ -35,29 +35,7 @@ export const ConnectionStep2 = () => {
   const [salt, setSalt] = useState('');
   const [newSaltUpperSha, setNewSaltUpperSha] = useState('');
   const [mistySerialNumber, setMistySerialNumber] = useState('');
-  const [shaSalt, setShaSalt] = useState('');
   // const dispatch = useDispatch();
-
-  console.log(newSaltUpperSha, 'newSaltUpperSha1');
-  console.log(mistySerialNumber, 'mistySerialNumber1');
-
-  React.useEffect(() => {
-    if (newSaltUpperSha && mistySerialNumber) {
-      sha256(`${newSaltUpperSha}${mistySerialNumber}`).then(hash => {
-        setShaSalt(hash.toUpperCase().slice(0, 32));
-      });
-    }
-  }, [newSaltUpperSha, mistySerialNumber]);
-
-  // const combineUpperSha = React.useCallback(() => {
-  //   console.log(newSaltUpperSha, 'newSaltUpperSha');
-  //   console.log(mistySerialNumber, 'mistySerialNumber');
-  //   sha256(`${newSaltUpperSha}${mistySerialNumber}`.toUpperCase()).then(
-  //     hash => {
-  //       console.log(hash.toUpperCase().slice(0, 32), 'dadadadada');
-  //     },
-  //   );
-  // }, [newSaltUpperSha, mistySerialNumber]);
 
   const handleGoToStep3 = () => {
     if (!serialNumber) {
@@ -92,29 +70,33 @@ export const ConnectionStep2 = () => {
 
   const ConnectToNetwork = async () => {
     setLoader1(true);
+
+    sha256(`${newSaltUpperSha}${mistySerialNumber}`).then(hash => {
+      let passphrase = hash.toUpperCase().slice(0, 32)
+
+      console.log('PASSPHRASE HASH', `${newSaltUpperSha}${mistySerialNumber}`, '->', hash);
+      console.log('Connecting to Wi-Fi', `Misty-${serialNumber}`, `${passphrase}`)
     
-    console.log('Connecting to Wi-Fi', `Misty-${serialNumber}`, `${shaSalt}`)
-    
-    WifiManager.connectToProtectedSSID(
-      `Misty-${serialNumber}`,
-      `${shaSalt}`,
-      false,
-    ).then(
-      res => {
-        setLoader1(false);
-        console.log(res);
-        console.log('Connected successfully!');
-        navigation.navigate('conectionStep3', {
-          title: 'connect misty',
-          serial_number: `${serialNumber}`,
-        });
-      },
-      rej => {
-        setLoader1(false);
-        console.log('Connection failed!', rej);
-        Alert.alert('Connection failed!');
-      },
-    );
+      WifiManager.connectToProtectedSSID(
+        `Misty-${serialNumber}`,
+        `${passphrase}`,
+        false,
+      ).then(
+        res => {
+          setLoader1(false);
+          console.log('Connected successfully!', res);
+          navigation.navigate('conectionStep3', {
+            title: 'connect misty',
+            serial_number: `${serialNumber}`,
+          });
+        },
+        rej => {
+          setLoader1(false);
+          console.log('Connection failed!', rej);
+          Alert.alert('Connection failed!');
+        },
+      );
+    });
   };
 
   return (
