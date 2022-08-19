@@ -30,11 +30,9 @@ export const DeviceCertificate = async () => {
 };
 
 export const PublishConfiguration = async data => {
-  const body = {
-    data: [...data],
-  };
+  const body = data
 
   console.log('[DEVICE CONFIGURATION] Configuration request', body);
 
-  return await deviceAxios.post('', body);
+  return await deviceAxios.post('/', body);
 };

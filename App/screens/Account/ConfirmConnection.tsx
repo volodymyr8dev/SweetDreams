@@ -16,7 +16,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import {setConnection} from '../../redux/slice/powerSlice';
 import ConnectionCloud from '../../assets/images/svg/ConnectionCloud';
 import ConnectionCloud2 from '../../assets/images/svg/ConnectionCloud2';
-import background from '../../assets/images/homeIcon/bacgroundHome.png';
+import background from '../../assets/images/homeIcon/backgroundHome.png';
 import Sheep from '../../assets/images/svg/Sheep';
 import { RootState } from '../../redux/interfaceRootState';
 

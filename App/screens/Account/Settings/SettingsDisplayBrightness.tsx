@@ -1,23 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Image, ImageBackground} from 'react-native';
-import BouncyCheckboxGroup, {
-  ICheckboxButton,
-} from 'react-native-bouncy-checkbox-group';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import {View, StyleSheet, Image, ImageBackground} from 'react-native';
 import {COLORS} from '../../../styles/Constants';
 import {useDispatch} from 'react-redux';
-import SettingsSlice, {
-  setBrightness,
-  setTemperature,
-} from '../../../redux/slice/SettingsSlice';
 import {useSelector} from 'react-redux';
-import Slider from '@react-native-community/slider';
-import DomeBrignessBig from '../../../assets/images/settings/DomeBrignessBig.png';
-import DomeBrignessSmal from '../../../assets/images/settings/DomeBrignessSmal.png';
+import DisplayBrightnessBig from '../../../assets/images/settings/DomeBrightnessBig.png';
+import DisplayBrightnessSmall from '../../../assets/images/settings/DomeBrightnessSmall.png';
 import {SliderComp} from '../../../components/Slider/SliderComp';
-import background from '../../../assets/images/homeIcon/bacgroundHome.png'
+import background from '../../../assets/images/homeIcon/backgroundHome.png'
 
-export const SettingsDomeBrihtness = () => {
+export const SettingsDisplayBrightness = () => {
   const [value, setValue] = useState();
   const {brightness} = useSelector(({settings}) => settings);
   useEffect(() => {
@@ -29,7 +20,7 @@ export const SettingsDomeBrihtness = () => {
       <ImageBackground source={background}><View style={styles.container}>
         <View style={styles.box}>
           <Image
-              source={DomeBrignessBig}
+              source={DisplayBrightnessBig}
               style={{width: 25, height: 25, marginRight: 5}}
           />
           <View style={{justifyContent: 'center', width: '75%'}}>
@@ -39,25 +30,9 @@ export const SettingsDomeBrihtness = () => {
                 setValue={setValue}
             />
           </View>
-          {/* <Slider
-          style={{width: '75%', height: 40}}
-          value={brightness}
-          minimumValue={0}
-          maximumValue={1}
-          minimumTrackTintColor={COLORS.text}
-          maximumTrackTintColor="#292C62"
-          onSlidingComplete={value => {
-            dispatch(setBrightness(value));
-            console.log(value);
-          }}
-          onValueChange={value => {
-            setValue(value);
-            console.log(value);
-          }}
-        /> */}
           <Image
               style={{width: 30, height: 30, marginLeft: 5}}
-              source={DomeBrignessSmal}
+              source={DisplayBrightnessSmall}
           />
         </View>
       </View></ImageBackground>

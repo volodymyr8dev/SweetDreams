@@ -22,7 +22,7 @@ import {Validation} from '../../components/validation/Validation';
 import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
-import back from '../../assets/images/homeIcon/bacgroundHome.png';
+import back from '../../assets/images/homeIcon/backgroundHome.png';
 import {COLORS} from '../../styles/Constants';
 import {RegistrationUser} from '../../api/CreateAccount/CreateAccount';
 import {updateVerifiedEmail} from '../../redux/slice/slice';

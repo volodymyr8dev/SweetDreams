@@ -7,7 +7,7 @@ import wifiSmall from '../../../assets/images/settings/wifiSmall.png';
 import wifiBig from '../../../assets/images/settings/WifiBig.png';
 import {SettingsDevice} from '../../../api/Settings/Settings';
 import {RootState} from '../../../redux/configureStore';
-import background from '../../../assets/images/homeIcon/bacgroundHome.png';
+import background from '../../../assets/images/homeIcon/backgroundHome.png';
 
 export const SettingsSmartCRY = ({route}) => {
   const [active2, setActive2] = useState('');

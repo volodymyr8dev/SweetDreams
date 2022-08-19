@@ -9,7 +9,7 @@ import tempretute from '../../../assets/images/graph/iconList/tempreture.png';
 import book from '../../../assets/images/graph/iconList/book.png';
 import arrowRight from '../../../assets/images/settings/arrowRight.png';
 import {useNavigation} from '@react-navigation/native';
-import back from '../../../assets/images/homeIcon/bacgroundHome.png';
+import back from '../../../assets/images/homeIcon/backgroundHome.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import carousel from 'react-native-anchor-carousel/src/carousel';
 import {useDispatch, useSelector} from 'react-redux';

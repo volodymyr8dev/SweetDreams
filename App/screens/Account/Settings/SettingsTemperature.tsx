@@ -13,7 +13,7 @@ import SettingsSlice, {
 import {useSelector} from 'react-redux';
 import {SettingsDevice} from '../../../api/Settings/Settings';
 import {RootState} from '../../../redux/configureStore';
-import background from '../../../assets/images/homeIcon/bacgroundHome.png';
+import background from '../../../assets/images/homeIcon/backgroundHome.png';
 
 export const SettingsTemperature = ({route}) => {
   const [typeC, setTypeC] = useState(false);

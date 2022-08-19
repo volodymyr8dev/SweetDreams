@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import InternetConnectionAlert from 'react-native-internet-connection-alert';
 import {CustomButton} from '../../components/CustomButton/CustomButton';
-import background from '../../assets/images/homeIcon/bacgroundHome.png';
+import background from '../../assets/images/homeIcon/backgroundHome.png';
 import sheep from '../../assets/images/controlChild/sheep.png';
 import settings from '../../assets/images/homeIcon/settings.png';
 import thermometr from '../../assets/images/controlChild/thermometr.png';

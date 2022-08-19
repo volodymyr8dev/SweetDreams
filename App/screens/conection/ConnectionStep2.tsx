@@ -58,7 +58,8 @@ export const ConnectionStep2 = () => {
             setLoaderGettingSalt(true);
     
             GetSalt('misty').then(res => {
-              console.log('[DEVICE CONFIGURATION] Retrieved the Wi-Fi Salt', res.data.data.salt);
+              let wifiSalt = res.data.data.salt;
+              console.log('[DEVICE CONFIGURATION] Retrieved the Wi-Fi Salt', wifiSalt);
     
               setLoaderGettingSalt(false);
               setTimeout(function() {
@@ -70,10 +71,11 @@ export const ConnectionStep2 = () => {
                   console.log('[DEVICE CONFIGURATION] Certificate response', res);
     
                   setLoaderRetrievingTheCertificates(false);
+                  
                   setTimeout(function() {
                     setLoaderConnectingToTheDeviceNetwork(true);
     
-                    sha256(res.data.data.salt).then(hash1 => {
+                    sha256(wifiSalt).then(hash1 => {
                       console.log('[DEVICE CONFIGURATION] Hash 1', hash1);
             
                       sha256(`Misty-${serialNumber}`).then(hash2 => {

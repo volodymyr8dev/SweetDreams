@@ -13,7 +13,7 @@ import {useDispatch} from 'react-redux';
 import {setWakeUpTime} from '../../../redux/slice/SettingsSlice';
 import {SettingsDevice} from '../../../api/Settings/Settings';
 import {RootState} from '../../../redux/configureStore';
-import background from '../../../assets/images/homeIcon/bacgroundHome.png';
+import background from '../../../assets/images/homeIcon/backgroundHome.png';
 
 export const SettingsWakeUpTime = ({route}) => {
   const [date, setDate] = useState(new Date());
