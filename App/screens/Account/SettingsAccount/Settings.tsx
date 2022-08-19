@@ -356,7 +356,7 @@ export const Settings = () => {
                 fontSize: 18,
                 fontFamily: 'AntagometricaBT-Bold',
               }}>
-              App Version 2.1.4
+              App Version 1.0 (18)
             </Text>
           </View>
           <TouchableOpacity onPress={handleSignOut} style={{marginBottom: 10}}>
@@ -387,7 +387,7 @@ export const Settings = () => {
           </TouchableOpacity>
         </ScrollView>
       </View>
-      
+
       {global?.loader && <Loader text={'Please wait for Verification'} />}
     </ImageBackground>
   );

@@ -60,7 +60,7 @@ export const ConnectionStep2 = () => {
   //     },
   //   );
   // }, [newSaltUpperSha, mistySerialNumber]);
-
+  console.log(loader1, 'sssssssss');
   const handleGoToStep3 = () => {
     if (!serialNumber) {
       Alert.alert('Serial Number is required');
@@ -78,7 +78,7 @@ export const ConnectionStep2 = () => {
           });
           console.log(res);
           ConnectToNetwork();
-          setLoader(false);
+
         })
         .catch(rej => {
           setLoader(false);
@@ -111,25 +111,25 @@ export const ConnectionStep2 = () => {
   // disconnectFromSSID(ssid: string): Promise
 
   const ConnectToNetwork = async () => {
-    setLoader1(true);
     WifiManager.connectToProtectedSSID(
       `Misty-${serialNumber}`,
       `${shaSalt}`,
       false,
     ).then(
       res => {
-        setLoader1(false);
         console.log(res);
         console.log('Connected successfully!');
         navigation.navigate('conectionStep3', {
           title: 'connect misty',
           serial_number: `${serialNumber}`,
         });
+        setLoader(false);
+
       },
       rej => {
-        setLoader1(false);
         console.log('Connection failed!', rej);
         Alert.alert('Connection failed!');
+        setLoader(false);
       },
     );
   };
@@ -205,11 +205,12 @@ export const ConnectionStep2 = () => {
         </View>
       </TouchableOpacity>
       {loader && (
-        <Loader text={`connecting your phone ${'\n'}to your misty unit`} />
+        <Loader text={`Connecting to the device`} />
       )}
       {loader1 && (
         <Loader text={'Connecting to the device'} />
       )}
+      {/*connecting your phone ${'\n'}to your misty unit*/}
     </>
   );
 };
