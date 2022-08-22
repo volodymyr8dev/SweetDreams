@@ -1,17 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity} from 'react-native';
-import {View, Text, StyleSheet, Image, ImageBackground} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
+} from 'react-native';
 import {COLORS} from '../../../styles/Constants';
-
-import happy from '../../../assets/images/graph/iconList/happy.png';
-import sad from '../../../assets/images/graph/iconList/sad.png';
-import tempretute from '../../../assets/images/graph/iconList/tempreture.png';
-import book from '../../../assets/images/graph/iconList/book.png';
-import arrowRight from '../../../assets/images/settings/arrowRight.png';
-import {useNavigation} from '@react-navigation/native';
 import back from '../../../assets/images/homeIcon/bacgroundHome.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import carousel from 'react-native-anchor-carousel/src/carousel';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   NureseryTemperatureApi,
@@ -104,13 +101,12 @@ const averageTotaltemp = [
 
 export const NurseryData = () => {
   const dispatch = useDispatch();
-  const navigation = useNavigation<any>();
+
   const [activeTime, setActiveTime] = useState('last 24 hours');
-  const [start, setStart] = useState('');
-  const [end, setEnd] = useState('');
   const [diaries, setDiaries] = useState(0);
   const [averageTemp, setAvarageTemp] = useState(0);
   const [id, setId] = useState(null);
+
   const {accounts} = useSelector(
     ({account}: RootState) => account.userInformation.user,
   );
@@ -125,6 +121,7 @@ export const NurseryData = () => {
   };
   console.log('avavavaav', averageTemp);
   useEffect(() => {
+    getToken();
     if (accounts[0].id) {
       console.log('id', accounts[0].id);
       let dataStart = startDate[arrayHeader.indexOf(activeTime)];
@@ -133,69 +130,48 @@ export const NurseryData = () => {
         Promise.all([
           NureseryTemperatureApi(accounts[0].id, dataStart, dataEnd),
           NureseryTemperatureGetApi(accounts[0].id, id, dataStart, dataEnd),
-        ]).then((data) => {
-           setDiaries(data[0].data[0].diaries);
-               !Array.isArray(data[1].data)
-                 ? setAvarageTemp(
-                     data[1].data[
-                       `${dateFormat(dataStart)}_${dateFormat(dataEnd)}`
-                     ][averageTotaltemp[arrayHeader.indexOf(activeTime)]],
-                   )
-                 : setAvarageTemp(0);
-          console.log('dataPromiseAll', data);
-        }).catch((Err)=>console.log('Promise All',Err));
-      }else{
-      NureseryTemperatureApi(accounts[0].id, dataStart, dataEnd)
-        .then(({data}) => {
-          console.log('get nerseryId', data);
-          setId(data[1].id);
-          setDiaries(data[0].diaries);
-          dispatch(setNerseryId(data[1].id));
-          NureseryTemperatureGetApi(
-            accounts[0].id,
-            data[1].id,
-            dataStart,
-            dataEnd,
-          )
-            .then(({data}) => {
-              // console.log('finished', data);
-              !Array.isArray(data)
-                ? setAvarageTemp(
-                    data[`${dateFormat(dataStart)}_${dateFormat(dataEnd)}`][
-                      averageTotaltemp[arrayHeader.indexOf(activeTime)]
-                    ],
-                  )
-                : setAvarageTemp(0);
-            })
-            .catch(err => console.log('finishedError', err));
-        })
-        .catch(err => console.log('ERR', err));
+        ])
+          .then(data => {
+            setDiaries(data[0].data[0].diaries);
+            !Array.isArray(data[1].data)
+              ? setAvarageTemp(
+                  data[1].data[
+                    `${dateFormat(dataStart)}_${dateFormat(dataEnd)}`
+                  ][averageTotaltemp[arrayHeader.indexOf(activeTime)]],
+                )
+              : setAvarageTemp(0);
+            console.log('dataPromiseAll', data);
+          })
+          .catch(Err => console.log('Promise All', Err));
+      } else {
+        NureseryTemperatureApi(accounts[0].id, dataStart, dataEnd)
+          .then(({data}) => {
+            console.log('get nerseryId', data);
+            setId(data[1].id);
+            setDiaries(data[0].diaries);
+            dispatch(setNerseryId(data[1].id));
+            NureseryTemperatureGetApi(
+              accounts[0].id,
+              data[1].id,
+              dataStart,
+              dataEnd,
+            )
+              .then(({data}) => {
+                !Array.isArray(data)
+                  ? setAvarageTemp(
+                      data[`${dateFormat(dataStart)}_${dateFormat(dataEnd)}`][
+                        averageTotaltemp[arrayHeader.indexOf(activeTime)]
+                      ],
+                    )
+                  : setAvarageTemp(0);
+              })
+              .catch(err => console.log('finishedError', err));
+          })
+          .catch(err => console.log('ERR', err));
       }
-
     }
   }, [activeTime, accounts[0].id]);
 
-  // useEffect(() => {
-  //   getToken();
-  //   if (accounts[0].id) {
-  //     console.log('id', accounts[0].id);
-  //     NureseryTemperatureApi(accounts[0].id, start, end)
-  //       .then(({data}) => {
-  //         console.log('get nerseryId', data);
-  //         dispatch(setNerseryId(data[1].id));
-  //         NureseryTemperatureGetApi(accounts[0].id, data[1].id, start, end)
-  //           .then(({data}) => {
-  //             console.log('finished', data);
-  //           })
-  //           .catch(err => {
-  //             console.log('finised error', err);
-  //           });
-  //       })
-  //       .catch(err => {
-  //         console.log('ERR', err);
-  //       });
-  //   }
-  // }, [accounts[0].id]);
   const handleChangeTime = time => {
     console.log(time);
     setActiveTime(time);
@@ -233,7 +209,6 @@ export const NurseryData = () => {
       </View>
     );
   };
-  // const ContentNavigation = ({options,account}) => {
   const activeDay = () => {
     switch (activeTime) {
       case 'last 24 hours':
@@ -248,7 +223,7 @@ export const NurseryData = () => {
   return (
     <ImageBackground
       source={back}
-      style={{flex: 1, backgroundColor: COLORS.back}}>
+      style={{flex: 1, backgroundColor: COLORS.backDark}}>
       <HeaderNavigation />
       <ContentNavigation
         averageTemp={averageTemp}

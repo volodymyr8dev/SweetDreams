@@ -33,7 +33,6 @@ export const AverageTempature = ({route}) => {
     moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD'),
   );
   const [end, setEnd] = useState(moment(new Date()).format('YYYY-MM-DD'));
-
   useEffect(() => {
     setStart(moment(start).format('YYYY-MM-DD'));
     setEnd(moment(end).format('YYYY-MM-DD'));
