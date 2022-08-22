@@ -17,7 +17,7 @@ import {ChangePasswordApi} from '../../../api/ForgotPassword/forgotPassword';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/configureStore';
 import {AccountSelector} from '../../../redux/selectors/AccountSelector';
-import {UpdateProfile} from '../../../api/Profile/ProfileApi';
+import {UpdateProfile} from '../../../api/Profile/Profile';
 
 interface PropsBox {
   nameOfBox: string;

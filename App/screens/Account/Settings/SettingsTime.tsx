@@ -5,9 +5,9 @@ import {COLORS} from '../../../styles/Constants';
 import DatePicker from 'react-native-date-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {setTime, setWakeUpTime} from '../../../redux/slice/SettingsSlice';
-import {SettingsDevice} from '../../../api/Settings/SettingsApi';
+import {SettingsDevice} from '../../../api/Settings/Settings';
 import {RootState} from '../../../redux/configureStore';
-import background from '../../../assets/images/homeIcon/bacgroundHome.png';
+import background from '../../../assets/images/homeIcon/backgroundHome.png';
 
 export const SettingsTime = ({route}) => {
   const {user} = useSelector(({account}: RootState) => account.userInformation);
@@ -74,7 +74,7 @@ export const SettingsTime = ({route}) => {
             </View>
             <View style={styles.box}>
               <Text style={{color: COLORS.text, fontSize: 16}}>
-                Set Time Automaticly
+                Set Time Automatically
               </Text>
               <View>
                 <Switch
@@ -95,7 +95,7 @@ export const SettingsTime = ({route}) => {
                 fontSize: 20,
                 fontFamily: 'AntagometricaBT-Regular',
               }}>
-              Set Time Automaticly
+                Set Time Automatically
             </Text>
             <View>
               <Switch val={value} setVal={changeValue} />

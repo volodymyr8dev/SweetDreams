@@ -27,8 +27,8 @@ import {
 import {setLoader} from '../../redux/slice/slice';
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
-import {forgotPassword} from '../../api/ForgotPassword/forgotPassword';
 import {COLORS} from '../../styles/Constants';
+import { forgotPasswordApi } from '../../api/ForgotPassword/forgotPassword';
 
 export const ForgotPassword = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
@@ -47,7 +47,7 @@ export const ForgotPassword = () => {
     if (!Validation('email', email)) {
       dispatch(setLoader(true));
       console.log('email', email);
-      forgotPassword(email)
+      forgotPasswordApi(email)
         .then(data => {
           console.log('data', data);
           dispatch(setLoader(false));
@@ -95,7 +95,7 @@ export const ForgotPassword = () => {
             Forgotten your password? No problem, please enter your email below
             and we'll send you a recovery link
           </Text>
-        </View>
+        </View> 
         <CustomInput
           value={email}
           onChangeText={email => setemail(email)}

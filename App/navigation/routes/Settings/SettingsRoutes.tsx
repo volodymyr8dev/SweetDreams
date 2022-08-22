@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SettingsTemperature} from '../../../screens/Account/Settings/SettingsTemperature';
 import {SettingsTime} from '../../../screens/Account/Settings/SettingsTime';
 import {SettingsWakeUpTime} from '../../../screens/Account/Settings/SettingsWakeUpTime';
 import {SettingsColourPicker} from '../../../screens/Account/Settings/SettingsColourPicker';
-import {SettingsDomeBrihtness} from '../../../screens/Account/Settings/SettingsDomeBrihtness';
+import {SettingsDomeBrightness} from '../../../screens/Account/Settings/SettingsDomeBrightness';
+import {SettingsDisplayBrightness} from '../../../screens/Account/Settings/SettingsDisplayBrightness';
 import {SettingsSmartCRY} from '../../../screens/Account/Settings/SettingsSmartCRY';
 import {SettingsRecording} from '../../../screens/Account/Settings/SettingsRecording';
 import {SettingsNewRecording} from '../../../screens/Account/Settings/SettingsNewRecording';
@@ -123,7 +123,7 @@ const StackRoutes = () => {
         options={navigationOptions}
       />
       <Stack.Screen
-        name="time"
+        name="Time"
         component={SettingsTime}
         options={navigationOptions}
       />
@@ -139,7 +139,12 @@ const StackRoutes = () => {
       />
       <Stack.Screen
         name="Dome Brightness"
-        component={SettingsDomeBrihtness}
+        component={SettingsDomeBrightness}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="Display Brightness"
+        component={SettingsDisplayBrightness}
         options={navigationOptions}
       />
       <Stack.Screen
@@ -163,7 +168,7 @@ const StackRoutes = () => {
         options={navigationOptions}
       />
       <Stack.Screen
-        name="new Recording"
+        name="New Recording"
         component={SettingsNewRecording}
         options={navigationOptions}
       />

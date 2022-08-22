@@ -1,5 +1,4 @@
 import React from 'react';
-import {View} from 'react-native';
 import Slider from '@react-native-community/slider';
 import {useDispatch} from 'react-redux';
 import {setBrightness, setVolume} from '../../redux/slice/SettingsSlice';

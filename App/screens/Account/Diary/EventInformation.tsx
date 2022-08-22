@@ -14,10 +14,11 @@ import iconEue from '../../../assets/images/documents/point.png';
 import {useNavigation} from '@react-navigation/native';
 import {DeleteEventApi} from '../../../api/Diary/calendar';
 import moment from 'moment';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {navigationOptions} from '../../../navigation/routes/AppStackRoutes';
-import { RootState } from '../../../redux/interfaceRootState';
-import { ILocation } from './Location';
+import {RootState} from '../../../redux/interfaceRootState';
+import {ILocation} from './Location';
+import { setLocationEventDispatch } from '../../../redux/slice/slice';
 type Nav = {
   navigate: (value: string, obj?: any) => void;
   setParams: (value: any) => void;
@@ -26,6 +27,7 @@ type Nav = {
 
 export const EventInformation = ({route}) => {
   const navigation = useNavigation<Nav>();
+  const dispatch = useDispatch();
   const [locationEvent, setLocationEvent] = useState<ILocation>();
   const [event, setEvent] = useState(route.params.event);
   const global = useSelector(
@@ -34,7 +36,7 @@ export const EventInformation = ({route}) => {
   const location = useSelector(
     ({account}: RootState) => account.events.location,
   );
-console.log('event location', location);
+  console.log('event location', location);
   useEffect(() => {
     setEvent(route.params.event);
     setLocationEvent(route.params.event.location);
@@ -43,12 +45,14 @@ console.log('event location', location);
   console.log('location------', locationEvent);
   console.log('route.params.event', route.params.event);
   const goToEdit = () => {
+    dispatch(setLocationEventDispatch(route.params.event.location));
     navigation.navigate('addEvent', {
       title: 'edit entry',
       rightText: 'done',
       backTitle: 'cancel',
       selectedDate: event.starts_at,
       event: event,
+      type: 'regular',
     });
   };
   useEffect(() => {
@@ -87,14 +91,12 @@ console.log('event location', location);
 
         <View style={styles.containerTextNotes}>
           <View style={{flexDirection: 'row'}}>
-            {
-              (event.breast  && (
-                <>
-                  <Text style={styles.subTitleNotes}>breast: </Text>
-                  <Text style={styles.subTitleNotes}>{event.breast}</Text>
-                </>
-              ))
-            }
+            {event.breast && (
+              <>
+                <Text style={styles.subTitleNotes}>breast: </Text>
+                <Text style={styles.subTitleNotes}>{event.breast}</Text>
+              </>
+            )}
           </View>
           <View>
             <Text style={styles.subTitleNotes}>notes:</Text>

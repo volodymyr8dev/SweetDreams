@@ -5,9 +5,9 @@ import {SliderComp} from '../../../components/Slider/SliderComp';
 import {COLORS} from '../../../styles/Constants';
 import volumeSmall from '../../../assets/images/settings/volumeSmall.png';
 import volumeBig from '../../../assets/images/settings/volumeBig.png';
-import {SettingsDevice} from '../../../api/Settings/SettingsApi';
+import {SettingsDevice} from '../../../api/Settings/Settings';
 import {RootState} from '../../../redux/configureStore';
-import background from '../../../assets/images/homeIcon/bacgroundHome.png';
+import background from '../../../assets/images/homeIcon/backgroundHome.png';
 
 export const SettingsVolume = ({route}) => {
   const [active, setActive] = useState();

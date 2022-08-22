@@ -1,17 +1,5 @@
 import React, {useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {SettingsTemperature} from '../../../screens/Account/Settings/SettingsTemperature';
-import {SettingsTime} from '../../../screens/Account/Settings/SettingsTime';
-import {SettingsWakeUpTime} from '../../../screens/Account/Settings/SettingsWakeUpTime';
-import {SettingsColourPicker} from '../../../screens/Account/Settings/SettingsColourPicker';
-import {SettingsDomeBrihtness} from '../../../screens/Account/Settings/SettingsDomeBrihtness';
-import {SettingsSmartCRY} from '../../../screens/Account/Settings/SettingsSmartCRY';
-import {SettingsRecording} from '../../../screens/Account/Settings/SettingsRecording';
-import {SettingsNewRecording} from '../../../screens/Account/Settings/SettingsNewRecording';
-import {SettingsTimePlaying} from '../../../screens/Account/Settings/SettingsTimePlaying';
-import {SettingsVolume} from '../../../screens/Account/Settings/SettingsVolume';
-import {ChangeFamilyMembers} from '../../../screens/Account/SettingsAccount/ChangeFamilyMembers';
 import {ChangePassword} from '../../../screens/Account/SettingsAccount/ChangePassword';
 import {PrivacyPolicy} from '../../../screens/Account/SettingsAccount/PrivacyPolicy';
 import {TermsConditions} from '../../../screens/Account/SettingsAccount/TermsConditions';

@@ -11,9 +11,10 @@ import SettingsSlice, {
   setTemperatureNew,
 } from '../../../redux/slice/SettingsSlice';
 import {useSelector} from 'react-redux';
-import {SettingsDevice} from '../../../api/Settings/SettingsApi';
+import {SettingsDevice} from '../../../api/Settings/Settings';
 import {RootState} from '../../../redux/configureStore';
-import background from '../../../assets/images/homeIcon/bacgroundHome.png';
+import background from '../../../assets/images/homeIcon/backgroundHome.png';
+import { UserInformationSelector } from '../../../redux/selectors/AccountSelector';
 
 export const SettingsTemperature = ({route}) => {
   const [typeC, setTypeC] = useState(false);
@@ -21,7 +22,7 @@ export const SettingsTemperature = ({route}) => {
   const [loader, setLoader] = useState(true);
   const dispatch = useDispatch();
   const {temperature} = useSelector(({settings}) => settings);
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const {user} = useSelector(UserInformationSelector);
   const setNewValue = () => {
     SettingsDevice(
       {temperature: route.params.value === 'C' ? 'F' : 'C'},

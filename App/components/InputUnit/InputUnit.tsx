@@ -163,17 +163,18 @@ export const InputUnit = ({
                   styles.customText,
                   {color: value == 'left' ? '#fff' : COLORS.text},
                 ]}>
-                Left / 
+                Left
               </Text>
             </TouchableOpacity>
-
+            <Text style={{color: '#fff', marginTop: 2}}>{" "} / </Text>
             <TouchableOpacity onPress={() => setValueName?.('right')}>
               <Text
-                style={
-                  [styles.customText,
-                  {color: value == 'right' ? '#fff' : COLORS.text}]
-                }>
-              {" "}Right
+                style={[
+                  styles.customText,
+                  {color: value == 'right' ? '#fff' : COLORS.text},
+                ]}>
+                {' '}
+                Right
               </Text>
             </TouchableOpacity>
           </View>
@@ -283,6 +284,7 @@ const styles = StyleSheet.create({
   },
   customText: {
     color: COLORS.text,
-    fontSize: 18,
+    fontSize: 19,
+    fontFamily: 'AntagometricaBT-Regular',
   },
 });

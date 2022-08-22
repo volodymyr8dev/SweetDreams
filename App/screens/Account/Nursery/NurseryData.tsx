@@ -7,18 +7,19 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {COLORS} from '../../../styles/Constants';
-import back from '../../../assets/images/homeIcon/bacgroundHome.png';
+import back from '../../../assets/images/homeIcon/backgroundHome.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  NureseryTemperatureApi,
-  NureseryTemperatureGetApi,
-} from '../../../api/Nursery/Nuresery';
-import {setNerseryId} from '../../../redux/slice/slice';
+  NurseryTemperatureApi,
+  NurseryTemperatureGetApi,
+} from '../../../api/Nursery/Nursery';
+import {setNurseryId} from '../../../redux/slice/slice';
 import {ContentNavigation} from './ContentNavigation';
 import moment from 'moment';
 import {RootState} from '../../../redux/interfaceRootState';
 import {dateFormat, dateTimeFormat} from '../../../utils/time';
+import { ChildInformation, UserInformationSelector } from '../../../redux/selectors/AccountSelector';
 
 const options24 = {
   value1: {
@@ -107,13 +108,9 @@ export const NurseryData = () => {
   const [averageTemp, setAvarageTemp] = useState(0);
   const [id, setId] = useState(null);
 
-  const {accounts} = useSelector(
-    ({account}: RootState) => account.userInformation.user,
-  );
+  const accounts = useSelector(ChildInformation);
   console.log('account', accounts);
 
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
-  console.log(user.accounts[0].is_deluxe, 'isdecdsede');
 
   const getToken = async () => {
     const value = await AsyncStorage.getItem('@storage_Key');
@@ -122,14 +119,14 @@ export const NurseryData = () => {
   console.log('avavavaav', averageTemp);
   useEffect(() => {
     getToken();
-    if (accounts[0].id) {
-      console.log('id', accounts[0].id);
+    if (accounts.id) {
+      console.log('id', accounts.id);
       let dataStart = startDate[arrayHeader.indexOf(activeTime)];
       let dataEnd = dateTimeFormat(new Date());
       if (id) {
         Promise.all([
-          NureseryTemperatureApi(accounts[0].id, dataStart, dataEnd),
-          NureseryTemperatureGetApi(accounts[0].id, id, dataStart, dataEnd),
+          NurseryTemperatureApi(accounts.id, dataStart, dataEnd),
+          NurseryTemperatureGetApi(accounts.id, id, dataStart, dataEnd),
         ])
           .then(data => {
             setDiaries(data[0].data[0].diaries);
@@ -144,14 +141,14 @@ export const NurseryData = () => {
           })
           .catch(Err => console.log('Promise All', Err));
       } else {
-        NureseryTemperatureApi(accounts[0].id, dataStart, dataEnd)
+        NurseryTemperatureApi(accounts.id, dataStart, dataEnd)
           .then(({data}) => {
             console.log('get nerseryId', data);
             setId(data[1].id);
             setDiaries(data[0].diaries);
-            dispatch(setNerseryId(data[1].id));
-            NureseryTemperatureGetApi(
-              accounts[0].id,
+            dispatch(setNurseryId(data[1].id));
+            NurseryTemperatureGetApi(
+              accounts.id,
               data[1].id,
               dataStart,
               dataEnd,
@@ -170,7 +167,7 @@ export const NurseryData = () => {
           .catch(err => console.log('ERR', err));
       }
     }
-  }, [activeTime, accounts[0].id]);
+  }, [activeTime, accounts.id]);
 
   const handleChangeTime = time => {
     console.log(time);

@@ -13,7 +13,7 @@ import {
   getProfile,
   UpdateProfile,
   UpdateProfileChild,
-} from '../../../api/Profile/ProfileApi';
+} from '../../../api/Profile/Profile';
 
 import {InputUnit} from '../../../components/InputUnit/InputUnit';
 import {COLORS} from '../../../styles/Constants';
@@ -24,11 +24,11 @@ import checkButton from '../../../assets/images/checkButton.png';
 import back from '../../../assets/backOrigin.png';
 import moment from 'moment';
 import {DatePickerComponent} from '../../../components/DatePicker/DatePicker';
-import {RootState} from '../../../redux/configureStore';
 import {Gender} from '../../../components/Gender/Gender';
 import {Loader} from '../../../components/Loader/Loader';
 import {UserInformationSelector} from '../../../redux/selectors/AccountSelector';
 import {useIsFocused} from '@react-navigation/native';
+import DeviceInfo from 'react-native-device-info';
 import Schedule from '../../../assets/images/svg/Schedule';
 interface IUser {
   email?: string;
@@ -89,7 +89,7 @@ const verticalStaticData = [
 ];
 export const Settings = () => {
   const isFocused = useIsFocused();
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const {user} = useSelector(UserInformationSelector);
   const global = useSelector(({account}) => account);
   console.log(global,"KOKOKOKO")
   console.log('userrrrrr', user);
@@ -104,6 +104,9 @@ export const Settings = () => {
     user.accounts[0].baby_date_of_birth,
   );
   const [valueGender, setValueGender] = useState<any>(null);
+  const [version, setVersion] = useState(DeviceInfo.getVersion());
+  const [build, setBuild] = useState(DeviceInfo.getBuildNumber());
+
   const [valueGenderChild, setValueGenderChild] = useState<any>(
     user.accounts[0].baby_gender,
   );
@@ -356,7 +359,7 @@ export const Settings = () => {
                 fontSize: 18,
                 fontFamily: 'AntagometricaBT-Bold',
               }}>
-              App Version 2.1.4
+              App Version {version} ({build})
             </Text>
           </View>
           <TouchableOpacity onPress={handleSignOut} style={{marginBottom: 10}}>
@@ -387,7 +390,7 @@ export const Settings = () => {
           </TouchableOpacity>
         </ScrollView>
       </View>
-      
+
       {global?.loader && <Loader text={'Please wait for Verification'} />}
     </ImageBackground>
   );
@@ -450,3 +453,4 @@ const styles = StyleSheet.create({
     top: 20,
   },
 });
+

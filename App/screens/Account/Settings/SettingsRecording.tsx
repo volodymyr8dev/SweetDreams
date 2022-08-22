@@ -11,7 +11,7 @@ import {
 import {COLORS} from '../../../styles/Constants';
 import arrowRight from '../../../assets/images/settings/arrowRight.png';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import background from '../../../assets/images/homeIcon/bacgroundHome.png';
+import background from '../../../assets/images/homeIcon/backgroundHome.png';
 import checkButton from '../../../assets/images/checkButton.png';
 import BouncyCheckboxGroup, {
   ICheckboxButton,

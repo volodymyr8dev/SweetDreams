@@ -110,7 +110,7 @@ export const Step3 = () => {
           });
         dispatch(setLoader(false));
       } else {
-        Alert.alert('Please, choose gender');
+        Alert.alert('Please, select a gender');
       }
     } else {
       Alert.alert('Please, enter a valid name');
@@ -139,7 +139,7 @@ export const Step3 = () => {
           <View style={{marginTop: 5, marginBottom: 15}}>
             <Text style={{color: '#26669E', fontFamily: 'AntagometricaBT-Regular'}}>
               Please enter the details of the guardian who created the account
-              and completed the registration.The information given will be used
+              and completed the registration. The information given will be used
               to help improve the product through statistics and analytics
             </Text>
           </View>
@@ -148,7 +148,7 @@ export const Step3 = () => {
           value={name}
           onChangeText={name => setName(name)}
           styling={styles.input}
-          text={'Your Name '}
+          text={'Your Name'}
         />
         <TouchableOpacity
           onPress={() => {

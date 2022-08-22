@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setLoader} from '../../redux/slice/slice';
 import {Loader} from '../../components/Loader/Loader';
 import {
-  forgotPassword,
+  forgotPasswordApi,
   VerifyEmailResetPassword,
 } from '../../api/ForgotPassword/forgotPassword';
 export const ForgotPassword2 = () => {
@@ -47,11 +47,12 @@ export const ForgotPassword2 = () => {
     }
   }, [code]);
   const navigateToStep3 = () => {
-    forgotPassword(navigation.getState().routes[2].params?.email).catch(err => {
-      console.log(err);
-    });
+    forgotPasswordApi(navigation.getState().routes[2].params?.email).catch(
+      err => {
+        console.log(err);
+      },
+    );
   };
-
 
   return (
     <>

@@ -1,9 +1,10 @@
 import React from 'react';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {COLORS} from '../../styles/Constants/index';
-import {SettingsDevice} from '../../api/Settings/SettingsApi';
+import {SettingsDevice} from '../../api/Settings/Settings';
 import {useSelector} from 'react-redux';
 import { RootState } from '../../redux/interfaceRootState';
+import { UserInformationSelector } from '../../redux/selectors/AccountSelector';
 
 interface ISwitch {
   val: any;
@@ -13,7 +14,7 @@ interface ISwitch {
   title?: any;
 }
 export const Switch = ({val, setVal, setData, valueSmart, title}: ISwitch) => {
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const {user} = useSelector(UserInformationSelector);
   const setValue = async () => {
     const data = await SettingsDevice(
       {[title]: val !== null ? !val : valueSmart === '0' ? '1' : '0'},

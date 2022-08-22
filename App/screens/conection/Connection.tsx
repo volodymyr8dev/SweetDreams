@@ -4,7 +4,7 @@ import {View, Text, StyleSheet, Image, ImageBackground} from 'react-native';
 import {CustomButton} from '../../components/CustomButton/CustomButton';
 import Cloud from '../../assets/images/cloud';
 import {COLORS} from '../../styles/Constants';
-import background from '../../assets/images/homeIcon/bacgroundHome.png';
+import background from '../../assets/images/homeIcon/backgroundHome.png';
 
 export const Connection = () => {
   const navigation = useNavigation();

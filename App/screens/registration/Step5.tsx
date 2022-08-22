@@ -52,8 +52,7 @@ export const Step5 = () => {
               textAlign: 'center',
               fontFamily: 'AntagometricaBT-Regular',
             }}>
-            Now let's get your device paired so you can start collecting sleep
-            data{' '}
+            Now let's get your device paired so you can start collecting sleep data{' '}
           </Text>
         </View>
       </View>

@@ -14,9 +14,9 @@ import {
   time,
 } from '../../../../styles/Constants';
 import {BarChart} from 'react-native-chart-kit';
-import arrowLeft from '../../../../assets/images/nersery/arrowLeft.png';
+import arrowLeft from '../../../../assets/images/nursery/arrowLeft.png';
 import {Blog} from '../../../../components/Touchable/TouchableInput';
-import sleepDiary from '../../../../assets/images/nersery/sleepDiary.png';
+import sleepDiary from '../../../../assets/images/nursery/sleepDiary.png';
 import moment from 'moment';
 
 const chartConfig = {

@@ -12,10 +12,11 @@ import backLocation from '../../../assets/images/documents/backLocation.png';
 import point from '../../../assets/images/documents/pointEvent.png';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {useDispatch, useSelector} from 'react-redux';
-import {setLocationEvent} from '../../../redux/slice/slice';
 import {useNavigation} from '@react-navigation/native';
 import {getRecentLocation} from '../../../api/Diary/locations';
 import { RootState } from '../../../redux/interfaceRootState';
+import { UserInformationSelector } from '../../../redux/selectors/AccountSelector';
+import { setLocationEventDispatch } from '../../../redux/slice/slice';
 
 export interface ILocation {
   name: string;
@@ -30,7 +31,7 @@ const CardItem = ({name, locate}: ILocation) => {
       name: {description: name},
       location: locate,
     };
-    dispatch(setLocationEvent(res));
+    dispatch(setLocationEventDispatch(res));
     navigation.goBack();
   };
   return (
@@ -50,7 +51,7 @@ export const Location = ({route}) => {
   const location = route.params.location;
   const [recentLocation, setRecentLocation] = useState([]);
   const navigation = useNavigation();
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const {user} = useSelector(UserInformationSelector);
 
   useEffect(() => {
     getRecentLocation(user.accounts[0].id)
@@ -82,7 +83,7 @@ export const Location = ({route}) => {
             name: data,
             location: details?.geometry?.location,
           };
-          dispatch(setLocationEvent(res));
+          dispatch(setLocationEventDispatch(res));
           navigation.goBack();
         }}
         onFail={error => console.log('error', error)}

@@ -27,6 +27,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import ConfirmConnection from '../../screens/Account/ConfirmConnection';
 import {RootState} from '../../redux/configureStore';
 import {useNavigation} from '@react-navigation/native';
+import { UserInformationSelector } from '../../redux/selectors/AccountSelector';
 
 const iconGr = (focused, iconActive, icon, size = 30) => {
   return (
@@ -163,10 +164,10 @@ const customTabBarStyle = {
   labelStyle: {},
 };
 export const MyTabs = () => {
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const {user} = useSelector(UserInformationSelector);
   const navigation = useNavigation<Nav>();
   useEffect(() => {
-    navigation.navigate('Accountt');
+    navigation.navigate('Account');
   }, []);
   console.log('accountsaccountsadsv', user.accounts[0].device);
   return (

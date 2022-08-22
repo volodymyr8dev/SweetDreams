@@ -33,9 +33,6 @@ export const NewEvent = ({route}) => {
   );
 
   const addEvent = () => {
-    console.log('location22222', location);
-    console.log('breast', breast);
-    console.log('type*******', params.type);
     NewEventApi(
       global.id,
       title,
@@ -150,8 +147,13 @@ export const NewEvent = ({route}) => {
             <Text style={styles.touchT}>Location</Text>
           </View>
           <View>
-            <Text style={{color: COLORS.text}}>
-              {params?.event?.location?.name
+            <Text
+              style={{
+                color: COLORS.text,
+                fontSize: 19,
+                fontFamily: 'AntagometricaBT-Regular',
+              }}>
+               {params?.event?.location?.name
                 ? params?.event?.location?.name
                 : eventSelector.name.description}
             </Text>

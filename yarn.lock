@@ -1883,28 +1883,6 @@
     "@types/scheduler" "*"
     "csstype" "^3.0.2"
 
-"@types/redux-actions@*":
-  "integrity" "sha512-TvcINy8rWFANcpc3EiEQX9Yv3owM3d3KIrqr2ryUIOhYIYzXA/bhDZeGSSSuai62iVR2qMZUgz9tQ5kr0Kl+Tg=="
-  "resolved" "https://registry.npmjs.org/@types/redux-actions/-/redux-actions-2.6.2.tgz"
-  "version" "2.6.2"
-
-"@types/redux-form@*":
-  "integrity" "sha512-SchB4i7nxgWNbJS4cXEZducztkvHzVrb5xlAXwfLpbrLPo6tMY06+kx1GqMv42+YnGy9TpCAkF51a21HatqWBA=="
-  "resolved" "https://registry.npmjs.org/@types/redux-form/-/redux-form-8.3.5.tgz"
-  "version" "8.3.5"
-  dependencies:
-    "@types/react" "*"
-    "redux" "^3.6.0 || ^4.0.0"
-
-"@types/redux-saga-routines@^3.1.2":
-  "integrity" "sha512-YyF452+OvhWdXOrmp0SYDVxX5bda9JbjJvKT8xRy/FgmsiBFL2yY4aHMoDix6Lz55UyDjOnyyIly4C5eiwJosQ=="
-  "resolved" "https://registry.npmjs.org/@types/redux-saga-routines/-/redux-saga-routines-3.1.2.tgz"
-  "version" "3.1.2"
-  dependencies:
-    "@types/redux-actions" "*"
-    "@types/redux-form" "*"
-    "redux" "^3.6.0 || ^4.0.0"
-
 "@types/scheduler@*":
   "integrity" "sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew=="
   "resolved" "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.2.tgz"
@@ -4202,7 +4180,7 @@
   "resolved" "https://registry.npmjs.org/image-size/-/image-size-0.6.3.tgz"
   "version" "0.6.3"
 
-"immer@^9.0.14", "immer@^9.0.7":
+"immer@^9.0.7":
   "integrity" "sha512-ubBeqQutOSLIFCUBN03jGeOS6a3DoYlSYwYJTa+gSKEZKU5redJIqkIdZ3JVv/4RZpfcXdAWH5zCNLWPRv2WDw=="
   "resolved" "https://registry.npmjs.org/immer/-/immer-9.0.14.tgz"
   "version" "9.0.14"
@@ -5389,11 +5367,6 @@
   "version" "6.0.0"
   dependencies:
     "yallist" "^4.0.0"
-
-"luxon@^3.0.1":
-  "integrity" "sha512-hF3kv0e5gwHQZKz4wtm4c+inDtyc7elkanAsBq+fundaCdUBNJB1dHEGUZIM6SfSBUlbVFduPwEtNjFK8wLtcw=="
-  "resolved" "https://registry.npmjs.org/luxon/-/luxon-3.0.1.tgz"
-  "version" "3.0.1"
 
 "make-dir@^2.0.0", "make-dir@^2.1.0":
   "integrity" "sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA=="
@@ -6596,6 +6569,11 @@
   "resolved" "https://registry.npmjs.org/react-native-date-picker/-/react-native-date-picker-4.2.2.tgz"
   "version" "4.2.2"
 
+"react-native-device-info@^10.0.2":
+  "integrity" "sha512-6XY8EctYqNEX6EHDoHxz3yONOYxCHKrgEdStP7HZDYzFXb1JB5BFt7UbXDWrmihXUZDv06sBsjN26+Tp0EajXw=="
+  "resolved" "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-10.0.2.tgz"
+  "version" "10.0.2"
+
 "react-native-dropdownalert@>= 4.5.1":
   "integrity" "sha512-x69zHkC5soblG1xTBlSdYiUco+vmUiik6NH+DktzUM+xRhhTAy6BrKWSzkzSZ5WqcpZ4UcRqI0b4+rHPNQtG3Q=="
   "resolved" "https://registry.npmjs.org/react-native-dropdownalert/-/react-native-dropdownalert-4.5.1.tgz"
@@ -6987,7 +6965,7 @@
     "loose-envify" "^1.4.0"
     "symbol-observable" "^1.2.0"
 
-"redux@^3.6.0 || ^4.0.0", "redux@^4", "redux@^4.0.0", "redux@^4.0.4", "redux@^4.1.2", "redux@^4.2.0", "redux@>4.0.0":
+"redux@^4", "redux@^4.0.0", "redux@^4.0.4", "redux@^4.1.2", "redux@^4.2.0", "redux@>4.0.0":
   "integrity" "sha512-oSBmcKKIuIR4ME29/AeNUnl5L+hvBq7OaJWzaptTQJAntaPvxIJqfnjbaEiCzzaIz+XmVILfqAM3Ob0aXLPfjA=="
   "resolved" "https://registry.npmjs.org/redux/-/redux-4.2.0.tgz"
   "version" "4.2.0"

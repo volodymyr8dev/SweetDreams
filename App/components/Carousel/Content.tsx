@@ -24,10 +24,10 @@ import ActiveOff from '../../assets/images/cloudImage/ActiveOff.png';
 import TemperatureMore22 from '../../assets/images/cloudImage/TemperatureMore22.png';
 import blue from '../../assets/images/cloudImage/blue.png';
 import Yellow from '../../assets/images/cloudImage/Yellow.png';
-import {RootState} from "../../redux/configureStore";
+import { UserInformationSelector } from '../../redux/selectors/AccountSelector';
 
 export const Content = props => {
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const {user} = useSelector(UserInformationSelector);
   const {carouselItem} = useSelector(({settings}) => settings);
   // console.log(carouselItem.split(' ').join(''));
   let itemImg = carouselItem.split(' ').join('');

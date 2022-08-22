@@ -38,13 +38,13 @@ import PulsingImage from '../../assets/images/svg/Pulsing';
 import TemperatureImage from '../../assets/images/svg/Temperature';
 import PickerImage from '../../assets/images/svg/Picker';
 import {setCarouselItem} from '../../redux/slice/SettingsSlice';
-import {RootState} from '../../redux/configureStore';
+import { SettingsPower, UserInformationSelector } from '../../redux/selectors/AccountSelector';
 
 const {width: windowWidth} = Dimensions.get('window');
 
 const INITIAL_INDEX = 0;
 export default React.memo(function ShopCarousel(props) {
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const {user} = useSelector(UserInformationSelector);
   const [data, setData] = useState([
     {
       uri: <TemperatureAccount style={{}} />,
@@ -183,7 +183,7 @@ export default React.memo(function ShopCarousel(props) {
       ],
     },
   ]);
-  const {power} = useSelector(({power}) => power);
+  const {power} = useSelector(SettingsPower);
   const carouselRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
   const [isActive, setIsActive] = useState({arrayIndex: null, index: null});
@@ -215,6 +215,7 @@ export default React.memo(function ShopCarousel(props) {
       <TouchableOpacity
         disabled={index === currentIndex}
         style={styles.item}
+        
         onPress={() => {
           carouselRef.current.scrollToIndex(index);
           setActiveComponent(index);

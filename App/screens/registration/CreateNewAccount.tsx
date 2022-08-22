@@ -22,7 +22,7 @@ import {Validation} from '../../components/validation/Validation';
 import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
-import back from '../../assets/images/homeIcon/bacgroundHome.png';
+import back from '../../assets/images/homeIcon/backgroundHome.png';
 import {COLORS} from '../../styles/Constants';
 import {RegistrationUser} from '../../api/CreateAccount/CreateAccount';
 import {updateVerifiedEmail} from '../../redux/slice/slice';
@@ -194,7 +194,7 @@ export const CreateNewAccount = () => {
                     fontFamily: 'AntagometricaBT-Regular',
                   }}>
                   A SweetDreamers account is necessary for using the App
-                  services.Fill out the boxes below and select the 'done' button
+                  services. Fill out the boxes below and select the 'done' button
                   when you're finished
                 </Text>
               </View>
@@ -226,7 +226,7 @@ export const CreateNewAccount = () => {
                       fontFamily: 'AntagometricaBT-Regular',
                     }}>
                     To use the SweetDreamers service you need to agree to the
-                    terms and conditions by selecting the checkbox.You can see
+                    terms and conditions by selecting the checkbox. You can see
                     the terms and conditions by selecting the checkbox. You can
                     see the terms and conditions by selecting the show button.
                     {'\n'}EU (European Union) are applicable to General Data

@@ -1,6 +1,6 @@
-import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import WifiManager from 'react-native-wifi-reborn';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -11,154 +11,158 @@ import {
 } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
 import {customStyles} from '../../components/StepIndicator/StepIndicator';
-// import serialNumber from '../../images/images/misty-serial-number.png';
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 import {Loader} from '../../components/Loader/Loader';
-import NetInfo from '@react-native-community/netinfo';
-import {
-  ConnectDevice,
-  ConnectHomeWifi,
-  DeviceCertificate,
-} from '../../api/Device/Device';
+import {ConnectDevice, PublishConfiguration} from '../../api/Device/Device';
+import {getProfile} from '../../api/Profile/Profile';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/configureStore';
-import {setDeviceIdSerialNumber} from '../../redux/slice/slice';
+import {setUserInformation, setDeviceIdSerialNumber} from '../../redux/slice/slice';
 
 export const ConnectionStep3 = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
-  const [loader, setLoader] = useState(false);
-  const [loader1, setLoader1] = useState(false);
-  const [loaderDiscconect, setloaderDiscconect] = useState(false);
-  const [loaderConnectionHome, setloaderConnectionHome] = useState(false);
-  const [wifiName, setWifiName] = useState('');
-  const [wifiPassword, setWififPassword] = useState('');
-  const [randomString, setRandomString] = useState('');
-  const [randomString16, setRandomString16] = useState('');
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
-  const dispatch = useDispatch();
 
+  const dispatch   = useDispatch();
   const navigation = useNavigation();
-  // const isFocused = useIsFocused();
-  const route = useRoute<any>();
-  const serialNumber = route.params.serial_number;
-  // console.log(route.params.serial_number);
+  const route      = useRoute<any>();
 
-  useEffect(() => {
-    setLoader(true);
-    DeviceCertificate()
-      .then(res => {
-        console.log(res);
-        setLoader(false);
-        generateRandomString36(36);
-        generateRandomString16(16);
-      })
-      .catch(rej => {
-        console.log(rej);
-      });
-  }, []);
+  const serialNumber    = route.params.serial_number;
+  const certificate     = route.params.certificate;
+  const homeNetworkSSID = route.params.home_network_ssid;
 
-  const generateRandomString36 = lenth => {
-    const char =
-      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  const {user} = useSelector(({account}: RootState) => account.userInformation);
+
+  const [loaderPushingTheConfiguration,     setPushingTheConfiguration]           = useState(false);
+  const [loaderDisconnectFromDeviceNetwork, setLoaderDisconnectFromDeviceNetwork] = useState(false);
+  const [loaderConnectiongToAHomeNetwork,   setLoaderConnectiongToAHomeNetwork]   = useState(false);
+  const [loaderAddingDeviceToAccount,       setLoaderAddingDeviceToAccount]       = useState(false);
+  const [loaderRetrievingProfileData,       setLoaderRetrievingProfileData]       = useState(false);
+  
+  const [wifiName,     setWifiName]      = useState(homeNetworkSSID);
+  const [wifiPassword, setWififPassword] = useState('');
+
+  const generateRandomString = length => {
+    const char = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    
     const random = Array.from(
-      {length: lenth},
+      {length: length},
       () => char[Math.floor(Math.random() * char.length)],
     );
-    const randomString = random.join('');
-    return setRandomString(randomString);
+    
+    return random.join('');
   };
 
-  const generateRandomString16 = lenth => {
-    const char =
-      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    const random = Array.from(
-      {length: lenth},
-      () => char[Math.floor(Math.random() * char.length)],
-    );
-    const randomString16 = random.join('');
-    return setRandomString16(randomString16);
-  };
-
-  console.log(randomString, 'randomStrin2gg36');
-  console.log(randomString16, 'randomString16');
-
-  // const handleGoToStep2 = () => {
-  //   setLoader(true);
-  //   setTimeout(() => {
-  //     setLoader(false);
-  //   }, 1000);
-  //   navigation.navigate('account');
-  // };
   const wifiConnect = () => {
-    const arrayJson = [
-      {'Wi-Fi': 'SSID', name: `${wifiName}`},
-      {'Wi-Fi': 'SSID', pass: `${wifiPassword}`},
-      {MQTT: 'server', IPv4: '167.172.50.187'},
-      {MQTT: 'server', host: 'mistythecloudserver.com'},
-      {MQTT: 'server', port: '8883'},
-      {MQTT: 'server', authpass: `${randomString}`},
-      {MQTT: 'server', mqttUser: `${randomString16}`},
-    ];
-    ConnectHomeWifi(arrayJson)
-      .then(res => {
-        console.log(res);
-        // “MDIxe-12345678”
-      })
-      .catch(rej => {
-        console.log(rej);
-      });
-    ConnectDevice(
-      user.accounts[0].id,
-      serialNumber,
-      randomString,
-      randomString16,
-    )
-      .then(res => {
-        console.log(res);
-        console.log(user.accounts);
-        dispatch(setDeviceIdSerialNumber(res.data));
-        setloaderDiscconect(true);
-        disconnectFromSSid();
+    setPushingTheConfiguration(true);
 
-        setloaderConnectionHome(true);
-        ConnectToHomeNetwork();
-      })
-      .catch(rej => {
-        console.log(rej);
-      });
-  };
+    let authUser     = generateRandomString(16),
+        authPassword = generateRandomString(32)
 
-  const ConnectToHomeNetwork = async () => {
-    WifiManager.connectToProtectedSSID(
-      `${wifiName}`,
-      `${wifiPassword}`,
-      false,
-    ).then(
-      res => {
-        console.log(res);
-        console.log('Connected successfully!');
-        setloaderConnectionHome(false);
-        navigation.navigate('Account');
-      },
-      rej => {
-        setloaderConnectionHome(false);
-        console.log('Connection failed!', rej);
-      },
-    );
-  };
+    /* Configure the device */
+    PublishConfiguration([
+      {'Wi-Fi': 'SSID',   name:     `${wifiName}`},
+      {'Wi-Fi': 'SSID',   pass:     `${wifiPassword}`},
+      {'MQTT':  'server', IPv4:     '167.172.50.187'},
+      {'MQTT':  'server', host:     'mistythecloudserver.com'},
+      {'MQTT':  'server', port:     '8883'},
+      {'MQTT':  'server', authcert: `${certificate}`},
+      {'MQTT':  'server', authpass: `${authPassword}`},
+      {'MQTT':  'server', mqttUser: `${authUser}`},
+    ]).then(res => {
+      console.log('[DEVICE CONFIGURATION] Configuration response', res);
 
-  const disconnectFromSSid = async () => {
-    WifiManager.disconnectFromSSID(`Misty-${serialNumber}`).then(
-      res => {
-        console.log(res);
-        console.log('Connected successfully!');
-        setloaderDiscconect(false);
-      },
-      rej => {
-        setloaderDiscconect(false);
-        console.log('Connection failed!', rej);
-      },
-    );
+      setPushingTheConfiguration(false);
+
+      setTimeout(function() {
+        setLoaderDisconnectFromDeviceNetwork(true);
+
+        WifiManager.disconnectFromSSID(`Misty-${serialNumber}`).then(res => {
+          console.log('[DEVICE CONFIGURATION] Disconneted from the device network', res);
+          setLoaderDisconnectFromDeviceNetwork(false);
+
+          setTimeout(function() {
+            setLoaderConnectiongToAHomeNetwork(true);
+
+            WifiManager.connectToProtectedSSID(
+              `${wifiName}`,
+              `${wifiPassword}`,
+              false,
+            ).then(
+              res => {
+                console.log('[DEVICE CONFIGURATION] Connected to a home network', res);
+
+                setLoaderConnectiongToAHomeNetwork(false);
+
+                setTimeout(function() {
+                  setLoaderAddingDeviceToAccount(true);
+
+                  ConnectDevice(
+                    user.accounts[0].id,
+                    serialNumber,
+                    authUser,
+                    authPassword,
+                  ).then(res => {
+                    console.log('[DEVICE CONFIGURATION] Assigned device to the account', res);
+
+                    dispatch(setDeviceIdSerialNumber(res.data));
+
+                    setLoaderAddingDeviceToAccount(false);
+
+                    setTimeout(function() {
+                      setLoaderRetrievingProfileData(true);
+
+                      getProfile().then(res => {
+                        console.log('[DEVICE CONFIGURATION] Retrieve profile data', res);
+
+                        dispatch(setUserInformation(res.data.user));
+
+                        setLoaderRetrievingProfileData(false);
+
+                        navigation.navigate('Account');
+                      })
+                      .catch(rej => {
+                        console.error('[DEVICE CONFIGURATION] Error while trying to retrive the profile data', rej);
+
+                        Alert.alert('There is a problem with retrieving profile data');
+
+                        setLoaderRetrievingProfileData(false);
+                      });
+                    }, 10);
+                  })
+                  .catch(rej => {
+                    console.error('[DEVICE CONFIGURATION] Error while trying to assign device to the account', rej);
+
+                    Alert.alert('There is a problem with assigning device to the account');
+
+                    setLoaderAddingDeviceToAccount(false);
+                  });
+                }, 10);
+              },
+              rej => {
+                console.error('[DEVICE CONFIGURATION] Error while connecting to a home network', rej);
+
+                Alert.alert('There is a problem with dconnecting to a home network');
+
+                setLoaderConnectiongToAHomeNetwork(false);
+              },
+            );
+          }, 10);
+        }, rej => {
+          console.error('[DEVICE CONFIGURATION] Error while tying to disconnect from device network', rej);
+
+          Alert.alert('There is a problem with disconnecting from the device network');
+
+          setLoaderDisconnectFromDeviceNetwork(false);
+        });
+      }, 10);
+    })
+    .catch(rej => {
+      console.error('[DEVICE CONFIGURATION] Error while sending configuration request', rej);
+
+      Alert.alert('There is a problem with pushing a configuration to the device');
+
+      setPushingTheConfiguration(false);
+    });
   };
 
   return (
@@ -204,6 +208,7 @@ export const ConnectionStep3 = () => {
             hidden={true}
             value={wifiPassword}
             onChangeText={password => setWififPassword(password)}
+            secure={true}
           />
           <View style={{marginTop: 15}}>
             <Text style={styles.answer}>
@@ -216,31 +221,22 @@ export const ConnectionStep3 = () => {
               of the misty unit.
             </Text>
           </View>
-          {/*<TouchableOpacity*/}
-          {/*  onPress={ConnectToNetwork}*/}
-          {/*  style={{marginLeft: 100, width: 80, height: 20, marginBottom: 10}}>*/}
-          {/*  <Text style={{color: '#fff'}}>1010100101010100</Text>*/}
-          {/*</TouchableOpacity>*/}
         </View>
-
-        {/*<TouchableOpacity onPress={handleGoToStep2}>*/}
-        {/*  <Text style={{color: '#fff'}}>Skip this step</Text>*/}
-        {/*</TouchableOpacity>*/}
 
         <TouchableOpacity
           onPress={wifiConnect}
           style={{backgroundColor: 'red'}}>
-          <Text style={{color: 'white'}}>SAVEEEEEE</Text>
+          <Text style={{color: 'white'}}>Skip this step (DEV MODE)</Text>
         </TouchableOpacity>
       </ScrollView>
 
-      {loader && <Loader text={'Pilling the certificates'} />}
-      {loaderDiscconect && (
-        <Loader text={'Disconneting from the device network'} />
-      )}
-      {loader2 && <Loader text={'Pilling the certificates'} />}
+      {loaderPushingTheConfiguration && <Loader text={'Pushing a config to the device'} />}
+      {loaderDisconnectFromDeviceNetwork && <Loader text={'Disconnecting from tje device network'} />}
+      {loaderConnectiongToAHomeNetwork && <Loader text={'Connecting to a home network'} />}
+      {loaderAddingDeviceToAccount && <Loader text={'Saving the device state'} />}
+      {loaderRetrievingProfileData && <Loader text={'Retrieving profile data'} />}
 
-      {/* <TouchableOpacity onPress={handleGoToStep2} style={styles.buttonDown}>
+      <TouchableOpacity onPress={wifiConnect} style={styles.buttonDown}>
         <View>
           <Text
             style={{
@@ -252,7 +248,7 @@ export const ConnectionStep3 = () => {
             next
           </Text>
         </View>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </>
   );
 };

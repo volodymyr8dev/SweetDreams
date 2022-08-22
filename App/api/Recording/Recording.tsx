@@ -1,39 +1,38 @@
-import React from 'react';
-import axiosInstance from '../index';
+import axiosInstance from '../apiAxios';
 
 interface IRecord {
-  uri: string | object;
+  uri:  string | object;
   name: string;
   type: string;
 }
-export const NewRecording = async (accountId, recording2, nameFile) => {
-  // const body = {
-  //   recording: recording,
-  // };
 
+export const NewRecording = async (accountId, recording2, nameFile) => {
   const formData = new FormData();
+
   formData.append('recording', {
     uri: recording2,
     name: `${nameFile}`,
   } as any);
-  return await axiosInstance.post(
-    `/api/accounts/${accountId}/recordings`,
-    formData,
-  );
+
+  console.log('[RECORDINGS] Post recording request', accountId, recording2, nameFile, formData);
+
+  return await axiosInstance.post(`/api/accounts/${accountId}/recordings`, formData);
 };
 
 export const GetRecord = async accountId => {
+  console.log('[RECORDINGS] Get recordings request', accountId);
+
   return await axiosInstance.get(`/api/accounts/${accountId}/recordings`);
 };
 
 export const DeleteRecording = async (accountId, recordingId) => {
-  return await axiosInstance.delete(
-    `/api/accounts/${accountId}/recordings/${recordingId}`,
-  );
+  console.log('[RECORDINGS] Delete recording request', accountId, recordingId);
+
+  return await axiosInstance.delete(`/api/accounts/${accountId}/recordings/${recordingId}`);
 };
 
-export const PlayRecordSound = async path_name => {
-  return await axiosInstance.delete(`/upload/files/recording/${path_name}`);
-};
+export const PlayRecordSound = async pathName => {
+  console.log('[RECORDINGS] Play recording request', pathName);
 
-// https://staging.mistythecloudserver.com/upload/files/recording/{path_name}
+  return await axiosInstance.get(`/upload/files/recording/${pathName}`);
+};

@@ -5,7 +5,8 @@ export interface RootState {
         accounts: [
           {
             id: number;
-            is_deluxe:number;
+            is_deluxe: number;
+            device:any;
           },
         ];
       };
@@ -19,8 +20,11 @@ export interface RootState {
         };
       };
     };
-    nersery: {
+    nursery: {
       id: string | number;
     };
+  };
+  power: {
+    power: number;
   };
 }

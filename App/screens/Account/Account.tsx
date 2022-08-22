@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import InternetConnectionAlert from 'react-native-internet-connection-alert';
 import {CustomButton} from '../../components/CustomButton/CustomButton';
-import background from '../../assets/images/homeIcon/bacgroundHome.png';
+import background from '../../assets/images/homeIcon/backgroundHome.png';
 import sheep from '../../assets/images/controlChild/sheep.png';
 import settings from '../../assets/images/homeIcon/settings.png';
 import thermometr from '../../assets/images/controlChild/thermometr.png';
@@ -44,7 +44,7 @@ import Sheep from '../../assets/images/svg/Sheep';
 import ArrowRight from '../../assets/images/svg/ArrowRight';
 import ArrowLeft from '../../assets/images/svg/ArrowLeft';
 import Play from '../../assets/images/svg/Play';
-import {getSettingsDevice} from '../../api/Settings/SettingsApi';
+import {getSettingsDevice} from '../../api/Settings/Settings';
 import {RootState} from '../../redux/configureStore';
 import {setAllSettings} from '../../redux/slice/SettingsSlice';
 import AsleepImg from '../../assets/images/cloudImage/Asleep.png';
@@ -53,6 +53,7 @@ import Idle from '../../assets/images/cloudImage/Idle.png';
 import SunSet from '../../assets/images/cloudImage/SunSet.png';
 import NothernLights from '../../assets/images/cloudImage/NothernLights.png';
 import {Content} from '../../components/Carousel/Content';
+import { UserInformationSelector } from '../../redux/selectors/AccountSelector';
 
 const {width: windowWidth} = Dimensions.get('window');
 
@@ -79,7 +80,7 @@ export const Account = () => {
   const dispatch = useDispatch();
   // const [carouselItem, setCarouselItem] = useState('');
   const netInfo = useNetInfo();
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const {user} = useSelector(UserInformationSelector);
 
   const openSettings = async () => {
     getSettingsDevice(user.accounts[0].id)

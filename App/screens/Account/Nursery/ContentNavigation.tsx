@@ -16,6 +16,7 @@ import arrowRight from '../../../assets/images/settings/arrowRight.png';
 import {useSelector} from 'react-redux';
 import {COLORS} from '../../../styles/Constants';
 import {RootState} from '../../../redux/interfaceRootState';
+import { ChildInformation } from '../../../redux/selectors/AccountSelector';
 interface IBlog {
   title: string;
   rightEl: any;
@@ -26,15 +27,13 @@ interface IBlog {
 }
 const Blog = ({title, rightEl, source, subTitle, width, height}: IBlog) => {
   const navigation = useNavigation();
-  const {accounts} = useSelector(
-    ({account}: RootState) => account.userInformation.user,
-  );
+  const accounts = useSelector(ChildInformation);
   const handleSettings = async () => {
     if (typeof rightEl !== 'object') {
       console.log(title, 'title');
         navigation.navigate(`${title}`, {
           title: title,
-          childId: accounts[0].id,
+          childId: accounts.id,
         });
     }
   };
@@ -66,7 +65,7 @@ const Blog = ({title, rightEl, source, subTitle, width, height}: IBlog) => {
           rightEl
         ) : (
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{color: COLORS.textLight, fontSize: 18}}>
+            <Text style={{color: COLORS.textLight, fontSize: 18,fontFamily:"AntagometricaBT-Bold"}}>
               {rightEl}
             </Text>
             <Image
@@ -82,11 +81,11 @@ const Blog = ({title, rightEl, source, subTitle, width, height}: IBlog) => {
 
 export const ContentNavigation = ({options, diaries, averageTemp}) => {
   console.log('averageTemp', averageTemp);
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const accounts = useSelector(ChildInformation);
   useEffect(() => {}, [options]);
   return (
     <View style={styles.container}>
-      {user.accounts[0].is_deluxe === 0 ? null : (
+      {accounts.is_deluxe === 0 ? null : (
         <Blog
           title="Total Time Without Activation"
           subTitle={options.value1.subTitle}
@@ -94,7 +93,7 @@ export const ContentNavigation = ({options, diaries, averageTemp}) => {
           rightEl={options.value1.value}
         />
       )}
-      {user.accounts[0].is_deluxe === 0 ? null : (
+      {accounts.is_deluxe === 0 ? null : (
         <Blog
           title="Longest Period Without Activation"
           subTitle={options.value2.subTitle}
@@ -102,7 +101,7 @@ export const ContentNavigation = ({options, diaries, averageTemp}) => {
           rightEl={options.value2.value}
         />
       )}
-      {user.accounts[0].is_deluxe === 0 ? null : (
+      {accounts.is_deluxe === 0 ? null : (
         <Blog
           title="Number of smartCRY Activations"
           subTitle={options.value3.subTitle}
@@ -114,7 +113,7 @@ export const ContentNavigation = ({options, diaries, averageTemp}) => {
         title="Average Temperature"
         subTitle={options.value5.subTitle}
         source={tempretute}
-        rightEl={averageTemp+"*C"}
+        rightEl={averageTemp + '°C'}
         width={30}
         height={27}
       />

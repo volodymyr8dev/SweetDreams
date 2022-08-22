@@ -145,6 +145,9 @@ export const Document = () => {
       })
       .catch(err => {
         console.log('err', err.response.data);
+        if("There are no diaries on this page."){
+          setPoints([])
+        }
       });
   }, [isFocused]);
   useEffect(() => {

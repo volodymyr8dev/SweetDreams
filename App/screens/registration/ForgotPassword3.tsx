@@ -5,8 +5,8 @@ import {CustomInput} from '../../components/CustomInput/CustomInput';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {Loader} from '../../components/Loader/Loader';
-import {ChangePassword} from '../../api/ForgotPassword/forgotPassword';
-import checkButton from '../../assets/images/checkButton.png'
+import checkButton from '../../assets/images/checkButton.png';
+import { ChangePasswordApi } from '../../api/ForgotPassword/forgotPassword';
 
 export const ForgotPassword3 = () => {
   const [currentPosition, setCurrentPosition] = useState(2);
@@ -38,7 +38,7 @@ export const ForgotPassword3 = () => {
         fontFamily: 'AntagometricaBT-Regular',
       },
       checkIconImageSource: checkButton,
-      iconImageStyle:{height: 17.2,width: 20.36},
+      iconImageStyle: {height: 17.2, width: 20.36},
     },
     {
       id: 1,
@@ -61,7 +61,7 @@ export const ForgotPassword3 = () => {
         fontFamily: 'AntagometricaBT-Regular',
       },
       checkIconImageSource: checkButton,
-      iconImageStyle:{height: 17.2,width: 20.36},
+      iconImageStyle: {height: 17.2, width: 20.36},
     },
   ];
   useEffect(() => {
@@ -70,7 +70,7 @@ export const ForgotPassword3 = () => {
     });
   }, []);
   const HandleChangePassword = () => {
-    ChangePassword(
+    ChangePasswordApi(
       navigation.getState().routes[2].params?.email,
       code,
       confirmCode,

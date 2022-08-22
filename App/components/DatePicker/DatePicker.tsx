@@ -30,7 +30,14 @@ export const DatePickerComponent = ({
             <View style={{flexDirection: 'row'}}>
               <Text style={styles.typeText}>{type}</Text>
             </View>
-            <Text style={{color: '#fff', fontSize: 17}}>{value}</Text>
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 19,
+                fontFamily: 'AntagometricaBT-Regular',
+              }}>
+              {value}
+            </Text>
           </View>
         </TouchableOpacity>
       ) : (
@@ -45,7 +52,14 @@ export const DatePickerComponent = ({
             </View>
             <View>
               <View>
-                <Text style={{color: '#fff', fontSize: 17}}>{value}</Text>
+                <Text
+                  style={{
+                    color: '#fff',
+                    fontSize: 19,
+                    fontFamily: 'AntagometricaBT-Regular',
+                  }}>
+                  {value}
+                </Text>
               </View>
             </View>
           </View>

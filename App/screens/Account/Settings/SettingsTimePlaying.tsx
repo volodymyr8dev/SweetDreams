@@ -3,10 +3,10 @@ import {Platform, View, StyleSheet, ImageBackground} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-date-picker';
 import {COLORS} from '../../../styles/Constants';
-import {SettingsDevice} from '../../../api/Settings/SettingsApi';
+import {SettingsDevice} from '../../../api/Settings/Settings';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../redux/configureStore';
-import background from '../../../assets/images/homeIcon/bacgroundHome.png'
+import background from '../../../assets/images/homeIcon/backgroundHome.png'
 import {setPlayingTime} from '../../../redux/slice/SettingsSlice';
 
 export const SettingsTimePlaying = ({route}) => {

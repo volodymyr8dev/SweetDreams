@@ -8,10 +8,10 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
-import arrowLeft from '../../../../assets/images/nersery/arrowLeft.png';
-import arrowRight from '../../../../assets/images/nersery/arrowRight.png';
-import sleepDiary from '../../../../assets/images/nersery/sleepDiary.png';
-import alertUp from '../../../../assets/images/nersery/alertUp.png';
+import arrowLeft from '../../../../assets/images/nursery/arrowLeft.png';
+import arrowRight from '../../../../assets/images/nursery/arrowRight.png';
+import sleepDiary from '../../../../assets/images/nursery/sleepDiary.png';
+import alertUp from '../../../../assets/images/nursery/alertUp.png';
 import {
   COLORS,
   time,
@@ -20,7 +20,7 @@ import {
 } from '../../../../styles/Constants';
 import {LineChart} from 'react-native-chart-kit';
 import {Blog} from '../../../../components/Touchable/TouchableInput';
-import {NureseryTemperatureApi} from '../../../../api/Nursery/Nuresery';
+import {NurseryTemperatureApi} from '../../../../api/Nursery/Nursery';
 import moment from 'moment';
 import { AnyAction } from 'redux';
 
@@ -36,7 +36,7 @@ export const AverageTempature = ({route}) => {
   useEffect(() => {
     setStart(moment(start).format('YYYY-MM-DD'));
     setEnd(moment(end).format('YYYY-MM-DD'));
-    NureseryTemperatureApi(
+    NurseryTemperatureApi(
       route.params.childId,
       moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss'),
       moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
@@ -77,7 +77,7 @@ export const AverageTempature = ({route}) => {
     setEnd(moment(end).format('YYYY-MM-DD'));
     console.log('start', start);
     console.log('end', end);
-    NureseryTemperatureApi(route.params.childId, start, end)
+    NurseryTemperatureApi(route.params.childId, start, end)
       .then(({data}) => {
         console.log('success', data);
         let labels: string[] = [];
@@ -113,7 +113,7 @@ export const AverageTempature = ({route}) => {
     console.log('start ', start);
     console.log('end ', end);
 
-    NureseryTemperatureApi(route.params.childId, start, end)
+    NurseryTemperatureApi(route.params.childId, start, end)
       .then(({data}) => {
         console.log('success', data);
         let labels: string[] = [];

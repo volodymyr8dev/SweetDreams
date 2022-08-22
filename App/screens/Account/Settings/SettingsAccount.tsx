@@ -26,7 +26,7 @@ import volumeImg from '../../../assets/images/settings/volume.png';
 import {Switch} from '../../../components/Switch/Switch';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import background from '../../../assets/images/homeIcon/bacgroundHome.png';
+import background from '../../../assets/images/homeIcon/backgroundHome.png';
 import {COLORS} from '../../../styles/Constants';
 import {RootState} from '../../../redux/configureStore';
 import {GetRecord} from '../../../api/Recording/Recording';
@@ -173,7 +173,7 @@ export const SettingsAccount = ({route}) => {
             source={clock}
           />
           <Blog
-            title="wake Up Time"
+            title="wake up time"
             navigate="Wake Up Time"
             value={settingsData.wake_up_time}
             source={wakeUp}
@@ -188,13 +188,13 @@ export const SettingsAccount = ({route}) => {
             />
           )}
           <Blog
-            title="dome Brightness"
+            title="dome brightness"
             navigate="Dome Brightness"
             source={brightness}
             rightEl={'3%'}
           />
           <Blog
-            title="display Brightness"
+            title="display brightness"
             navigate="Display Brightness"
             source={displayBrightness}
             rightEl={'25%'}
