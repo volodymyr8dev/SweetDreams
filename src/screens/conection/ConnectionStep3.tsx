@@ -1,5 +1,8 @@
-import WifiManager from 'react-native-wifi-reborn';
+
 import React, {useState, useEffect} from 'react';
+import WifiManager                  from 'react-native-wifi-reborn';
+import StepIndicator                from 'react-native-step-indicator';
+
 import {
   View,
   StyleSheet,
@@ -7,17 +10,21 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  ImageBackground
 } from 'react-native'
-import { RootReducerState }  from '../../redux';
-import StepIndicator from 'react-native-step-indicator';
-import {customStyles} from '../../components/StepIndicator/StepIndicator';
-import {CustomInput} from '../../components/CustomInput/CustomInput';
-import {Loader} from '../../components/Loader/Loader';
+
+import {RootReducerState}                    from '../../redux';
+import {customStyles}                        from '../../components/StepIndicator/StepIndicator';
+import {CustomInput}                         from '../../components/CustomInput/CustomInput';
+import {Loader}                              from '../../components/Loader/Loader';
 import {ConnectDevice, PublishConfiguration} from '../../api/Device/Device';
-import {getProfile} from '../../api/Profile/Profile';
-import {useDispatch, useSelector} from 'react-redux';
-import { getCombinedNavigation } from '../../hooks/useUpdateNavigationHeaderOptions';
-import { checkLogin } from '../../redux/slices/auth';
+import {useDispatch, useSelector}            from 'react-redux';
+import {getCombinedNavigation}               from '../../hooks/useUpdateNavigationHeaderOptions';
+import {checkLogin}                          from '../../redux/slices/auth';
+
+import {COLORS}                              from '../../styles/Constants';
+
+import background                            from '../../assets/images/homeIcon/backgroundHome.png';
 
 export const ConnectionStep3 = ({navigation, route}) => {
   const { user } = useSelector((state: RootReducerState) => state.auth);
@@ -160,10 +167,8 @@ export const ConnectionStep3 = ({navigation, route}) => {
   };
 
   return (
-    <>
-      <ScrollView
-        bounces={false}
-        style={{backgroundColor: '#25244C', position: 'relative'}}>
+    <ImageBackground style={{backgroundColor: COLORS.backGround}} source={background}>
+      <ScrollView>
         <View style={styles.container}>
           <StepIndicator stepCount={3} customStyles={customStyles} currentPosition={2} />
 
@@ -224,7 +229,7 @@ export const ConnectionStep3 = ({navigation, route}) => {
           </Text>
         </View>
       </TouchableOpacity>
-    </>
+    </ImageBackground>
   );
 };
 
@@ -234,7 +239,6 @@ const styles = StyleSheet.create({
     paddingLeft: 19,
     paddingRight: 29,
     height: '100%',
-    backgroundColor: '#25244C',
     paddingBottom: 100,
   },
   card: {

@@ -1,4 +1,6 @@
 import React, {useEffect} from 'react';
+import StepIndicator from 'react-native-step-indicator';
+
 import {
   View,
   StyleSheet,
@@ -6,10 +8,14 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  ImageBackground
 } from 'react-native';
-import StepIndicator from 'react-native-step-indicator';
-import {customStyles} from '../../components/StepIndicator/StepIndicator';
-import { getCombinedNavigation } from '../../hooks/useUpdateNavigationHeaderOptions';
+
+import {customStyles}          from '../../components/StepIndicator/StepIndicator';
+import {getCombinedNavigation} from '../../hooks/useUpdateNavigationHeaderOptions';
+import {COLORS}                from '../../styles/Constants';
+
+import background              from '../../assets/images/homeIcon/backgroundHome.png';
 
 export const ConnectionStep1 = ({navigation}) => {
   /* Set default navigation options */
@@ -27,8 +33,8 @@ export const ConnectionStep1 = ({navigation}) => {
   };
 
   return (
-    <>
-      <ScrollView bounces={false} style={{backgroundColor: '#232041'}}>
+    <ImageBackground style={{backgroundColor: COLORS.backGround}} source={background}>
+      <ScrollView>
         <View style={styles.container}>
           <StepIndicator stepCount={3} customStyles={customStyles} currentPosition={0} />
           <View style={styles.card}>
@@ -73,7 +79,6 @@ export const ConnectionStep1 = ({navigation}) => {
               />
             </View>
           </View>
-          {/* img */}
           <View>
             <Text style={styles.question}>misty not flashing purple?</Text>
             <Text style={[styles.answer, {marginBottom: 17}]}>
@@ -125,7 +130,7 @@ export const ConnectionStep1 = ({navigation}) => {
           </Text>
         </View>
       </TouchableOpacity>
-    </>
+    </ImageBackground>
   );
 };
 
@@ -133,9 +138,8 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 19,
     paddingLeft: 19,
-    paddingRight: 29,
+    paddingRight: 19,
     height: '100%',
-    backgroundColor: '#232041',
     paddingBottom: 100,
   },
   card: {

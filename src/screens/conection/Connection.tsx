@@ -1,9 +1,17 @@
 import React, {useEffect} from 'react';
-import {View, Text, StyleSheet, Image, ImageBackground} from 'react-native';
-import {CustomButton} from '../../components/CustomButton/CustomButton';
-import {COLORS} from '../../styles/Constants';
-import background from '../../assets/images/homeIcon/backgroundHome.png';
-import { getCombinedNavigation } from '../../hooks/useUpdateNavigationHeaderOptions';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ImageBackground
+} from 'react-native';
+
+import {getCombinedNavigation} from '../../hooks/useUpdateNavigationHeaderOptions';
+import {CustomButton}          from '../../components/CustomButton/CustomButton';
+import {COLORS}                from '../../styles/Constants';
+
+import background              from '../../assets/images/homeIcon/backgroundHome.png';
 
 export const Connection = ({navigation}) => {
   /* Set default navigation options */
@@ -22,7 +30,7 @@ export const Connection = ({navigation}) => {
 
   return (
     <ImageBackground style={{backgroundColor: COLORS.backGround}} source={background}>
-      <View style={styles.container}>
+      <View style={{paddingTop: 19, paddingLeft: 19, paddingRight: 19, height: '100%'}}>
         <View style={styles.card}>
           <View style={{marginBottom: 5}}>
             <Image source={require('../../assets/images/Cloud.png')} style={{width: 35, height: 22}} />
@@ -70,12 +78,6 @@ export const Connection = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 10,
-    paddingLeft: 19,
-    paddingRight: 29,
-    height: '100%',
-  },
   card: {
     backgroundColor: '#36365D',
     borderRadius: 13,

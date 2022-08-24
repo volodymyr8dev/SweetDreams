@@ -1,4 +1,8 @@
 import React, {useState, useEffect} from 'react';
+import WifiManager                  from 'react-native-wifi-reborn';
+import StepIndicator                from 'react-native-step-indicator';
+import {sha256}                     from 'react-native-sha256';
+
 import {
   View,
   StyleSheet,
@@ -6,18 +10,18 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  Alert
+  Alert,
+  ImageBackground
 } from 'react-native';
-
-import WifiManager                  from 'react-native-wifi-reborn';
-import StepIndicator                from 'react-native-step-indicator';
-import {sha256}                     from 'react-native-sha256';
 
 import {customStyles}               from '../../components/StepIndicator/StepIndicator';
 import {CustomInput}                from '../../components/CustomInput/CustomInput';
 import {Loader}                     from '../../components/Loader/Loader';
 import {GetSalt, DeviceCertificate} from '../../api/Device/Device';
-import { getCombinedNavigation }    from '../../hooks/useUpdateNavigationHeaderOptions';
+import {getCombinedNavigation}      from '../../hooks/useUpdateNavigationHeaderOptions';
+import {COLORS}                     from '../../styles/Constants';
+
+import background                   from '../../assets/images/homeIcon/backgroundHome.png';
 
 export const ConnectionStep2 = ({navigation}) => {
   /* Set default navigation options */
@@ -156,8 +160,8 @@ export const ConnectionStep2 = ({navigation}) => {
   };
 
   return (
-    <>
-      <ScrollView bounces={false} style={{backgroundColor: '#232041'}}>
+    <ImageBackground style={{backgroundColor: COLORS.backGround}} source={background}>
+      <ScrollView>
         <View style={styles.container}>
           <StepIndicator stepCount={3} customStyles={customStyles} currentPosition={1} />
           <View style={{marginTop: 30}}>
@@ -224,7 +228,7 @@ export const ConnectionStep2 = ({navigation}) => {
       {loaderRetrievingTheCertificates && <Loader text={'retrieving the certificates'} />}
       {loaderDetectHomeNetwork && <Loader text={'retrieving home network details'} />}
       {loaderConnectingToTheDeviceNetwork && (<Loader text={`connecting your phone ${'\n'}to your misty unit`} />)}
-    </>
+    </ImageBackground>
   );
 };
 
@@ -234,7 +238,6 @@ const styles = StyleSheet.create({
     paddingLeft: 19,
     paddingRight: 29,
     height: '100%',
-    backgroundColor: '#232041',
     paddingBottom: 100,
   },
   card: {
