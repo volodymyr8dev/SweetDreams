@@ -1,60 +1,37 @@
-import React, {useEffect, useState} from 'react';
-import { RootReducerState } from '../../redux';
+import React, {useEffect} from 'react';
+import {useSelector}      from 'react-redux';
+import {RootReducerState} from '../../redux';
 import {
   View,
-  Image,
   Text,
   TouchableOpacity,
-  ImageBackground,
+  ImageBackground
 } from 'react-native';
-import connectionStatus from '../../assets/images/homeIcon/connection.png';
-import NetInfo, {useNetInfo} from '@react-native-community/netinfo';
 
-import {COLORS} from '../../styles/Constants';
-import {useNavigation} from '@react-navigation/native';
-import {AlertComp} from '../../components/Alert/AlertComp';
-import {connect, useDispatch, useSelector} from 'react-redux';
-import {setConnection} from '../../redux/slice/PowerSlice';
-import ConnectionCloud from '../../assets/images/svg/ConnectionCloud';
+import {COLORS}         from '../../styles/Constants';
+import ConnectionCloud  from '../../assets/images/svg/ConnectionCloud';
 import ConnectionCloud2 from '../../assets/images/svg/ConnectionCloud2';
-import background from '../../assets/images/homeIcon/backgroundHome.png';
-import Sheep from '../../assets/images/svg/Sheep';
-import { RootState } from '../../redux/interfaceRootState';
+import background       from '../../assets/images/homeIcon/backgroundHome.png';
+import Sheep            from '../../assets/images/svg/Sheep';
 
-const ConfirmConnection = ({setToggleButton}) => {
-  // const netInfo = useNetInfo();
-  const navigation = useNavigation<any>();
-  // const dispatch = useDispatch();
-  // const [conect, setConnect] = useState(false);
-  const { loadingCheckLogin, user, verified } = useSelector((state: RootReducerState) => state.auth);
-  //   const conection = useSelector()
+const ConfirmConnection = ({navigation, setToggleButton}) => {
+  const {user} = useSelector((state: RootReducerState) => state.auth);
+
+  /* Set default navigation options */
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false
+    })
+  }, [navigation]);
+
   const handleCheckInternet = () => {
-    if (user.accounts[0].device !== null) {
+    if (user.accounts[0]?.device?.is_active) {
       setToggleButton(true);
     } else {
-      navigation.navigate('connection', {title: 'connection'});
-      console.log(user, 'sssdsdsdsd');
+      navigation.navigate('Connection');
     }
-    //   navigation.navigate('conectionStep3', {
-    //       title: 'connect misty',
-    //   })
-
-    // setConnect(!conect);
-    // console.log('xxx', netInfo.isConnected);
-    // if (netInfo.isConnected) {
-    //   dispatch(setConnection(true));
-    // } else {
-    //   AlertComp('no internet connection ', 'reconect', 'cancel');
-    // }
   };
-  //   useEffect(() => {
-  //     console.log('netInfo.isConnected)', netInfo.isConnected);
-  //     if (netInfo.isConnected) {
-  //       dispatch(setConnection(true));
-  //     } else {
-  //       AlertComp('no internet connection ', 'reconect', 'cancel');
-  //     }
-  //   }, [conect]);
+
   return (
     <View
       style={{width: '100%', alignItems: 'center', justifyContent: 'center'}}>
@@ -68,12 +45,11 @@ const ConfirmConnection = ({setToggleButton}) => {
         }}>
         <View style={{top: 100}}>
           <View style={{alignItems: 'center'}}>
-            {/*<Image resizeMode="contain" source={connectionStatus} />*/}
             <Sheep style={{bottom: 20}} />
             <ConnectionCloud2 style={{top: '15%'}} />
-            <ConnectionCloud style={{}} />
+            <ConnectionCloud />
           </View>
-          <View style={{}}>
+          <View>
             <Text
               style={{
                 color: '#fff',

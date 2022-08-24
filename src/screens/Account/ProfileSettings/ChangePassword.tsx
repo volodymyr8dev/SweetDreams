@@ -38,23 +38,29 @@ export const ChangePassword = ({navigation, route}) => {
   const handleChangePassword = (oldPassword, newPassword, newPasswordConfirmation) => {
     setLoaderUpdatingPassword(true);
 
-    UpdateProfile({
-      password_old:          oldPassword,
-      password:              newPassword,
-      password_confirmation: newPasswordConfirmation,
-    }).then(res => {
-      console.log('[PROFILE] Profile response', res);
+    if (oldPassword && newPassword && newPasswordConfirmation) {
+      UpdateProfile({
+        password_old:          oldPassword,
+        password:              newPassword,
+        password_confirmation: newPasswordConfirmation,
+      }).then(res => {
+        console.log('[PROFILE] Profile response', res);
 
+        setLoaderUpdatingPassword(false);
+
+        Alert.alert('Profile settings are updated');
+      }).catch(rej => {
+        console.error('[PROFILE] Profile request failed', rej);
+
+        setLoaderUpdatingPassword(false);
+
+        Alert.alert(rej?.response?.data?.message ? rej?.response?.data?.message : 'Server Error');
+      });
+    } else {
       setLoaderUpdatingPassword(false);
-
-      Alert.alert('Profile settings are updated');
-    }).catch(rej => {
-      console.error('[PROFILE] Profile request failed', rej);
-
-      setLoaderUpdatingPassword(false);
-
-      Alert.alert(rej?.response?.data?.message ? rej?.response?.data?.message : 'Server Error');
-    });
+      
+      Alert.alert('You haven\'t completed the form');
+    }
   };
 
   /* Update options on update */
@@ -76,11 +82,6 @@ export const ChangePassword = ({navigation, route}) => {
       <View style={styles.container}>
         <View style={{paddingHorizontal: 20, marginVertical: 15}}>
           <Text style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
-            Please enter the reset code we recently sent to your email address supplied
-          </Text>
-        </View>
-        <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-          <Text style={{color: COLORS.text}}>
             Please enter the old password
           </Text>
         </View>

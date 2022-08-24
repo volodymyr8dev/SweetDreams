@@ -69,7 +69,7 @@ type Nav = {
   navigate: (value: string, obj?: any) => void;
   setParams: (value: any) => void;
 };
-export const Account = () => {
+export const ConnectedDevice = () => {
   const { loadingCheckLogin, user, verified } = useSelector((state: RootReducerState) => state.auth);
 
   const carouselRef = React.useRef(null);

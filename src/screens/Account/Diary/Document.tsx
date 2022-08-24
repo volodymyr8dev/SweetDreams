@@ -90,9 +90,16 @@ const getMarkedDates = (baseDate, appointments) => {
   return markedDates;
 };
 
-export const Document = () => {
+export const Document = ({navigation}) => {
+  /* Set default navigation options */
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+      title: 'baby\'s diary'
+    })
+  }, [navigation]);
+
   const isFocused = useIsFocused();
-  const navigation = useNavigation<any>();
   const [shown, setShown] = useState(false);
 
   const [selectedDate, setSelectedDate] = useState(new Date(2022, 6, 12));

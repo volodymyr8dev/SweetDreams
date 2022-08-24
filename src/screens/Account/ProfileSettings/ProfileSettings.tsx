@@ -62,9 +62,6 @@ export const ProfileSettings = ({navigation}) => {
         title: 'profile / preferences',
         headerLeftMethod: undefined,
         headerRightText:   'save  ',
-        tabBarStyle: {
-          backgroundColor: 'rgba(52, 52, 90, 0.97)',
-        },
         headerRightMethod: () => {
           handleSave(valueName, valueEmail, valueDate, valueGender, valueNameChild, valueDateChild, valueGenderChild);
         },

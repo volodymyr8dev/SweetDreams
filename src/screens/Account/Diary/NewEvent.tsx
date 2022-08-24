@@ -1,5 +1,13 @@
-import {View, Text, StyleSheet, Alert, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {RootReducerState}           from '../../../redux';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  TouchableOpacity
+} from 'react-native';
+
 import {InputUnit} from '../../../components/InputUnit/InputUnit';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS} from '../../../styles/Constants';
@@ -7,13 +15,15 @@ import {DatePickerComponent} from '../../../components/DatePicker/DatePicker';
 import moment, {Moment} from 'moment';
 import {EditEventApi, NewEventApi} from '../../../api/Diary/calendar';
 import {useSelector} from 'react-redux';
-import {RootState} from '../../../redux/interfaceRootState';
 
 interface ILocation {
   name: string;
   locate: {lat: string; lng: string};
 }
 export const NewEvent = ({route}) => {
+  const {user} = useSelector((state: RootReducerState) => state.auth);
+  
+
   let params = route.params;
   let feedType = 'feed';
   let regType = 'regular';
@@ -25,12 +35,8 @@ export const NewEvent = ({route}) => {
   const [ends, setEnds] = useState<Moment | string>('');
   const [notes, setNotes] = useState('');
   const [breast, setBreast] = useState('left');
-  const global = useSelector(
-    ({account}: RootState) => account.userInformation.user.accounts[0],
-  );
-  const eventSelector = useSelector(
-    ({account}: RootState) => account.events.location,
-  );
+  const global = user.accounts[0]
+  const eventSelector = user.accounts[0]?.events?.location
 
   const addEvent = () => {
     console.log('location22222', location);
@@ -94,13 +100,13 @@ export const NewEvent = ({route}) => {
   }, [title, location, allDay, starts, ends, notes]);
 
   useEffect(() => {
-    if (location !== eventSelector.name.description) {
+    if (location !== eventSelector?.name?.description) {
       setLocation({
-        name: eventSelector.name.description,
-        locate: eventSelector.locate,
+        name: eventSelector?.name?.description,
+        locate: eventSelector?.locate,
       });
     }
-  }, [eventSelector.name.description]);
+  }, [eventSelector?.name?.description]);
   useEffect(() => {
     if (params.event && params.type == regType) {
       setTitle(params.event.title);
@@ -153,7 +159,7 @@ export const NewEvent = ({route}) => {
             <Text style={{color: COLORS.text}}>
               {params?.event?.location?.name
                 ? params?.event?.location?.name
-                : eventSelector.name.description}
+                : eventSelector?.name?.description}
             </Text>
           </View>
         </View>

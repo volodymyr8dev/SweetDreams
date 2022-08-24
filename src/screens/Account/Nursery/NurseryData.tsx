@@ -103,11 +103,17 @@ const averageTotaltemp = [
   'average_over_28days',
 ];
 
-export const NurseryData = () => {
+export const NurseryData = ({navigation}) => {
+  /* Set default navigation options */
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false
+    })
+  }, [navigation]);
+
   const { loadingCheckLogin, user, verified } = useSelector((state: RootReducerState) => state.auth);
 
   const dispatch = useDispatch();
-  const navigation = useNavigation<any>();
   const [activeTime, setActiveTime] = useState('last 24 hours');
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
