@@ -3,5 +3,12 @@ module.exports = {
     ios: {},
     android: {},
   },
-  assets: ['./assets/fonts/'],
+  assets: ['./src/assets/fonts/'],
+  dependencies: {
+    "react-native-bootsplash": {
+      platforms: {
+        android: null,
+      }
+    }
+  }
 };
