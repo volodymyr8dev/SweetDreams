@@ -205,8 +205,8 @@ export const ConnectionStep3 = ({navigation, route}) => {
           </View>
         </View>
 
-        <TouchableOpacity onPress={connectDevice} style={{backgroundColor: 'red'}}>
-          <Text style={{color: 'white'}}>Skip this step (DEV MODE)</Text>
+        <TouchableOpacity onPress={connectDevice} style={{backgroundColor: 'red', paddingLeft: 10, paddingRight: 10}}>
+          <Text style={{color: 'white', paddingTop:10, paddingBottom:10}}>Skip this step (DEV MODE)</Text>
         </TouchableOpacity>
       </ScrollView>
 
