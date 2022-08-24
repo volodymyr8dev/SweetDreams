@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect} from 'react';
+import React           from 'react';
 import {
   TouchableOpacity,
   View,
@@ -45,15 +45,9 @@ export const InputUnit = ({
   multiline,
 }: PropsBox) => {
   const navigation = useNavigation();
+
   const handleGoToScreen = titleName => {
-    console.log('titleName', titleName);
-    navigation.navigate(titleName, {
-      title: titleName,
-      rightEl: rightEl ? true : false,
-      hideOld: titleName == 'Change Password' ? true : false,
-      location: value,
-      setLocation: setValueName,
-    });
+    navigation.navigate(titleName.replace(/\s/g, ''));
   };
 
   switch (nameOfBox) {
@@ -114,7 +108,6 @@ export const InputUnit = ({
             onChangeText={setValueName as any}
             secureTextEntry={security}
             style={styles.switchI}>
-            {/* <Text>{nameField && value}</Text> */}
           </TextInput>
           {rightContent == 'switch' ? (
             <View style={styles.rightContainerSwitch}>

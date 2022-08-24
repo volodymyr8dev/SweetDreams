@@ -160,7 +160,7 @@ export const ConnectionStep2 = ({navigation}) => {
   };
 
   return (
-    <ImageBackground style={{backgroundColor: COLORS.backGround}} source={background}>
+    <ImageBackground style={{backgroundColor: COLORS.backGround, height: '100%'}} source={background}>
       <ScrollView>
         <View style={styles.container}>
           <StepIndicator stepCount={3} customStyles={customStyles} currentPosition={1} />

@@ -1,4 +1,9 @@
 import React, {useEffect, useState} from 'react';
+import DeviceInfo                   from 'react-native-device-info';
+import {useDispatch, useSelector}   from 'react-redux';
+import moment                       from 'moment';
+import AsyncStorage                 from '@react-native-async-storage/async-storage';
+
 import {
   View,
   Text,
@@ -8,218 +13,217 @@ import {
   Alert,
   ImageBackground,
 } from 'react-native';
+
 import {
   getProfile,
   UpdateProfile,
   UpdateProfileChild,
 } from '../../../api/Profile/Profile';
 
-import {InputUnit} from '../../../components/InputUnit/InputUnit';
-import {COLORS} from '../../../styles/Constants';
-import {AlertComp} from '../../../components/Alert/AlertComp';
-import {useDispatch, useSelector} from 'react-redux';
-import {setUserInformation} from '../../../redux/slice';
-import checkButton from '../../../assets/images/checkButton.png';
-import back from '../../../assets/backOrigin.png';
-import moment from 'moment';
-import {DatePickerComponent} from '../../../components/DatePicker/DatePicker';
-import {Gender} from '../../../components/Gender/Gender';
-import {Loader} from '../../../components/Loader/Loader';
-import {useIsFocused} from '@react-navigation/native';
-import DeviceInfo from 'react-native-device-info';
-interface IUser {
-  email?: string;
-  name?: string;
-  date_of_birth?: string;
-  gender?: string;
-}
-interface IUserChild {
-  id: number;
-  baby_name?: string;
-  baby_date_of_birth?: string;
-  baby_gender?: string;
-}
-const verticalStaticData = [
-  {
-    id: 0,
-    text: 'male',
-    isChecked: true,
-    iconStyle: {
-      borderColor: '#CCC',
-      borderWidth: 3,
-      height: 44,
-      width: 44,
-      borderRadius: 50,
-    },
-    fillColor: 'transparent',
-    unfillColor: 'transparent',
-    textStyle: {
-      textDecorationLine: 'none',
-      color: COLORS.text,
-      fontFamily: 'AntagometricaBT-Regular',
-    },
-    checkIconImageSource: checkButton,
-    iconImageStyle: {height: 17.2, width: 20.36},
-  },
-  {
-    id: 1,
-    text: 'female',
-    isChecked: false,
-    style: {
-      marginLeft: 20,
-    },
-    iconStyle: {
-      borderColor: '#CCC',
-      borderWidth: 3,
-      height: 44,
-      width: 44,
-      borderRadius: 50,
-    },
-    fillColor: 'transparent',
-    unfillColor: 'transparent',
-    textStyle: {
-      textDecorationLine: 'none',
-      color: COLORS.text,
-      fontFamily: 'AntagometricaBT-Regular',
-    },
-  },
-];
-export const ProfileSettings = ({navigation}) => {
-  const isFocused = useIsFocused();
-  const { loadingCheckLogin, user, verified } = useSelector((state: RootReducerState) => state.auth);
-  const global = user.accounts[0];
-  console.log(global,"KOKOKOKO")
-  console.log('userrrrrr', user);
-  const [valueName, setValueName] = useState(user.name);
-  const [valueNameChild, setValueNameChild] = useState(
-    user.accounts[0].baby_name,
-  );
-  console.log('valueNamestart', valueName);
-  const [valueEmail, setValueEmail] = useState(user.email);
-  const [valueDate, setValueDate] = useState(user.date_of_birth);
-  const [valueDateChild, setValueDateChild] = useState(
-    user.accounts[0].baby_date_of_birth,
-  );
-  const [valueGender, setValueGender] = useState<any>(null);
-  const [version, setVersion] = useState(DeviceInfo.getVersion());
-  const [build, setBuild] = useState(DeviceInfo.getBuildNumber());
+import {RootReducerState}      from '../../../redux';
+import {getCombinedNavigation} from '../../../hooks/useUpdateNavigationHeaderOptions';
+import {checkLogin}            from '../../../redux/slices/auth';
 
-  const [valueGenderChild, setValueGenderChild] = useState<any>(
-    user.accounts[0].baby_gender,
-  );
+import {InputUnit}             from '../../../components/InputUnit/InputUnit';
+import {COLORS}                from '../../../styles/Constants';
+
+import {Logout, DeleteAccount} from '../../../api/Login/Login';
+
+import background              from '../../../assets/backOrigin.png';
+
+import {DatePickerComponent}   from '../../../components/DatePicker/DatePicker';
+import {Gender}                from '../../../components/Gender/Gender';
+import {Loader}                from '../../../components/Loader/Loader';
+
+export const ProfileSettings = ({navigation}) => {
   const dispatch = useDispatch();
+  
+  const {user} = useSelector((state: RootReducerState) => state.auth);
+
+  const [loaderSavingProfile,   setLoaderSavingProfile]   = useState(false);
+  const [loaderSigningOut,      setLoaderSigningOut]      = useState(false);
+  const [loaderDeletingAccount, setLoaderDeletingAccount] = useState(false);
+
+  const [version, setVersion] = useState(DeviceInfo.getVersion());
+  const [build, setBuild]     = useState(DeviceInfo.getBuildNumber());
+
+  const [valueEmail,       setValueEmail]       = useState(user.email);
+  const [valueName,        setValueName]        = useState<any>(user.name);
+  const [valueNameChild,   setValueNameChild]   = useState<any>(user.accounts[0].baby_name);
+  const [valueDate,        setValueDate]        = useState<any>(user.date_of_birth);
+  const [valueDateChild,   setValueDateChild]   = useState<any>(user.accounts[0].baby_date_of_birth);
+  const [valueGender,      setValueGender]      = useState<any>(user.gender);
+  const [valueGenderChild, setValueGenderChild] = useState<any>(user.accounts[0].baby_gender);
+
+  /* Set default navigation options */
+  useEffect(() => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title: 'profile / preferences',
+        headerLeftMethod: undefined,
+        headerRightText:   'save  ',
+        tabBarStyle: {
+          backgroundColor: 'rgba(52, 52, 90, 0.97)',
+        },
+        headerRightMethod: () => {
+          handleSave(valueName, valueEmail, valueDate, valueGender, valueNameChild, valueDateChild, valueGenderChild);
+        },
+      })
+    )
+  }, [navigation]);
+
+  useEffect(() => {
+    getProfile().then(async ({data}) => {
+      setValueName(data.user.name);
+      setValueNameChild(data.user.accounts[0].baby_name);
+      setValueEmail(data.user.email);
+      setValueDate(data.user.date_of_birth);
+      setValueDateChild(data.user.accounts[0].baby_date_of_birth);
+      setValueGender(data.user.gender);
+      setValueGenderChild(data.user.accounts[0].baby_gender);
+
+      refreshNavigation(
+        data.user.name,
+        data.user.email,
+        data.user.date_of_birth,
+        data.user.gender,
+        data.user.accounts[0].baby_name,
+        data.user.accounts[0].baby_date_of_birth,
+        data.user.accounts[0].baby_gender
+      )
+    });
+  }, []);
 
   const handleSignOut = () => {
-    AlertComp(
-      'Are you sure you had like to sign out of your account?',
-      'Sign out',
-      'Cancel',
-      navigation,
-    );
+    Alert.alert(
+      'Are you use you\'d like to sign out of your account?',
+      '',
+      [{
+        text: 'Sign out',
+        onPress: () => {
+          setLoaderSigningOut(true);
+
+          Logout().then(async () => {
+            console.log('[LOGOUT] Logout response');
+
+            await AsyncStorage.clear();
+
+            setLoaderSigningOut(false);
+
+            dispatch(checkLogin());
+          }).catch(async(err) => {
+            console.error('[LOGOUT] There is a problem with logging out from an account');
+
+            await AsyncStorage.clear();
+            
+            setLoaderSigningOut(false);
+
+            dispatch(checkLogin());
+          });
+        }
+      },
+      {
+        text: 'No', onPress: () => {}
+      },
+    ]);
   };
 
-  const handleSave = () => {
-    const newUser: IUser = {
-      ...(valueEmail !== user.email && {email: valueEmail}),
-      name: valueName,
-      date_of_birth: valueDate,
-      gender: valueGender,
-    };
-    // const newChild: IUserChild = {
-    //   id: user.accounts[0].id,
-    //   ...(valueNameChild !== user.accounts[0].baby_name && {
-    //     baby_name: valueNameChild,
-    //   }),
-    //   ...(valueDateChild !== user.accounts[0].baby_date_of_birth && {
-    //     baby_date_of_birth: valueDateChild,
-    //   }),
-    //   ...(valueGenderChild !== user.accounts[0].baby_gender && {
-    //     baby_gender: valueGenderChild,
-    //   }),
-    // };
-    const newChild: IUserChild = {
-      id: user.accounts[0].id,
-      baby_name: valueNameChild,
-      baby_date_of_birth: valueDateChild,
-      baby_gender: valueGenderChild,
-    };
-
-    console.log('setUserInformation', newUser);
-    console.log('setChildInformation', newChild);
-    // dispatch(setLoader(true));
-    Promise.all([UpdateProfile(newUser), UpdateProfileChild(newChild)])
-      .then(async data => {
-        console.log('00000000', data[0].data.success);
-        const res = await dispatch(setUserInformation(data[0].data.success));
-        // dispatch(setLoader(false));
-        Alert.alert('Profile settings are updated');
-      })
-      .catch(({response}) => {
-        // dispatch(setLoader(false));
-        response.data.error && Alert.alert(response.data.error);
-        console.log('xxxxxxx', response.data.message);
-      });
-  };
-  useEffect(() => {
-    navigation.setParams({
-      test: handleSave,
-    });
-  }, [
-    valueName,
-    valueEmail,
-    valueDate,
-    valueGender,
-    valueGenderChild,
-    valueDateChild,
-  ]);
-  useEffect(() => {
-    getProfile()
-      .then(async ({data}) => {
-        console.log('all information about user', data);
-        await dispatch(setUserInformation(data.user));
-        setValueName(data.user.name);
-        setValueNameChild(data.user.accounts[0].baby_name);
-        setValueEmail(data.user.email);
-        setValueDate(data.user.date_of_birth);
-        setValueDateChild(data.user.accounts[0].baby_date_of_birth);
-        setValueGender(data.user.gender);
-        setValueGenderChild(data.user.accounts[0].baby_gender);
-      })
-      .catch(err => {
-        console.log('what error', err.response.data);
-      });
-  }, [isFocused]);
   const handleDeleteAcount = () => {
-    AlertComp(
-      'Are you sure you had like to sign out of your account?',
-      'Sign out',
-      'Cancel',
-      navigation,
-      'delete',
-    );
+    Alert.alert(
+      'Are you use you\'d like to delete your account? This action is permanent',
+      '',
+      [{
+        text: 'Delete',
+        onPress: () => {
+          setLoaderDeletingAccount(true);
+
+          DeleteAccount().then(async () => {
+            console.log('[DELETE ACCOUNT] Logout response');
+
+            await AsyncStorage.clear();
+
+            setLoaderDeletingAccount(false);
+
+            dispatch(checkLogin());
+          }).catch(async(err) => {
+            console.error('[DELETE ACCOUNT] There is a problem with deleting an account');
+            
+            setLoaderDeletingAccount(false);
+          });
+        }
+      },
+      {
+        text: 'No', onPress: () => {}
+      },
+    ]);
   };
+
+  /* Update options on update */
+  const refreshNavigation = (name, email, dateOfBirth, gender, babyName, babyDateOfBirth, babyGender) => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title: 'profile / preferences',
+        headerLeftMethod: undefined,
+        headerRightText:   'save  ',
+        tabBarStyle: {
+          backgroundColor: 'rgba(52, 52, 90, 0.97)',
+        },
+        headerRightMethod: () => {
+          handleSave(name, email, dateOfBirth, gender, babyName, babyDateOfBirth, babyGender);
+        },
+      })
+    )
+  }
+
+  const handleSave = (name, email, dateOfBirth, gender, babyName, babyDateOfBirth, babyGender) => {
+    setLoaderSavingProfile(true);
+
+    let req = {
+      name:          name,
+      date_of_birth: dateOfBirth,
+      gender:        gender,
+    };
+
+    if (user.email != email) {
+      req.email = email
+    }
+
+    
+    Promise.all([
+      UpdateProfile(req),
+      UpdateProfileChild({
+        id:                 user.accounts[0].id,
+        baby_name:          babyName,
+        baby_date_of_birth: babyDateOfBirth,
+        baby_gender:        babyGender,
+      })
+    ]).then(res => {
+      console.log('[PROFILE] Profile response', res);
+
+      setLoaderSavingProfile(false);
+
+      Alert.alert('Profile settings are updated');
+    }).catch(rej => {
+      console.error('[PROFILE] Profile request failed', rej);
+
+      setLoaderSavingProfile(false);
+
+      Alert.alert(rej?.response?.data?.message ? rej?.response?.data?.message : 'Server Error');
+    });
+  };
+
   return (
-    <ImageBackground source={back} style={{backgroundColor: COLORS.back}}>
+    <ImageBackground source={background} style={{backgroundColor: COLORS.back}}>
       <View style={styles.container}>
-        <ScrollView style={{paddingTop: 10}}>
+        <ScrollView style={{paddingTop: 20}}>
           <View style={{paddingHorizontal: 20}}>
-            <Text
-              style={{
-                color: COLORS.text,
-                fontSize: 18,
-                fontFamily: 'AntagometricaBT-Bold',
-              }}>
+            <Text style={{color: COLORS.text, fontSize: 18, fontFamily: 'AntagometricaBT-Bold'}}>
               Family Account
             </Text>
           </View>
           <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-            <Text
-              style={{
-                color: COLORS.text,
-                fontFamily: 'AntagometricaBT-Regular',
-              }}>
-              Add family members in order to share data and control of the
-              devices.
+            <Text style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
+              Add family members in order to share data and control of the devices.
             </Text>
           </View>
           <InputUnit
@@ -228,31 +232,22 @@ export const ProfileSettings = ({navigation}) => {
             rightArrow={true}
           />
           <View style={{paddingHorizontal: 20, marginVertical: 10}}>
-            <Text
-              style={{
-                color: COLORS.text,
-                fontSize: 18,
-                fontFamily: 'AntagometricaBT-Bold',
-              }}>
+            <Text style={{color: COLORS.text, fontSize: 18, fontFamily: 'AntagometricaBT-Bold'}}>
               Caregiver Information
             </Text>
           </View>
 
           <View style={{paddingHorizontal: 20, marginBottom: 10}}>
-
-            <Text
-              style={{
-                color: COLORS.text,
-                fontFamily: 'AntagometricaBT-Regular',
-              }}>
-              Please enter details of the guardian who created the account and
-              completed the registration. The information given will be used to
-              help improve the product though statistics and analytics
+            <Text style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular' }}>
+              Please enter details of the guardian who created the account and completed the registration. The information given will be used to  help improve the product though statistics and analytics
             </Text>
           </View>
           <InputUnit
             value={valueName}
-            setValueName={value => setValueName(value)}
+            setValueName={currentName => {
+              setValueName(currentName);
+              refreshNavigation(currentName, valueEmail, valueDate, valueGender, valueNameChild, valueDateChild, valueGenderChild);
+            }}
             title={'Your Name'}
             nameField={'Bernie'}
             nameOfBox={'input'}
@@ -260,9 +255,12 @@ export const ProfileSettings = ({navigation}) => {
           />
           <InputUnit
             value={valueEmail}
-            setValueName={setValueEmail}
+            setValueName={currentEmail => {
+              setValueEmail(currentEmail);
+              refreshNavigation(valueName, currentEmail, valueDate, valueGender, valueNameChild, valueDateChild, valueGenderChild);
+            }}
             title={'Your Email Address'}
-            nameField={'bernie@sweetdreaamers'}
+            nameField={'bernie@sweetdreamers.com'}
             nameOfBox={'input'}
             placeholder={'Your Email Address'}
           />
@@ -278,40 +276,35 @@ export const ProfileSettings = ({navigation}) => {
             value={valueDate}
             changeDate={date => {
               setValueDate(moment(date).format('YYYY-MM-DD'));
+              refreshNavigation(valueName, valueEmail, moment(date).format('YYYY-MM-DD'), valueGender, valueNameChild, valueDateChild, valueGenderChild);
             }}
           />
           <Gender
             initialId={user.gender === 'male' ? 0 : 1}
             type=""
-            setValue={setValueGender}
+            setValue={currentGender => {
+              setValueGender(currentGender);
+              refreshNavigation(valueName, valueEmail, valueDate, currentGender, valueNameChild, valueDateChild, valueGenderChild);
+            }}
           />
           <View style={{paddingHorizontal: 20}}>
             <View style={{marginVertical: 10}}>
-              <Text
-                style={{
-                  color: COLORS.text,
-                  fontSize: 18,
-                  fontFamily: 'AntagometricaBT-Bold',
-                }}>
+              <Text style={{color: COLORS.text, fontSize: 18, fontFamily: 'AntagometricaBT-Bold'}}>
                 Baby profile
               </Text>
             </View>
             <View style={{marginBottom: 10}}>
-              <Text
-                style={{
-                  color: COLORS.text,
-                  fontFamily: 'AntagometricaBT-Regular',
-                }}>
-                Please enter details of the baby who will be using the product.
-                The information given will be used to help improve your prodyct
-                in app experience, as well as the app itself through statistics
-                and analytics.
+              <Text style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
+                Please enter details of the baby who will be using the product. The information given will be used to help improve your product in app experience, as well as the app itself through statistics and analytics.
               </Text>
             </View>
           </View>
           <InputUnit
             value={valueNameChild}
-            setValueName={value => setValueNameChild(value)}
+            setValueName={currentChildName => {
+              setValueNameChild(currentChildName);
+              refreshNavigation(valueName, valueEmail, valueDate, valueGender, currentChildName, valueDateChild, valueGenderChild);
+            }}
             nameOfBox={'input'}
             placeholder={"Baby's Nickname"}
           />
@@ -321,58 +314,41 @@ export const ProfileSettings = ({navigation}) => {
             value={valueDateChild}
             changeDate={date => {
               setValueDateChild(moment(date).format('YYYY-MM-DD'));
+              refreshNavigation(valueName, valueEmail, valueDate, valueGender, valueNameChild, moment(date).format('YYYY-MM-DD'), valueGenderChild);
             }}
           />
           <Gender
             initialId={user.accounts[0].baby_gender === 'male' ? 0 : 1}
             type="child"
-            setValue={setValueGenderChild}
+            setValue={
+              currentGenderChild => {
+                setValueGenderChild(currentGenderChild);
+                refreshNavigation(valueName, valueEmail, valueDate, valueGender, valueNameChild, valueDateChild, currentGenderChild);
+              }}
           />
 
           <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-            <Text
-              style={{
-                color: COLORS.text,
-                fontSize: 18,
-                fontFamily: 'AntagometricaBT-Bold',
-              }}>
+            <Text style={{color: COLORS.text, fontSize: 18, fontFamily: 'AntagometricaBT-Bold'}}>
               Legal Policy
             </Text>
           </View>
           <InputUnit nameOfBox="touch" title={'Privacy Policy'} />
           <InputUnit nameOfBox="touch" title={'Terms Conditions'} />
           <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-            <Text
-              style={{
-                color: COLORS.text,
-                fontSize: 18,
-                fontFamily: 'AntagometricaBT-Bold',
-              }}>
+            <Text style={{color: COLORS.text, fontSize: 18, fontFamily: 'AntagometricaBT-Bold' }}>
               App Version {version} ({build})
             </Text>
           </View>
           <TouchableOpacity onPress={handleSignOut} style={{marginBottom: 10}}>
             <View style={styles.bottomButtons}>
-              <Text
-                style={{
-                  color: '#CE9B51',
-                  fontSize: 18,
-                  fontFamily: 'AntagometricaBT-Bold',
-                }}>
+              <Text style={{color: '#CE9B51', fontSize: 18, fontFamily: 'AntagometricaBT-Bold'}}>
                 sign out
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleDeleteAcount}
-            style={{marginBottom: 35}}>
+          <TouchableOpacity onPress={handleDeleteAcount} style={{marginBottom: 35}}>
             <View style={styles.bottomButtons}>
-              <Text
-                style={{
-                  color: '#CE9B51',
-                  fontSize: 18,
-                  fontFamily: 'AntagometricaBT-Bold',
-                }}>
+              <Text style={{color: '#CE9B51', fontSize: 18, fontFamily: 'AntagometricaBT-Bold'}}>
                 delete account
               </Text>
             </View>
@@ -380,15 +356,15 @@ export const ProfileSettings = ({navigation}) => {
         </ScrollView>
       </View>
 
-      {global?.loader && <Loader text={'Please wait for Verification'} />}
+      {loaderSavingProfile && <Loader text={'saving profile...'} />}
+      {loaderSigningOut && <Loader text={'signing out...'} />}
+      {loaderDeletingAccount && <Loader text={'deleting account...'} />}
     </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 10,
-    // backgroundColor: '#221B36',
     height: '100%',
   },
   headerContainer: {

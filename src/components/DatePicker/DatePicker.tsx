@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {View, Text, Platform, StyleSheet, TouchableOpacity} from 'react-native';
 import {COLORS} from '../../styles/Constants';
 import DatePicker from 'react-native-date-picker';
-import {minTime} from 'date-fns';
 import moment from 'moment';
 export const DatePickerComponent = ({
   changeDate,
@@ -16,7 +15,6 @@ export const DatePickerComponent = ({
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   let dater = new Date(min);
-  console.log('dater', dater);
 
   return (
     <>
@@ -30,7 +28,7 @@ export const DatePickerComponent = ({
             <View style={{flexDirection: 'row'}}>
               <Text style={styles.typeText}>{type}</Text>
             </View>
-            <Text style={{color: '#fff', fontSize: 17}}>{value}</Text>
+            <Text style={{color: '#fff', fontSize: 18, fontFamily: 'AntagometricaBT-Regular'}}>{value ? moment(value).format('DD MMMM YYYY') : 'Select'}</Text>
           </View>
         </TouchableOpacity>
       ) : (
@@ -45,7 +43,7 @@ export const DatePickerComponent = ({
             </View>
             <View>
               <View>
-                <Text style={{color: '#fff', fontSize: 17}}>{value}</Text>
+                <Text style={{color: '#fff', fontSize: 18, fontFamily: 'AntagometricaBT-Regular'}}>{value ? moment(value).format('DD MMMM YYYY') : 'Select'}</Text>
               </View>
             </View>
           </View>

@@ -1,82 +1,28 @@
 import React, {useEffect} from 'react';
 import { RootReducerState } from '../redux';
-import {Text, Image, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Account} from '../../screens/Account/Account';
 import {ProfileSettings} from '../../screens/Account/ProfileSettings/ProfileSettings';
 import {NurseryData} from '../../screens/Account/Nursery/NurseryData';
 import {Document} from '../../screens/Account/Diary/Document';
 import {Feed} from '../../screens/Account/Feed/Feed';
-import backButton from '../../assets/images/backButton.png';
 import Schedule from '../../assets/images/svg/Schedule';
 import ScheduleActive from '../../assets/images/svg/ScheduleActive';
 import Child from '../../assets/images/svg/Child';
 import ChildActive from '../../assets/images/svg/ChildActive';
 import Bottle from '../../assets/images/svg/Bottle';
 import BottleActive from '../../assets/images/svg/BottleActive';
-import SettingsAccount from '../../assets/images/svg/Settings';
-import SettingsActive from '../../assets/images/svg/SettingsActive';
+
+import ProfileSettingsInactive from '../../assets/images/svg/Settings';
+import ProfileSettingsActive   from '../../assets/images/svg/SettingsActive';
+
 import Search from '../../assets/images/svg/diary/Search';
 import Plus from '../../assets/images/svg/diary/Plus';
 import BottomIcon from '../../assets/images/svg/diary/BottomIcon';
 import BottomUnActive from '../../assets/images/svg/diary/BottomUnActive';
 import {useDispatch, useSelector} from 'react-redux';
 import ConfirmConnection from '../../screens/Account/ConfirmConnection';
-import {RootState} from '../../redux/configureStore';
-import {useNavigation} from '@react-navigation/native';
-
-const iconGr = (focused, iconActive, icon, size = 30) => {
-  return (
-    <View>
-      <View>
-        <Image
-          resizeMode="contain"
-          style={[{width: size, height: size}]}
-          source={focused ? iconActive : icon}
-        />
-      </View>
-    </View>
-  );
-};
-
-const navigationOptions = navigation => ({
-  title: 'profile / preferences',
-  headerShown: true,
-  headerTintColor: '#2371AB',
-  headerStyle: {
-    backgroundColor: '#2A305A',
-    shadowColor: 'transparent', // this covers iOS
-    elevation: 0,
-  },
-  headerTitleStyle: {
-    fontFamily: 'AntagometricaBT-Bold',
-    fontSize: 19,
-  },
-  tabBarStyle: {
-    elevation: 0,
-    backgroundColor: 'rgba(52, 52, 90, 0.97)',
-  },
-  headerLeft: () => {
-    return (
-      <TouchableOpacity style={{paddingLeft: 15.44}} onPress={() => navigation.navigation.goBack()}>
-        <Image style={{width: 12.3, height: 18.86}} source={backButton} />
-      </TouchableOpacity>
-    );
-  },
-  headerRight: () => {
-    const params = navigation.route?.params;
-
-    return (
-      <TouchableOpacity  onPress={() => { params.test(); }} style={{paddingRight: 17.45}}>
-        <Text style={{color: '#fff', fontSize: 19, fontFamily: 'AntagometricaBT-Regular' }}>
-          save
-        </Text>
-      </TouchableOpacity>
-    );
-  },
-  tabBarLabel: '',
-  tabBarIcon: ({focused}) => focused ? <SettingsActive /> : <SettingsAccount />,
-});
 
 const navigationDocument = ({navigation, route}) => ({
   headerTitle: "baby's diary",
@@ -110,10 +56,6 @@ const navigationDocument = ({navigation, route}) => ({
     elevation: 0,
   },
   headerTitleStyle: {fontSize: 20},
-  tabBarStyle: {
-    backgroundColor: 'rgba(52, 52, 90, 0.97)',
-  },
-  // tabBarIcon: ({color, focused}) => iconGr(focused, documentActive, document),
   tabBarIcon: ({focused}) => (focused ? <BottomIcon /> : <BottomUnActive />),
 });
 
@@ -137,7 +79,7 @@ const feedOptions = () => ({
   },
   tabBarLabel: '',
   tabBarStyle: {
-    backgroundColor: 'rgba(52, 52, 90, 0.97)',
+    
   },
   tabBarIcon: ({focused}) => (focused ? <BottleActive /> : <Bottle />),
 });
@@ -145,9 +87,13 @@ const feedOptions = () => ({
 const Tab = createBottomTabNavigator();
 const customTabBarStyle = {
   borderBottomWidth: 0,
-  tabStyle: {paddingTop: 25},
+  tabStyle: {
+    paddingTop: 25,
+    backgroundColor: 'rgba(52, 52, 90, 0.97)',
+  },
   labelStyle: {},
 };
+
 export const MyTabs = ({navigation}) => {
   const { loadingCheckLogin, user, verified } = useSelector((state: RootReducerState) => state.auth);
 
@@ -190,11 +136,12 @@ export const MyTabs = ({navigation}) => {
         }}
       />
       <Tab.Screen name="feed" component={Feed} options={feedOptions} />
-      <Tab.Screen
-        name="ProfileSettings"
-        component={ProfileSettings}
-        options={navigationOptions}
-      />
+
+      <Tab.Screen name="ProfileSettings" component={ProfileSettings} options={{
+        tabBarLabel: '',
+          
+        tabBarIcon: ({focused}) => focused ? <ProfileSettingsActive /> : <ProfileSettingsInactive />,
+      }} />
     </Tab.Navigator>
   );
 };

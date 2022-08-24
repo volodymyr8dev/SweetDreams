@@ -3,12 +3,12 @@ import axiosInstance from '../apiAxios';
 export const UpdateProfile = async user => {
   const body = {
     email:                 user.email,
-    password_old:          user.password,
+    name:                  user.name,
+    date_of_birth:         user.date_of_birth,
+    gender:                user.gender,
+    password_old:          user.password_old,
     password:              user.password,
     password_confirmation: user.password_confirmation,
-    name:                  user.name,
-    date_of_birth:         user.date,
-    gender:                user.gender,
   };
 
   console.log('[PROFILE] Patch profile request', body);

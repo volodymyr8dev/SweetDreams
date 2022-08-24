@@ -1,10 +1,10 @@
 import React                        from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Login}                      from '../../screens/registration/Login';
-import {CreateNewAccount}           from '../../screens/registration/CreateNewAccount';
-import {Step2}                      from '../../screens/registration/Step2';
-import {ForgotPassword1}            from '../../screens/registration/ForgotPassword1';
-import {ForgotPassword2}            from '../../screens/registration/ForgotPassword2';
+import {Login}                      from '../../screens/Registration/Login';
+import {CreateNewAccount}           from '../../screens/Registration/CreateNewAccount';
+import {Step2}                      from '../../screens/Registration/Step2';
+import {ForgotPassword1}            from '../../screens/Registration/ForgotPassword1';
+import {ForgotPassword2}            from '../../screens/Registration/ForgotPassword2';
 import {PrivacyPolicy}              from '../../screens/Account/ProfileSettings/PrivacyPolicy';
 import {TermsConditions}            from '../../screens/Account/ProfileSettings/TermsConditions';
 

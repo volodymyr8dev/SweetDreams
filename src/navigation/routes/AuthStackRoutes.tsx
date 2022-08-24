@@ -2,16 +2,18 @@ import React, {useEffect, useState}           from 'react';
 import {createNativeStackNavigator}           from '@react-navigation/native-stack';
 import {Alert, TouchableOpacity, Image, Text} from 'react-native';
 import { useDispatch, useSelector }           from 'react-redux';
-import {Step3} from '../../screens/registration/Step3';
-import {Step4} from '../../screens/registration/Step4';
-import {Step5} from '../../screens/registration/Step5';
-import {Connection} from '../../screens/conection/Connection';
-import {ConnectionStep1} from '../../screens/conection/ConnectionStep1';
-import {ConnectionStep2} from '../../screens/conection/ConnectionStep2';
-import {ConnectionStep3} from '../../screens/conection/ConnectionStep3';
+
+import {Step3} from '../../screens/Registration/Step3';
+import {Step4} from '../../screens/Registration/Step4';
+import {Step5} from '../../screens/Registration/Step5';
+
+import {Connection}      from '../../screens/Connection/Connection';
+import {ConnectionStep1} from '../../screens/Connection/ConnectionStep1';
+import {ConnectionStep2} from '../../screens/Connection/ConnectionStep2';
+import {ConnectionStep3} from '../../screens/Connection/ConnectionStep3';
 
 import {MyTabs} from './BottomTabRoutes';
-import {SettingsAccount} from '../../screens/Account/Settings/SettingsAccount';
+import {ProfileSettings} from '../../screens/Account/ProfileSettings/ProfileSettings';
 import {ChangeFamilyMembers} from '../../screens/Account/ProfileSettings/ChangeFamilyMembers';
 import {ChangePassword} from '../../screens/Account/ProfileSettings/ChangePassword';
 import {PrivacyPolicy} from '../../screens/Account/ProfileSettings/PrivacyPolicy';
@@ -190,7 +192,7 @@ const AuthStackRoutes = ({navigation, user}) => {
 
       <Stack.Screen name="Tabs" component={MyTabs} options={{headerShown: false, contentStyle: {backgroundColor: '#000'}}} />
 
-      <Stack.Screen name="SettingsAccount" component={SettingsAccount} />
+      <Stack.Screen name="ProfileSettings" component={ProfileSettings} />
       <Stack.Screen name="ManageFamilyMembers" component={ChangeFamilyMembers} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
       <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />

@@ -1,10 +1,10 @@
-import React                from 'react';
-import { useSelector }      from 'react-redux';
-import { RootReducerState } from '../redux';
-import { useCheckLogin }    from '../hooks/useCheckLogin';
-import { useResetEmail }    from '../hooks/useForgotPassword';
-import GuestStackRoutes     from './routes/GuestStackRoutes';
-import AuthStackRoutes      from './routes/AuthStackRoutes';
+import React              from 'react';
+import {useSelector}      from 'react-redux';
+import {RootReducerState} from '../redux';
+import {useCheckLogin}    from '../hooks/useCheckLogin';
+import {useResetEmail}    from '../hooks/useForgotPassword';
+import GuestStackRoutes   from './routes/GuestStackRoutes';
+import AuthStackRoutes    from './routes/AuthStackRoutes';
 
 import {
   View,

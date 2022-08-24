@@ -3,216 +3,139 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
-  TouchableOpacity,
   Alert,
+  ImageBackground
 } from 'react-native';
-import {COLORS} from '../../../styles/Constants';
 
-import arrowRight from '../../../assets/images/settings/arrowRight.png';
-import {useNavigation} from '@react-navigation/native';
-import {TextInput} from 'react-native';
-import {InputUnit} from '../../../components/InputUnit/InputUnit';
-import {ChangePasswordApi} from '../../../api/ForgotPassword/ForgotPassword';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../redux/configureStore';
-import {AccountSelector} from '../../../redux/selectors/AccountSelector';
-import {UpdateProfile} from '../../../api/Profile/Profile';
+import {getCombinedNavigation} from '../../../hooks/useUpdateNavigationHeaderOptions';
+import {COLORS}                from '../../../styles/Constants';
+import {InputUnit}             from '../../../components/InputUnit/InputUnit';
+import {UpdateProfile}         from '../../../api/Profile/Profile';
+import {Loader}                from '../../../components/Loader/Loader';
 
-interface PropsBox {
-  nameOfBox: string;
-  title: string;
-  nameField?: string;
-  rightEl?: string;
-  placeholder?: string;
-}
-type Nav = {
-  getState();
-  setParams(arg0: {onSave: () => void});
-  navigate: (value: string) => void;
-};
+import background              from '../../../assets/backOrigin.png';
 
-export const ChangePassword = ({route}) => {
-  const navigation = useNavigation<Nav>();
-  const [code, setCode] = useState('');
-  const [passwordOld, setPasswordOld] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConf, setPasswordConf] = useState('');
-  const global = useSelector(AccountSelector);
-  console.log('global state', global);
-  const handleGoToScreen = title => {
-    console.log(title);
-    navigation.navigate(title);
-  };
-  console.log('vvvvv', route.params);
-  const HandleChangePassword = async () => {
-    if (route.params.email) {
-      ChangePasswordApi(route.params.email, code, password, passwordConf)
-        .then(({data}) => {
-          console.log('change password successfully', data.message);
-          Alert.alert(data.message);
-          navigation.navigate('Login');
-        })
-        .catch(err => {
-          console.log('err change password', err.response.data.error);
-          Alert.alert(err.response.data.error);
-          err.response.data.message && Alert.alert(err.response.data.message);
-          console.log('err change password', err.response.data.message);
-          err.response.data.errors && Alert.alert(err.response.data.errors);
-        });
-    } else {
-      const user = {
-        password_old: passwordOld,
-        password: password,
-        password_confirmation: passwordConf,
-      };
-      console.log('user', user);
-      UpdateProfile(user)
-        .then(({data}) => {
-          console.log('success', data);
-          Alert.alert('success');
-        })
-        .catch(err => {
-          console.log('errnewpassword', err.response.data);
-          Alert.alert(err.response.data.message);
-        });
-    }
-  };
+export const ChangePassword = ({navigation, route}) => {
+  const [loaderUpdatingPassword, setLoaderUpdatingPassword] = useState(false);
+
+  const [oldPassword,             setOldPassword]             = useState('');
+  const [newPassword,             setNewPassword]             = useState('');
+  const [newPasswordConfirmation, setNewPasswordConfirmation] = useState('');
+
   useEffect(() => {
-    navigation.setParams({
-      onSave: HandleChangePassword,
-    });
-  }, [password, passwordConf]);
-  const Box = ({
-    nameOfBox,
-    title,
-    nameField,
-    rightEl,
-    placeholder,
-  }: PropsBox) => {
-    return nameOfBox == 'touch' ? (
-      <TouchableOpacity
-        onPress={() => handleGoToScreen(title)}
-        style={styles.box}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          <View>
-            <Text style={{color: COLORS.text, fontSize: 18}}>{title}</Text>
-          </View>
-          {!rightEl ? (
-            <View>
-              <Image style={{height: 15, width: 15}} source={arrowRight} />
-            </View>
-          ) : (
-            // <Text style={{color: '#fff', fontSize: 17}}>{rightEl}</Text>
-            <Text></Text>
-          )}
-        </View>
-      </TouchableOpacity>
-    ) : (
-      <View style={styles.input}>
-        <View>
-          <Text style={{color: COLORS.text, fontSize: 18}}>{placeholder}:</Text>
-        </View>
+    navigation.setOptions(
+      getCombinedNavigation({
+        title: 'change password',
+        headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
+        headerRightText:   'save',
+        headerRightMethod: () => {
+          handleChangePassword(oldPassword, newPassword, newPasswordConfirmation);
+        },
+      })
+    )
+  }, [navigation]);
 
-        <TextInput
-          style={{
-            width: '100%',
-            paddingLeft: 10,
-            color: COLORS.text,
-          }}>
-          <Text>{nameField}</Text>
-        </TextInput>
-      </View>
-    );
+  const handleChangePassword = (oldPassword, newPassword, newPasswordConfirmation) => {
+    setLoaderUpdatingPassword(true);
+
+    UpdateProfile({
+      password_old:          oldPassword,
+      password:              newPassword,
+      password_confirmation: newPasswordConfirmation,
+    }).then(res => {
+      console.log('[PROFILE] Profile response', res);
+
+      setLoaderUpdatingPassword(false);
+
+      Alert.alert('Profile settings are updated');
+    }).catch(rej => {
+      console.error('[PROFILE] Profile request failed', rej);
+
+      setLoaderUpdatingPassword(false);
+
+      Alert.alert(rej?.response?.data?.message ? rej?.response?.data?.message : 'Server Error');
+    });
   };
+
+  /* Update options on update */
+  const refreshNavigation = (oldPassword, newPassword, newPasswordConfirmation) => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title: 'change password',
+        headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
+        headerRightText:   'save',
+        headerRightMethod: () => {
+          handleChangePassword(oldPassword, newPassword, newPasswordConfirmation);
+        },
+      })
+    )
+  }
 
   return (
-    <View style={styles.container}>
-      {!route.params.hideOld && (
+    <ImageBackground source={background} style={{backgroundColor: COLORS.back}}>
+      <View style={styles.container}>
         <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-          <Text
-            style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
-            Please enter the reset code we recently sent to your email address
-            supplied
+          <Text style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
+            Please enter the reset code we recently sent to your email address supplied
           </Text>
         </View>
-      )}
-      {!route.params.hideOld && (
-        <InputUnit
-          title={'Reset Code'}
-          nameOfBox={'input'}
-          placeholder={'Reset Code'}
-          nameField={'************'}
-          security={true}
-          value={code}
-          setValueName={value => {
-            setCode(value);
-          }}
-        />
-      )}
-      {route.params.hideOld && (
         <View style={{paddingHorizontal: 20, marginVertical: 15}}>
           <Text style={{color: COLORS.text}}>
             Please enter the old password
           </Text>
         </View>
-      )}
-      {route.params.hideOld && (
         <InputUnit
           title={'Old Password'}
           nameOfBox={'input'}
           placeholder={'Old Password'}
           nameField={'************'}
           security={true}
-          value={passwordOld}
-          setValueName={value => {
-            setPasswordOld(value);
+          value={oldPassword}
+          setValueName={currentOldPassword => {
+            setOldPassword(currentOldPassword);
+            refreshNavigation(currentOldPassword, newPassword, newPasswordConfirmation);
           }}
         />
-      )}
-      <View style={{paddingHorizontal: 20, marginVertical: 15}}>
-        <Text
-          style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
-          Please enter the new password 8-64 charapters (letters, numbers AND
-          special characters)
-        </Text>
-      </View>
-      <InputUnit
-        title={'New Password'}
-        nameOfBox={'input'}
-        placeholder={'New Password'}
-        nameField={'************'}
-        security={true}
-        value={password}
-        setValueName={value => {
-          setPassword(value);
-        }}
-      />
+        <View style={{paddingHorizontal: 20, marginVertical: 15}}>
+          <Text
+            style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>
+            Please enter the new password 8-64 charapters (letters, numbers AND special characters)
+          </Text>
+        </View>
+        <InputUnit
+          title={'New Password'}
+          nameOfBox={'input'}
+          placeholder={'New Password'}
+          nameField={'************'}
+          security={true}
+          value={newPassword}
+          setValueName={currentNewPassword => {
+            setNewPassword(currentNewPassword);
+            refreshNavigation(oldPassword, currentNewPassword, newPasswordConfirmation);
+          }}
+        />
 
-      <InputUnit
-        title={'Confirm New Password'}
-        nameOfBox={'input'}
-        placeholder={'Confirm New Password'}
-        nameField={'************'}
-        security={true}
-        value={passwordConf}
-        setValueName={value => {
-          setPasswordConf(value);
-        }}
-      />
-    </View>
+        <InputUnit
+          title={'Confirm New Password'}
+          nameOfBox={'input'}
+          placeholder={'Confirm New Password'}
+          nameField={'************'}
+          security={true}
+          value={newPasswordConfirmation}
+          setValueName={currentNewPasswordConfirmation => {
+            setNewPasswordConfirmation(currentNewPasswordConfirmation);
+            refreshNavigation(oldPassword, newPassword, currentNewPasswordConfirmation);
+          }}
+        />
+      </View>
+      {loaderUpdatingPassword && <Loader text={'updating password...'} />}
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: 8,
-    backgroundColor: '#221B36',
     height: '100%',
   },
   box: {
