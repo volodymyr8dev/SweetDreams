@@ -5,8 +5,8 @@ import {CreateNewAccount}           from '../../screens/registration/CreateNewAc
 import {Step2}                      from '../../screens/registration/Step2';
 import {ForgotPassword1}            from '../../screens/registration/ForgotPassword1';
 import {ForgotPassword2}            from '../../screens/registration/ForgotPassword2';
-import {PrivacyPolicy}              from '../../screens/Account/SettingsAccount/PrivacyPolicy';
-import {TermsConditions}            from '../../screens/Account/SettingsAccount/TermsConditions';
+import {PrivacyPolicy}              from '../../screens/Account/ProfileSettings/PrivacyPolicy';
+import {TermsConditions}            from '../../screens/Account/ProfileSettings/TermsConditions';
 
 const GuestStackRoutes = () => {
   const Stack = createNativeStackNavigator();

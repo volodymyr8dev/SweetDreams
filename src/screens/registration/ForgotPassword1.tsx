@@ -1,22 +1,25 @@
 import React, {useState, useEffect} from 'react';
 import {
   View,
-  StyleSheet,
   Text,
-  Alert
+  Alert,
+  ImageBackground
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootReducerState }         from '../../redux';
-import { getCombinedNavigation }    from '../../hooks/useUpdateNavigationHeaderOptions';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootReducerState}         from '../../redux';
+import {getCombinedNavigation}    from '../../hooks/useUpdateNavigationHeaderOptions';
 
-import {CustomInput}                from '../../components/CustomInput/CustomInput';
-import {Loader}                     from '../../components/Loader/Loader';
-import {ForgotPassword}             from '../../api/ForgotPassword/ForgotPassword';
-import {setEmail}                   from '../../redux/slices/forgotPassword';
+import {CustomInput}              from '../../components/CustomInput/CustomInput';
+import {Loader}                   from '../../components/Loader/Loader';
+import {ForgotPassword}           from '../../api/ForgotPassword/ForgotPassword';
+import {setEmail}                 from '../../redux/slices/forgotPassword';
+import {COLORS}                   from '../../styles/Constants';
+
+import background                 from '../../assets/images/homeIcon/backgroundHome.png';
 
 export const ForgotPassword1 = ({navigation}) => {
   const dispatch = useDispatch();
-  const { forgotPassword } = useSelector((state: RootReducerState) => state);
+  const {forgotPassword} = useSelector((state: RootReducerState) => state);
   const [loaderCodeGeneration, setLoaderCodeGeneration] = useState(false);
 
   /* Set default navigation options */
@@ -81,8 +84,8 @@ export const ForgotPassword1 = ({navigation}) => {
   };
 
   return (
-    <>
-      <View style={styles.container}>
+    <ImageBackground source={background} style={{flex: 1, backgroundColor: COLORS.backGround}}>
+      <View style={{paddingTop: 10, paddingLeft: 19, paddingRight: 29, height: '100%'}}>
         <View style={{paddingTop: 10, paddingBottom: 15}}>
           <Text style={{fontSize: 14, color: '#26669E', fontFamily: 'AntagometricaBT-Regular'}}>
             Forgotten your password? No problem, please enter your email below
@@ -93,38 +96,7 @@ export const ForgotPassword1 = ({navigation}) => {
         <View style={{marginBottom: 10}}></View>
       </View>
       
-      {loaderCodeGeneration && <Loader text={'Generating a code...'} />}
-    </>
+      {loaderCodeGeneration && <Loader text={'generating a code...'} />}
+    </ImageBackground>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 10,
-    paddingLeft: 19,
-    paddingRight: 29,
-    backgroundColor: '#272A57',
-    height: '100%',
-  },
-  citizen: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    marginTop: 6,
-    paddingHorizontal: 19,
-    marginLeft: -20,
-    backgroundColor: '#201F3F',
-    width: '115%',
-    height: 76,
-  },
-  buttonDown: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    width: '120%',
-    marginLeft: -19,
-    height: 85,
-    justifyContent: 'center',
-    backgroundColor: '#1D1A34',
-  },
-});

@@ -9,8 +9,14 @@ import {Connection} from '../../screens/conection/Connection';
 import {ConnectionStep1} from '../../screens/conection/ConnectionStep1';
 import {ConnectionStep2} from '../../screens/conection/ConnectionStep2';
 import {ConnectionStep3} from '../../screens/conection/ConnectionStep3';
+
 import {MyTabs} from './BottomTabRoutes';
 import {SettingsAccount} from '../../screens/Account/Settings/SettingsAccount';
+import {ChangeFamilyMembers} from '../../screens/Account/ProfileSettings/ChangeFamilyMembers';
+import {ChangePassword} from '../../screens/Account/ProfileSettings/ChangePassword';
+import {PrivacyPolicy} from '../../screens/Account/ProfileSettings/PrivacyPolicy';
+import {TermsConditions} from '../../screens/Account/ProfileSettings/TermsConditions';
+
 import {RegistrationUser} from '../../api/CreateAccount/CreateAccount';
 import {
   setLoader,
@@ -18,12 +24,9 @@ import {
   updateVerifiedEmail,
 } from '../../redux/slice';
 import SettingsRoutes from './Settings/SettingsRoutes';
-import SettingsAccountStackRoutes from './Settings/SettingsAccountRouter';
 import GraphicRoutes from './Graphics/GraphicsRoutes';
 import {NurseryRoutes} from './Nursery/NurseryRoutes';
 import backButton from '../../assets/images/backButton.png';
-import {ForgotPassword1} from '../../screens/registration/ForgotPassword1';
-import {ForgotPassword2} from '../../screens/registration/ForgotPassword2';
 import ConfirmConnection from '../../screens/Account/ConfirmConnection';
 import {Account} from '../../screens/Account/Account';
 import {DiaryRoutes} from './Diary/DiaryRoutes';
@@ -186,14 +189,13 @@ const AuthStackRoutes = ({navigation, user}) => {
       <Stack.Screen name="ConnectionStep3" component={ConnectionStep3} options={{title: "connect misty"}} />  
 
       <Stack.Screen name="Tabs" component={MyTabs} options={{headerShown: false, contentStyle: {backgroundColor: '#000'}}} />
-      
-      <Stack.Screen
-        name="settingsAccount"
-        component={SettingsAccount}
-        options={navigationOptions}
-      />
-      <Stack.Screen  name="ForgotPassword1" component={ForgotPassword1} />
-      <Stack.Screen name="ForgotPassword2" component={ForgotPassword2} />
+
+      <Stack.Screen name="SettingsAccount" component={SettingsAccount} />
+      <Stack.Screen name="ManageFamilyMembers" component={ChangeFamilyMembers} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
+      <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+      <Stack.Screen name="TermsConditions" component={TermsConditions} />
+
       <Stack.Screen
         name="Account"
         component={Account}
@@ -206,7 +208,6 @@ const AuthStackRoutes = ({navigation, user}) => {
       />
       {DiaryRoutes()}
       {SettingsRoutes()}
-      {SettingsAccountStackRoutes()}
       {GraphicRoutes()}
       {NurseryRoutes()}
     </Stack.Navigator>

@@ -3,7 +3,7 @@ import { RootReducerState } from '../redux';
 import {Text, Image, View, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Account} from '../../screens/Account/Account';
-import {Settings} from '../../screens/Account/SettingsAccount/Settings';
+import {ProfileSettings} from '../../screens/Account/ProfileSettings/ProfileSettings';
 import {NurseryData} from '../../screens/Account/Nursery/NurseryData';
 import {Document} from '../../screens/Account/Diary/Document';
 import {Feed} from '../../screens/Account/Feed/Feed';
@@ -191,8 +191,8 @@ export const MyTabs = ({navigation}) => {
       />
       <Tab.Screen name="feed" component={Feed} options={feedOptions} />
       <Tab.Screen
-        name="settings"
-        component={Settings}
+        name="ProfileSettings"
+        component={ProfileSettings}
         options={navigationOptions}
       />
     </Tab.Navigator>

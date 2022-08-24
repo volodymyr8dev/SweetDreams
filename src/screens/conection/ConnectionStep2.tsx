@@ -220,10 +220,10 @@ export const ConnectionStep2 = ({navigation}) => {
           </Text>
         </View>
       </TouchableOpacity>
-      {loaderGettingSalt && (<Loader text={`Retrieving the configuration`} />)}
-      {loaderRetrievingTheCertificates && <Loader text={'Retrieving the certificates'} />}
-      {loaderDetectHomeNetwork && <Loader text={'Retrieving home network details'} />}
-      {loaderConnectingToTheDeviceNetwork && (<Loader text={`Connecting your phone ${'\n'}to your misty unit`} />)}
+      {loaderGettingSalt && (<Loader text={'retrieving the configuration'} />)}
+      {loaderRetrievingTheCertificates && <Loader text={'retrieving the certificates'} />}
+      {loaderDetectHomeNetwork && <Loader text={'retrieving home network details'} />}
+      {loaderConnectingToTheDeviceNetwork && (<Loader text={`connecting your phone ${'\n'}to your misty unit`} />)}
     </>
   );
 };

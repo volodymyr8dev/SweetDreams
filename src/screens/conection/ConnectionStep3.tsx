@@ -205,11 +205,11 @@ export const ConnectionStep3 = ({navigation, route}) => {
         </TouchableOpacity>
       </ScrollView>
 
-      {loaderPushingTheConfiguration && <Loader text={'Pushing a config to the device'} />}
-      {loaderDisconnectFromDeviceNetwork && <Loader text={'Disconnecting from tje device network'} />}
-      {loaderConnectiongToAHomeNetwork && <Loader text={'Connecting to a home network'} />}
-      {loaderAddingDeviceToAccount && <Loader text={'Saving the device state'} />}
-      {loaderRetrievingProfileData && <Loader text={'Retrieving profile data'} />}
+      {loaderPushingTheConfiguration && <Loader text={'pushing a config to the device'} />}
+      {loaderDisconnectFromDeviceNetwork && <Loader text={'disconnecting from tje device network'} />}
+      {loaderConnectiongToAHomeNetwork && <Loader text={'connecting to a home network'} />}
+      {loaderAddingDeviceToAccount && <Loader text={'saving the device state'} />}
+      {loaderRetrievingProfileData && <Loader text={'retrieving profile data'} />}
 
       <TouchableOpacity onPress={wifiConnect} style={styles.buttonDown}>
         <View>

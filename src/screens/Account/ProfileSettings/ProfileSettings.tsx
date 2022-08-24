@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -24,13 +23,10 @@ import checkButton from '../../../assets/images/checkButton.png';
 import back from '../../../assets/backOrigin.png';
 import moment from 'moment';
 import {DatePickerComponent} from '../../../components/DatePicker/DatePicker';
-import {RootState} from '../../../redux/configureStore';
 import {Gender} from '../../../components/Gender/Gender';
 import {Loader} from '../../../components/Loader/Loader';
-import {UserInformationSelector} from '../../../redux/selectors/AccountSelector';
 import {useIsFocused} from '@react-navigation/native';
 import DeviceInfo from 'react-native-device-info';
-import Schedule from '../../../assets/images/svg/Schedule';
 interface IUser {
   email?: string;
   name?: string;
@@ -88,7 +84,7 @@ const verticalStaticData = [
     },
   },
 ];
-export const Settings = () => {
+export const ProfileSettings = ({navigation}) => {
   const isFocused = useIsFocused();
   const { loadingCheckLogin, user, verified } = useSelector((state: RootReducerState) => state.auth);
   const global = user.accounts[0];
@@ -111,8 +107,6 @@ export const Settings = () => {
   const [valueGenderChild, setValueGenderChild] = useState<any>(
     user.accounts[0].baby_gender,
   );
-
-  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const handleSignOut = () => {
@@ -123,14 +117,8 @@ export const Settings = () => {
       navigation,
     );
   };
+
   const handleSave = () => {
-    console.log('----', valueGender, valueGenderChild);
-    // const newUser: IUser = {
-    //   ...(valueEmail !== user.email && {email: valueEmail}),
-    //   ...(valueName !== user.name && {name: valueName}),
-    //   ...(valueDate !== user.date_of_birth && {date: valueDate}),
-    //   ...(valueGender !== user.gender && {gender: valueGender}),
-    // };
     const newUser: IUser = {
       ...(valueEmail !== user.email && {email: valueEmail}),
       name: valueName,

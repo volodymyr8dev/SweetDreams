@@ -3,12 +3,14 @@ import {
   View,
   Text,
   ScrollView,
-  Alert
+  Alert,
+  ImageBackground
 } from 'react-native';
 import { getCombinedNavigation } from '../../../hooks/useUpdateNavigationHeaderOptions';
 import {getTerms}                from '../../../api/CreateAccount/CreateAccount';
 import {COLORS}                  from '../../../styles/Constants';
 import {Loader}                  from '../../../components/Loader/Loader';
+import background                from '../../../assets/images/homeIcon/backgroundHome.png';
 
 export const TermsConditions = ({navigation}) => {
   const [content, setContent]             = useState('');
@@ -44,16 +46,18 @@ export const TermsConditions = ({navigation}) => {
     });
   }, []);
   return (
-    <View style={{paddingTop: 8, backgroundColor: '#221B36', height: '100%'}}>
-      <ScrollView>
-        <View style={{paddingHorizontal: 20}}>
-          <Text style={{color: COLORS.text, paddingTop: 15}}>
-            {content}
-          </Text>
-        </View>
-      </ScrollView>
+    <ImageBackground source={background} style={{flex: 1, backgroundColor: COLORS.backGround}}>
+      <View style={{height: '100%'}}>
+        <ScrollView>
+          <View style={{paddingHorizontal: 20}}>
+            <Text style={{color: COLORS.text, paddingTop: 15, fontFamily: 'AntagometricaBT-Regular'}}>
+              {content}
+            </Text>
+          </View>
+        </ScrollView>
 
-      {loaderContent && <Loader text={'Retrieving the content...'} />}
-    </View>
+        {loaderContent && <Loader text={'retrieving the content...'} />}
+      </View>
+    </ImageBackground>
   );
 };

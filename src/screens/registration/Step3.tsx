@@ -1,5 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import moment                       from 'moment';
+import BouncyCheckboxGroup          from 'react-native-bouncy-checkbox-group';
+import StepIndicator                from 'react-native-step-indicator';
+import DatePicker                   from 'react-native-date-picker';
+
 import {
   View,
   StyleSheet,
@@ -7,18 +11,18 @@ import {
   TouchableOpacity,
   Alert,
   Platform,
+  ImageBackground
 } from 'react-native';
 
-import BouncyCheckboxGroup       from 'react-native-bouncy-checkbox-group';
-import StepIndicator             from 'react-native-step-indicator';
-import DatePicker                from 'react-native-date-picker';
-import { getCombinedNavigation } from '../../hooks/useUpdateNavigationHeaderOptions';
-import {CustomInput}             from '../../components/CustomInput/CustomInput';
-import {customStyles}            from '../../components/StepIndicator/StepIndicator';
-import {PostCaregiver}           from '../../api/CreateAccount/CreateAccount';
-import {Loader}                  from '../../components/Loader/Loader';
+import {getCombinedNavigation} from '../../hooks/useUpdateNavigationHeaderOptions';
+import {CustomInput}           from '../../components/CustomInput/CustomInput';
+import {customStyles}          from '../../components/StepIndicator/StepIndicator';
+import {PostCaregiver}         from '../../api/CreateAccount/CreateAccount';
+import {Loader}                from '../../components/Loader/Loader';
+import {COLORS}                from '../../styles/Constants';
 
-import checkButton               from '../../assets/images/checkButton.png';
+import checkButton             from '../../assets/images/checkButton.png';
+import background              from '../../assets/images/homeIcon/backgroundHome.png';
 
 export const Step3 = ({navigation}) => {
   const [name, setName] = useState('');
@@ -129,8 +133,8 @@ export const Step3 = ({navigation}) => {
   }
 
   return (
-    <>
-      <View style={{ paddingTop: 10, paddingLeft: 19, paddingRight: 29, backgroundColor: '#272A57', height: '100%' }}>
+    <ImageBackground source={background} style={{flex: 1, backgroundColor: COLORS.backGround}}>
+      <View style={{paddingTop: 10, paddingLeft: 19, paddingRight: 29, height: '100%'}}>
         <StepIndicator customStyles={customStyles} currentPosition={2} />
         <View style={{paddingTop: 30}}>
           <Text style={{fontSize: 19, color: '#26669E', fontFamily: 'AntagometricaBT-Bold'}}>
@@ -146,12 +150,12 @@ export const Step3 = ({navigation}) => {
         <TouchableOpacity onPress={() => { setVisibleData(true); setOpen(true); }}>
           <View style={styles.darkWrapper}>
             <View style={{flexDirection: 'row'}}>
-              <Text style={{ fontSize: 19, color: '#2371AB', fontFamily: 'AntagometricaBT-Regular' }}>
+              <Text style={{fontSize: 19, color: '#2371AB', fontFamily: 'AntagometricaBT-Regular'}}>
                 Your Date of Birth
               </Text>
             </View>
-            <Text style={{color: '#fff', fontSize: 17, fontFamily: 'AntagometricaBT-Regular'}}>
-              {visibleData ? moment(date).format('DD-MM-YYYY') : 'DD MM YYYY'}
+            <Text style={{color: '#fff', fontSize: 18, fontFamily: 'AntagometricaBT-Regular'}}>
+              {visibleData ? moment(date).format('DD MMMM YYYY') : 'DD MM YYYY'}
             </Text>
           </View>
         </TouchableOpacity>
@@ -201,8 +205,8 @@ export const Step3 = ({navigation}) => {
         </TouchableOpacity>
       </View>
 
-      {loaderSavingProfileData && <Loader text={'Saving profile...'} />}
-    </>
+      {loaderSavingProfileData && <Loader text={'saving profile...'} />}
+    </ImageBackground>
   );
 };
 

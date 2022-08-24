@@ -18,9 +18,8 @@ import {customStyles}                         from '../../components/StepIndicat
 import {Loader}                               from '../../components/Loader/Loader';
 import {COLORS}                               from '../../styles/Constants';
 import {RegistrationUser}                     from '../../api/CreateAccount/CreateAccount';
-
-import back                                   from '../../assets/images/homeIcon/backgroundHome.png';
 import checkButton                            from '../../assets/images/checkButton.png';
+import background                             from '../../assets/images/homeIcon/backgroundHome.png';
 
 export const CreateNewAccount = ({navigation}) => {
   const verticalStaticData = [
@@ -139,9 +138,9 @@ export const CreateNewAccount = ({navigation}) => {
   
   return (
     <>
-      <ImageBackground source={back} style={{flex: 1, backgroundColor: COLORS.backGround}}>
+      <ImageBackground source={background} style={{flex: 1, backgroundColor: COLORS.backGround}}>
         <ScrollView>
-          <View style={{paddingTop: 10, paddingLeft: 19, paddingRight: 29, backgroundColor: '#272651', height: '100%' }}>
+          <View style={{paddingTop: 10, paddingLeft: 19, paddingRight: 29, height: '100%' }}>
             <StepIndicator customStyles={customStyles} currentPosition={0} />
             <View style={{marginTop: 20}}>
               <View style={{marginBottom: 7}}>
@@ -212,7 +211,7 @@ export const CreateNewAccount = ({navigation}) => {
             </View>
           </View>
         </ScrollView>
-        {loaderCreateAccount && <Loader text={'Creating the account...'} />}
+        {loaderCreateAccount && <Loader text={'creating the account...'} />}
       </ImageBackground>
     </>
   );

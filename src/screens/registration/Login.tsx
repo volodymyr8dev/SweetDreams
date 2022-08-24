@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { checkLogin }    from '../../redux/slices/auth';
+import {checkLogin}      from '../../redux/slices/auth';
 import AsyncStorage      from '@react-native-async-storage/async-storage';
 import {useDispatch}     from 'react-redux';
 import {
@@ -112,7 +112,7 @@ export const Login = ({navigation}) => {
         </View>
       </ImageBackground>
 
-      {loaderLogin && <Loader text={'Please wait...'} />}
+      {loaderLogin && <Loader text={'please wait...'} />}
     </>
   );
 };

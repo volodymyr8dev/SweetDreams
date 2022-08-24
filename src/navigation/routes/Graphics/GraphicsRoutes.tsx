@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {ChangePassword} from '../../../screens/Account/SettingsAccount/ChangePassword';
-import {PrivacyPolicy} from '../../../screens/Account/SettingsAccount/PrivacyPolicy';
-import {TermsConditions} from '../../../screens/Account/SettingsAccount/TermsConditions';
+import {ChangePassword} from '../../../screens/Account/ProfileSettings/ChangePassword';
+import {PrivacyPolicy} from '../../../screens/Account/ProfileSettings/PrivacyPolicy';
+import {TermsConditions} from '../../../screens/Account/ProfileSettings/TermsConditions';
 
 const customTabBarStyle = {
   activeTintColor: '#0091EA',

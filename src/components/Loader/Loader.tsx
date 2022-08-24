@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 10,
     top: 0,
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    backgroundColor: 'rgba(0,0,0,0.65)',
   },
   textStyle: {
     textAlign: 'center',
@@ -31,5 +31,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 70,
     color: '#fff',
     fontSize: 19,
+    fontFamily: 'AntagometricaBT-Regular'
   },
 });
