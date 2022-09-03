@@ -7,11 +7,28 @@ export const GetSalt = async type => {
   return await axiosInstance.get(`/api/setup/${type}/wifi-salt`);
 };
 
-export const ConnectDevice = async (accountId, serialNumber, mqttUser, authpass) => {
+export const GenerateCredentials = async (serialNumber) => {
+  const body = {
+    device_id: serialNumber,
+    password:  'O3vFv98j81NtBFVV3v961',
+  };
+
+  console.log('[DEVICE CONFIGURATION] Generate credentials request', body);
+
+  return await axiosInstance.post(`/api/setup/mqtt-device`, body);
+};
+
+export const GetServerCredentials = async (serialNumber) => {
+  console.log('[DEVICE CONFIGURATION] Get server credentials request');
+
+  return await axiosInstance.get(`/api/setup/mqtt-server-credentials`);
+};
+
+export const ConnectDevice = async (accountId, serialNumber, mqttUser, mqttPassword) => {
   const body = {
     serial_number: serialNumber,
-    mqttUser: mqttUser,
-    authpass: authpass
+    mqttUser:      mqttUser,
+    authpass:      mqttPassword
   };
 
   console.log('[DEVICE CONFIGURATION] Add device request', body);

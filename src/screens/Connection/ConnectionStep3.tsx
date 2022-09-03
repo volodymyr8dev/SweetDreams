@@ -24,38 +24,24 @@ import {checkLogin}                          from '../../redux/slices/auth';
 
 import {COLORS}                              from '../../styles/Constants';
 
-import background                            from '../../assets/images/homeIcon/backgroundHome.png';
+import background                   from '../../assets/images/homeIcon/backgroundHome.png';
 
 export const ConnectionStep3 = ({navigation, route}) => {
   const { user } = useSelector((state: RootReducerState) => state.auth);
   const dispatch  = useDispatch();
 
-  const serialNumber    = route.params.serial_number;
-  const certificate     = route.params.certificate;
-  const homeNetworkSSID = route.params.home_network_ssid;
-
-  const [loaderPushingTheConfiguration,     setPushingTheConfiguration]           = useState(false);
-  const [loaderDisconnectFromDeviceNetwork, setLoaderDisconnectFromDeviceNetwork] = useState(false);
-  const [loaderConnectiongToAHomeNetwork,   setLoaderConnectiongToAHomeNetwork]   = useState(false);
-  const [loaderAddingDeviceToAccount,       setLoaderAddingDeviceToAccount]       = useState(false);
-  const [loaderRetrievingProfileData,       setLoaderRetrievingProfileData]       = useState(false);
-
-  const generateRandomString = length => {
-    const char = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    
-    const random = Array.from(
-      {length: length},
-      () => char[Math.floor(Math.random() * char.length)],
-    );
-    
-    return random.join('');
-  };
+  const [loader, setLoader]              = useState(false);
   
-  const [wifiName,     setWifiName]      = useState(homeNetworkSSID);
-  const [wifiPassword, setWififPassword] = useState('');
-  
-  const [authUser,     setAuthUser]      = useState(generateRandomString(16));
-  const [authPassword, setAuthPassword]  = useState(generateRandomString(32));
+  const [wifiName,     setWifiName]      = useState(route.params.home_network_ssid);
+  const [wifiPassword, setWifiPassword]  = useState('');
+
+  const [certificate, setCertificate]    = useState(route.params.certificate);
+  const [mqttHost, setMqttHost]          = useState(route.params.mqtt_host);
+  const [mqttPort, setMqttPort]          = useState(route.params.mqtt_port);
+  const [authUser, setAuthUser]          = useState(route.params.mqtt_user);
+  const [authPassword, setAuthPassword]  = useState(route.params.mqtt_password);
+  const [serialNumber, setSerialNumber]  = useState(route.params.serial_number);
+
 
   /* Set default navigation options */
   useEffect(() => {
@@ -67,102 +53,72 @@ export const ConnectionStep3 = ({navigation, route}) => {
     )
   }, [navigation]);
 
-  const connectDevice = async () => {
-    setLoaderAddingDeviceToAccount(true);
-
-    await ConnectDevice(
-      user.accounts[0].id,
-      serialNumber,
-      authUser,
-      authPassword,
-    ).then(res => {
-      console.log('[DEVICE CONFIGURATION] Assigned device to the account', res);
-
-      setLoaderAddingDeviceToAccount(false);
-
-      setTimeout(function() {
-        setLoaderRetrievingProfileData(true);
-
-        dispatch(checkLogin());
-      }, 10);
-    })
-    .catch(rej => {
-      console.error('[DEVICE CONFIGURATION] Error while trying to assign device to the account', JSON.stringify(rej));
-
-      Alert.alert(rej?.response?.data?.error ? rej.response.data.error :'There is a problem with assigning device to the account');
-
-      setLoaderAddingDeviceToAccount(false);
-
-      dispatch(checkLogin());
-    });
-  };
-
   const wifiConnect = () => {
-    setPushingTheConfiguration(true);
+    setLoader(true);
 
     /* Configure the device */
     PublishConfiguration([
       {'Wi-Fi': 'SSID',   name:     `${wifiName}`},
       {'Wi-Fi': 'SSID',   pass:     `${wifiPassword}`},
-      {'MQTT':  'server', IPv4:     '167.172.50.187'},
-      {'MQTT':  'server', host:     'mistythecloudserver.com'},
-      {'MQTT':  'server', port:     '8883'},
+      {'MQTT':  'server', IPv4:     `${mqttHost}`},
+      {'MQTT':  'server', port:     `${mqttPort}`},
       {'MQTT':  'server', authcert: `${certificate}`},
-      {'MQTT':  'server', authpass: `${authPassword}`},
       {'MQTT':  'server', mqttUser: `${authUser}`},
+      {'MQTT':  'server', authpass: `${authPassword}`},
     ]).then(res => {
       console.log('[DEVICE CONFIGURATION] Configuration response', res);
 
-      setPushingTheConfiguration(false);
+      WifiManager.disconnectFromSSID(`Misty-${serialNumber}`).then(res => {
+        console.log('[DEVICE CONFIGURATION] Disconneted from the device network', res);
 
-      setTimeout(function() {
-        setLoaderDisconnectFromDeviceNetwork(true);
-
-        WifiManager.disconnectFromSSID(`Misty-${serialNumber}`).then(res => {
-          console.log('[DEVICE CONFIGURATION] Disconneted from the device network', res);
-          setLoaderDisconnectFromDeviceNetwork(false);
-
-          setTimeout(function() {
-            setLoaderConnectiongToAHomeNetwork(true);
-
-            WifiManager.connectToProtectedSSID(
-              `${wifiName}`,
-              `${wifiPassword}`,
-              false,
-            ).then(
-              res => {
-                console.log('[DEVICE CONFIGURATION] Connected to a home network', res);
+        WifiManager.connectToProtectedSSID(
+          `${wifiName}`,
+          `${wifiPassword}`,
+          false,
+        ).then(
+          res => {
+            console.log('[DEVICE CONFIGURATION] Connected to a home network', res);
+    
+            ConnectDevice(
+              user.accounts[0].id,
+              serialNumber,
+              authUser,
+              authPassword,
+            ).then(res => {
+              console.log('[DEVICE CONFIGURATION] Assigned device to the account', res);
         
-                setLoaderConnectiongToAHomeNetwork(false);
+              dispatch(checkLogin());
+            })
+            .catch(rej => {
+              console.error('[DEVICE CONFIGURATION] Error while trying to assign device to the account', JSON.stringify(rej));
         
-                setTimeout(async () => {
-                  await connectDevice();
-                }, 10);
-              },
-              rej => {
-                console.error('[DEVICE CONFIGURATION] Error while connecting to a home network', rej);
+              Alert.alert(rej?.response?.data?.error ? rej.response.data.error :'There is a problem with assigning device to the account');
+        
+              dispatch(checkLogin());
+            });
+          },
+          rej => {
+            console.error('[DEVICE CONFIGURATION] Error while connecting to a home network', rej);
 
-                Alert.alert('There is a problem with connecting to a home network');
+            Alert.alert('There is a problem with connecting to a home network');
 
-                setLoaderConnectiongToAHomeNetwork(false);
-              },
-            );
-          }, 10);
-        }, rej => {
-          console.error('[DEVICE CONFIGURATION] Error while tying to disconnect from device network', rej);
+            setLoader(false);
+          },
+        );
+      }, rej => {
+        console.error('[DEVICE CONFIGURATION] Error while tying to disconnect from device network', rej);
 
-          Alert.alert('There is a problem with disconnecting from the device network');
+        Alert.alert('There is a problem with disconnecting from the device network');
 
-          setLoaderDisconnectFromDeviceNetwork(false);
-        });
-      }, 10);
+        setLoader(false);
+      });
     })
     .catch(rej => {
       console.error('[DEVICE CONFIGURATION] Error while sending configuration request', rej);
 
       Alert.alert('There is a problem with pushing a configuration to the device');
 
-      setPushingTheConfiguration(false);
+      setLoader(false);
     });
   };
 
@@ -191,7 +147,7 @@ export const ConnectionStep3 = ({navigation, route}) => {
           </View>
 
           <CustomInput text={'Wi-Fi name'} value={wifiName} onChangeText={name => setWifiName(name)} />
-          <CustomInput text={'Your Wi-Fi password'} hidden={true} value={wifiPassword} onChangeText={password => setWififPassword(password)} secure={true} />
+          <CustomInput text={'Your Wi-Fi password'} hidden={true} value={wifiPassword} onChangeText={password => setWifiPassword(password)} secure={true} />
           <View style={{marginTop: 15}}>
             <Text style={styles.answer}>
               <Text style={{color: '#CA57E7'}}>*</Text>{' '}
@@ -204,17 +160,9 @@ export const ConnectionStep3 = ({navigation, route}) => {
             </Text>
           </View>
         </View>
-
-        <TouchableOpacity onPress={connectDevice} style={{backgroundColor: 'red', paddingLeft: 10, paddingRight: 10}}>
-          <Text style={{color: 'white', paddingTop:10, paddingBottom:10}}>Skip this step (DEV MODE)</Text>
-        </TouchableOpacity>
       </ScrollView>
 
-      {loaderPushingTheConfiguration && <Loader text={'pushing a config to the device'} />}
-      {loaderDisconnectFromDeviceNetwork && <Loader text={'disconnecting from tje device network'} />}
-      {loaderConnectiongToAHomeNetwork && <Loader text={'connecting to a home network'} />}
-      {loaderAddingDeviceToAccount && <Loader text={'saving the device state'} />}
-      {loaderRetrievingProfileData && <Loader text={'retrieving profile data'} />}
+      {loader && <Loader text={'taking misty online'} />}
 
       <TouchableOpacity onPress={wifiConnect} style={styles.buttonDown}>
         <View>
@@ -241,13 +189,6 @@ const styles = StyleSheet.create({
     height: '100%',
     paddingBottom: 100,
   },
-  card: {
-    backgroundColor: '#36365D',
-    borderRadius: 13,
-    height: 268,
-    padding: 15,
-    marginTop: 30,
-  },
   button: {
     width: 200,
     backgroundColor: 'opacity',
@@ -269,25 +210,6 @@ const styles = StyleSheet.create({
     height: 85,
     justifyContent: 'center',
     backgroundColor: '#1D1A34',
-  },
-  cardListInfo: {
-    color: '#fff',
-    fontSize: 14,
-  },
-  cardList: {
-    marginVertical: 17,
-    color: '#fff',
-    fontSize: 14,
-  },
-  cardTitle: {
-    color: '#fff',
-    fontSize: 18,
-  },
-  question: {
-    color: '#23659D',
-    marginTop: 26,
-    marginBottom: 10,
-    fontSize: 19,
   },
   answer: {
     fontSize: 15,

@@ -17,7 +17,12 @@ import {
 import {customStyles}               from '../../components/StepIndicator/StepIndicator';
 import {CustomInput}                from '../../components/CustomInput/CustomInput';
 import {Loader}                     from '../../components/Loader/Loader';
-import {GetSalt, DeviceCertificate} from '../../api/Device/Device';
+import {
+  GetSalt,
+  DeviceCertificate,
+  GenerateCredentials,
+  GetServerCredentials
+} from '../../api/Device/Device';
 import {getCombinedNavigation}      from '../../hooks/useUpdateNavigationHeaderOptions';
 import {COLORS}                     from '../../styles/Constants';
 
@@ -34,126 +39,132 @@ export const ConnectionStep2 = ({navigation}) => {
     )
   }, [navigation]);
 
-  const [serialNumber,    setSerialNumber]    = useState('');
-  const [certificate,     setCertificate]     = useState('');
-  const [homeNetworkSSID, setHomeNetworkSSID] = useState('');
+  const [serialNumber, setSerialNumber] = useState('');
 
-  const [loaderGettingSalt,                  setLoaderGettingSalt]                  = useState(false);
-  const [loaderRetrievingTheCertificates,    setLoaderRetrievingTheCertificates]    = useState(false);
-  const [loaderConnectingToTheDeviceNetwork, setLoaderConnectingToTheDeviceNetwork] = useState(false);
-  const [loaderDetectHomeNetwork,            setLoaderDetectHomeNetwork]            = useState(false);
-
-  const skipStep = () => {
-    navigation.navigate('ConnectionStep3', {
-      serial_number:     `${serialNumber}`,
-      certificate:       `${certificate}`,
-      home_network_ssid: `${homeNetworkSSID}`
-    });
-  }
+  const [loader, setLoader] = useState(false);
 
   const handleGoToStep3 = () => {
+    let certificate,
+        mqttUser,
+        mqttPassword,
+        mqttHost,
+        mqttPort,
+        homeNetworkSSID;
+
     if (!serialNumber) {
       Alert.alert('Serial Number is required');
     } else {
-      setLoaderDetectHomeNetwork(true);
+      setLoader(true);
 
       WifiManager.getCurrentWifiSSID().then(
         ssid => {
-          setHomeNetworkSSID(ssid);
+          homeNetworkSSID = ssid;
           console.log('[DEVICE CONFIGURATION] Retrieved the home network details', ssid);
 
-          setLoaderDetectHomeNetwork(false);
+          GetSalt('misty').then(res => {
+            let wifiSalt = res.data.data.salt;
+            console.log('[DEVICE CONFIGURATION] Retrieved the Wi-Fi Salt', res.data);
 
-          setTimeout(function() {
-            setLoaderGettingSalt(true);
-    
-            GetSalt('misty').then(res => {
-              let wifiSalt = res.data.data.salt;
-              console.log('[DEVICE CONFIGURATION] Retrieved the Wi-Fi Salt', wifiSalt);
-    
-              setLoaderGettingSalt(false);
-              setTimeout(function() {
-                setLoaderRetrievingTheCertificates(true);
-    
-                /* Retrieve the certificate */
-                DeviceCertificate().then(res => {
-                  setCertificate(res.data.data);
-                  console.log('[DEVICE CONFIGURATION] Certificate response', res);
-    
-                  setLoaderRetrievingTheCertificates(false);
+            /* Retrieve the certificate */
+            DeviceCertificate().then(res => {
+              certificate = res.data.data;
+              console.log('[DEVICE CONFIGURATION] Certificate response', res.data);
+
+              GetServerCredentials().then(res => {
+                mqttHost = res.data.data.MQTT_SERVER;
+                mqttPort = res.data.data.MQTT_PORT;
+                console.log('[DEVICE CONFIGURATION] Server credentials response', res.data);
+
+                GenerateCredentials(serialNumber).then(res => {
+                  mqttUser = res.data.username;
+                  mqttPassword = res.data.password;
+                  console.log('[DEVICE CONFIGURATION] Client credentials response', res.data);
                   
-                  setTimeout(function() {
-                    setLoaderConnectingToTheDeviceNetwork(true);
-    
-                    sha256(wifiSalt).then(hash1 => {
-                      console.log('[DEVICE CONFIGURATION] Hash 1', hash1);
-            
-                      sha256(`Misty-${serialNumber}`).then(hash2 => {
-                        console.log('[DEVICE CONFIGURATION] Hash 2', hash2);
-            
-                        let hashString = hash1.toUpperCase() + hash2.toUpperCase();
-            
-                        console.log('[DEVICE CONFIGURATION] Hash 3', hashString);
+                  sha256(wifiSalt).then(hash1 => {
+                    console.log('[DEVICE CONFIGURATION] Hash 1', hash1);
+          
+                    sha256(`Misty-${serialNumber}`).then(hash2 => {
+                      console.log('[DEVICE CONFIGURATION] Hash 2', hash2);
+          
+                      let hashString = hash1.toUpperCase() + hash2.toUpperCase();
+          
+                      console.log('[DEVICE CONFIGURATION] Hash 3', hashString);
+                      
+                      sha256(hashString).then(hash => {
+                        let passphrase = hash.toUpperCase().slice(0, 32)
                         
-                        sha256(hashString).then(hash => {
-                          let passphrase = hash.toUpperCase().slice(0, 32)
-                          
-                          console.log('[DEVICE CONFIGURATION] Connecting to the device network', `Misty-${serialNumber}`, `${passphrase}`)
-                        
-                          WifiManager.connectToProtectedSSID(
-                            `Misty-${serialNumber}`,
-                            `${passphrase}`,
-                            false,
-                          ).then(
-                            res => {
-                              setLoaderConnectingToTheDeviceNetwork(false);
-            
-                              console.log('[DEVICE CONFIGURATION] Connected to the device network', res);
-            
-                              navigation.navigate('ConnectionStep3', {
-                                serial_number:     `${serialNumber}`,
-                                certificate:       `${certificate}`,
-                                home_network_ssid: `${homeNetworkSSID}`
-                              });
-                            },
-                            rej => {
-                              setLoaderConnectingToTheDeviceNetwork(false);
-            
-                              Alert.alert('There is a problem with connecting to the device network');
-            
-                              console.error('[DEVICE CONFIGURATION] Error while connecting to the device network', rej)
-                            },
-                          );
-                        });
+                        console.log('[DEVICE CONFIGURATION] Connecting to the device network', `Misty-${serialNumber}`, `${passphrase}`)
+                      
+                        WifiManager.connectToProtectedSSID(
+                          `Misty-${serialNumber}`,
+                          `${passphrase}`,
+                          false,
+                        ).then(
+                          res => {
+                            console.log('[DEVICE CONFIGURATION] Connected to the device network', res);
+
+                            setLoader(false);
+          
+                            navigation.navigate('ConnectionStep3', {
+                              serial_number:     serialNumber,
+                              home_network_ssid: homeNetworkSSID,
+                              mqtt_host:         mqttHost,
+                              mqtt_port:         8883, //mqttPort,
+                              mqtt_user:         mqttUser,
+                              mqtt_password:     mqttPassword,
+                              certificate:       certificate,
+                            });
+                          },
+                          rej => {
+                            Alert.alert('There is a problem with connecting to the device network');
+          
+                            console.error('[DEVICE CONFIGURATION] Error while connecting to the device network', rej);
+                            
+                            setLoader(false);
+                          },
+                        );
                       });
                     });
-                  }, 10);
+                  });
                 })
                 .catch(rej => {
-                  console.error('[DEVICE CONFIGURATION] Error while sending certificate request', rej);
+                  console.error('[DEVICE CONFIGURATION] Error while getting client credentials request', rej);
     
-                  Alert.alert('There is a problem with retrieving certificate from the server');
+                  Alert.alert('There is a problem with retrieving client credentials');
     
-                  setLoaderRetrievingTheCertificates(false);
+                  setLoader(false);
                 });
-              }, 10);
+              })
+              .catch(rej => {
+                console.error('[DEVICE CONFIGURATION] Error while getting server credentials request', rej);
+  
+                Alert.alert('There is a problem with retrieving server credentials');
+  
+                setLoader(false);
+              });
             })
             .catch(rej => {
-              setLoaderGettingSalt(false);
-    
-              Alert.alert('There is a problem with getting the Wi-Fi salt');
-    
-              console.error('[DEVICE CONFIGURATION] Error while getting the Wi-Fi salt', rej)
+              console.error('[DEVICE CONFIGURATION] Error while sending certificate request', rej);
+
+              Alert.alert('There is a problem with retrieving certificate from the server');
+
+              setLoader(false);
             });
-          }, 10);
+          })
+          .catch(rej => {
+            Alert.alert('There is a problem with getting the Wi-Fi salt');
+  
+            console.error('[DEVICE CONFIGURATION] Error while getting the Wi-Fi salt', rej);
+
+            setLoader(false);
+          });
         },
         () => {
-          setLoaderDetectHomeNetwork(false);
-
           Alert.alert('There is a problem with your home network. Please, check your Wi-Fi connection.');
     
           console.error('[DEVICE CONFIGURATION] Error while getting the home network details');
-          
+
+          setLoader(false);
         }
       );
     }
@@ -203,11 +214,6 @@ export const ConnectionStep2 = ({navigation}) => {
             />
           </View>
         </View>
-        <TouchableOpacity
-          onPress={skipStep}
-          style={{backgroundColor: 'red', paddingLeft: 10, paddingRight: 10}}>
-          <Text style={{color: 'white', paddingTop:10, paddingBottom:10}}>Skip this step (DEV MODE)</Text>
-        </TouchableOpacity>
       </ScrollView>
 
       <TouchableOpacity onPress={handleGoToStep3} style={styles.buttonDown}>
@@ -224,10 +230,7 @@ export const ConnectionStep2 = ({navigation}) => {
           </Text>
         </View>
       </TouchableOpacity>
-      {loaderGettingSalt && (<Loader text={'retrieving the configuration'} />)}
-      {loaderRetrievingTheCertificates && <Loader text={'retrieving the certificates'} />}
-      {loaderDetectHomeNetwork && <Loader text={'retrieving home network details'} />}
-      {loaderConnectingToTheDeviceNetwork && (<Loader text={`connecting your phone ${'\n'}to your misty unit`} />)}
+      {loader && (<Loader text={'taking misty online'} />)}
     </ImageBackground>
   );
 };
