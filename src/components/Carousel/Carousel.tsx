@@ -1,4 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
+import {useSelector,useDispatch} from 'react-redux';
+import {RootReducerState} from '../../redux';
+
 import {
   StyleSheet,
   Text,
@@ -6,14 +9,11 @@ import {
   View,
   Dimensions,
   ImageBackground,
-  Image,
-  ScrollView,
 } from 'react-native';
 // import SvgUri from 'react-native-svg-uri';
 import Carousel from 'react-native-anchor-carousel';
 import {SimplePaginationDot} from './component';
 
-import {useDispatch, useSelector} from 'react-redux';
 import ScrollViewIndicator from 'react-native-scroll-indicator';
 import TemperatureAccount from '../../assets/images/svg/TemperatureAccount';
 import BackgroundTemperature from '../../assets/images/BackgroundTemperature.png';
@@ -38,13 +38,13 @@ import PulsingImage from '../../assets/images/svg/Pulsing';
 import TemperatureImage from '../../assets/images/svg/Temperature';
 import PickerImage from '../../assets/images/svg/Picker';
 import {setCarouselItem} from '../../redux/slice/SettingsSlice';
-import {RootState} from '../../redux/configureStore';
 
 const {width: windowWidth} = Dimensions.get('window');
 
 const INITIAL_INDEX = 0;
 export default React.memo(function ShopCarousel(props) {
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  const { user } = useSelector((state: RootReducerState) => state.auth);
+
   const [data, setData] = useState([
     {
       uri: <TemperatureAccount style={{}} />,
@@ -183,7 +183,7 @@ export default React.memo(function ShopCarousel(props) {
       ],
     },
   ]);
-  const {power} = useSelector(({power}) => power);
+
   const carouselRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
   const [isActive, setIsActive] = useState({arrayIndex: null, index: null});
@@ -195,6 +195,8 @@ export default React.memo(function ShopCarousel(props) {
   }
 
   function renderItem({item, index}) {
+    let power = false;
+    
     const {backUri, uri, title, content, items} = item;
     console.log('item', item);
     const handleActiveItem = (item, indexChild) => {

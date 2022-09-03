@@ -1,5 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import { RootReducerState } from '../../redux';
+import React, {useState, useEffect}  from 'react';
+import {useSelector}      from 'react-redux';
+import {RootReducerState} from '../../redux';
+
 import {
   View,
   StyleSheet,
@@ -7,55 +9,19 @@ import {
   ImageBackground,
   Image,
   TouchableOpacity,
-  Dimensions,
-  ScrollView,
-  Alert,
+  Dimensions
 } from 'react-native';
-import InternetConnectionAlert from 'react-native-internet-connection-alert';
-import {CustomButton} from '../../components/CustomButton/CustomButton';
 import background from '../../assets/images/homeIcon/backgroundHome.png';
-import sheep from '../../assets/images/controlChild/sheep.png';
-import settings from '../../assets/images/homeIcon/settings.png';
-import thermometr from '../../assets/images/controlChild/thermometr.png';
 import line from '../../assets/images/homeIcon/line.png';
-import childControl from '../../assets/images/controlChild/childControl.png';
-import power from '../../assets/images/controlChild/power.png';
-import play from '../../assets/images/controlChild/play.png';
-import arrowBack from '../../assets/images/controlChild/arrowBack.png';
-import arrowRight from '../../assets/images/controlChild/arrowRight.png';
-import timer from '../../assets/images/controlChild/timer.png';
-import lightShow from '../../assets/images/controlChild/lightsShow.png';
-import Carousel from 'react-native-anchor-carousel';
-import ShopCarousel from '../../components/Carousel/Carousel';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS} from '../../styles/Constants';
 import backgroundGrey from '../../assets/backGrey.png';
-import powerOff from '../../assets/images/controlChild/powerOff.png';
-import {useDispatch, useSelector} from 'react-redux';
-import {setConnection, setPower} from '../../redux/slice/PowerSlice';
-import NetInfo, {useNetInfo} from '@react-native-community/netinfo';
-import ConfirmConnection from './ConfirmConnection';
-import connectionStatus from '../../assets/images/homeIcon/connection.png';
-import PowerOn from '../../assets/images/svg/PowerOn';
-import PowerOff from '../../assets/images/svg/PowerOff';
 import Thermometer from '../../assets/images/svg/Thermometer';
 import CryChild from '../../assets/images/svg/CryChild';
 import TopGear from '../../assets/images/svg/TopGear';
 import Sheep from '../../assets/images/svg/Sheep';
-import ArrowRight from '../../assets/images/svg/ArrowRight';
-import ArrowLeft from '../../assets/images/svg/ArrowLeft';
-import Play from '../../assets/images/svg/Play';
 import {getSettingsDevice} from '../../api/Settings/Settings';
-import {RootState} from '../../redux/configureStore';
-import {setAllSettings} from '../../redux/slice/SettingsSlice';
-import AsleepImg from '../../assets/images/cloudImage/Asleep.png';
-import Awake from '../../assets/images/cloudImage/Awake.png';
-import Idle from '../../assets/images/cloudImage/Idle.png';
-import SunSet from '../../assets/images/cloudImage/SunSet.png';
-import NothernLights from '../../assets/images/cloudImage/NothernLights.png';
 import {Content} from '../../components/Carousel/Content';
-
-const {width: windowWidth} = Dimensions.get('window');
 
 const typeOfTemp = [
   'Harp',
@@ -69,56 +35,27 @@ type Nav = {
   navigate: (value: string, obj?: any) => void;
   setParams: (value: any) => void;
 };
-export const ConnectedDevice = () => {
-  const { loadingCheckLogin, user, verified } = useSelector((state: RootReducerState) => state.auth);
+export const ConnectedDevice = ({navigation}) => {
+  const { user } = useSelector((state: RootReducerState) => state.auth);
 
-  const carouselRef = React.useRef(null);
-  const [toggleButton, setToggleButton] = useState(false);
-  const navigation = useNavigation<Nav>();
+  /* Set default navigation options */
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false
+    })
+  }, [navigation]);
+
   const [isActive, setISActive] = useState(true);
-  const [isInternet, setIsInternet] = useState<boolean>(true);
   const [temperatureImage, setTemperatureImage] = useState('20.0');
-  const handleConnect = () => {};
-  const dispatch = useDispatch();
-  // const [carouselItem, setCarouselItem] = useState('');
-  const netInfo = useNetInfo();
 
   const openSettings = async () => {
     getSettingsDevice(user.accounts[0].id)
       .then(res => {
-        console.log(res);
         navigation.navigate('settingsAccount', {data: res.data.data});
       })
       .catch(res => {
-        console.log(res);
       });
   };
-
-  // useEffect(() => {
-  //   if (netInfo.isConnected) {
-  //     console.log('ifcon', netInfo);
-  //     dispatch(setConnection(true));
-  //     setIsInternet(true);
-  //   } else {
-  //     setIsInternet(false);
-
-  //     dispatch(setConnection(false));
-  //   }
-  // }, [netInfo.isConnected]);
-
-  const handlePower = () => {
-    dispatch(setPower(!isActive));
-    setISActive(!isActive);
-  };
-
-  // useEffect(() => {
-  //   NetInfo.addEventListener(networkState => {
-  //     console.log('Connection type - ', networkState.type);
-  //     setIsInternet(networkState.isConnected);
-  //     console.log('Is connected? - ', networkState.isConnected);
-  //   });
-  // }, [button]);
-  //   console.log('Is connected? - ', isInternet);
 
   const HeaderUI = () => {
     return (
@@ -126,7 +63,6 @@ export const ConnectedDevice = () => {
         <View style={styles.headerContainer}>
           <View style={{width: 21}} />
           <View style={{paddingRight: 10}}>
-            {/*<Image source={sheep} />*/}
             <Sheep />
           </View>
           <TouchableOpacity onPress={openSettings}>
@@ -136,7 +72,6 @@ export const ConnectedDevice = () => {
         </View>
         <View
           style={{
-            // display: `${!netInfo.isConnected ? 'none' : 'flex'}`,
             marginBottom: 20,
             alignSelf: 'center',
           }}>
@@ -203,7 +138,6 @@ export const ConnectedDevice = () => {
                   alignItems: 'center',
                   width: 120,
                 }}>
-                {/*<Image source={childControl} />*/}
                 {user.accounts[0].is_deluxe === 0 ? <View /> : <CryChild />}
                 <View style={{marginLeft: 10}}>
                   {user.accounts[0].is_deluxe === 0 ? (
@@ -239,23 +173,10 @@ export const ConnectedDevice = () => {
   };
 
   return (
-    <ImageBackground
-      style={{backgroundColor: COLORS.backGround}}
-      source={isActive ? background : backgroundGrey}>
+    <ImageBackground style={{backgroundColor: COLORS.backGround}} source={isActive ? background : backgroundGrey}>
       <View style={styles.container}>
-        {/*{!netInfo.isConnected || !isInternet*/}
-        {user.accounts[0].device === null ? (
-          <ConfirmConnection setToggleButton={setToggleButton} />
-        ) : (
-          <>
-            <HeaderUI />
-            <Content
-              setISActive={setISActive}
-              isActive={isActive}
-              temperatureImage={temperatureImage}
-            />
-          </>
-        )}
+        <HeaderUI />
+        <Content setISActive={setISActive} isActive={isActive} temperatureImage={temperatureImage} />
       </View>
     </ImageBackground>
   );
@@ -264,7 +185,6 @@ export const ConnectedDevice = () => {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 60,
-    // backgroundColor: '#221B36',
     height: '100%',
     paddingHorizontal: 20,
   },

@@ -57,7 +57,6 @@ const AuthStackRoutes = ({navigation, user}) => {
       <Stack.Screen name="Step4" component={Step4} />
       <Stack.Screen name="Step5" component={Step5} />
       
-
       {/* Initial connection */}
       <Stack.Screen name="Connection" component={Connection} options={{title: "connect misty"}} />
       <Stack.Screen name="ConnectionStep1" component={ConnectionStep1} options={{title: "connect misty"}} />

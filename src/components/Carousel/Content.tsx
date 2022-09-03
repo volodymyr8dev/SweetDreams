@@ -1,17 +1,18 @@
+import React from 'react';
+import {useSelector,useDispatch} from 'react-redux';
+import {RootReducerState} from '../../redux';
+
 import {
   Dimensions,
   Image,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
 import ShopCarousel from './Carousel';
-import React, {useState} from 'react';
 import PowerOn from '../../assets/images/svg/PowerOn';
 import PowerOff from '../../assets/images/svg/PowerOff';
 import {ControlCard} from './ControlCard';
-import {useDispatch, useSelector} from 'react-redux';
 import {setPower} from '../../redux/slice/PowerSlice';
 import AsleepImg from '../../assets/images/cloudImage/Asleep.png';
 import Awake from '../../assets/images/cloudImage/Awake.png';
@@ -24,14 +25,12 @@ import ActiveOff from '../../assets/images/cloudImage/ActiveOff.png';
 import TemperatureMore22 from '../../assets/images/cloudImage/TemperatureMore22.png';
 import blue from '../../assets/images/cloudImage/blue.png';
 import Yellow from '../../assets/images/cloudImage/Yellow.png';
-import {RootState} from "../../redux/configureStore";
 
 export const Content = props => {
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
-  const {carouselItem} = useSelector(({settings}) => settings);
-  // console.log(carouselItem.split(' ').join(''));
-  let itemImg = carouselItem.split(' ').join('');
-  // const [isActive, setISActive] = useState(true);
+  const { user } = useSelector((state: RootReducerState) => state.auth);
+
+  //const {carouselItem} = useSelector(({settings}) => settings);
+  let itemImg = '';//carouselItem.split(' ').join('');
   const dispatch = useDispatch();
 
   const handlePower = () => {
@@ -83,7 +82,6 @@ export const Content = props => {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 60,
-    // backgroundColor: '#221B36',
     height: '100%',
     paddingHorizontal: 20,
   },

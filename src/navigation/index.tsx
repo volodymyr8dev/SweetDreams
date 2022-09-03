@@ -19,6 +19,7 @@ const Stacks = () => {
 
   console.log('[INIT] User', user);
   console.log('[INIT] Verified', verified);
+  console.log('[INIT] Device', user?.accounts[0]?.device?.status ? 'connected' : 'disconnected');
 
   if (loadingCheckLogin) {
     return <View><Text>LOADING..</Text></View>
