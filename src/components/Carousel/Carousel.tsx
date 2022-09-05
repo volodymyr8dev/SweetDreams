@@ -225,12 +225,13 @@ export default React.memo(function ShopCarousel(props) {
   return (
     <View style={styles.container}>
       <Carousel
+        useNativeDriver={true}
         style={styles.carousel}
         data={data}
         renderItem={renderItem}
         itemWidth={0.4 * windowWidth}
         inActiveOpacity={0.6}
-        containerWidth={windowWidth - 20}
+        containerWidth={windowWidth}
         onScrollEnd={handleCarouselScrollEnd}
         ref={carouselRef}
         minScrollDistance={10}
@@ -251,6 +252,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1.5,
     flexGrow: 0,
     marginBottom: 20,
+    paddingHorizontal: 10
   },
   item: {
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
