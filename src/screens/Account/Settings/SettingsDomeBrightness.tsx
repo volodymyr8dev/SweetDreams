@@ -26,7 +26,7 @@ export const SettingsDomeBrightness = ({navigation}) => {
   const {user}   = useSelector((state: RootReducerState) => state.auth);
   let device     = user.accounts[0]?.devices[0];
 
-  const [newDomeBrightness, setNewDomeBrightness]  = useState(device.config?.dome_brightness);
+  const [newDomeBrightness, setNewDomeBrightness]  = useState(parseInt(device.config?.dome_brightness));
 
   /* Set default navigation options */
   useEffect(() => {

@@ -29,8 +29,8 @@ export const PatchDevice = async (accountId, deviceId, body) => {
   return await axiosInstance.patch(`/api/accounts/${accountId}/device/${deviceId}/configuration`, body);
 };
 
-export const DisconnectDevice = async (accountId) => {
-  console.log('[DEVICE CONFIGURATION] Delete device request', body);
+export const DisconnectDevice = async (accountId, deviceId) => {
+  console.log('[DEVICE CONFIGURATION] Delete device request');
 
   return await axiosInstance.delete(`/api/accounts/${accountId}/device/${deviceId}`);
 };

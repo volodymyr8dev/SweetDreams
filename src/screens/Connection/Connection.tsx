@@ -7,7 +7,8 @@ import {
   Text,
   StyleSheet,
   Image,
-  ImageBackground
+  ImageBackground,
+  Alert
 } from 'react-native';
 
 import {getCombinedNavigation} from '../../hooks/useUpdateNavigationHeaderOptions';
@@ -39,9 +40,10 @@ export const Connection = ({navigation}) => {
 
   const handleDisconnect = () => {
     DisconnectDevice(
-      user.accounts[0].id
+      user.accounts[0].id,
+      device.id
     ).then(res => {
-      console.log('[DEVICE DISCONNECt] Device removed', res);
+      console.log('[DEVICE DISCONNECT] Device removed', res);
 
       dispatch(checkLogin());
     })
@@ -49,8 +51,6 @@ export const Connection = ({navigation}) => {
       console.error('[DEVICE DISCONNECt] Error while trying to remove device from the account', JSON.stringify(rej));
 
       Alert.alert('There is a problem with disconnection device from the account');
-
-      dispatch(checkLogin());
     });
   };
 
@@ -71,7 +71,7 @@ export const Connection = ({navigation}) => {
               <Text style={{ color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular' }}>
                 Status:{' '}
               </Text>
-              { device.is_connected
+              { device && device.is_connected
                 ? !<View
                     style={{
                       width: 9,
@@ -91,11 +91,11 @@ export const Connection = ({navigation}) => {
                       marginRight: 2,
                     }}/>
               }
-              { device.is_connected ? <Text style={{color: '#FFFFFF'}}>CONNECTED</Text> : <Text style={{color: '#FFFFFF'}}>NOT CONNECTED</Text>}
+              { device && device.is_connected ? <Text style={{color: '#FFFFFF'}}>CONNECTED</Text> : <Text style={{color: '#FFFFFF'}}>NOT CONNECTED</Text>}
             </View>
           </View>
           <View style={{marginBottom: 30}}>
-          { !device.is_connected
+          { !device || !device.is_connected
             ? <Text
                 style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>
                 Your misty device is not connected
@@ -107,7 +107,7 @@ export const Connection = ({navigation}) => {
           }
           </View>
           <View>
-          { !device.is_connected
+          { !device || !device.is_connected
             ? <CustomButton
                 styles={styles.button}
                 handleOnSubmit={handleConnect}

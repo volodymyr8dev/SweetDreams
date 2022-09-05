@@ -22,10 +22,6 @@ import TopGear from '../../assets/images/svg/TopGear';
 import Sheep from '../../assets/images/svg/Sheep';
 import {Content} from '../../components/Carousel/Content';
 
-type Nav = {
-  navigate: (value: string, obj?: any) => void;
-  setParams: (value: any) => void;
-};
 export const ConnectedDevice = ({navigation}) => {
   const {user} = useSelector((state: RootReducerState) => state.auth);
   let device   = user.accounts[0]?.devices[0];
@@ -99,7 +95,7 @@ export const ConnectedDevice = ({navigation}) => {
                       fontFamily: 'AntagometricaBT-Regular',
                       fontWeight: 'bold',
                     }}>
-                    {device.current_temperature}°{device.config.temperature}
+                    {device.config?.temperature == 'C' ? device.current_temperature : device.current_temperature * 9/5 + 32}°{device.config.temperature}
                   </Text>
                 )}
               </View>
@@ -114,7 +110,7 @@ export const ConnectedDevice = ({navigation}) => {
                 <View style={{marginLeft: 10}}>
                   {device.is_deluxe == false ? (
                     <View />
-                  ) : !device.is_connected ? (
+                  ) : !device || device.is_connected ? (
                     <Text
                       style={{
                         color: '#fff',
@@ -189,15 +185,10 @@ const styles = StyleSheet.create({
   },
   containerCarousel: {
     alignItems: 'center',
-    // justifyContent:'center'
-    // marginHorizontal: 20,
   },
   cardCarousel: {
-    // width: 170,
     alignItems: 'center',
     borderRadius: 20,
-    // padding: '11px 12px ',
-    // backgroundColor: '#221B36',
   },
   carousel: {
     flexGrow: 0,

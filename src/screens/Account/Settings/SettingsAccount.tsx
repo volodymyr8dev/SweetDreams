@@ -77,7 +77,7 @@ export const SettingsAccount = ({navigation}) => {
             rightEl
           ) : (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{color: '#2371AB', fontSize: 19}}>{rightEl}</Text>
+              <Text style={{color: '#2371AB', fontSize: 19, fontFamily: 'AntagometricaBT-Regular'}}>{rightEl}</Text>
               <Image
                 style={{width: 10, height: 10, marginLeft: 10}}
                 source={arrowRight}
@@ -144,7 +144,7 @@ export const SettingsAccount = ({navigation}) => {
             title="dome brightness"
             navigate="Dome Brightness"
             source={brightness}
-            rightEl={Number(device.config?.dome_brightness).toFixed(0) + '%'}
+            rightEl={Number(device.config?.dome_brightness / 255 * 100).toFixed(0) + '%'}
           />
           {device.is_deluxe == false ? null : (
           <Blog
