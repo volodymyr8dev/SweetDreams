@@ -1,106 +1,121 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Platform, ImageBackground} from 'react-native';
-import {Switch} from '../../../components/Switch/Switch';
-import {COLORS} from '../../../styles/Constants';
+import React, {useState, useEffect} from 'react';
+import {useSelector, useDispatch}   from 'react-redux';
+import {RootReducerState}           from '../../../redux';
+import moment                       from 'moment';
+
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  ImageBackground
+} from 'react-native';
+
+import {Switch}   from '../../../components/Switch/Switch';
+import {COLORS}   from '../../../styles/Constants';
 import DatePicker from 'react-native-date-picker';
-import {useDispatch, useSelector} from 'react-redux';
-import {setTime, setWakeUpTime} from '../../../redux/slice/SettingsSlice';
-import {SettingsDevice} from '../../../api/Settings/Settings';
-import {RootState} from '../../../redux/configureStore';
 import background from '../../../assets/images/homeIcon/backgroundHome.png';
 
-export const SettingsTime = ({route}) => {
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
-  console.log(route);
-  const [value, setValue] = useState(true);
-  const [date, setDate] = useState(new Date());
-  console.log(date);
-  const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
-  const changeValue = state => {
-    console.log('ssss', state);
-    setValue(state);
-  };
+import {getCombinedNavigation} from '../../../hooks/useUpdateNavigationHeaderOptions';
 
-  useEffect(() => {}, []);
+import {
+  setTime,
+  setTimeAutomatically
+} from '../../../redux/slices/auth';
+
+export const SettingsTime = ({navigation}) => {
+  const dispatch = useDispatch();
+  const {user}   = useSelector((state: RootReducerState) => state.auth);
+  let device     = user.accounts[0]?.devices[0];
+  let dateNow    = moment(moment().format('YYYY-MM-DD') + ' ' + device.config?.time + ':00');
+
+  const [newTime, setNewTime] = useState(
+    dateNow.toDate()
+  );
+  const [newTimeAutomatically, setNewTimeAutomatically] = useState(device.config?.time_set_up_automatically ? true : false);
+  
+  /* Set default navigation options */
+  useEffect(() => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title: 'time',
+        headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
+        headerRightText:   'save',
+        headerRightMethod: () => {
+          toggleTime(newTime, newTimeAutomatically);
+          navigation.goBack();
+        },
+      })
+    )
+  }, [navigation]);
+
+  /* Update options on update */
+  const refreshNavigation = (newTime, newTimeAutomatically) => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title: 'time',
+        headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
+        headerRightText:   'save',
+        headerRightMethod: () => {
+          toggleTime(newTime, newTimeAutomatically);
+          navigation.goBack();
+        },
+      })
+    )
+  }
+
+  const toggleTime = (newTime, newTimeAutomatically) => {
+    dispatch(setTimeAutomatically(newTimeAutomatically));
+    if (newTimeAutomatically) {
+      dispatch(setTime(moment(new Date()).format('HH:mm')));
+    } else {
+      dispatch(setTime(moment(newTime).format('HH:mm')));
+    }
+  }
+
   return (
     <ImageBackground source={background}>
       <View style={styles.container}>
-        {!value ? (
+        <View style={styles.box}>
+          <Text
+            style={{
+              color: COLORS.text,
+              fontSize: 20,
+              fontFamily: 'AntagometricaBT-Regular',
+            }}>
+              Set Time Automatically
+          </Text>
+          <View>
+            <Switch val={newTimeAutomatically} setData={
+              () => {
+                setNewTimeAutomatically(!newTimeAutomatically);
+                refreshNavigation(newTime, !newTimeAutomatically);
+              }
+            } />
+          </View>
+        </View>
+          
+        {!newTimeAutomatically ? (
           <>
             <View style={{alignItems: 'center'}}>
               <DatePicker
-                // maximumDate={new Date()}
                 mode="time"
                 theme="dark"
                 textColor={Platform.OS === 'ios' ? '#fff' : '#000'}
-                open={open}
+                open={true}
                 format="hh:mm"
                 locale={'en_GB'}
-                date={date}
+                date={newTime}
                 onConfirm={date => {}}
                 onDateChange={value => {
-                  let _date = new Date(value);
-                  setDate(value);
-                  SettingsDevice(
-                    {
-                      time: `${
-                        _date.getHours() < 10
-                          ? '0' + _date.getHours()
-                          : _date.getHours()
-                      }:${
-                        _date.getMinutes() < 10
-                          ? '0' + _date.getMinutes()
-                          : _date.getMinutes()
-                      }`,
-                    },
-                    user.accounts[0].id,
-                  )
-                    .then(res => {
-                      console.log(res);
-                      route.params.setValue(res.data.data);
-                    })
-                    .catch(res => {
-                      console.log(res);
-                    });
-                  // dispatch(
-                  //   setWakeUpTime(`${_date.getHours()}:${date.getMinutes()}`),
-                  // );
-                }}
-                onCancel={() => {
-                  setOpen(false);
+                  setNewTime(new Date(value));
+                  refreshNavigation(new Date(value), newTimeAutomatically);
                 }}
               />
             </View>
-            <View style={styles.box}>
-              <Text style={{color: COLORS.text, fontSize: 16}}>
-                Set Time Automatically
-              </Text>
-              <View>
-                <Switch
-                  val={value}
-                  setVal={value => {
-                    console.log('-------');
-                    setValue(value);
-                  }}
-                />
-              </View>
-            </View>
           </>
         ) : (
-          <View style={styles.box}>
-            <Text
-              style={{
-                color: COLORS.text,
-                fontSize: 20,
-                fontFamily: 'AntagometricaBT-Regular',
-              }}>
-                Set Time Automatically
-            </Text>
-            <View>
-              <Switch val={value} setVal={changeValue} />
-            </View>
-          </View>
+          <View/>
         )}
       </View>
     </ImageBackground>
@@ -109,7 +124,6 @@ export const SettingsTime = ({route}) => {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: '#2A2E63',
     height: '100%',
     paddingTop: 10,
   },

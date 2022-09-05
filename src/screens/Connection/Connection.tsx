@@ -1,4 +1,7 @@
-import React, {useEffect} from 'react';
+import React, {useEffect}         from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootReducerState}         from '../../redux';
+
 import {
   View,
   Text,
@@ -12,8 +15,14 @@ import {CustomButton}          from '../../components/CustomButton/CustomButton'
 import {COLORS}                from '../../styles/Constants';
 
 import background              from '../../assets/images/homeIcon/backgroundHome.png';
+import {DisconnectDevice}      from '../../api/Device/Device';
+import {checkLogin}            from '../../redux/slices/auth';
 
 export const Connection = ({navigation}) => {
+  const dispatch = useDispatch();
+  const {user}   = useSelector((state: RootReducerState) => state.auth);
+  let device     = user.accounts[0]?.devices[0];
+
   /* Set default navigation options */
   useEffect(() => {
     navigation.setOptions(
@@ -26,6 +35,23 @@ export const Connection = ({navigation}) => {
 
   const handleConnect = () => {
     navigation.navigate('ConnectionStep1');
+  };
+
+  const handleDisconnect = () => {
+    DisconnectDevice(
+      user.accounts[0].id
+    ).then(res => {
+      console.log('[DEVICE DISCONNECt] Device removed', res);
+
+      dispatch(checkLogin());
+    })
+    .catch(rej => {
+      console.error('[DEVICE DISCONNECt] Error while trying to remove device from the account', JSON.stringify(rej));
+
+      Alert.alert('There is a problem with disconnection device from the account');
+
+      dispatch(checkLogin());
+    });
   };
 
   return (
@@ -45,31 +71,54 @@ export const Connection = ({navigation}) => {
               <Text style={{ color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular' }}>
                 Status:{' '}
               </Text>
-              <View
-                style={{
-                  width: 9,
-                  height: 9,
-                  backgroundColor: '#D65852',
-                  borderRadius: 100,
-                  marginTop: 5,
-                  marginRight: 2,
-                }}
-              />
-              <Text style={{color: '#FFFFFF'}}>NOT CONNECTED</Text>
+              { device.is_connected
+                ? !<View
+                    style={{
+                      width: 9,
+                      height: 9,
+                      backgroundColor: '#D65852',
+                      borderRadius: 100,
+                      marginTop: 5,
+                      marginRight: 2,
+                    }}/>
+                : <View
+                    style={{
+                      width: 9,
+                      height: 9,
+                      backgroundColor: '#D65852',
+                      borderRadius: 100,
+                      marginTop: 5,
+                      marginRight: 2,
+                    }}/>
+              }
+              { device.is_connected ? <Text style={{color: '#FFFFFF'}}>CONNECTED</Text> : <Text style={{color: '#FFFFFF'}}>NOT CONNECTED</Text>}
             </View>
           </View>
           <View style={{marginBottom: 30}}>
-            <Text
-              style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>
-              Your misty device is not connected
-            </Text>
+          { !device.is_connected
+            ? <Text
+                style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>
+                Your misty device is not connected
+              </Text>
+            : <Text
+                style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>
+                Your misty device is connected
+              </Text>
+          }
           </View>
           <View>
-            <CustomButton
-              styles={styles.button}
-              handleOnSubmit={handleConnect}
-              text="connect"
-            />
+          { !device.is_connected
+            ? <CustomButton
+                styles={styles.button}
+                handleOnSubmit={handleConnect}
+                text="connect"
+              />
+            : <CustomButton
+                styles={styles.button}
+                handleOnSubmit={handleDisconnect}
+                text="disconnect"
+              />
+          } 
           </View>
         </View>
       </View>

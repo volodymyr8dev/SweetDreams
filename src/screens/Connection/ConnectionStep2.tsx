@@ -14,14 +14,13 @@ import {
   ImageBackground
 } from 'react-native';
 
+import {useSelector}                from 'react-redux';
+import {RootReducerState}           from '../../redux';
 import {customStyles}               from '../../components/StepIndicator/StepIndicator';
 import {CustomInput}                from '../../components/CustomInput/CustomInput';
 import {Loader}                     from '../../components/Loader/Loader';
 import {
-  GetSalt,
-  DeviceCertificate,
-  GenerateCredentials,
-  GetServerCredentials
+  DeviceInit,
 } from '../../api/Device/Device';
 import {getCombinedNavigation}      from '../../hooks/useUpdateNavigationHeaderOptions';
 import {COLORS}                     from '../../styles/Constants';
@@ -29,6 +28,8 @@ import {COLORS}                     from '../../styles/Constants';
 import background                   from '../../assets/images/homeIcon/backgroundHome.png';
 
 export const ConnectionStep2 = ({navigation}) => {
+  const { user } = useSelector((state: RootReducerState) => state.auth);
+
   /* Set default navigation options */
   useEffect(() => {
     navigation.setOptions(
@@ -61,100 +62,66 @@ export const ConnectionStep2 = ({navigation}) => {
           homeNetworkSSID = ssid;
           console.log('[DEVICE CONFIGURATION] Retrieved the home network details', ssid);
 
-          GetSalt('misty').then(res => {
-            let wifiSalt = res.data.data.salt;
-            console.log('[DEVICE CONFIGURATION] Retrieved the Wi-Fi Salt', res.data);
+          DeviceInit(user.accounts[0]?.id, serialNumber, 'MISTY').then(res => {
+            certificate  = res.data?.certificate;
+            mqttUser     = res.data?.credentials?.username;
+            mqttPassword = res.data?.credentials?.password;
+            mqttHost     = res.data?.credentials?.host;
+            mqttPort     = res.data?.credentials?.port;
 
-            /* Retrieve the certificate */
-            DeviceCertificate().then(res => {
-              certificate = res.data.data;
-              console.log('[DEVICE CONFIGURATION] Certificate response', res.data);
-
-              GetServerCredentials().then(res => {
-                mqttHost = res.data.data.MQTT_SERVER;
-                mqttPort = res.data.data.MQTT_PORT;
-                console.log('[DEVICE CONFIGURATION] Server credentials response', res.data);
-
-                GenerateCredentials(serialNumber).then(res => {
-                  mqttUser = res.data.username;
-                  mqttPassword = res.data.password;
-                  console.log('[DEVICE CONFIGURATION] Client credentials response', res.data);
+            console.log('[DEVICE CONFIGURATION] Retrieved the device configuration', res.data);
                   
-                  sha256(wifiSalt).then(hash1 => {
-                    console.log('[DEVICE CONFIGURATION] Hash 1', hash1);
-          
-                    sha256(`Misty-${serialNumber}`).then(hash2 => {
-                      console.log('[DEVICE CONFIGURATION] Hash 2', hash2);
-          
-                      let hashString = hash1.toUpperCase() + hash2.toUpperCase();
-          
-                      console.log('[DEVICE CONFIGURATION] Hash 3', hashString);
-                      
-                      sha256(hashString).then(hash => {
-                        let passphrase = hash.toUpperCase().slice(0, 32)
-                        
-                        console.log('[DEVICE CONFIGURATION] Connecting to the device network', `Misty-${serialNumber}`, `${passphrase}`)
-                      
-                        WifiManager.connectToProtectedSSID(
-                          `Misty-${serialNumber}`,
-                          `${passphrase}`,
-                          false,
-                        ).then(
-                          res => {
-                            console.log('[DEVICE CONFIGURATION] Connected to the device network', res);
+            sha256(res.data.wifi_salt).then(hash1 => {
+              console.log('[DEVICE CONFIGURATION] Hash 1', hash1);
+    
+              sha256(`Misty-${serialNumber}`).then(hash2 => {
+                console.log('[DEVICE CONFIGURATION] Hash 2', hash2);
+    
+                let hashString = hash1.toUpperCase() + hash2.toUpperCase();
+    
+                console.log('[DEVICE CONFIGURATION] Hash 3', hashString);
+                
+                sha256(hashString).then(hash => {
+                  let passphrase = hash.toUpperCase().slice(0, 32)
+                  
+                  console.log('[DEVICE CONFIGURATION] Connecting to the device network', `Misty-${serialNumber}`, `${passphrase}`)
+                
+                  WifiManager.connectToProtectedSSID(
+                    `Misty-${serialNumber}`,
+                    `${passphrase}`,
+                    false,
+                  ).then(
+                    res => {
+                      console.log('[DEVICE CONFIGURATION] Connected to the device network', res);
 
-                            setLoader(false);
-          
-                            navigation.navigate('ConnectionStep3', {
-                              serial_number:     serialNumber,
-                              home_network_ssid: homeNetworkSSID,
-                              mqtt_host:         mqttHost,
-                              mqtt_port:         8883, //mqttPort,
-                              mqtt_user:         mqttUser,
-                              mqtt_password:     mqttPassword,
-                              certificate:       certificate,
-                            });
-                          },
-                          rej => {
-                            Alert.alert('There is a problem with connecting to the device network');
-          
-                            console.error('[DEVICE CONFIGURATION] Error while connecting to the device network', rej);
-                            
-                            setLoader(false);
-                          },
-                        );
+                      setLoader(false);
+    
+                      navigation.navigate('ConnectionStep3', {
+                        serial_number:     serialNumber,
+                        home_network_ssid: homeNetworkSSID,
+                        mqtt_host:         mqttHost,
+                        mqtt_port:         8883, //mqttPort,
+                        mqtt_user:         mqttUser,
+                        mqtt_password:     mqttPassword,
+                        certificate:       certificate,
                       });
-                    });
-                  });
-                })
-                .catch(rej => {
-                  console.error('[DEVICE CONFIGURATION] Error while getting client credentials request', rej);
+                    },
+                    rej => {
+                      Alert.alert('There is a problem with connecting to the device network');
     
-                  Alert.alert('There is a problem with retrieving client credentials');
-    
-                  setLoader(false);
+                      console.error('[DEVICE CONFIGURATION] Error while connecting to the device network', rej);
+                      
+                      setLoader(false);
+                    },
+                  );
                 });
-              })
-              .catch(rej => {
-                console.error('[DEVICE CONFIGURATION] Error while getting server credentials request', rej);
-  
-                Alert.alert('There is a problem with retrieving server credentials');
-  
-                setLoader(false);
               });
             })
-            .catch(rej => {
-              console.error('[DEVICE CONFIGURATION] Error while sending certificate request', rej);
-
-              Alert.alert('There is a problem with retrieving certificate from the server');
-
-              setLoader(false);
-            });
           })
           .catch(rej => {
-            Alert.alert('There is a problem with getting the Wi-Fi salt');
+            Alert.alert('This device is already added to another account or there is a problem with retrieving its credentials');
   
-            console.error('[DEVICE CONFIGURATION] Error while getting the Wi-Fi salt', rej);
+            console.error('[DEVICE CONFIGURATION] Error while requesting credentials', rej.response.data);
 
             setLoader(false);
           });

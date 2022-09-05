@@ -34,8 +34,6 @@ const customTabBarStyle = {
 export const MyTabs = ({navigation}) => {
   const {user} = useSelector((state: RootReducerState) => state.auth);
 
-  console.log
-
   return (
     <Tab.Navigator tabBarOptions={customTabBarStyle} initialRouteName="Device">
       <Tab.Screen name="Nursery" component={Nursery} options={{
@@ -54,7 +52,7 @@ export const MyTabs = ({navigation}) => {
         tabBarIcon: ({focused}) => (focused ? <DiaryActive /> : <DiaryInactive />),
       }} />
 
-      <Tab.Screen name="Device" component={user?.accounts[0]?.device?.status ? ConnectedDevice : ConfirmConnection} options={{
+      <Tab.Screen name="Device" component={user?.accounts[0]?.devices[0]?.is_connected ? ConnectedDevice : ConfirmConnection} options={{
         tabBarLabel: '',
         tabBarStyle: {
           backgroundColor: 'rgba(52, 52, 90, 0.97)',

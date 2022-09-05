@@ -1,6 +1,6 @@
-import React from 'react';
-import {useSelector,useDispatch} from 'react-redux';
-import {RootReducerState} from '../../redux';
+import React                      from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootReducerState}         from '../../redux';
 
 import {
   Dimensions,
@@ -9,68 +9,73 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import ShopCarousel from './Carousel';
-import PowerOn from '../../assets/images/svg/PowerOn';
-import PowerOff from '../../assets/images/svg/PowerOff';
-import {ControlCard} from './ControlCard';
-import {setPower} from '../../redux/slice/PowerSlice';
-import AsleepImg from '../../assets/images/cloudImage/Asleep.png';
-import Awake from '../../assets/images/cloudImage/Awake.png';
-import Idle from '../../assets/images/cloudImage/Idle.png';
-import SunSet from '../../assets/images/cloudImage/SunSet.png';
-import NothernLights from '../../assets/images/cloudImage/NothernLights.png';
-import Pulsing from '../../assets/images/cloudImage/Pulsing.png';
-import ColorPicker from '../../assets/images/cloudImage/ColorPicker.png';
-import ActiveOff from '../../assets/images/cloudImage/ActiveOff.png';
-import TemperatureMore22 from '../../assets/images/cloudImage/TemperatureMore22.png';
-import blue from '../../assets/images/cloudImage/blue.png';
-import Yellow from '../../assets/images/cloudImage/Yellow.png';
+
+import ShopCarousel       from './Carousel';
+import {ControlCard}      from './ControlCard';
+
+import {
+  setDeviceOnlineStatus
+} from '../../redux/slices/auth';
+
+import PowerOn            from '../../assets/images/svg/PowerOn';
+import PowerOff           from '../../assets/images/svg/PowerOff';
+
+import CloudOff           from '../../assets/images/cloudImage/ActiveOff.png';
+
+import CloudHot           from '../../assets/images/cloudImage/TemperatureMore22.png';
+import CloudCold          from '../../assets/images/cloudImage/blue.png';
+import CloudNormal        from '../../assets/images/cloudImage/Yellow.png';
+
+import CloudSunset        from '../../assets/images/cloudImage/SunSet.png';
+import CloudNothernLights from '../../assets/images/cloudImage/NothernLights.png';
+import CloudPulsing       from '../../assets/images/cloudImage/Pulsing.png';
+import CloudColourPicker  from '../../assets/images/cloudImage/ColorPicker.png';
+
+import CloudAsleepImg     from '../../assets/images/cloudImage/Asleep.png';
+import CloudAwake         from '../../assets/images/cloudImage/Awake.png';
+import CloudIdle          from '../../assets/images/cloudImage/Idle.png';
 
 export const Content = props => {
-  const { user } = useSelector((state: RootReducerState) => state.auth);
-
-  //const {carouselItem} = useSelector(({settings}) => settings);
-  let itemImg = '';//carouselItem.split(' ').join('');
   const dispatch = useDispatch();
+  const {user}   = useSelector((state: RootReducerState) => state.auth);
+
+  let device            = user.accounts[0]?.devices[0];
+  let selectedLightShow = device.config?.light_show ? device.config.light_show : 'TEMPERATURE_THERMOMETER';
 
   const handlePower = () => {
-    dispatch(setPower(!props.isActive));
-    props.setISActive(!props.isActive);
+    dispatch(setDeviceOnlineStatus(!device.is_online));
   };
 
-  const cloudImage = {
-    Idle: Idle,
-    Asleep: AsleepImg,
-    Awake: Awake,
-    Sunset: SunSet,
-    Northernlights: NothernLights,
-    Pulsing: Pulsing,
-    Colourpicker: ColorPicker,
-    Temperature: props.temperatureImage > 22 ? TemperatureMore22 : props.temperatureImage < 17 ? blue : Yellow
+  const statuses = {
+    'SLEEP_TRAINER_IDLE':         CloudIdle,
+    'SLEEP_TRAINER_ASLEEP':       CloudAsleepImg,
+    'SLEEP_TRAINER_AWAKE':        CloudAwake,
+    
+    'TEMPERATURE_THERMOMETER':    device.current_temperature > 22
+                                      ? CloudHot
+                                      : (device.current_temperature <= 17 ? CloudCold : CloudNormal),
+
+    'LIGHT_SHOW_SUNSET':          CloudSunset,
+    'LIGHT_SHOW_NORTHERN_LIGHTS': CloudNothernLights,
+
+    'LIGHT_SHOW_PULSING':         CloudPulsing,
+    'LIGHT_SHOW_COLOUR_PICKER':   CloudColourPicker,
   };
 
   return (
     <View>
       <View style={{alignItems: 'center'}}>
-        {props.isActive ? (
-          <Image
-            source={cloudImage[itemImg]}
-            style={{width: '100%', height: 350, bottom: '20%'}}
-          />
+        {device.is_online ? (
+          <Image source={statuses[selectedLightShow]} style={{width: '100%', height: 350, bottom: '20%'}} />
         ) : (
-          <Image
-            source={ActiveOff}
-            style={{width: '100%', height: 350, bottom: '20%'}}
-          />
+          <Image source={CloudOff} style={{width: '100%', height: 350, bottom: '20%'}} />
         )}
-        <TouchableOpacity
-          onPress={handlePower}
-          style={{marginTop: '40%', width: 50, bottom: '65%'}}>
-          {props.isActive ? <PowerOn /> : <PowerOff />}
+        <TouchableOpacity onPress={handlePower} style={{marginTop: '40%', width: 50, bottom: '65%'}}>
+          {device.is_online ? <PowerOn /> : <PowerOff />}
         </TouchableOpacity>
       </View>
       <View style={{bottom: '37%'}}>
-        {user.accounts[0].is_deluxe === 0 ? (<View style={{height: 100}}/>) : <ControlCard/>}
+        {device.is_deluxe == false ? (<View style={{height: 100}}/>) : <ControlCard/>}
       </View>
       <View style={styles.containerCarousel}>
         <ShopCarousel />
@@ -115,15 +120,10 @@ const styles = StyleSheet.create({
   containerCarousel: {
     alignItems: 'center',
     bottom: '37%',
-    // justifyContent:'center'
-    // marginHorizontal: 20,
   },
   cardCarousel: {
-    // width: 170,
     alignItems: 'center',
     borderRadius: 20,
-    // padding: '11px 12px ',
-    // backgroundColor: '#221B36',
   },
   carousel: {
     flexGrow: 0,

@@ -29,7 +29,7 @@ export const SettingsRecording = ({route}) => {
   const navigation = useNavigation();
 
   const isFocused = useIsFocused();
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  // const {user} = useSelector(({account}: RootState) => account.userInformation);
   const handleGoToNewVideo = () => {
     navigation.navigate('new Recording', {
       title: 'new custom recording',
@@ -40,33 +40,33 @@ export const SettingsRecording = ({route}) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    GetRecord(user.accounts[0].id)
-      .then(res => {
-        console.log(res);
-        setData(res.data.recordings);
-      })
-      .catch(res => {
-        console.log(res);
-      });
+    // GetRecord(user.accounts[0].id)
+    //   .then(res => {
+    //     console.log(res);
+    //     setData(res.data.recordings);
+    //   })
+    //   .catch(res => {
+    //     console.log(res);
+    //   });
   }, [isFocused]);
 
   const deleteRecording = id => {
-    DeleteRecording(user.accounts[0].id, id).then(() => {
-      GetRecord(user.accounts[0].id).then(res => {
-        console.log(res);
-        setData(res.data.recordings);
-      });
-    });
+    // DeleteRecording(user.accounts[0].id, id).then(() => {
+    //   GetRecord(user.accounts[0].id).then(res => {
+    //     console.log(res);
+    //     setData(res.data.recordings);
+    //   });
+    // });
   };
 
   const playSoundRecording = path => {
-    PlayRecordSound(path)
-      .then(res => {
-        console.log(res);
-      })
-      .catch(rej => {
-        console.log(rej);
-      });
+    // PlayRecordSound(path)
+    //   .then(res => {
+    //     console.log(res);
+    //   })
+    //   .catch(rej => {
+    //     console.log(rej);
+    //   });
   };
 
   return (

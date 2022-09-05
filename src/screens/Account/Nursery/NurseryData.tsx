@@ -122,8 +122,6 @@ export const NurseryData = ({navigation}) => {
   const [id, setId] = useState(null);
   const accounts = user.accounts;
 
-  console.log(user.accounts[0].is_deluxe, 'isdecdsede');
-
   const getToken = async () => {
     const value = await AsyncStorage.getItem('@storage_Key');
     console.log('valueeee', value);

@@ -13,7 +13,7 @@ export const SettingsSmartCRY = ({route}) => {
   const [active2, setActive2] = useState('');
   // const [value, setValue] = useState(false);
   const {brightness} = useSelector(({settings}) => settings);
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  // const {user} = useSelector(({account}: RootState) => account.userInformation);
   const setValue = newValue => {
     setActive2(newValue);
   };
@@ -25,18 +25,18 @@ export const SettingsSmartCRY = ({route}) => {
   useEffect(() => {
     let isActive = false;
     const handleChange = async () => {
-      await timeout(1000);
-      if (!isActive) {
-        console.log('activeeee');
-        SettingsDevice(
-          {smartCRY_sensor_sensitivity: active2},
-          user.accounts[0].id,
-        ).then(res => {
-          route.params.setValue(res.data.data);
-        }).catch(res => {
-          console.log(res);
-        });
-      }
+      // await timeout(1000);
+      // if (!isActive) {
+      //   console.log('activeeee');
+      //   SettingsDevice(
+      //     {smartCRY_sensor_sensitivity: active2},
+      //     user.accounts[0].id,
+      //   ).then(res => {
+      //     route.params.setValue(res.data.data);
+      //   }).catch(res => {
+      //     console.log(res);
+      //   });
+      // }
     };
     handleChange();
     return () => {

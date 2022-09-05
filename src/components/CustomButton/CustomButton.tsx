@@ -1,7 +1,6 @@
-import {useNavigation} from '@react-navigation/native';
+
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import {Button} from 'react-native-paper';
 
 export const CustomButton = ({text, handleOnSubmit, styles}) => {
   const container = {

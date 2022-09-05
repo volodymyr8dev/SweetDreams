@@ -11,7 +11,7 @@ import {setPlayingTime} from '../../../redux/slice/SettingsSlice';
 
 export const SettingsTimePlaying = ({route}) => {
   const dispatch = useDispatch();
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  // const {user} = useSelector(({account}: RootState) => account.userInformation);
   const [value, setValue] = useState(route.params.value);
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
@@ -19,15 +19,15 @@ export const SettingsTimePlaying = ({route}) => {
 
   useEffect(() => {
     if (firstRun.current) {
-      if (value !== 'Ukraine') {
-        const valueString = value.replace(/\D/g, '');
-        SettingsDevice(
-          {'sound_playing_time': valueString},
-          user.accounts[0].id,
-        ).then(res => {
-          route.params.setValue(res.data.data);
-        });
-      }
+      // if (value !== 'Ukraine') {
+      //   const valueString = value.replace(/\D/g, '');
+      //   SettingsDevice(
+      //     {'sound_playing_time': valueString},
+      //     user.accounts[0].id,
+      //   ).then(res => {
+      //     route.params.setValue(res.data.data);
+      //   });
+      // }
     } else {
       firstRun.current = true;
     }

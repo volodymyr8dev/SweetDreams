@@ -88,7 +88,7 @@ export const ContentNavigation = ({options, diaries, averageTemp}) => {
   useEffect(() => {}, [options]);
   return (
     <View style={styles.container}>
-      {user.accounts[0].is_deluxe === 0 ? null : (
+      {user.accounts[0]?.devices[0]?.is_deluxe == false ? null : (
         <Blog
           title="Total Time Without Activation"
           subTitle={options.value1.subTitle}
@@ -96,7 +96,7 @@ export const ContentNavigation = ({options, diaries, averageTemp}) => {
           rightEl={options.value1.value}
         />
       )}
-      {user.accounts[0].is_deluxe === 0 ? null : (
+      {user.accounts[0]?.devices[0]?.is_deluxe == false ? null : (
         <Blog
           title="Longest Period Without Activation"
           subTitle={options.value2.subTitle}
@@ -104,7 +104,7 @@ export const ContentNavigation = ({options, diaries, averageTemp}) => {
           rightEl={options.value2.value}
         />
       )}
-      {user.accounts[0].is_deluxe === 0 ? null : (
+      {user.accounts[0]?.devices[0]?.is_deluxe == false ? null : (
         <Blog
           title="Number of smartCRY Activations"
           subTitle={options.value3.subTitle}

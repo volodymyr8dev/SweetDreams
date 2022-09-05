@@ -34,7 +34,7 @@ audioRecorderPlayer.setSubscriptionDuration(0.09);
 
 
 export const SettingsNewRecording = () => {
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+  // const {user} = useSelector(({account}: RootState) => account.userInformation);
   const recordingFile = useSelector(
     ({settings}: RootState) => settings.recordingFile,
   );
@@ -99,14 +99,14 @@ export const SettingsNewRecording = () => {
   };
 
   const sendRecordingOnBack = () => {
-    console.log(user.accounts[0].id, recordingFile, 'DAAA');
-    NewRecording(user.accounts[0].id, recordingFile, nameFile)
-      .then(() => {
-        navigation.goBack();
-      })
-      .catch(err => {
-        console.log('err', err);
-      });
+    // console.log(user.accounts[0].id, recordingFile, 'DAAA');
+    // NewRecording(user.accounts[0].id, recordingFile, nameFile)
+    //   .then(() => {
+    //     navigation.goBack();
+    //   })
+    //   .catch(err => {
+    //     console.log('err', err);
+    //   });
   };
   return (
     <View style={styles.container}>

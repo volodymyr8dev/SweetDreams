@@ -1,10 +1,39 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import AsyncStorage                                     from '@react-native-async-storage/async-storage';
 import {getProfile}                                     from '../../../api/Profile/Profile';
+import {PatchDevice}                                    from '../../../api/Device/Device';
+export interface DeviceConfigItem {
+  /* Version 1 */
+  current_temperature:          number | undefined;
+  is_turned_on:                 boolean | undefined;
 
+  light_show:                   string | undefined;
+
+  child_lock:                   boolean | undefined;
+
+  time:                         string | undefined;
+  time_set_up_automatically:    boolean | undefined;
+  wake_up_time:                 string | undefined;
+  dome_brightness:              number | undefined;
+  temperature:                  string | undefined;
+
+  /* Version 2 */
+  display_brightness:           number | undefined;
+  smart_cry_censor_enabled:     boolean | undefined;
+  smart_cry_censor_sensibility: boolean | undefined;
+  custom_recording:             number | undefined;
+  sound_playing_time:           string | undefined;
+  volume:                       number | undefined;
+}
 export interface DeviceItem {
-  id:            number | undefined;
-  serial_number: string | undefined;
+  id:                                              number | undefined;
+  serial_number:                                   string | undefined;
+  is_connected:                                    boolean | undefined;
+  is_online:                                       boolean | undefined;
+  is_deluxe:                                       boolean | undefined;
+  has_smart_sensor_actiation_notifcations_enabled: boolean | undefined;
+  has_temperature_notifications_enabled:           boolean | undefined;
+  config:                                          DeviceConfigItem;
 }
 
 export interface AccountItem {
@@ -12,8 +41,7 @@ export interface AccountItem {
   baby_name:          string;
   baby_gender:        string;
   baby_date_of_birth: string;
-  is_deluxe:          boolean;
-  device:             DeviceItem | undefined;
+  devices:            DeviceItem[];
 };
 
 export interface AuthSliceState {
@@ -56,6 +84,87 @@ export const authSlice = createSlice({
     clearUserInformation: (state) => {
       state = initialState;
     },
+    setDeviceOnlineStatus: (state, action: PayloadAction<any>) => {
+      if (state.user?.accounts[0]?.devices[0]) {
+        state.user.accounts[0].devices[0].is_online = action.payload;
+
+        PatchDevice(state.user.accounts[0].id, state.user.accounts[0].devices[0].id, {
+          "is_online": action.payload
+        });
+      }
+    },
+    setDeviceLightShow: (state, action: PayloadAction<any>) => {
+      if (state.user?.accounts[0]?.devices[0]?.config) {
+        state.user.accounts[0].devices[0].config.light_show = action.payload;
+
+        PatchDevice(state.user.accounts[0].id, state.user.accounts[0].devices[0].id, {
+          "light_show": action.payload
+        });
+      }
+    },
+    setTemperatureNotifications: (state, action: PayloadAction<any>) => {
+      if (state.user?.accounts[0]?.devices[0]) {
+        state.user.accounts[0].devices[0].has_temperature_notifications_enabled = action.payload;
+
+        PatchDevice(state.user.accounts[0].id, state.user.accounts[0].devices[0].id, {
+          "has_temperature_notifications_enabled": action.payload
+        });
+      }
+    },
+    setDeviceConfigChildLock: (state, action: PayloadAction<any>) => {
+      if (state.user?.accounts[0]?.devices[0]?.config) {
+        state.user.accounts[0].devices[0].config.child_lock = action.payload;
+
+        PatchDevice(state.user.accounts[0].id, state.user.accounts[0].devices[0].id, {
+          "child_lock": action.payload
+        });
+      }
+    },
+    setTemperature: (state, action: PayloadAction<any>) => {
+      if (state.user?.accounts[0]?.devices[0]?.config) {
+        state.user.accounts[0].devices[0].config.temperature = action.payload;
+
+        PatchDevice(state.user.accounts[0].id, state.user.accounts[0].devices[0].id, {
+          "temperature": action.payload
+        });
+      }
+    },
+    setDomeBrightness: (state, action: PayloadAction<any>) => {
+      if (state.user?.accounts[0]?.devices[0]?.config) {
+        state.user.accounts[0].devices[0].config.dome_brightness = action.payload;
+
+        PatchDevice(state.user.accounts[0].id, state.user.accounts[0].devices[0].id, {
+          "dome_brightness": action.payload
+        });
+      }
+    },
+    setWakeUpTime: (state, action: PayloadAction<any>) => {
+      if (state.user?.accounts[0]?.devices[0]?.config) {
+        state.user.accounts[0].devices[0].config.wake_up_time = action.payload;
+
+        PatchDevice(state.user.accounts[0].id, state.user.accounts[0].devices[0].id, {
+          "wake_up_time": action.payload
+        });
+      }
+    },
+    setTime: (state, action: PayloadAction<any>) => {
+      if (state.user?.accounts[0]?.devices[0]?.config) {
+        state.user.accounts[0].devices[0].config.time = action.payload;
+
+        PatchDevice(state.user.accounts[0].id, state.user.accounts[0].devices[0].id, {
+          "time": action.payload
+        });
+      }
+    },
+    setTimeAutomatically: (state, action: PayloadAction<any>) => {
+      if (state.user?.accounts[0]?.devices[0]?.config) {
+        state.user.accounts[0].devices[0].config.time_set_up_automatically = action.payload;
+
+        PatchDevice(state.user.accounts[0].id, state.user.accounts[0].devices[0].id, {
+          "time_set_up_automatically": action.payload
+        });
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(checkLogin.pending, (state) => {
@@ -73,7 +182,7 @@ export const authSlice = createSlice({
     });
 
     builder.addCase(checkLogin.fulfilled, (state, action) => {
-      state.loadingCheckLogin = false;
+      state.loadingCheckLogin  = false;
 
       state.user.email         = action.payload.user.email;
       state.user.name          = action.payload.user.name;
@@ -108,8 +217,33 @@ const checkLogin = createAsyncThunk('auth/checkLogin', async (_params, { rejectW
   }
 });
 
-const { setUserInformation, clearUserInformation } = authSlice.actions;
+const {
+  setUserInformation,
+  clearUserInformation,
+  setDeviceOnlineStatus,
+  setDeviceLightShow,
+  setTemperatureNotifications,
+  setDeviceConfigChildLock,
+  setTemperature,
+  setDomeBrightness,
+  setWakeUpTime,
+  setTime,
+  setTimeAutomatically
+} = authSlice.actions;
 
-export { setUserInformation, clearUserInformation, checkLogin };
+export {
+  setUserInformation,
+  clearUserInformation,
+  setDeviceOnlineStatus,
+  setDeviceLightShow,
+  setTemperatureNotifications,
+  setDeviceConfigChildLock,
+  setTemperature,
+  setDomeBrightness,
+  setWakeUpTime,
+  setTime,
+  setTimeAutomatically,
+  checkLogin
+};
 
 export default authSlice.reducer;

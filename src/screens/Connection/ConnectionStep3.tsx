@@ -13,12 +13,12 @@ import {
   ImageBackground
 } from 'react-native'
 
+import {useDispatch, useSelector}            from 'react-redux';
 import {RootReducerState}                    from '../../redux';
 import {customStyles}                        from '../../components/StepIndicator/StepIndicator';
 import {CustomInput}                         from '../../components/CustomInput/CustomInput';
 import {Loader}                              from '../../components/Loader/Loader';
 import {ConnectDevice, PublishConfiguration} from '../../api/Device/Device';
-import {useDispatch, useSelector}            from 'react-redux';
 import {getCombinedNavigation}               from '../../hooks/useUpdateNavigationHeaderOptions';
 import {checkLogin}                          from '../../redux/slices/auth';
 
@@ -71,40 +71,41 @@ export const ConnectionStep3 = ({navigation, route}) => {
       WifiManager.disconnectFromSSID(`Misty-${serialNumber}`).then(res => {
         console.log('[DEVICE CONFIGURATION] Disconneted from the device network', res);
 
-        WifiManager.connectToProtectedSSID(
-          `${wifiName}`,
-          `${wifiPassword}`,
-          false,
-        ).then(
-          res => {
-            console.log('[DEVICE CONFIGURATION] Connected to a home network', res);
-    
-            ConnectDevice(
-              user.accounts[0].id,
-              serialNumber,
-              authUser,
-              authPassword,
-            ).then(res => {
-              console.log('[DEVICE CONFIGURATION] Assigned device to the account', res);
-        
-              dispatch(checkLogin());
-            })
-            .catch(rej => {
-              console.error('[DEVICE CONFIGURATION] Error while trying to assign device to the account', JSON.stringify(rej));
-        
-              Alert.alert(rej?.response?.data?.error ? rej.response.data.error :'There is a problem with assigning device to the account');
-        
-              dispatch(checkLogin());
-            });
-          },
-          rej => {
-            console.error('[DEVICE CONFIGURATION] Error while connecting to a home network', rej);
+        /* Timeout for 5 secs */
+        setTimeout(() => {
+          WifiManager.connectToProtectedSSID(
+            `${wifiName}`,
+            `${wifiPassword}`,
+            false,
+          ).then(
+            res => {
+              console.log('[DEVICE CONFIGURATION] Connected to a home network', res);
 
-            Alert.alert('There is a problem with connecting to a home network');
+              ConnectDevice(
+                user.accounts[0].id,
+                serialNumber
+              ).then(res => {
+                console.log('[DEVICE CONFIGURATION] Assigned device to the account', res);
+          
+                dispatch(checkLogin());
+              })
+              .catch(rej => {
+                console.error('[DEVICE CONFIGURATION] Error while trying to assign device to the account', JSON.stringify(rej));
+          
+                Alert.alert(rej?.response?.data?.error ? rej.response.data.error :'There is a problem with assigning device to the account');
+          
+                dispatch(checkLogin());
+              });
+            },
+            rej => {
+              console.error('[DEVICE CONFIGURATION] Error while connecting to a home network', rej);
 
-            setLoader(false);
-          },
-        );
+              Alert.alert('There is a problem with connecting to a home network');
+
+              setLoader(false);
+            }
+          );
+        }, 25000);
       }, rej => {
         console.error('[DEVICE CONFIGURATION] Error while tying to disconnect from device network', rej);
 

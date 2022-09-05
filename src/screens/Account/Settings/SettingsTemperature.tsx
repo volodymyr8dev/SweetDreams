@@ -1,35 +1,66 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, ImageBackground} from 'react-native';
+import {useSelector, useDispatch}   from 'react-redux';
+import {RootReducerState}           from '../../../redux';
+
+import {
+  View,
+  StyleSheet,
+  ImageBackground
+} from 'react-native';
+
 import BouncyCheckboxGroup, {
   ICheckboxButton,
 } from 'react-native-bouncy-checkbox-group';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import {COLORS} from '../../../styles/Constants';
-import {useDispatch} from 'react-redux';
-import SettingsSlice, {
-  setTemperature,
-  setTemperatureNew,
-} from '../../../redux/slice/SettingsSlice';
-import {useSelector} from 'react-redux';
-import {SettingsDevice} from '../../../api/Settings/Settings';
-import {RootState} from '../../../redux/configureStore';
-import background from '../../../assets/images/homeIcon/backgroundHome.png';
+import {COLORS}                 from '../../../styles/Constants';
+import background               from '../../../assets/images/homeIcon/backgroundHome.png';
 
-export const SettingsTemperature = ({route}) => {
-  const [typeC, setTypeC] = useState(false);
-  const [typeF, setTypeF] = useState(false);
-  const [loader, setLoader] = useState(true);
+import {getCombinedNavigation}  from '../../../hooks/useUpdateNavigationHeaderOptions';
+
+import {
+  setTemperature
+} from '../../../redux/slices/auth';
+
+export const SettingsTemperature = ({navigation}) => {
   const dispatch = useDispatch();
-  const {temperature} = useSelector(({settings}) => settings);
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
-  const setNewValue = () => {
-    SettingsDevice(
-      {temperature: route.params.value === 'C' ? 'F' : 'C'},
-      user.accounts[0].id,
-    ).then(res => {
-      route.params.setValue(res.data.data);
-    });
-  };
+  const {user}   = useSelector((state: RootReducerState) => state.auth);
+  let device     = user.accounts[0]?.devices[0];
+
+  const [type, setType] = useState(device.config?.temperature == 'C' ? 0 : 1);
+
+  /* Set default navigation options */
+  useEffect(() => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title: 'temperature',
+        headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
+        headerRightText:   'save',
+        headerRightMethod: () => {
+          toggleTemperature(type);
+          navigation.goBack();
+        },
+      })
+    )
+  }, [navigation]);
+
+  /* Update options on update */
+  const refreshNavigation = (type) => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title: 'temperature',
+        headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
+        headerRightText:   'save',
+        headerRightMethod: () => {
+          toggleTemperature(type);
+          navigation.goBack();
+        },
+      })
+    )
+  }
+
+  const toggleTemperature = (item) => {
+    dispatch(setTemperature(item == 0 ? 'C' : 'F'))
+  }
+
   const verticalStaticData = [
     {
       id: 0,
@@ -96,20 +127,19 @@ export const SettingsTemperature = ({route}) => {
     <ImageBackground source={background}>
       <View style={styles.container}>
         <View>
-          {loader ? (
-            <BouncyCheckboxGroup
-              initial={route.params.value === 'F' ? 1 : 0}
-              fillColor="red"
-              data={verticalStaticData}
-              style={styles.bouncyCheckBox}
-              onChange={(selectedItem: ICheckboxButton) => {
-                setNewValue();
-              }}
-              textStyle={{
-                textDecorationLine: 'none',
-              }}
-            />
-          ) : null}
+          <BouncyCheckboxGroup
+            initial={device.config?.temperature === 'C' ? 0 : 1}
+            fillColor="red"
+            data={verticalStaticData}
+            style={styles.bouncyCheckBox}
+            onChange={(selectedItem: ICheckboxButton) => {
+              setType(selectedItem.id);
+              refreshNavigation(selectedItem.id);
+            }}
+            textStyle={{
+              textDecorationLine: 'none',
+            }}
+          />
         </View>
       </View>
     </ImageBackground>

@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect}         from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootReducerState}         from '../../../redux';
+
 import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   Image,
   ScrollView,
   TouchableOpacity,
@@ -24,94 +26,49 @@ import music from '../../../assets/images/settings/music.png';
 import musicTime from '../../../assets/images/settings/musicTime.png';
 import volumeImg from '../../../assets/images/settings/volume.png';
 import {Switch} from '../../../components/Switch/Switch';
-import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
 import background from '../../../assets/images/homeIcon/backgroundHome.png';
-import {COLORS} from '../../../styles/Constants';
-import {RootState} from '../../../redux/configureStore';
-import {GetRecord} from '../../../api/Recording/Recording';
+import {getCombinedNavigation}      from '../../../hooks/useUpdateNavigationHeaderOptions';
 
-export const SettingsAccount = ({route}) => {
-  const [settingsData, setSettingsData] = useState(route.params.data);
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
-  const {formatWakeUpTime, formatTime, volume} = useSelector(
-    ({settings}) => settings,
-  );
-  // const {temperatureNew} = useSelector(({settings}) => settings);
-  // const {playingTime} = useSelector(({settings}) => settings);
-  // const {volume} = useSelector(
-  //   ({settings}) => settings,
-  // );
-  // useEffect(()=>{
-  //   setState(route.params.childLock)
-  //
-  // },[])
-  // console.log(data, "datadatadata");
-  // useEffect(() => {
-  //   setValSwitch(true);
-  // }, []);
+import {
+  setTemperatureNotifications,
+  setDeviceConfigChildLock
+} from '../../../redux/slices/auth';
+
+export const SettingsAccount = ({navigation}) => {
+  /* Set default navigation options */
+  useEffect(() => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title: 'settings',
+        headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
+      })
+    )
+  }, [navigation]);
+
+  const dispatch = useDispatch();
+  const {user}   = useSelector((state: RootReducerState) => state.auth);
+  let device     = user.accounts[0]?.devices[0];
+
+  const toggleNotificationSettings = () => {
+    dispatch(setTemperatureNotifications(!device.has_temperature_notifications_enabled))
+  }
+
+  const toggleChildLock = () => {
+    dispatch(setDeviceConfigChildLock(!device.config?.child_lock))
+  }
+
+  const handleSettings = async title => {
+    if (typeof rightEl !== 'object') {
+      navigation.navigate(`${title}`, {title: title});
+    }
+  };
+  
   const Blog = ({title, rightEl, source, value, navigate}) => {
-    const navigation: any = useNavigation();
-
-    const handleSettings = async title => {
-      if (typeof rightEl !== 'object') {
-        console.log(title, 'title');
-        navigation.navigate(`${navigate}`, {
-          title: title,
-          value: value,
-          setValue: obj => {
-            setSettingsData(obj);
-          },
-        });
-      }
-      if (navigate === 'Custom Recording') {
-        getCustomRecord();
-      }
-    };
-
-    console.log(user, 'dadadadada');
-
-    const getCustomRecord = () => {
-      navigation.navigate('Custom Recording', {
-        title: title,
-        value: value,
-        setValue: obj => {
-          setSettingsData(obj);
-        },
-      });
-      // GetRecord(user.accounts[0].id)
-      //   .then(res => {
-      //     console.log(res);
-      //     navigation.navigate('Custom Recording',{
-      //       title: title,
-      //       value: value,
-      //       setValue: obj => {
-      //         setSettingsData(obj);
-      //       },
-      //       data: res.data.recordings,
-      //     });
-      //   })
-      //   .catch(res => {
-      //     console.log(res);
-      //   });
-    };
-
     return (
-      <TouchableOpacity
-        onPress={() => handleSettings(title)}
-        style={styles.blog}>
+      <TouchableOpacity onPress={() => handleSettings(navigate)} style={styles.blog}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
-            style={{width: 24, height: 24, marginRight: 10}}
-            source={source}
-            resizeMode="contain"
-          />
-          <Text
-            style={{
-              color: '#2371AB',
-              fontSize: 19,
-              fontFamily: 'AntagometricaBT-Regular',
-            }}>
+          <Image style={{width: 24, height: 24, marginRight: 10}} source={source} resizeMode="contain" />
+          <Text style={{color: '#2371AB', fontSize: 19, fontFamily: 'AntagometricaBT-Regular'}}>
             {navigate}
           </Text>
         </View>
@@ -131,6 +88,7 @@ export const SettingsAccount = ({route}) => {
       </TouchableOpacity>
     );
   };
+
   return (
     <ImageBackground source={background}>
       <ScrollView style={styles.container}>
@@ -142,15 +100,10 @@ export const SettingsAccount = ({route}) => {
             source={connection}
           />
           <Blog
-            title="child Lock"
+            title="child lock"
             navigate="Child Lock"
             rightEl={
-              <Switch
-                title={'child_lock'}
-                val={settingsData.child_lock}
-                valueSmart={null}
-                setData={setSettingsData}
-              />
+              <Switch val={device.config?.child_lock} setData={toggleChildLock} />
             }
             source={lock}
           />
@@ -168,18 +121,18 @@ export const SettingsAccount = ({route}) => {
           <Blog
             title="time"
             navigate="Time"
-            rightEl={settingsData.time}
-            value={settingsData.time}
+            rightEl={device.config?.time}
+            value={device.config?.time}
             source={clock}
           />
           <Blog
             title="wake up time"
             navigate="Wake Up Time"
-            value={settingsData.wake_up_time}
+            value={device.config?.wake_up_time}
             source={wakeUp}
-            rightEl={settingsData.wake_up_time}
+            rightEl={device.config?.wake_up_time}
           />
-          {user.accounts[0].is_deluxe === 0 ? null : (
+          {device.is_deluxe == false ? null : (
             <Blog
               title="colour Picker"
               navigate="Colour Picker"
@@ -191,22 +144,24 @@ export const SettingsAccount = ({route}) => {
             title="dome brightness"
             navigate="Dome Brightness"
             source={brightness}
-            rightEl={'3%'}
+            rightEl={Number(device.config?.dome_brightness).toFixed(0) + '%'}
           />
+          {device.is_deluxe == false ? null : (
           <Blog
             title="display brightness"
             navigate="Display Brightness"
             source={displayBrightness}
             rightEl={'25%'}
           />
+          )}
           <Blog
             title="temperature"
             navigate="Temperature"
             source={Temperature}
-            rightEl={`°${settingsData.temperature}`}
-            value={settingsData.temperature}
+            rightEl={`°${device.config?.temperature}`}
+            value={device.config?.temperature}
           />
-          {user.accounts[0].is_deluxe === 0 ? null : (
+          {device.is_deluxe == false ? null : (
             <View style={{paddingLeft: 15, marginVertical: 15}}>
               <Text
                 style={{
@@ -220,7 +175,7 @@ export const SettingsAccount = ({route}) => {
               </Text>
             </View>
           )}
-          {user.accounts[0].is_deluxe === 0 ? null : (
+          {device.is_deluxe == false ? null : (
             <Blog
               title="smartCRY Sensor"
               navigate="smartCRY Sensor"
@@ -228,25 +183,22 @@ export const SettingsAccount = ({route}) => {
               rightEl={
                 <Switch
                   val={null}
-                  valueSmart={settingsData.smartCRY_sensor}
-                  title={'smartCRY_sensor'}
-                  setData={setSettingsData}
+                  valueSmart={device.config?.smart_cry_censor_enabled}
+                  title={'smartCRY Senson'}
                 />
               }
             />
           )}
-          {user.accounts[0].is_deluxe === 0 ? null : (
+          {device.is_deluxe == false ? null : (
             <Blog
               title="smartCRY Sensor Sensitivity"
               navigate="smartCRY Sensor Sensitivity"
               source={smartSRYSensetivity}
-              value={settingsData.smartCRY_sensor_sensitivity}
-              rightEl={Number(settingsData.smartCRY_sensor_sensitivity).toFixed(
-                0,
-              )}
+              value={device.config?.smart_cry_censor_sensibility}
+              rightEl={Number(device.config?.smart_cry_censor_sensibility).toFixed(0)}
             />
           )}
-          {user.accounts[0].is_deluxe === 0 ? null : (
+          {device.is_deluxe == false ? null : (
             <Blog
               title="custom recording"
               navigate="Custom Recording"
@@ -254,21 +206,21 @@ export const SettingsAccount = ({route}) => {
               rightEl={'Dad reading s...'}
             />
           )}
-          {user.accounts[0].is_deluxe === 0 ? null : (
+          {device.is_deluxe == false ? null : (
             <Blog
               title="sound playing time"
               navigate="Sound Playing Time"
               source={musicTime}
-              value={settingsData.sound_playing_time}
-              rightEl={settingsData.sound_playing_time}
+              value={device.config?.sound_playing_time}
+              rightEl={Number(device.config?.sound_playing_time).toFixed(0)}
             />
           )}
-          {user.accounts[0].is_deluxe === 0 ? null : (
+          {device.is_deluxe == false ? null : (
             <Blog
               title="volume"
               navigate="Volume"
               source={volumeImg}
-              rightEl={Number(settingsData.volume).toFixed(0)}
+              rightEl={Number(device.config?.volume).toFixed(0)}
             />
           )}
           <View style={{paddingLeft: 15, marginVertical: 15}}>
@@ -282,17 +234,17 @@ export const SettingsAccount = ({route}) => {
               Notifications
             </Text>
           </View>
-          {user.accounts[0].is_deluxe === 0 ? null : (
+          {device.is_deluxe == false ? null : (
             <Blog
-              title="smartCRY_sensor_activation"
+              title="smartCRY sensor activation"
               navigate="smartCRY Sensor Activation"
               source={smartCRY}
               rightEl={
                 <Switch
                   val={null}
-                  valueSmart={settingsData.smartCRY_sensor_activation}
-                  title={'smartCRY_sensor_activation'}
-                  setData={setSettingsData}
+                  valueSmart={device.has_smart_sensor_actiation_notifcations_enabled}
+                  title={'smartCRY sensor activation'}
+                  setData={updateSettingsData}
                 />
               }
             />
@@ -302,12 +254,7 @@ export const SettingsAccount = ({route}) => {
             navigate="Temperature"
             source={Temperature}
             rightEl={
-              <Switch
-                val={null}
-                valueSmart={settingsData.temperature_notification}
-                title={'temperature_notification'}
-                setData={setSettingsData}
-              />
+              <Switch val={device.has_temperature_notifications_enabled} setData={toggleNotificationSettings} />
             }
           />
         </View>

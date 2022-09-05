@@ -10,10 +10,11 @@ import background from '../../../assets/images/homeIcon/backgroundHome.png'
 
 export const SettingsDisplayBrightness = () => {
   const [value, setValue] = useState();
-  const {brightness} = useSelector(({settings}) => settings);
-  useEffect(() => {
-    setValue(brightness);
-  }, [brightness]);
+  let brightness = 1;
+  // const {brightness} = useSelector(({settings}) => settings);
+  // useEffect(() => {
+  //   setValue(brightness);
+  // }, [brightness]);
   const dispatch = useDispatch();
 
   return (

@@ -19,6 +19,9 @@ import {ChangePassword}             from '../../screens/Account/ProfileSettings/
 import {PrivacyPolicy}              from '../../screens/Account/ProfileSettings/PrivacyPolicy';
 import {TermsConditions}            from '../../screens/Account/ProfileSettings/TermsConditions';
 
+import {SettingsAccount as DeviceSettings} from '../../screens/Account/Settings/SettingsAccount';
+
+
 import SettingsRoutes from './Settings/SettingsRoutes';
 import GraphicRoutes from './Graphics/GraphicsRoutes';
 import {NurseryRoutes} from './Nursery/NurseryRoutes';
@@ -34,7 +37,7 @@ const AuthStackRoutes = ({navigation, user}) => {
     nextScreen = 'Step3';
   } else if (!user.accounts[0]?.baby_name || !user.accounts[0]?.baby_gender) {
     nextScreen = 'Step4';
-  } else if (!user.accounts[0]?.device?.id) {
+  } else if (!user.accounts[0]?.devices[0]?.id) {
     nextScreen = 'Step5';
   } else {
     nextScreen = 'Tabs';
@@ -82,6 +85,7 @@ const AuthStackRoutes = ({navigation, user}) => {
 
       <Stack.Screen name="ConnectedDevice" component={ConnectedDevice} />
       <Stack.Screen name="ConfirmConnection" component={ConfirmConnection} />
+      <Stack.Screen name="DeviceSettings" component={DeviceSettings} />
       
       {DiaryRoutes()}
       {SettingsRoutes()}

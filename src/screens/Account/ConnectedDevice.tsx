@@ -1,4 +1,4 @@
-import React, {useState, useEffect}  from 'react';
+import React, {useEffect} from 'react';
 import {useSelector}      from 'react-redux';
 import {RootReducerState} from '../../redux';
 
@@ -11,32 +11,24 @@ import {
   TouchableOpacity,
   Dimensions
 } from 'react-native';
+
 import background from '../../assets/images/homeIcon/backgroundHome.png';
 import line from '../../assets/images/homeIcon/line.png';
-import {useNavigation} from '@react-navigation/native';
 import {COLORS} from '../../styles/Constants';
 import backgroundGrey from '../../assets/backGrey.png';
 import Thermometer from '../../assets/images/svg/Thermometer';
 import CryChild from '../../assets/images/svg/CryChild';
 import TopGear from '../../assets/images/svg/TopGear';
 import Sheep from '../../assets/images/svg/Sheep';
-import {getSettingsDevice} from '../../api/Settings/Settings';
 import {Content} from '../../components/Carousel/Content';
 
-const typeOfTemp = [
-  'Harp',
-  'Washing Machine',
-  'Waves',
-  'Car journey',
-  'Appliance Mix',
-  'Birds',
-];
 type Nav = {
   navigate: (value: string, obj?: any) => void;
   setParams: (value: any) => void;
 };
 export const ConnectedDevice = ({navigation}) => {
-  const { user } = useSelector((state: RootReducerState) => state.auth);
+  const {user} = useSelector((state: RootReducerState) => state.auth);
+  let device   = user.accounts[0]?.devices[0];
 
   /* Set default navigation options */
   useEffect(() => {
@@ -45,16 +37,8 @@ export const ConnectedDevice = ({navigation}) => {
     })
   }, [navigation]);
 
-  const [isActive, setISActive] = useState(true);
-  const [temperatureImage, setTemperatureImage] = useState('20.0');
-
   const openSettings = async () => {
-    getSettingsDevice(user.accounts[0].id)
-      .then(res => {
-        navigation.navigate('settingsAccount', {data: res.data.data});
-      })
-      .catch(res => {
-      });
+    navigation.navigate('DeviceSettings');
   };
 
   const HeaderUI = () => {
@@ -76,15 +60,10 @@ export const ConnectedDevice = ({navigation}) => {
             alignSelf: 'center',
           }}>
           <View style={styles.controlContainer}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <View
                 style={
-                  user.accounts[0].is_deluxe === 0
+                  device.is_deluxe == false
                     ? {
                         flexDirection: 'row',
                         justifyContent: 'flex-end',
@@ -99,8 +78,10 @@ export const ConnectedDevice = ({navigation}) => {
                         width: 120,
                       }
                 }>
+
                 <Thermometer />
-                {!isActive ? (
+                
+                {!device.is_online ? (
                   <Text
                     style={{
                       color: '#fff',
@@ -118,31 +99,22 @@ export const ConnectedDevice = ({navigation}) => {
                       fontFamily: 'AntagometricaBT-Regular',
                       fontWeight: 'bold',
                     }}>
-                    {temperatureImage}°C
+                    {device.current_temperature}°{device.config.temperature}
                   </Text>
                 )}
               </View>
+
               <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                <Image
-                  style={
-                    user.accounts[0].is_deluxe === 0
-                      ? {bottom: 1000}
-                      : {marginHorizontal: 15}
-                  }
-                  source={line}
-                />
+                <Image style={ device.is_deluxe == false ? {bottom: 1000} : {marginHorizontal: 15} } source={line} />
               </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  width: 120,
-                }}>
-                {user.accounts[0].is_deluxe === 0 ? <View /> : <CryChild />}
+
+              <View style={{ flexDirection: 'row', alignItems: 'center', width: 120}}>
+                {device.is_deluxe == false ? <View /> : <CryChild />}
+
                 <View style={{marginLeft: 10}}>
-                  {user.accounts[0].is_deluxe === 0 ? (
+                  {device.is_deluxe == false ? (
                     <View />
-                  ) : !isActive ? (
+                  ) : !device.is_connected ? (
                     <Text
                       style={{
                         color: '#fff',
@@ -173,10 +145,10 @@ export const ConnectedDevice = ({navigation}) => {
   };
 
   return (
-    <ImageBackground style={{backgroundColor: COLORS.backGround}} source={isActive ? background : backgroundGrey}>
+    <ImageBackground style={{backgroundColor: COLORS.backGround}} source={device.is_online ? background : backgroundGrey}>
       <View style={styles.container}>
         <HeaderUI />
-        <Content setISActive={setISActive} isActive={isActive} temperatureImage={temperatureImage} />
+        <Content />
       </View>
     </ImageBackground>
   );

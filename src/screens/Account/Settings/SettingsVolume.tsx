@@ -13,8 +13,8 @@ export const SettingsVolume = ({route}) => {
   const [active, setActive] = useState();
   const [active2, setActive2] = useState('');
 
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
-  const {volume} = useSelector(({settings}) => settings);
+  // const {user} = useSelector(({account}: RootState) => account.userInformation);
+  // const {volume} = useSelector(({settings}) => settings);
 
   const setValue = newValue => {
     setActive2(newValue);
@@ -26,18 +26,18 @@ export const SettingsVolume = ({route}) => {
   useEffect(() => {
     let isActive = false;
     const handleChange = async () => {
-      await timeout(500);
-      if (!isActive) {
-        console.log('activeeee');
-        SettingsDevice({volume: active2}, user.accounts[0].id)
-          .then(res => {
-            console.log(res, 'daaaa');
-            route.params.setValue(res.data.data);
-          })
-          .catch(res => {
-            console.log(res);
-          });
-      }
+      // await timeout(500);
+      // if (!isActive) {
+      //   console.log('activeeee');
+      //   SettingsDevice({volume: active2}, user.accounts[0].id)
+      //     .then(res => {
+      //       console.log(res, 'daaaa');
+      //       route.params.setValue(res.data.data);
+      //     })
+      //     .catch(res => {
+      //       console.log(res);
+      //     });
+      // }
     };
     handleChange();
     return () => {

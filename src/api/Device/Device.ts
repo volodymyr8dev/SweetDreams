@@ -1,34 +1,21 @@
 import axiosInstance from '../apiAxios';
 import deviceAxios   from '../deviceAxios';
 
-export const GetSalt = async type => {
-  console.log('[DEVICE CONFIGURATION] Salt request', type);
-
-  return await axiosInstance.get(`/api/setup/${type}/wifi-salt`);
-};
-
-export const GenerateCredentials = async (serialNumber) => {
+export const DeviceInit = async (accountId, serialNumber, type) => {
   const body = {
-    device_id: serialNumber,
-    password:  'O3vFv98j81NtBFVV3v961',
+    type:          type,
+    serial_number: serialNumber,
+    password:      'O3vFv98j81NtBFVV3v962',
   };
 
-  console.log('[DEVICE CONFIGURATION] Generate credentials request', body);
+  console.log('[DEVICE CONFIGURATION] Add device request', body);
 
-  return await axiosInstance.post(`/api/setup/mqtt-device`, body);
+  return await axiosInstance.post(`/api/accounts/${accountId}/device/init`, body);
 };
 
-export const GetServerCredentials = async (serialNumber) => {
-  console.log('[DEVICE CONFIGURATION] Get server credentials request');
-
-  return await axiosInstance.get(`/api/setup/mqtt-server-credentials`);
-};
-
-export const ConnectDevice = async (accountId, serialNumber, mqttUser, mqttPassword) => {
+export const ConnectDevice = async (accountId, serialNumber) => {
   const body = {
     serial_number: serialNumber,
-    mqttUser:      mqttUser,
-    authpass:      mqttPassword
   };
 
   console.log('[DEVICE CONFIGURATION] Add device request', body);
@@ -36,14 +23,16 @@ export const ConnectDevice = async (accountId, serialNumber, mqttUser, mqttPassw
   return await axiosInstance.post(`/api/accounts/${accountId}/device`, body);
 };
 
-export const DeviceCertificate = async () => {
-  const body = {
-    password: 'mistypwd',
-  };
+export const PatchDevice = async (accountId, deviceId, body) => {
+  console.log('[DEVICE CONFIGURATION] Patch device request', body);
 
-  console.log('[DEVICE CONFIGURATION] Certificate request', body);
+  return await axiosInstance.patch(`/api/accounts/${accountId}/device/${deviceId}/configuration`, body);
+};
 
-  return await axiosInstance.post('/api/setup/misty/device-certificate', body);
+export const DisconnectDevice = async (accountId) => {
+  console.log('[DEVICE CONFIGURATION] Delete device request', body);
+
+  return await axiosInstance.delete(`/api/accounts/${accountId}/device/${deviceId}`);
 };
 
 export const PublishConfiguration = async data => {

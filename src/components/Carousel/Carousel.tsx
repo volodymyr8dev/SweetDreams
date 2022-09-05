@@ -1,6 +1,6 @@
-import React, {useRef, useState} from 'react';
-import {useSelector,useDispatch} from 'react-redux';
-import {RootReducerState} from '../../redux';
+import React, {useRef, useState}  from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootReducerState}         from '../../redux';
 
 import {
   StyleSheet,
@@ -10,7 +10,11 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
-// import SvgUri from 'react-native-svg-uri';
+
+import {
+  setDeviceLightShow
+} from '../../redux/slices/auth';
+
 import Carousel from 'react-native-anchor-carousel';
 import {SimplePaginationDot} from './component';
 
@@ -37,190 +41,132 @@ import NorthernImage from '../../assets/images/svg/Northern';
 import PulsingImage from '../../assets/images/svg/Pulsing';
 import TemperatureImage from '../../assets/images/svg/Temperature';
 import PickerImage from '../../assets/images/svg/Picker';
-import {setCarouselItem} from '../../redux/slice/SettingsSlice';
 
 const {width: windowWidth} = Dimensions.get('window');
 
 const INITIAL_INDEX = 0;
 export default React.memo(function ShopCarousel(props) {
-  const { user } = useSelector((state: RootReducerState) => state.auth);
+  const carouselRef     = useRef(null);
+  const dispatch        = useDispatch();
+  const {user}          = useSelector((state: RootReducerState) => state.auth);
+  let device            = user.accounts[0]?.devices[0];
+  let selectedLightShow = device.config?.light_show ? device.config.light_show : 'TEMPERATURE_THERMOMETER';
+
+  const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
 
   const [data, setData] = useState([
     {
-      uri: <TemperatureAccount style={{}} />,
-      title: 'temperature',
+      uri:     <TemperatureAccount style={{}} />,
+      title:   'temperature',
       content: 'Thermometer',
       backUri: BackgroundTemperature,
       items: [
         {
-          img: <TemperatureImage style={{marginRight: 5}} />,
+          id:        'TEMPERATURE_THERMOMETER',
+          img:       <TemperatureImage style={{marginRight: 5}} />,
           imgActive: <TemperatureWhiteImage style={{marginRight: 5}} />,
-          text: 'Temperature',
-          active: false,
+          text:      'Temperature',
+          isDeluxe:  false,
         },
       ],
     },
     {
-      uri: <Sun style={{}} />,
-      title: 'light show',
+      uri:     <Sun style={{}} />,
+      title:   'light show',
       backUri: BackgroundSun,
       content: 'Thermometer',
       items: [
         {
-          img: <SunsetWhiteImage style={{marginRight: 5}} />,
+          id:        'LIGHT_SHOW_SUNSET',
+          img:       <SunsetWhiteImage style={{marginRight: 5}} />,
           imgActive: <SunsetImage style={{marginRight: 5}} />,
-          text: 'Sunset',
-          active: false,
+          text:      'Sunset',
+          isDeluxe:  false,
         },
         {
-          img: <NorthernWhiteImage style={{marginRight: 5}} />,
+          id:        'LIGHT_SHOW_NORTHERN_LIGHTS',
+          img:       <NorthernWhiteImage style={{marginRight: 5}} />,
           imgActive: <NorthernImage style={{marginRight: 5}} />,
-          text: 'Northern lights',
-          active: false,
+          text:      'Northern lights',
+          isDeluxe:  false,
         },
         {
-          img: <PulsingWhiteImage style={{marginRight: 5}} />,
+          id:        'LIGHT_SHOW_PULSING',
+          img:       <PulsingWhiteImage style={{marginRight: 5}} />,
           imgActive: <PulsingImage style={{marginRight: 5}} />,
-          text: 'Pulsing',
-          active: false,
+          text:      'Pulsing',
+          isDeluxe:  true,
         },
         {
-          img: <PickerImage style={{marginRight: 5}} />,
+          id:        'LIGHT_SHOW_COLOUR_PICKER',
+          img:       <PickerImage style={{marginRight: 5}} />,
           imgActive: <PickerWhiteImage style={{marginRight: 5}} />,
-          text: 'Colour picker',
-          active: false,
+          text:      'Colour picker',
+          isDeluxe:  true,
         },
       ],
     },
     {
-      uri: <Timer style={{}} />,
-      title: 'sleep trainer',
-      backUri: BackgroundTimer2,
+      uri:      <Timer style={{}} />,
+      title:    'sleep trainer',
+      backUri:  BackgroundTimer2,
       content: 'Thermometer',
-
       items: [
         {
-          img: <IdleImage style={{marginRight: 5}} />,
+          id:       'SLEEP_TRAINER_IDLE',
+          img:       <IdleImage style={{marginRight: 5}} />,
           imgActive: <IdleWhiteImage style={{marginRight: 5}} />,
-          text: 'Idle',
-          active: false,
+          text:     'Idle',
+          isDeluxe:  false,
         },
         {
-          img: <AsleepWhiteImage style={{marginRight: 5}} />,
+          id:       'SLEEP_TRAINER_ASLEEP',
+          img:       <AsleepWhiteImage style={{marginRight: 5}} />,
           imgActive: <AsleepImage style={{marginRight: 5}} />,
-          text: 'Asleep',
-          active: false,
+          text:      'Asleep',
+          isDeluxe:  false,
         },
         {
-          img: <AwakeWhiteImage style={{marginRight: 5}} />,
+          id:       'SLEEP_TRAINER_AWAKE',
+          img:       <AwakeWhiteImage style={{marginRight: 5}} />,
           imgActive: <AwakeImage style={{marginRight: 5}} />,
-          text: 'Awake',
-          active: false,
-        },
-      ],
-    },
-  ]);
-  const [copyData, setCopyData] = useState([
-    {
-      uri: <TemperatureAccount style={{}} />,
-      title: 'temperature',
-      content: 'Thermometer',
-      backUri: BackgroundTemperature,
-      items: [
-        {
-          img: <TemperatureImage style={{marginRight: 5}} />,
-          imgActive: <TemperatureWhiteImage style={{marginRight: 5}} />,
-          text: 'Temperature',
-          active: false,
-        },
-      ],
-    },
-    {
-      uri: <Sun style={{}} />,
-      title: 'light show',
-      backUri: BackgroundSun,
-      content: 'Thermometer',
-      items: [
-        {
-          img: <SunsetWhiteImage style={{marginRight: 5}} />,
-          imgActive: <SunsetImage style={{marginRight: 5}} />,
-          text: 'Sunset',
-          active: false,
-        },
-        {
-          img: <NorthernWhiteImage style={{marginRight: 5}} />,
-          imgActive: <NorthernImage style={{marginRight: 5}} />,
-          text: 'Northern lights',
-          active: false,
-        },
-      ],
-    },
-    {
-      uri: <Timer style={{}} />,
-      title: 'sleep trainer',
-      backUri: BackgroundTimer2,
-      content: 'Thermometer',
-
-      items: [
-        {
-          img: <IdleImage style={{marginRight: 5}} />,
-          imgActive: <IdleWhiteImage style={{marginRight: 5}} />,
-          text: 'Idle',
-          active: false,
-        },
-        {
-          img: <AsleepWhiteImage style={{marginRight: 5}} />,
-          imgActive: <AsleepImage style={{marginRight: 5}} />,
-          text: 'Asleep',
-          active: false,
-        },
-        {
-          img: <AwakeWhiteImage style={{marginRight: 5}} />,
-          imgActive: <AwakeImage style={{marginRight: 5}} />,
-          text: 'Awake',
-          active: false,
+          text:      'Awake',
+          isDeluxe:  false,
         },
       ],
     },
   ]);
 
-  const carouselRef = useRef(null);
-  const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
-  const [isActive, setIsActive] = useState({arrayIndex: null, index: null});
-  const [activeComponent, setActiveComponent] = useState(0);
-  const dispatch = useDispatch();
+  const handleActiveItem = (item) => {
+    if (device.is_online) {
+      dispatch(setDeviceLightShow(item.id));
+
+      if (['SLEEP_TRAINER_IDLE', 'SLEEP_TRAINER_ASLEEP', 'SLEEP_TRAINER_AWAKE'].indexOf(item.id) !== -1) {
+        setCurrentIndex(2);
+        carouselRef.current.scrollToIndex(2);
+      } else if (['LIGHT_SHOW_COLOUR_PICKER', 'LIGHT_SHOW_PULSING', 'LIGHT_SHOW_NORTHERN_LIGHTS', 'LIGHT_SHOW_SUNSET'].indexOf(item.id) !== -1) {
+        setCurrentIndex(1);
+        carouselRef.current.scrollToIndex(1);
+      } else if (['TEMPERATURE_THERMOMETER'].indexOf(item.id) !== -1) {
+        setCurrentIndex(0);
+        carouselRef.current.scrollToIndex(0);
+      }
+    }
+  };
 
   function handleCarouselScrollEnd(item, index) {
     setCurrentIndex(index);
   }
 
   function renderItem({item, index}) {
-    let power = false;
-    
     const {backUri, uri, title, content, items} = item;
-    console.log('item', item);
-    const handleActiveItem = (item, indexChild) => {
-      // props.setCarouselItem(item.text);
-      dispatch(setCarouselItem(item.text));
-      // setItemText(item.text);
-      let array = [...data];
-      array.map(it => {
-        return it.items.map(child => (child.active = false));
-      });
-
-      array[index].items[indexChild].active =
-        !array[index].items[indexChild].active;
-      setData(array);
-    };
 
     return (
       <TouchableOpacity
         disabled={index === currentIndex}
         style={styles.item}
-        
         onPress={() => {
           carouselRef.current.scrollToIndex(index);
-          setActiveComponent(index);
         }}>
         <View style={{paddingTop: 10, alignItems: 'center'}}>
           <ImageBackground style={styles.shadowImage} source={backUri}>
@@ -231,7 +177,7 @@ export default React.memo(function ShopCarousel(props) {
           scrollIndicatorStyle={{
             width: 4,
             backgroundColor: '#fff',
-            height: '60%',
+            height: '70%',
           }}
           style={{paddinHorizontal: 220}}
           scrollIndicatorContainerStyle={{
@@ -240,72 +186,33 @@ export default React.memo(function ShopCarousel(props) {
           <View style={styles.lowerContainer}>
             <Text style={styles.titleText}>{title}</Text>
             {items.map((item, indexChild) => {
-              console.log(item);
-              if (user.accounts[0].is_deluxe === 1) {
+              if (!item.isDeluxe || (item.isDeluxe && device.is_deluxe)) {
                 return (
                   <TouchableOpacity
-                    disabled={index !== currentIndex || !power}
+                    disabled={!device.is_online}
                     onPress={() => handleActiveItem(item, indexChild)}
                     style={[
                       styles.card,
                       {
-                        backgroundColor: power
-                          ? item.active
+                        backgroundColor: device.is_online && item.id == selectedLightShow
+                          ? item.id
                             ? '#72D3DB'
                             : 'rgba(255,255,255,0.2)'
                           : 'rgba(255,255,255,0.2)',
                       },
                     ]}>
-                    {item.active ? item.img : item.imgActive}
+                    {device.is_online && item.id == selectedLightShow ? item.img : item.imgActive}
                     <Text
                       style={[
                         styles.contentText,
                         {
-                          color: power
-                            ? item.active
-                              ? '#000'
-                              : 'rgba(255,255,255,1)'
-                            : 'rgba(255,255,255,1)',
+                          color: device.is_online && item.id == selectedLightShow ? '#000'  : 'rgba(255,255,255,1)',
                         },
                       ]}>
                       {item.text}
                     </Text>
                   </TouchableOpacity>
                 );
-              } else {
-                if (item.text === 'Pulsing' || item.text === 'Colour picker') {
-                } else {
-                  return (
-                    <TouchableOpacity
-                      disabled={index !== currentIndex || !power}
-                      onPress={() => handleActiveItem(item, indexChild)}
-                      style={[
-                        styles.card,
-                        {
-                          backgroundColor: power
-                            ? item.active
-                              ? '#72D3DB'
-                              : 'rgba(255,255,255,0.2)'
-                            : 'rgba(255,255,255,0.2)',
-                        },
-                      ]}>
-                      {item.active ? item.img : item.imgActive}
-                      <Text
-                        style={[
-                          styles.contentText,
-                          {
-                            color: power
-                              ? item.active
-                                ? '#000'
-                                : 'rgba(255,255,255,1)'
-                              : 'rgba(255,255,255,1)',
-                          },
-                        ]}>
-                        {item.text}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                }
               }
             })}
           </View>
@@ -328,6 +235,7 @@ export default React.memo(function ShopCarousel(props) {
         ref={carouselRef}
         minScrollDistance={10}
       />
+      
       <View style={{alignItems: 'center'}}>
         <SimplePaginationDot currentIndex={currentIndex} length={data.length} />
       </View>
@@ -340,7 +248,6 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
   },
   carousel: {
-    // backgroundColor: '#141518',
     aspectRatio: 1.5,
     flexGrow: 0,
     marginBottom: 20,
