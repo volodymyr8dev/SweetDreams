@@ -1,7 +1,7 @@
 import React                        from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useDispatch}                from 'react-redux';
-
+import {useSelector}                from 'react-redux';
+import {RootReducerState}           from '../../redux';
 import {Step3}                      from '../../screens/Registration/Step3';
 import {Step4}                      from '../../screens/Registration/Step4';
 import {Step5}                      from '../../screens/Registration/Step5';
@@ -21,7 +21,6 @@ import {TermsConditions}            from '../../screens/Account/ProfileSettings/
 
 import {SettingsAccount as DeviceSettings} from '../../screens/Account/Settings/SettingsAccount';
 
-
 import SettingsRoutes from './Settings/SettingsRoutes';
 import GraphicRoutes from './Graphics/GraphicsRoutes';
 import {NurseryRoutes} from './Nursery/NurseryRoutes';
@@ -29,15 +28,19 @@ import ConfirmConnection from '../../screens/Account/ConfirmConnection';
 import {ConnectedDevice} from '../../screens/Account/ConnectedDevice';
 import {DiaryRoutes} from './Diary/DiaryRoutes';
 
-const AuthStackRoutes = ({navigation, user}) => {
-  const Stack = createNativeStackNavigator();
+const AuthStackRoutes = ({navigation}) => {
+  const Stack  = createNativeStackNavigator();
+  const {user} = useSelector((state: RootReducerState) => state.auth);
+  
+  let account    = user ? user.accounts[0] : null;
+  let device     = account ? account.devices[0] : null;
 
   let nextScreen = null;
   if (!user.gender) {
     nextScreen = 'Step3';
-  } else if (!user.accounts[0]?.baby_name || !user.accounts[0]?.baby_gender) {
+  } else if (!account.baby_name || !account.baby_gender) {
     nextScreen = 'Step4';
-  } else if (!user.accounts[0]?.devices[0]?.id) {
+  } else if (!device) {
     nextScreen = 'Step5';
   } else {
     nextScreen = 'Tabs';
@@ -73,8 +76,6 @@ const AuthStackRoutes = ({navigation, user}) => {
           backgroundColor: '#000'
         }
       }} />
-
-      {/* Device screen */}
 
       {/* Profile screens */}
       <Stack.Screen name="ProfileSettings" component={ProfileSettings} />

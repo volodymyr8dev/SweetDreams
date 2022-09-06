@@ -25,7 +25,7 @@ const Stacks = () => {
   if (loadingCheckLogin) {
     return <View><Text>LOADING..</Text></View>
   } else {
-    return user?.email ? <AuthStackRoutes user={user}/> : <GuestStackRoutes/>
+    return user && user.email ? <AuthStackRoutes /> : <GuestStackRoutes/>
   }
 };
 
