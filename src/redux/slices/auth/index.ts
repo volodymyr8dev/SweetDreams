@@ -10,7 +10,8 @@ import slice, {
     setWakeUpTime,
     setTime,
     setTimeAutomatically,
-    checkLogin
+    checkLogin,
+    fetchDeviceConfig
 } from './authSlice';
 
 export {
@@ -25,7 +26,8 @@ export {
     setWakeUpTime,
     setTime,
     setTimeAutomatically,
-    checkLogin
+    checkLogin,
+    fetchDeviceConfig
 };
 
 export default slice;

@@ -1,16 +1,11 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import AsyncStorage                                     from '@react-native-async-storage/async-storage';
 import {getProfile}                                     from '../../../api/Profile/Profile';
-import {PatchDevice}                                    from '../../../api/Device/Device';
+import {PatchDevice, FetchLatestConfig}                 from '../../../api/Device/Device';
 export interface DeviceConfigItem {
   /* Version 1 */
-  current_temperature:          number | undefined;
-  is_turned_on:                 boolean | undefined;
-
   light_show:                   string | undefined;
-
   child_lock:                   boolean | undefined;
-
   time:                         string | undefined;
   time_set_up_automatically:    boolean | undefined;
   wake_up_time:                 string | undefined;
@@ -33,6 +28,7 @@ export interface DeviceItem {
   is_deluxe:                                       boolean | undefined;
   has_smart_sensor_actiation_notifcations_enabled: boolean | undefined;
   has_temperature_notifications_enabled:           boolean | undefined;
+  current_temperature:                             number | undefined;
   config:                                          DeviceConfigItem;
 }
 
@@ -190,6 +186,25 @@ export const authSlice = createSlice({
       state.user.date_of_birth = action.payload.user.date_of_birth;
       state.user.accounts      = action.payload.user.accounts.length > 0 ? action.payload.user.accounts : [];
     });
+
+    builder.addCase(fetchDeviceConfig.fulfilled, (state, action) => {
+      if (state.user?.accounts[0]?.devices[0]?.id) {
+        state.user.accounts[0].devices[0].is_online                                       = action.payload.is_online;
+        state.user.accounts[0].devices[0].is_deluxe                                       = action.payload.is_deluxe;
+        state.user.accounts[0].devices[0].has_smart_sensor_actiation_notifcations_enabled = action.payload.has_smart_sensor_actiation_notifcations_enabled;
+        state.user.accounts[0].devices[0].has_temperature_notifications_enabled           = action.payload.has_temperature_notifications_enabled;
+
+        state.user.accounts[0].devices[0].current_temperature                             = action.payload.current_temperature;
+
+        state.user.accounts[0].devices[0].config.light_show                               = action.payload.config.light_show;
+        state.user.accounts[0].devices[0].config.child_lock                               = action.payload.config.child_lock;
+        state.user.accounts[0].devices[0].config.dome_brightness                          = action.payload.config.dome_brightness;
+        state.user.accounts[0].devices[0].config.wake_up_time                             = action.payload.config.wake_up_time;
+        state.user.accounts[0].devices[0].config.time                                     = action.payload.config.time;
+        state.user.accounts[0].devices[0].config.temperature                              = action.payload.config.temperature;
+        state.user.accounts[0].devices[0].config.time_set_up_automatically                = action.payload.config.time_set_up_automatically;
+      }
+    });
   },
 });
 
@@ -215,6 +230,21 @@ const checkLogin = createAsyncThunk('auth/checkLogin', async (_params, { rejectW
 
     return rejectWithValue('');
   }
+});
+
+const fetchDeviceConfig = createAsyncThunk('auth/fetchDeviceConfig', async (_params, { rejectWithValue }) => {
+    return await FetchLatestConfig(
+      _params.accountId,
+      _params.deviceId
+    )
+    .then(res => {
+      return res.data;
+    })
+    .catch(err => {
+      console.error('[FETCH DEVICE CONFIG] Data incorrect');
+
+      return rejectWithValue('');
+    });
 });
 
 const {
@@ -243,7 +273,8 @@ export {
   setWakeUpTime,
   setTime,
   setTimeAutomatically,
-  checkLogin
+  checkLogin,
+  fetchDeviceConfig
 };
 
 export default authSlice.reducer;

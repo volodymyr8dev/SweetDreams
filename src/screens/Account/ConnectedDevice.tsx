@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react';
-import {useSelector}      from 'react-redux';
-import {RootReducerState} from '../../redux';
-
+import React, {useState, useEffect} from 'react';
+import {useSelector, useDispatch}   from 'react-redux';
+import {RootReducerState}           from '../../redux';
+import {fetchDeviceConfig}          from '../../redux/slices/auth';
 import {
   View,
   StyleSheet,
@@ -23,14 +23,36 @@ import Sheep from '../../assets/images/svg/Sheep';
 import {Content} from '../../components/Carousel/Content';
 
 export const ConnectedDevice = ({navigation}) => {
-  const {user} = useSelector((state: RootReducerState) => state.auth);
-  let device   = user.accounts[0]?.devices[0];
+  const dispatch = useDispatch();
+  const {user}   = useSelector((state: RootReducerState) => state.auth);
+  let device     = user.accounts[0]?.devices[0];
+
+  /* Refresh data x 1.5 seconds */
+  useEffect(() => {
+    const interval = setInterval(
+      () => {
+        if (device && device.is_online) {
+          dispatch(
+            fetchDeviceConfig({
+              accountId: user.accounts[0]?.id,
+              deviceId: device.id
+            })
+          );
+        }
+      },
+      1500
+    );
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   /* Set default navigation options */
   useEffect(() => {
     navigation.setOptions({
       headerShown: false
-    })
+    });
   }, [navigation]);
 
   const openSettings = async () => {
@@ -95,7 +117,7 @@ export const ConnectedDevice = ({navigation}) => {
                       fontFamily: 'AntagometricaBT-Regular',
                       fontWeight: 'bold',
                     }}>
-                    {device.config?.temperature == 'C' ? device.current_temperature : device.current_temperature * 9/5 + 32}°{device.config.temperature}
+                    {(device.config?.temperature == 'C' ? device.current_temperature : device.current_temperature * 9/5 + 32).toFixed(1).toString()}°{device.config.temperature}
                   </Text>
                 )}
               </View>

@@ -23,6 +23,12 @@ export const ConnectDevice = async (accountId, serialNumber) => {
   return await axiosInstance.post(`/api/accounts/${accountId}/device`, body);
 };
 
+export const FetchLatestConfig = async (accountId, deviceId) => {
+  console.log('[DEVICE CONFIGURATION] Fetch device config request');
+
+  return await axiosInstance.get(`/api/accounts/${accountId}/device/${deviceId}`);
+};
+
 export const PatchDevice = async (accountId, deviceId, body) => {
   console.log('[DEVICE CONFIGURATION] Patch device request', body);
 

@@ -20,7 +20,7 @@ const Stacks = () => {
   console.log('[INIT] User', user);
   console.log('[INIT] Verified', verified);
   console.log('[INIT] Accounts', JSON.stringify(user.accounts));
-  console.log('[INIT] Devices', JSON.stringify(user.accounts[0].devices));
+  console.log('[INIT] Devices', JSON.stringify(user.accounts[0]?.devices));
 
   if (loadingCheckLogin) {
     return <View><Text>LOADING..</Text></View>
