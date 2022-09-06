@@ -1,30 +1,21 @@
 import React from 'react';
 import Slider from '@react-native-community/slider';
 import {useDispatch} from 'react-redux';
-import {setBrightness, setVolume} from '../../redux/slice/SettingsSlice';
 import {COLORS} from '../../styles/Constants';
 
-export const SliderComp = ({brightness, value, setValue, name}) => {
+export const SliderComp = ({slideValue, value, setValue, name}) => {
   const dispatch = useDispatch();
   return (
     <Slider
       style={{width: '100%', height: 40}}
-      value={brightness}
+      value={slideValue}
       minimumValue={0}
       maximumValue={255}
       minimumTrackTintColor={COLORS.text}
       maximumTrackTintColor="#292C62"
-      onSlidingComplete={value => {
-        if (name === 'volume') {
-          dispatch(setVolume(value));
-        } else {
-          dispatch(setBrightness(value));
-          console.log(value);
-        }
-      }}
+      onSlidingComplete={value => {}}
       onValueChange={value => {
         setValue(value);
-        console.log(value);
       }}
     />
   );

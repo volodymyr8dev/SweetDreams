@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {useSelector, useDispatch}   from 'react-redux';
-import {RootReducerState}           from '../../../redux';
-
+import React, {useState, useEffect, useCallback} from 'react';
+import {useSelector, useDispatch}                from 'react-redux';
+import {RootReducerState}                        from '../../../redux';
+import {debounce}                                from 'lodash';
 import {
   View,
   StyleSheet,
@@ -28,39 +28,24 @@ export const SettingsDomeBrightness = ({navigation}) => {
 
   const [newDomeBrightness, setNewDomeBrightness]  = useState(parseInt(device.config?.dome_brightness));
 
+  const toggleDomeBrightness = useCallback(
+    debounce((val) => {
+      dispatch(
+        setDomeBrightness(Number(val).toFixed(0))  
+      );
+    }, 100),
+    []
+  );
+
   /* Set default navigation options */
   useEffect(() => {
     navigation.setOptions(
       getCombinedNavigation({
         title: 'dome brightness',
         headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
-        headerRightText:   'save',
-        headerRightMethod: () => {
-          toggleDomeBrightness(newDomeBrightness);
-          navigation.goBack();
-        },
       })
     )
   }, [navigation]);
-
-  /* Update options on update */
-  const refreshNavigation = (domeBrightness) => {
-    navigation.setOptions(
-      getCombinedNavigation({
-        title: 'dome brightness',
-        headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
-        headerRightText:   'save',
-        headerRightMethod: () => {
-          toggleDomeBrightness(newDomeBrightness);
-          navigation.goBack();
-        },
-      })
-    )
-  }
-
-  const toggleDomeBrightness = (brightness) => {
-    dispatch(setDomeBrightness(Number(brightness).toFixed(0)));
-  }
 
   return (
     <ImageBackground source={background}>
@@ -69,9 +54,9 @@ export const SettingsDomeBrightness = ({navigation}) => {
           <Image source={DomeBrightnessBig} style={{width: 25, height: 25, marginRight: 5}} />
           <View style={{justifyContent: 'center', width: '75%'}}>
             <SliderComp
-                brightness={newDomeBrightness}
+                slideValue={newDomeBrightness}
                 value={newDomeBrightness}
-                setValue={(newValue) => {setNewDomeBrightness(newValue); refreshNavigation(newValue);}}
+                setValue={(newValue) => {setNewDomeBrightness(newValue); toggleDomeBrightness(newValue);}}
             />
           </View>
           <Image style={{width: 30, height: 30, marginLeft: 5}} source={DomeBrightnessSmall} />
@@ -83,7 +68,6 @@ export const SettingsDomeBrightness = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: '#2A2E63',
     height: '100%',
   },
   box: {

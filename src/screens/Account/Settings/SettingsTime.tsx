@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {useSelector, useDispatch}   from 'react-redux';
-import {RootReducerState}           from '../../../redux';
-import moment                       from 'moment';
+import React, {useState, useEffect, useCallback} from 'react';
+import {useSelector, useDispatch}                from 'react-redux';
+import {RootReducerState}                        from '../../../redux';
+import moment                                    from 'moment';
+import {debounce}                                from 'lodash';
 
 import {
   View,
@@ -33,6 +34,18 @@ export const SettingsTime = ({navigation}) => {
     dateNow.toDate()
   );
   const [newTimeAutomatically, setNewTimeAutomatically] = useState(device.config?.time_set_up_automatically ? true : false);
+
+  const toggleTime = useCallback(
+    debounce((newTime, newTimeAutomatically) => {
+      dispatch(setTimeAutomatically(newTimeAutomatically));
+      if (newTimeAutomatically) {
+        dispatch(setTime(moment(new Date()).format('HH:mm')));
+      } else {
+        dispatch(setTime(moment(newTime).format('HH:mm')));
+      }
+    }, 100),
+    []
+  );
   
   /* Set default navigation options */
   useEffect(() => {
@@ -40,38 +53,9 @@ export const SettingsTime = ({navigation}) => {
       getCombinedNavigation({
         title: 'time',
         headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
-        headerRightText:   'save',
-        headerRightMethod: () => {
-          toggleTime(newTime, newTimeAutomatically);
-          navigation.goBack();
-        },
       })
     )
   }, [navigation]);
-
-  /* Update options on update */
-  const refreshNavigation = (newTime, newTimeAutomatically) => {
-    navigation.setOptions(
-      getCombinedNavigation({
-        title: 'time',
-        headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
-        headerRightText:   'save',
-        headerRightMethod: () => {
-          toggleTime(newTime, newTimeAutomatically);
-          navigation.goBack();
-        },
-      })
-    )
-  }
-
-  const toggleTime = (newTime, newTimeAutomatically) => {
-    dispatch(setTimeAutomatically(newTimeAutomatically));
-    if (newTimeAutomatically) {
-      dispatch(setTime(moment(new Date()).format('HH:mm')));
-    } else {
-      dispatch(setTime(moment(newTime).format('HH:mm')));
-    }
-  }
 
   return (
     <ImageBackground source={background}>
@@ -89,7 +73,7 @@ export const SettingsTime = ({navigation}) => {
             <Switch val={newTimeAutomatically} setData={
               () => {
                 setNewTimeAutomatically(!newTimeAutomatically);
-                refreshNavigation(newTime, !newTimeAutomatically);
+                toggleTime(newTime, !newTimeAutomatically);
               }
             } />
           </View>
@@ -109,7 +93,7 @@ export const SettingsTime = ({navigation}) => {
                 onConfirm={date => {}}
                 onDateChange={value => {
                   setNewTime(new Date(value));
-                  refreshNavigation(new Date(value), newTimeAutomatically);
+                  toggleTime(new Date(value), false);
                 }}
               />
             </View>
