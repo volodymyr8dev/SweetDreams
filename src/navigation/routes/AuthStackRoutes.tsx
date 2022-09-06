@@ -28,15 +28,15 @@ import ConfirmConnection from '../../screens/Account/ConfirmConnection';
 import {ConnectedDevice} from '../../screens/Account/ConnectedDevice';
 import {DiaryRoutes} from './Diary/DiaryRoutes';
 
-const AuthStackRoutes = ({navigation}) => {
+const AuthStackRoutes = () => {
   const Stack  = createNativeStackNavigator();
   const {user} = useSelector((state: RootReducerState) => state.auth);
   
-  let account    = user ? user.accounts[0] : null;
-  let device     = account ? account.devices[0] : null;
+  let account    = user && user.accounts ? user.accounts[0] : null;
+  let device     = account && account.devices ? account.devices[0] : null;
 
   let nextScreen = null;
-  if (!user.gender) {
+  if (!account || !user.gender) {
     nextScreen = 'Step3';
   } else if (!account.baby_name || !account.baby_gender) {
     nextScreen = 'Step4';
