@@ -17,7 +17,7 @@ export const DeviceInit = async (accountId, serialNumber, type) => {
 export const ConnectDevice = async (accountId, serialNumber) => {
   const body = {
     serial_number: serialNumber,
-    time:          moment(new Date()).format('HH:mm'),
+    time:          moment(new Date()).format('HH:mm')
   };
 
   console.log('[DEVICE CONFIGURATION] Add device request', body);

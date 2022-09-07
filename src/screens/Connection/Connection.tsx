@@ -72,26 +72,26 @@ export const Connection = ({navigation}) => {
                 Status:{' '}
               </Text>
               { device && device.is_connected
-                ? !<View
+                ? <View
                     style={{
-                      width: 9,
-                      height: 9,
-                      backgroundColor: '#D65852',
-                      borderRadius: 100,
-                      marginTop: 5,
-                      marginRight: 2,
+                      width: 10,
+                      height: 10,
+                      backgroundColor: '#9EFCBE',
+                      borderRadius: 5,
+                      marginTop: 4,
+                      marginRight: 5,
                     }}/>
                 : <View
                     style={{
-                      width: 9,
-                      height: 9,
+                      width: 10,
+                      height: 10,
                       backgroundColor: '#D65852',
-                      borderRadius: 100,
-                      marginTop: 5,
+                      borderRadius: 5,
+                      marginTop: 4,
                       marginRight: 2,
                     }}/>
               }
-              { device && device.is_connected ? <Text style={{color: '#FFFFFF'}}>CONNECTED</Text> : <Text style={{color: '#FFFFFF'}}>NOT CONNECTED</Text>}
+              { device && device.is_connected ? <Text style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>CONNECTED</Text> : <Text style={{color: '#FFFFFF', fontFamily: 'AntagometricaBT-Regular'}}>NOT CONNECTED</Text>}
             </View>
           </View>
           <View style={{marginBottom: 30}}>

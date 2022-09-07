@@ -191,13 +191,10 @@ export const authSlice = createSlice({
       if (state.user?.accounts[0]?.devices[0]?.id) {
         state.user.accounts[0].devices[0].is_online                                       = action.payload.is_online;
         state.user.accounts[0].devices[0].is_deluxe                                       = action.payload.is_deluxe;
-        state.user.accounts[0].devices[0].has_smart_sensor_actiation_notifcations_enabled = action.payload.has_smart_sensor_actiation_notifcations_enabled;
-        state.user.accounts[0].devices[0].has_temperature_notifications_enabled           = action.payload.has_temperature_notifications_enabled;
 
         state.user.accounts[0].devices[0].current_temperature                             = action.payload.current_temperature;
 
         state.user.accounts[0].devices[0].config.light_show                               = action.payload.config.light_show;
-        state.user.accounts[0].devices[0].config.child_lock                               = action.payload.config.child_lock;
         state.user.accounts[0].devices[0].config.dome_brightness                          = action.payload.config.dome_brightness;
         state.user.accounts[0].devices[0].config.wake_up_time                             = action.payload.config.wake_up_time;
         state.user.accounts[0].devices[0].config.time                                     = action.payload.config.time;
