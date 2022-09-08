@@ -156,10 +156,10 @@ export const InputUnit = ({
                   styles.customText,
                   {color: value == 'left' ? '#fff' : COLORS.text},
                 ]}>
-                Left / 
+                Left 
               </Text>
             </TouchableOpacity>
-
+            <Text style={{color:"#fff",marginTop:2}}>  / </Text>
             <TouchableOpacity onPress={() => setValueName?.('right')}>
               <Text
                 style={

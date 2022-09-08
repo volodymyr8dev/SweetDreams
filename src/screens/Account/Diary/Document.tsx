@@ -71,7 +71,6 @@ const formatDate = (date = new Date()) => {
   return moment(date).format('YYYY-MM-DD');
 };
 const getMarkedDates = (baseDate, appointments) => {
-  console.log('appointments', appointments);
   const markedDates = {};
   
   markedDates[formatDate(baseDate)] = {selected: true};
@@ -90,7 +89,7 @@ const getMarkedDates = (baseDate, appointments) => {
   return markedDates;
 };
 
-export const Document = ({navigation}) => {
+export const Document = ({navigation,route}) => {
   /* Set default navigation options */
   useEffect(() => {
     navigation.setOptions({
@@ -102,7 +101,7 @@ export const Document = ({navigation}) => {
   const isFocused = useIsFocused();
   const [shown, setShown] = useState(false);
 
-  const [selectedDate, setSelectedDate] = useState(new Date(2022, 6, 12));
+  const [selectedDate, setSelectedDate] = useState(new Date());
   
   const { loadingCheckLogin, user, verified } = useSelector((state: RootReducerState) => state.auth);
   const global = user.accounts[0];
@@ -116,6 +115,11 @@ export const Document = ({navigation}) => {
     setShown(true);
     setClicked(false);
   };
+
+   useEffect(() => {
+     if (route.params?.date) setSelectedDate(route?.params.date);
+   }, [route.params?.date, isFocused]);
+
   useEffect(() => {
     console.log('clecked', clicked);
     navigation.setParams({
@@ -132,12 +136,10 @@ export const Document = ({navigation}) => {
     return true;
   }
 
-  console.log('points here', points);
   useEffect(() => {
     console.log('update', global);
     GetEventApi(global.id)
       .then(({data}) => {
-        console.log('daat', data);
         let res = data.map(item => {
           if (isJsonString(item.location)) {
             item.location = JSON.parse(item.location);
@@ -147,7 +149,6 @@ export const Document = ({navigation}) => {
           if (item.type == 'feed') item.title = 'Feed';
           return item;
         });
-        console.log('ressss', res);
         setPoints(res);
       })
       .catch(err => {
@@ -204,7 +205,6 @@ export const Document = ({navigation}) => {
       setFilteredPoints(['']);
     }
   }, [shown]);
-  console.log('getMarkedDates', getMarkedDates(selectedDate, points));
 
   return (
     <ImageBackground source={backImg} style={styles.container}>

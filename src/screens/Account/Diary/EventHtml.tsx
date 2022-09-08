@@ -14,7 +14,6 @@ import feedLine from '../../../assets/images/documents/feedLine.png';
 export const EventHtml = (item, selectedDate, points) => {
   let date = moment(item.starts_at).format('hh:mm');
   const navigation = useNavigation<any>();
-  console.log('points+++++=', points);
 
   const goToEvent = async EventItem => {
     let d = new Date(selectedDate);
@@ -31,7 +30,6 @@ export const EventHtml = (item, selectedDate, points) => {
       rightText: 'edit',
     });
   };
-  console.log('item',item)
   return item ? (
     <TouchableOpacity
       onPress={() => goToEvent(item)}
