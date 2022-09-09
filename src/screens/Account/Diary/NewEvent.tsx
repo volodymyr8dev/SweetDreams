@@ -9,7 +9,7 @@ import {getCombinedNavigation}                            from '../../../hooks/u
 import {RootReducerState}                                 from '../../../redux';
 import {useSelector}                                      from 'react-redux';
 
-import {dateHMFormat, dateTimeFormat}                     from '../../../utils/time';
+import {dateHMFormat, dateTimeFormat, monthNameDate}      from '../../../utils/time';
 import {COLORS}                                           from '../../../styles/Constants';
 
 interface ILocation {
@@ -38,7 +38,9 @@ export const NewEvent = ({navigation, route}) => {
     navigation.setOptions(
       getCombinedNavigation({
         title: 'new feed entry',
-        headerLeftMethod: () => {navigation.navigate('Diary')},
+        headerLeftText:  (params.type == regType||params.type == feedType) ? 'entry type' : params.editable ? 'cancel' 
+        : monthNameDate(params.selectedDate) , 
+        headerLeftMethod: () => {params.editable ?navigation.goBack() : navigation.navigate('Diary')},
         headerRightText: params?.editable ? 'save' : 'add',
         headerRightMethod: () => {
           params.editable ? hadleEditEvent() : addEvent();
@@ -109,7 +111,7 @@ export const NewEvent = ({navigation, route}) => {
       setEnds(dateTimeFormat(new Date()));
     }
   }, []);
-  const handleSetLocation = loc => { setLocation(rest => ({locate:loc.location, name: loc.name}))};
+  const handleSetLocation = loc => {setLocation(rest => ({locate:loc.location, name: loc.name}))};
   return (
     <View style={styles.container}>
       <InputUnit event={true} value={title} setValueName={value => setTitle(value)} nameOfBox={'input'}
@@ -118,8 +120,7 @@ export const NewEvent = ({navigation, route}) => {
       <TouchableOpacity
         style={styles.box}
         onPress={() => {
-          navigation.navigate('Location event', {title: 'location', location: eventSelector,onGoback: handleSetLocation,
-          });
+          navigation.navigate('Location event', {title: 'location', onGoback: handleSetLocation});
         }}>
         <View style={styles.touchC}>
           <View><Text style={styles.touchT}>Location</Text></View>

@@ -1,30 +1,26 @@
-import React, {useEffect, useState} from 'react';
-import {Calendar} from 'react-native-calendars';
-import {Dimensions} from 'react-native';
-import { RootReducerState } from '../../../redux';
-import {LocaleConfig} from 'react-native-calendars';
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  ImageBackground,
-} from 'react-native';
-import moment from 'moment';
-import {COLORS} from '../../../styles/Constants';
-import eventDateimportant from '../../../assets/images/documents/dateEventVerticalImportant.png';
-import backImg from '../../../assets/images/documents/background.png';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
-import {GetEventApi} from '../../../api/Diary/calendar';
-import SearchBar from '../../../components/SearchBar';
-import {EventHtml} from './EventHtml';
-import { RootState } from '../../../redux/interfaceRootState';
-
+import React, {useEffect, useState}                                    from 'react';
+import {View, StyleSheet, SafeAreaView, ScrollView, ImageBackground, TouchableOpacity, Alert }  from 'react-native';
+import {Calendar}                                                      from 'react-native-calendars';
+import {Dimensions}                                                    from 'react-native';
+import {LocaleConfig}                                                  from 'react-native-calendars';
+import {useIsFocused, useNavigation}                                   from '@react-navigation/native';
+import moment                                                          from 'moment';
+import {useSelector}                                                   from 'react-redux';
+import { RootReducerState }                                            from '../../../redux';
+import SearchBar                                                       from '../../../components/SearchBar';
+import {GetEventApi}                                                   from '../../../api/Diary/calendar';
+import {EventHtml}                                                     from './EventHtml';
+import backImg                                                         from '../../../assets/images/documents/background.png';
+import eventDateimportant                                              from '../../../assets/images/documents/dateEventVerticalImportant.png';
+import {COLORS}                                                        from '../../../styles/Constants';
+import { getCombinedNavigation }                                       from '../../../hooks/useUpdateNavigationHeaderOptions';
+import Plus                                                            from '../../../assets/images/svg/diary/Plus'
+import Search                                                          from '../../../assets/images/svg/diary/Search'
 interface IPoints {
   title: string;
   date: string;
 }
+
 LocaleConfig.locales.en = {
   monthNames: [
     'January',
@@ -67,9 +63,11 @@ LocaleConfig.locales.en = {
 };
 LocaleConfig.defaultLocale = 'en';
 
+
 const formatDate = (date = new Date()) => {
   return moment(date).format('YYYY-MM-DD');
 };
+
 const getMarkedDates = (baseDate, appointments) => {
   const markedDates = {};
   
@@ -90,107 +88,83 @@ const getMarkedDates = (baseDate, appointments) => {
 };
 
 export const Document = ({navigation,route}) => {
-  /* Set default navigation options */
-  useEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-      title: 'baby\'s diary'
-    })
-  }, [navigation]);
-
   const isFocused = useIsFocused();
-  const [shown, setShown] = useState(false);
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  
   const { loadingCheckLogin, user, verified } = useSelector((state: RootReducerState) => state.auth);
   const global = user.accounts[0];
+  
+  const [shown, setShown]                   = useState(false);
+  const [selectedDate, setSelectedDate]     = useState(new Date());
+  const [filteredPoints, setFilteredPoints] = useState<IPoints[] | ['']>([{title: '', date: ''}]);
+  const [points, setPoints]                 = useState([]);
+  const [searchPhrase, setSearchPhrase]     = useState('');
+  const [clicked, setClicked]               = useState(true);
 
-  const [filteredPoints, setFilteredPoints] = useState<IPoints[] | ['']>([
-    {title: '', date: ''},
-  ]);
-  const [points, setPoints] = useState([]);
+    /* Set default navigation options */
+    useEffect(() => {
+      navigation.setOptions(
+        getCombinedNavigation({
+          title: global.baby_name?` baby's ${global.baby_name}`: "baby's diary",
+          // headerLeftMethod:()=>{navigation.goBack()},
+          headerRightText:         
+          <><TouchableOpacity style={{ paddingRight: 23.5, paddingLeft: 15, paddingVertical: 10 }}
+              onPress={() => {handleClicked()}}>
+              <Search style={{ width: 15, height: 15 }} />
+            </TouchableOpacity>
+            <TouchableOpacity style={{ paddingVertical: 10,paddingRight:15 }}
+              onPress={() => {handleAddEvent()}}>
+                <Plus style={undefined} />
+              </TouchableOpacity></>,
+          headerRightMethod: () => {},
+        }),
+      );
+    }, [navigation,selectedDate, isFocused]);
 
-  const handleClicked = () => {
-    setShown(true);
-    setClicked(false);
-  };
+  const handleClicked = () => { setShown(true); setClicked(false) };
 
    useEffect(() => {
      if (route.params?.date) setSelectedDate(route?.params.date);
    }, [route.params?.date, isFocused]);
 
-  useEffect(() => {
-    console.log('clecked', clicked);
-    navigation.setParams({
-      headerShown: clicked,
-      searchClicked: handleClicked,
-    });
-  }, [isFocused]);
+
   function isJsonString(str) {
-    try {
-      JSON.parse(str);
-    } catch (e) {
-      return false;
-    }
+    try {JSON.parse(str)} 
+    catch (e) {return false}
     return true;
   }
 
   useEffect(() => {
-    console.log('update', global);
     GetEventApi(global.id)
       .then(({data}) => {
+
         let res = data.map(item => {
-          if (isJsonString(item.location)) {
-            item.location = JSON.parse(item.location);
-          }
+
+          if (isJsonString(item.location)) item.location = JSON.parse(item.location)
           item.date = item.starts_at;
           item.date = moment(item.date).format('YYYY-MM-DD');
+
           if (item.type == 'feed') item.title = 'Feed';
+
           return item;
         });
         setPoints(res);
       })
       .catch(err => {
-        console.log('err', err.response.data);
+        console.log('Diary getEvent failed ', err.response.data);
+        
+        Alert.alert(err.response.data.message);
+        
       });
   }, [isFocused]);
-  useEffect(() => {
-    navigation.setParams({
-      addEvent: sendSelectedDate,
-    });
-  }, [selectedDate, isFocused]);
 
-  const sendSelectedDate = () => {
-    console.log('selectedDate2', selectedDate);
-    navigation.navigate('addEvent', {
-      selectedDate,
-      title: 'new event entry',
-      backTitle: 'entry type',
-      global,
-      rightText: 'add',
-      type: 'regular',
-    });
+  const handleAddEvent = () => {
+    navigation.navigate('addEvent', {selectedDate, global, type: 'regular'});
   };
-  const [searchPhrase, setSearchPhrase] = useState('');
-  const [clicked, setClicked] = useState(true);
-  const [fakeData, setFakeData] = useState();
+
+
   useEffect(() => {
-    const getData = async () => {
-      const apiResponse = await fetch(
-        'https://my-json-server.typicode.com/kevintomas1995/logRocket_searchBar/languages',
-      );
-      const data = await apiResponse.json();
-      setFakeData(data);
-    };
-    getData();
-  }, []);
-  console.log('%c Filtered Data', 'background-color:blue', filteredPoints);
-  useEffect(() => {
-    console.log('shown', shown);
     if (shown) {
       let res = points?.filter((item:any) => {
-        console.log('item f', item);
         if (item?.title?.toLowerCase().includes(searchPhrase.toLowerCase())) {
           return item;
         }
@@ -198,12 +172,9 @@ export const Document = ({navigation,route}) => {
       setFilteredPoints(res);
     }
   }, [searchPhrase]);
+
   useEffect(() => {
-    if (!shown) {
-      setFilteredPoints([]);
-    } else if (shown) {
-      setFilteredPoints(['']);
-    }
+    !shown ? setFilteredPoints([]) : setFilteredPoints([''])
   }, [shown]);
 
   return (
@@ -230,10 +201,7 @@ export const Document = ({navigation,route}) => {
               // hideExtraDays={true}
               // minDate={subWeeks(baseDate, 1)}
               // maxDate={addWeeks(baseDate, 1)}
-              onDayPress={day => {
-                setSelectedDate(new Date(day.year, day.month - 1, day.day));
-                console.log('selected day', day);
-              }}
+              onDayPress={day => {setSelectedDate(new Date(day.year, day.month - 1, day.day))}}
               markedDates={getMarkedDates(selectedDate, points)}
               disabledDaysIndexes={[1, 6]}
               theme={{
@@ -262,67 +230,13 @@ export const Document = ({navigation,route}) => {
                     borderBottomColor: 'rgba(35, 113, 171, .4)',
                     marginBottom: 4,
                     // backgroundColor: '#2A305A',
-                    dayHeader: {
-                      marginTop: 2,
-                      marginBottom: 7,
-                      width: 30,
-                      textAlign: 'center',
-                      fontSize: 14,
-                      color: '#fff',
-                    },
+                    dayHeader: {marginTop: 2,marginBottom: 7,width: 30,textAlign: 'center',fontSize: 14,color: '#fff',},
                   },
-                  dayTextAtIndex0: {
-                    color: 'red',
-                    padding: 10,
-                    backgroundColor: 'red',
-                  },
-                  headerTitle: {
-                    color: COLORS.yellow,
-                  },
+                  headerTitle: {color: COLORS.yellow},
                 },
-                // 'stylesheet.day.single': {
-                //   base: {
-                //     overflow: 'hidden',
-                //     height: 34,
-                //     alignItems: 'center',
-                //     backgroundColor: 'red',
-                //     width: 38,
-                //   }
-                // },
-                // 'stylesheet.day.basic': {
-                //   text: {
-                //     // marginBottom: 4,
-                //     color: COLORS.textLight,
-                //     alignText: 'center',
-                //     dispay: 'flex',
-                //     justifyContent: 'center',
-                //     alignItems: 'center',
-                //     marginTop: 14, // specify the margin you want
-                //     paddingLeft: 5,
-                //     // ...otherTextStyles
-                //   },
-                // },
                 'stylesheet.calendar.main': {
-                  monthView: {
-                    // backgroundColor: COLORS.yellow,
-                  },
-                  // week: {
-                  //   flexDirection: 'row',
-                  //   justifyContent: 'space-around',
-                  //   backgroundColor: '#fff',
-                  //   // margin: 1,
-
-                  //   // borderBottomWidth: 1,
-                  //   // borderBottomColor: colors.grey30,
-                  // },
-                  dayContainer: {
-                    // borderColor: '#D1D3D4',
-                    // borderWidth: 1,
-                    // justifyContent: 'center',
-                    // alignItems: 'center',
-                    // padding: 10,
-                    justifyContent: 'space-between',
-                  },
+                  monthView: {},
+                  dayContainer: {justifyContent: 'space-between'},
 
                   week: {
                     height: 60,
@@ -335,40 +249,25 @@ export const Document = ({navigation,route}) => {
                     alignItems: 'flex-start',
                     justifyContent: 'space-around',
                     paddingTop: 7,
-                    // marginTop: 7,
                   },
                 },
                 textMonthColor: COLORS.yellow,
                 textDayFontFamily: 'AntagometricaBT-Bold',
                 textDayFontSize: 18,
-                arrowStyle: {
-                  opacity: 0,
-                },
+                arrowStyle: {opacity: 0},
                 textDayFontWeight: 'bold',
                 textDayStyle: {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
                   textAlign: 'center',
-                  // backgroundColor: 'green',
-                  // color: 'red',
                 },
-                // textDayFontWeight: "bold",
-                selectedStyle: {
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                },
-                dotStyle: {
-                  marginTop: 11,
-                  width: 5.76,
-                  height: 5.76,
-                  borderRadius: 50,
-                },
+                selectedStyle: {alignItems: 'center',justifyContent: 'center'},
+                dotStyle: {marginTop: 11,width: 5.76, height: 5.76, borderRadius: 50},
                 todayTextColor: '#CE9B51',
                 calendarBackground: '#1F1933',
                 backgroundColor: '#ffffff',
                 selectedDayBackgroundColor: '#2371AB',
-
                 selectedDayTextColor: '#fff',
                 selectedDotColor: '#fff',
                 textSectionTitleColor: '#2371AB',
@@ -378,24 +277,19 @@ export const Document = ({navigation,route}) => {
                 dotColor: '#DBE9EE',
                 monthTextColor: '#DBE9EE',
                 textMonthFontWeight: 'bold',
-
                 arrowColor: '#DBE9EE',
               }}
             />
           )}
           <ScrollView
-            style={{
-              paddingBottom: 150,
-              height: Dimensions.get('window').height / 3,
-            }}>
+            style={{paddingBottom: 150,height: Dimensions.get('window').height / 3}}>
             <View style={{paddingBottom: 40}}>
               {(filteredPoints.length > 0 ? filteredPoints : points).map(
                 item => {
                   return filteredPoints.length > 0
                     ? EventHtml(item, selectedDate, points)
-                    : moment(item.date).format('YYYY-MM-DD') ==
-                        moment(selectedDate).format('YYYY-MM-DD') &&
-                        EventHtml(item, selectedDate, points);
+                    : moment(item.date).format('YYYY-MM-DD') == 
+                    moment(selectedDate).format('YYYY-MM-DD') && EventHtml(item, selectedDate, points);
                 },
               )}
             </View>
@@ -409,7 +303,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#272854',
-    // marginTop: 50,
     heaight: '100%',
   },
   mainContainer: {
@@ -445,7 +338,5 @@ const styles = StyleSheet.create({
     margin: 2,
   },
 
-  dateIcon: {
-    padding: 10,
-  },
+  dateIcon: {padding: 10},
 });
