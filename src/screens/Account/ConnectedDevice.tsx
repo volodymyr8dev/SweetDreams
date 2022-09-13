@@ -17,6 +17,7 @@ import line from '../../assets/images/homeIcon/line.png';
 import {COLORS} from '../../styles/Constants';
 import backgroundGrey from '../../assets/backGrey.png';
 import Thermometer from '../../assets/images/svg/Thermometer';
+import ThermometerYellow from '../../assets/images/svg/ThermometerYellow'
 import CryChild from '../../assets/images/svg/CryChild';
 import TopGear from '../../assets/images/svg/TopGear';
 import Sheep from '../../assets/images/svg/Sheep';
@@ -55,7 +56,7 @@ export const ConnectedDevice = ({navigation}) => {
     });
   }, [navigation]);
 
-  
+
   const openSettings = async () => {
     navigation.navigate('DeviceSettings');
   };
@@ -87,8 +88,8 @@ export const ConnectedDevice = ({navigation}) => {
                     : styles.contentDeluxeTemperature
                 }>
 
-                <Thermometer />
-                
+                {device.current_temperature >= 18 ? <ThermometerYellow/> : <Thermometer/>}
+
                 {!device.is_online ? (
                   <Text
                     style={styles.textTemperature}>
