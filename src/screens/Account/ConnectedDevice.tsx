@@ -55,6 +55,7 @@ export const ConnectedDevice = ({navigation}) => {
     });
   }, [navigation]);
 
+  
   const openSettings = async () => {
     navigation.navigate('DeviceSettings');
   };
@@ -78,55 +79,34 @@ export const ConnectedDevice = ({navigation}) => {
             alignSelf: 'center',
           }}>
           <View style={styles.controlContainer}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center',alignItems: 'center',width:Dimensions.get('window').width}}>
               <View
                 style={
                   device.is_deluxe == false
-                    ? {
-                        flexDirection: 'row',
-                        justifyContent: 'flex-end',
-                        alignItems: 'center',
-                        width: 120,
-                        left: '17%',
-                      }
-                    : {
-                        flexDirection: 'row',
-                        justifyContent: 'flex-end',
-                        alignItems: 'center',
-                        width: 120,
-                      }
+                    ? styles.contentTemperature
+                    : styles.contentDeluxeTemperature
                 }>
 
                 <Thermometer />
                 
                 {!device.is_online ? (
                   <Text
-                    style={{
-                      color: '#fff',
-                      fontSize: 24,
-                      fontFamily: 'AntagometricaBT-Regular',
-                      fontWeight: 'bold',
-                    }}>
+                    style={styles.textTemperature}>
                     N/A
                   </Text>
                 ) : (
                   <Text
-                    style={{
-                      color: '#fff',
-                      fontSize: 24,
-                      fontFamily: 'AntagometricaBT-Regular',
-                      fontWeight: 'bold',
-                    }}>
+                    style={styles.textTemperature}>
                     {(device.config?.temperature == 'C' ? device.current_temperature : device.current_temperature * 9/5 + 32).toFixed(1).toString()}°{device.config.temperature}
                   </Text>
                 )}
               </View>
 
-              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+              <View style={{flexDirection: 'row', }}>
                 <Image style={ device.is_deluxe == false ? {bottom: 1000} : {marginHorizontal: 15} } source={line} />
               </View>
 
-              <View style={{ flexDirection: 'row', alignItems: 'center', width: 120}}>
+              <View style={[styles.rightContentTemp, {width:device.is_deluxe == false ? "0%":"50%" }]}>
                 {device.is_deluxe == false ? <View /> : <CryChild />}
 
                 <View style={{marginLeft: 10}}>
@@ -134,22 +114,12 @@ export const ConnectedDevice = ({navigation}) => {
                     <View />
                   ) : !device || device.is_connected ? (
                     <Text
-                      style={{
-                        color: '#fff',
-                        fontSize: 24,
-                        fontFamily: 'AntagometricaBT-Regular',
-                        fontWeight: 'bold',
-                      }}>
+                      style={styles.textTemperature}>
                       N/A
                     </Text>
                   ) : (
                     <Text
-                      style={{
-                        color: '#fff',
-                        fontSize: 24,
-                        fontFamily: 'AntagometricaBT-Regular',
-                        fontWeight: 'bold',
-                      }}>
+                      style={styles.textTemperature}>
                       OFF
                     </Text>
                   )}
@@ -218,4 +188,25 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     height: 280,
   },
+  contentTemperature:{
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width:"100%",
+  },
+  contentDeluxeTemperature:{
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    width: "50%",
+  },
+  textTemperature:{
+      color: '#fff',
+      fontSize: 24,
+      fontFamily: 'AntagometricaBT-Regular',
+      fontWeight: 'bold',
+  },
+  rightContentTemp:{
+    flexDirection: 'row', alignItems: 'center',
+  }
 });
