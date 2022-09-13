@@ -1,29 +1,29 @@
-import React from 'react';
+import React                                             from 'react';
 import {TouchableOpacity, View, Image, Text, StyleSheet} from 'react-native';
 
-import moment from 'moment';
-import {useNavigation} from '@react-navigation/native';
+import moment                                            from 'moment';
+import {useNavigation}                                   from '@react-navigation/native';
 
 //contants
-import {COLORS, monthNames} from '../../../styles/Constants';
+import {COLORS, monthNames}                              from '../../../styles/Constants';
 
 //icons
-import eventDateImg from '../../../assets/images/documents/dateEventVertical.png';
-import feedLine from '../../../assets/images/documents/feedLine.png';
+import eventDateImg                                      from '../../../assets/images/documents/dateEventVertical.png';
+import feedLine                                          from '../../../assets/images/documents/feedLine.png';
+
 
 export const EventHtml = (item, selectedDate, points) => {
   let date = moment(item.starts_at).format('hh:mm');
   const navigation = useNavigation<any>();
-  console.log('points+++++=', points);
 
   const goToEvent = async EventItem => {
+    console.log('evemtItem',EventItem)
     let d = new Date(selectedDate);
     let res = points.filter(
       item =>
         moment(item.date).format('YYYY-MM-DD') ==
         moment(selectedDate).format('YYYY-MM-DD'),
     );
-    console.log('res//////////////////', EventItem);
     navigation.navigate('entry details', {
       title: 'entry details',
       backTitle: `${monthNames[d.getMonth()]} ${d.getFullYear()}`,
@@ -31,7 +31,6 @@ export const EventHtml = (item, selectedDate, points) => {
       rightText: 'edit',
     });
   };
-  console.log('item',item)
   return item ? (
     <TouchableOpacity
       onPress={() => goToEvent(item)}

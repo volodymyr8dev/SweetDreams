@@ -87,31 +87,30 @@ const navigationOptionsDoc = navigation => {
     headerBackTitleStyle: {
       color: '#fff',
     },
-    headerLeft: () => {
-      return (
-        <TouchableOpacity
-          style={{flexDirection: 'row', alignItems: 'center'}}
-          onPress={() => {
-            param.type == 'feed' ? nav.navigate('document') : nav.goBack();
-          }}>
-          {!param.isHide && (
-            <Image
-              style={{width: 12.3, height: 18.86, marginRight: 7.69}}
-              source={back}
-            />
-          )}
-          <Text
-            style={{
-              color: '#FFFFFF',
-              fontSize: 19,
-              fontFamily: 'AntagometricaBT-Regular',
-            }}>
-              back
-            {/* {param?.backTitle} */}
-          </Text>
-        </TouchableOpacity>
-      );
-    },
+    // headerLeft: () => {
+    //   return (
+    //     <TouchableOpacity
+    //       style={{flexDirection: 'row', alignItems: 'center'}}
+    //       onPress={() => {
+    //         param.type == 'feed' ? nav.navigate('document') : nav.goBack();
+    //       }}>
+    //       {!param.isHide && (
+    //         <Image
+    //           style={{width: 12.3, height: 18.86, marginRight: 7.69}}
+    //           source={back}
+    //         />
+    //       )}
+    //       <Text
+    //         style={{
+    //           color: '#FFFFFF',
+    //           fontSize: 19,
+    //           fontFamily: 'AntagometricaBT-Regular',
+    //         }}>
+    //           back
+    //       </Text>
+    //     </TouchableOpacity>
+    //   );
+    // },
     headerRight: () => {
       return (
         <TouchableOpacity

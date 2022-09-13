@@ -14,8 +14,7 @@ export const Feed = () => {
   useEffect(() => {
     navigation.navigate('addEvent', {
       type: 'feed',
-      title: 'new feed entry',
-      rightText: 'add',
+      editable:false,
     });
   }, [isFocused]);
 

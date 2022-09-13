@@ -1,37 +1,33 @@
-import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
-import {COLORS} from '../../../styles/Constants';
-import backLocation from '../../../assets/images/documents/backLocation.png';
-import point from '../../../assets/images/documents/pointEvent.png';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {useDispatch, useSelector} from 'react-redux';
-import {setLocationEvent} from '../../../redux/slice';
-import {useNavigation} from '@react-navigation/native';
-import {getRecentLocation} from '../../../api/Diary/locations';
-import { RootState } from '../../../redux/interfaceRootState';
+import React, {useEffect, useState}                             from 'react';
+import {View,Text,StyleSheet,Image,Dimensions,TouchableOpacity, Alert} from 'react-native';
+import {GooglePlacesAutocomplete}                               from 'react-native-google-places-autocomplete';
+import {useNavigation}                                          from '@react-navigation/native';
+import {useDispatch, useSelector}                               from 'react-redux';
+import { RootReducerState }                                     from '../../../redux/store';
+import {setLocationEvent}                                       from '../../../redux/slice';
+import {getRecentLocation}                                      from '../../../api/Diary/locations';
+
+import point                                                    from '../../../assets/images/documents/pointEvent.png';
+import backLocation                                             from '../../../assets/images/documents/backLocation.png';
+
+import {COLORS}                                                 from '../../../styles/Constants';
 
 export interface ILocation {
   name: string;
-  locate: {lat: number; lng: number};
+  locate: {lat: number|null; lng: number|null};
+  route?:any
 }
-const CardItem = ({name, locate}: ILocation) => {
-  const dispatch = useDispatch();
+const CardItem = ({name, locate,route}: ILocation) => {
   const navigation = useNavigation<any>();
-  console.log('name', name);
+ 
   const handleSetLocation = () => {
-    const res = {
-      name: {description: name},
-      location: locate,
-    };
-    dispatch(setLocationEvent(res));
-    navigation.goBack();
+   
+            const res = {name,location: locate};
+ 
+            route.params.onGoback(res);
+
+            navigation.goBack();
+   
   };
   return (
     <TouchableOpacity onPress={handleSetLocation} style={styles.itemcard}>
@@ -48,22 +44,22 @@ const CardItem = ({name, locate}: ILocation) => {
 
 export const Location = ({route}) => {
   const location = route.params.location;
-  const [recentLocation, setRecentLocation] = useState([]);
   const navigation = useNavigation();
-  const {user} = useSelector(({account}: RootState) => account.userInformation);
+
+  const {id} = useSelector((state: RootReducerState) => state.auth.user.accounts[0]);
+  
+  const [recentLocation, setRecentLocation] = useState([]);
 
   useEffect(() => {
-    getRecentLocation(user.accounts[0].id)
-      .then(({data}) => {
-        setRecentLocation(data.map(loc => JSON.parse(loc.location)));
-        console.log('recent location', JSON.parse(data[0].location));
-      })
+    getRecentLocation(id)
+      .then(({data}) => {setRecentLocation(data.map(loc => JSON.parse(loc.location)))})
       .catch(err => {
-        console.log('err recent location', err);
+        console.log('[Recent location]', err.response.data.message);
+
+        Alert.alert(err.response.data.message);
+        
       });
   }, []);
-  console.log('---', recentLocation);
-  const dispatch = useDispatch();
 
   return (
     <View style={styles.container}>
@@ -71,37 +67,27 @@ export const Location = ({route}) => {
         keyboardShouldPersistTaps="always"
         placeholder="Enter Location"
         styles={stylesInput}
-        textInputProps={{
-          placeholderTextColor: 'rgba(35, 113, 171, 0.6)',
-        }}
+        textInputProps={{placeholderTextColor: 'rgba(35, 113, 171, 0.6)'}}
         fetchDetails={true}
         listViewDisplayed="auto"
         onPress={(data, details = null) => {
           console.log('GoogleAutocomplete', data, details);
-          const res = {
-            name: data,
-            location: details?.geometry?.location,
-          };
-          dispatch(setLocationEvent(res));
+          
+          const res = {name: data.description, location: details?.geometry?.location };
+          
+          route.params.onGoback(res);
+
           navigation.goBack();
         }}
         onFail={error => console.log('error', error)}
-        query={{
-          key: 'AIzaSyA7JXSAoMZGvVY2Y9B3OMDG8XF4ZvsL1sA',
-          language: 'en',
-        }}
+        query={{key: 'AIzaSyA7JXSAoMZGvVY2Y9B3OMDG8XF4ZvsL1sA', language: 'en'}}
         currentLocation={true}
         currentLocationLabel="Current location"
-     
       />
-
       <View style={styles.recentsContainer}>
-        <View style={{paddingTop: 6.03, paddingBottom: 7.47}}>
-          <Text style={styles.textRecent}>Location suggestions</Text>
-        </View>
+        <View style={{paddingTop: 6.03, paddingBottom: 7.47}}><Text style={styles.textRecent}>Location suggestions</Text></View>
         <View style={styles.cardResents}>
-          {recentLocation.length > 0 &&
-            recentLocation.map((item: ILocation) => <CardItem {...item} />)}
+          {recentLocation.length > 0 && recentLocation.map((item: ILocation) => <CardItem {...item} route={route}/>)}
         </View>
       </View>
     </View>
@@ -116,11 +102,7 @@ const stylesInput = StyleSheet.create({
     height: 400,
     zIndex: 1051,
   },
-  // textInputContainer: {
-  //   backgroundColor: 'grey',
-  // },
   textInput: {
-    // width: Dimensions.get('window').width,
     marginLeft: 0,
     marginRight: 0,
     height: 75.67,
@@ -182,7 +164,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 52.76,
     width: Dimensions.get('window').width,
-    // backgroundColor: COLORS.backView,
     paddingHorizontal: 13,
   },
   textRecent: {
