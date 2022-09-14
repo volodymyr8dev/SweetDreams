@@ -57,23 +57,23 @@ export const ConnectedDevice = ({navigation}) => {
   }, [navigation]);
 
 
-  const openSettings = async () => {
+  const openSettings = async (e) => {
     navigation.navigate('DeviceSettings');
   };
 
   const HeaderUI = () => {
     return (
-      <View>
+      <>
         <View style={styles.headerContainer}>
-          <View style={{width: 21}} />
-          <View style={{paddingRight: 10}}>
+          <View style={{alignItems: 'center',width:"100%",paddingRight:10}}>
             <Sheep />
           </View>
-          <TouchableOpacity onPress={openSettings}>
-            <TopGear style={{ width:20, height:20}} />
-          </TouchableOpacity>
         </View>
-        <View style={{marginBottom: Dimensions.get('window').height / 100, alignSelf: 'center'}}>
+        <View
+          style={{
+            marginBottom: 20,
+            alignSelf: 'center',
+          }}>
           <View style={styles.controlContainer}>
             <View style={{flexDirection: 'row', justifyContent: 'center',alignItems: 'center',width:Dimensions.get('window').width}}>
               <View
@@ -98,20 +98,25 @@ export const ConnectedDevice = ({navigation}) => {
                 )}
               </View>
 
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row', }}>
                 <Image style={ device.is_deluxe == false ? {bottom: 1000} : {marginHorizontal: 15} } source={line} />
               </View>
 
-              <View style={[styles.rightContentTemp, {width:device.is_deluxe == false ? '0%': '50%'}]}>
+              <View style={[styles.rightContentTemp, {width:device.is_deluxe == false ? "0%":"50%" }]}>
                 {device.is_deluxe == false ? <View /> : <CryChild />}
 
                 <View style={{marginLeft: 10}}>
                   {device.is_deluxe == false ? (
                     <View />
                   ) : !device || device.is_connected ? (
-                    <Text style={styles.textTemperature}>N/A</Text>
+                    <Text
+                      style={styles.textTemperature}>
+                      N/A
+                    </Text>
                   ) : (
-                    <Text style={styles.textTemperature}>OFF
+                    <Text
+                      style={styles.textTemperature}>
+                      OFF
                     </Text>
                   )}
                 </View>
@@ -119,13 +124,18 @@ export const ConnectedDevice = ({navigation}) => {
             </View>
           </View>
         </View>
-      </View>
+      </>
     );
   };
 
   return (
     <ImageBackground style={{backgroundColor: COLORS.backGround}} source={device.is_online ? background : backgroundGrey}>
       <View style={styles.container}>
+        <View style={{zIndex:1}}>
+        <TouchableOpacity style={{position:'absolute',top:2,right:-7,width:40,height:40}} onPress={openSettings} >
+              <TopGear />
+          </TouchableOpacity>
+        </View>
         <HeaderUI />
         <Content />
       </View>
@@ -135,16 +145,16 @@ export const ConnectedDevice = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Dimensions.get('window').height / 20,
+    paddingTop: 60,
     height: '100%',
     paddingHorizontal: 20,
   },
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    zIndex: 1001,
-    paddingTop: 20
+    justifyContent:'space-between',
+    marginBottom: 30,
+    
   },
   button: {
     width: 200,

@@ -94,7 +94,7 @@ export const Content = props => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 60,
+    paddingTop: 100,
     height: '100%',
     paddingHorizontal: 20,
   },
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   containerCarousel: {
     alignItems: 'center',
-    bottom: '47%',
+    bottom: '40%',
   },
   cardCarousel: {
     alignItems: 'center',
