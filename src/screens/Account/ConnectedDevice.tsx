@@ -65,7 +65,7 @@ export const ConnectedDevice = ({navigation}) => {
     return (
       <>
         <View style={styles.headerContainer}>
-          <View style={{alignItems: 'center',width:"100%"}}>
+          <View style={{alignItems: 'center',width:"100%",paddingRight:10}}>
             <Sheep />
           </View>
         </View>
@@ -132,7 +132,7 @@ export const ConnectedDevice = ({navigation}) => {
     <ImageBackground style={{backgroundColor: COLORS.backGround}} source={device.is_online ? background : backgroundGrey}>
       <View style={styles.container}>
         <View style={{zIndex:1}}>
-        <TouchableOpacity style={{position:'absolute',top:6,right:-7,width:40,height:40}} onPress={openSettings} >
+        <TouchableOpacity style={{position:'absolute',top:2,right:-7,width:40,height:40}} onPress={openSettings} >
               <TopGear />
           </TouchableOpacity>
         </View>
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent:'space-between',
-    marginBottom: 15,
+    marginBottom: 30,
     
   },
   button: {

@@ -30,7 +30,7 @@ export const NewEvent = ({navigation, route}) => {
   const [starts, setStarts]                 = useState('');
   const [ends, setEnds]                     = useState<Moment | string>('');
   const [notes, setNotes]                   = useState('');
-  const [breast, setBreast]                 = useState('left');
+  const [breast, setBreast]                 = useState(null);
   const [loaderAddEvent, setLoaderAddEVent] = useState(false);
 
   /* Set default navigation options */
@@ -167,7 +167,9 @@ export const NewEvent = ({navigation, route}) => {
         changeDate={date =>setEnds(dateHMFormat(date))}
       />
       {params.type == feedType && (
-        <InputUnit event={true} value={breast} style={styles.notes} setValueName={value => setBreast(value)} 
+        <InputUnit event={true} value={breast} style={styles.notes} setValueName={value => {
+          value === breast ? setBreast(null): setBreast(value)
+         }} 
         nameOfBox={'handleSwitch'} placeholder={'Breast'} multiline={true}
         />
       )}
