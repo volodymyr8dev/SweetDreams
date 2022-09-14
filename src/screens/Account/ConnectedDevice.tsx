@@ -70,15 +70,10 @@ export const ConnectedDevice = ({navigation}) => {
             <Sheep />
           </View>
           <TouchableOpacity onPress={openSettings}>
-            <View style={{height: 20, width: 20}} />
-            <TopGear style={{bottom: 22, right: 2}} />
+            <TopGear style={{ width:20, height:20}} />
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            marginBottom: 20,
-            alignSelf: 'center',
-          }}>
+        <View style={{marginBottom: Dimensions.get('window').height / 100, alignSelf: 'center'}}>
           <View style={styles.controlContainer}>
             <View style={{flexDirection: 'row', justifyContent: 'center',alignItems: 'center',width:Dimensions.get('window').width}}>
               <View
@@ -103,25 +98,20 @@ export const ConnectedDevice = ({navigation}) => {
                 )}
               </View>
 
-              <View style={{flexDirection: 'row', }}>
+              <View style={{flexDirection: 'row'}}>
                 <Image style={ device.is_deluxe == false ? {bottom: 1000} : {marginHorizontal: 15} } source={line} />
               </View>
 
-              <View style={[styles.rightContentTemp, {width:device.is_deluxe == false ? "0%":"50%" }]}>
+              <View style={[styles.rightContentTemp, {width:device.is_deluxe == false ? '0%': '50%'}]}>
                 {device.is_deluxe == false ? <View /> : <CryChild />}
 
                 <View style={{marginLeft: 10}}>
                   {device.is_deluxe == false ? (
                     <View />
                   ) : !device || device.is_connected ? (
-                    <Text
-                      style={styles.textTemperature}>
-                      N/A
-                    </Text>
+                    <Text style={styles.textTemperature}>N/A</Text>
                   ) : (
-                    <Text
-                      style={styles.textTemperature}>
-                      OFF
+                    <Text style={styles.textTemperature}>OFF
                     </Text>
                   )}
                 </View>
@@ -145,7 +135,7 @@ export const ConnectedDevice = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 60,
+    paddingTop: Dimensions.get('window').height / 20,
     height: '100%',
     paddingHorizontal: 20,
   },
@@ -153,7 +143,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 15,
+    zIndex: 1001,
+    paddingTop: 20
   },
   button: {
     width: 200,

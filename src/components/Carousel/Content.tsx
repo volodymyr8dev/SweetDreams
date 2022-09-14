@@ -62,10 +62,10 @@ export const Content = props => {
     'LIGHT_SHOW_COLOUR_PICKER':   CloudColourPicker,
   };
 
-  const handleSelectedImage = ()=>{
-    if(device.current_temperature !== undefined){
-      return device.current_temperature <= 18 ? statuses['SLEEP_TRAINER_IDLE']:statuses['SLEEP_TRAINER_ASLEEP']
-    }else{
+  const handleSelectedImage = () => {
+    if (device.current_temperature !== undefined){
+      return device.current_temperature <= 18 ? statuses['SLEEP_TRAINER_IDLE'] : statuses['SLEEP_TRAINER_ASLEEP']
+    } else {
        return statuses[selectedLightShow]
     }
   }
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   containerCarousel: {
     alignItems: 'center',
-    bottom: '37%',
+    bottom: '47%',
   },
   cardCarousel: {
     alignItems: 'center',

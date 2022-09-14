@@ -113,7 +113,7 @@ export const NurseryData = ({navigation}) => {
 
   const { loadingCheckLogin, user, verified } = useSelector((state: RootReducerState) => state.auth);
 
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
   const [activeTime, setActiveTime] = useState('last 24 hours');
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
@@ -161,7 +161,6 @@ export const NurseryData = ({navigation}) => {
             dataEnd,
           )
             .then(({data}) => {
-              // console.log('finished', data);
               !Array.isArray(data)
                 ? setAvarageTemp(
                     data[`${dateFormat(dataStart)}_${dateFormat(dataEnd)}`][
@@ -186,10 +185,9 @@ export const NurseryData = ({navigation}) => {
     return (
       <View
         style={{
-          paddingHorizontal: 15,
           justifyContent: 'space-evenly',
           flexDirection: 'row',
-          paddingTop: 100,
+          paddingTop: '15%',
         }}>
         {arrayHeader.map(item => (
           <TouchableOpacity onPress={() => handleChangeTime(item)}>
@@ -215,7 +213,7 @@ export const NurseryData = ({navigation}) => {
       </View>
     );
   };
-  // const ContentNavigation = ({options,account}) => {
+
   const activeDay = () => {
     switch (activeTime) {
       case 'last 24 hours':
@@ -242,10 +240,6 @@ export const NurseryData = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 60,
-    height: '100%',
-  },
   text: {
     color: COLORS.text,
   },
