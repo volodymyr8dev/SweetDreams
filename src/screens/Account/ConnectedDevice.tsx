@@ -57,22 +57,17 @@ export const ConnectedDevice = ({navigation}) => {
   }, [navigation]);
 
 
-  const openSettings = async () => {
+  const openSettings = async (e) => {
     navigation.navigate('DeviceSettings');
   };
 
   const HeaderUI = () => {
     return (
-      <View>
+      <>
         <View style={styles.headerContainer}>
-          <View style={{width: 21}} />
-          <View style={{paddingRight: 10}}>
+          <View style={{alignItems: 'center',width:"100%"}}>
             <Sheep />
           </View>
-          <TouchableOpacity onPress={openSettings}>
-            <View style={{height: 20, width: 20}} />
-            <TopGear style={{bottom: 22, right: 2}} />
-          </TouchableOpacity>
         </View>
         <View
           style={{
@@ -129,13 +124,18 @@ export const ConnectedDevice = ({navigation}) => {
             </View>
           </View>
         </View>
-      </View>
+      </>
     );
   };
 
   return (
     <ImageBackground style={{backgroundColor: COLORS.backGround}} source={device.is_online ? background : backgroundGrey}>
       <View style={styles.container}>
+        <View style={{zIndex:1}}>
+        <TouchableOpacity style={{position:'absolute',top:6,right:-7,width:40,height:40}} onPress={openSettings} >
+              <TopGear />
+          </TouchableOpacity>
+        </View>
         <HeaderUI />
         <Content />
       </View>
@@ -152,8 +152,9 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent:'space-between',
     marginBottom: 15,
+    
   },
   button: {
     width: 200,
