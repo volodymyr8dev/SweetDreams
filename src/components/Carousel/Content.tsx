@@ -74,17 +74,18 @@ export const Content = props => {
     <View>
       <View style={{alignItems: 'center'}}>
         {device.is_online ? (
-          <Image source={handleSelectedImage()} style={{width: '100%', height: 350, bottom: '20%'}} />
+          <Image source={handleSelectedImage()} style={{width: '100%', height: 350, bottom: Dimensions.get('window').height * 0.032 + '%'}} />
         ) : (
-          <Image source={CloudOff} style={{width: '100%', height: 350, bottom: '20%'}} />
+          <Image source={CloudOff} style={{width: '100%', height: 350, bottom: Dimensions.get('window').height * 0.032 + '%'}} />
         )}
-        <TouchableOpacity onPress={handlePower} style={{marginTop: '40%', width: 50, bottom: '65%'}}>
+  
+        <TouchableOpacity onPress={handlePower} style={{width: 50, bottom: Dimensions.get('window').height * 0.065 + '%', zIndex: 1}}>
           {device.is_online ? <PowerOn /> : <PowerOff />}
         </TouchableOpacity>
       </View>
-      <View style={{bottom: '37%'}}>
+      {/* <View style={{bottom: '37%'}}>
         {device.is_deluxe == false ? (<View style={{height: 100}}/>) : <ControlCard/>}
-      </View>
+      </View> */}
       <View style={styles.containerCarousel}>
         <ShopCarousel />
       </View>
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
   },
   containerCarousel: {
     alignItems: 'center',
-    bottom: '40%',
+    bottom: Dimensions.get('window').height * 0.035 + '%',
   },
   cardCarousel: {
     alignItems: 'center',

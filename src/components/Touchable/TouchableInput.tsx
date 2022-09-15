@@ -26,6 +26,7 @@ export const Blog = ({
   const handleSettings = async title => {
     if (typeof rightEl !== 'object') {
       console.log(title, 'title');
+
       navigation.navigate(`${navigate}`, {
         title: title,
         value: value,

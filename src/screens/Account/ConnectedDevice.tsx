@@ -41,7 +41,7 @@ export const ConnectedDevice = ({navigation}) => {
           );
         }
       },
-      1500
+      5000
     );
 
     return () => {
@@ -71,11 +71,10 @@ export const ConnectedDevice = ({navigation}) => {
         </View>
         <View
           style={{
-            marginBottom: 20,
             alignSelf: 'center',
           }}>
           <View style={styles.controlContainer}>
-            <View style={{flexDirection: 'row', justifyContent: 'center',alignItems: 'center',width:Dimensions.get('window').width}}>
+            <View style={{flexDirection: 'row', justifyContent: 'center',alignItems: 'center',width: Dimensions.get('window').width}}>
               <View
                 style={
                   device.is_deluxe == false
@@ -145,16 +144,15 @@ export const ConnectedDevice = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 60,
+    paddingTop: Dimensions.get('window').height * 0.015 + '%',
     height: '100%',
     paddingHorizontal: 20,
   },
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent:'space-between',
-    marginBottom: 30,
-    
+    justifyContent: 'space-between',
+    marginBottom: Dimensions.get('window').height * 0.005 + '%',
   },
   button: {
     width: 200,

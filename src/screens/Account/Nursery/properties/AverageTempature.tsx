@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react';
+import {useDispatch, useSelector}   from 'react-redux';
+
 import {
   StyleSheet,
   Text,
@@ -19,16 +21,33 @@ import {
   chooseTimeOrIndex,
 } from '../../../../styles/Constants';
 import {LineChart} from 'react-native-chart-kit';
+import {getCombinedNavigation} from '../../../../hooks/useUpdateNavigationHeaderOptions';
 import {Blog} from '../../../../components/Touchable/TouchableInput';
 import {NurseryTemperatureApi} from '../../../../api/Nursery/Nursery';
 import moment from 'moment';
-import { AnyAction } from 'redux';
+import background              from '../../../../assets/backOrigin.png';
 
-export const AverageTempature = ({route}) => {
+export const AverageTempature = ({navigation, route}) => {
+  const dispatch = useDispatch();
+  const {user}   = useSelector((state: RootReducerState) => state.auth);
+  let device     = user.accounts[0]?.devices[0];
+
+  let averageTemperature = 0
+
+  /* Set default navigation options */
+  useEffect(() => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title: 'average temperature',
+        headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
+      })
+    )
+  }, [navigation]);
+
   const [array, setArray] = useState([0]);
   const [labels, setLabels] = useState<string[]>(['']);
   const [activeTime, setActiveTime] = useState('last 24 hours');
-  const [diary, setDiary] = useState('');
+  const [diary, setDiary] = useState(0);
   const [start, setStart] = useState(
     moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD'),
   );
@@ -152,122 +171,131 @@ export const AverageTempature = ({route}) => {
     // }));
   }, []);
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.headerContent}>
-          <TouchableOpacity
-            style={{paddingHorizontal: 5, paddingVertical: 5}}
-            onPress={() => handleLeftData()}>
-            <Image style={{width: 10.77, height: 18.86}} source={arrowLeft} />
-          </TouchableOpacity>
-          <View style={styles.headerWraper}>
-            <Text style={styles.headerText}>{activeTime}</Text>
-            <Text style={styles.headerTextTime}>{`${start} - ${end}`}</Text>
+    <ImageBackground source={background} style={{backgroundColor: COLORS.back}}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.headerContent}>
+            <TouchableOpacity
+              style={{paddingHorizontal: 5, paddingVertical: 5}}
+              onPress={() => handleLeftData()}>
+              <Image style={{width: 10.77, height: 18.86}} source={arrowLeft} />
+            </TouchableOpacity>
+            <View style={styles.headerWraper}>
+              <Text style={styles.headerText}>{activeTime}</Text>
+              <Text style={styles.headerTextTime}>{`${start} - ${end}`}</Text>
+            </View>
+            <TouchableOpacity
+              style={{paddingHorizontal: 5, paddingVertical: 5}}
+              onPress={handleRightData}>
+              <Image style={{width: 10.77, height: 18.86}} source={arrowRight} />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={{paddingHorizontal: 5, paddingVertical: 5}}
-            onPress={handleRightData}>
-            <Image style={{width: 10.77, height: 18.86}} source={arrowRight} />
-          </TouchableOpacity>
         </View>
-      </View>
-      <View style={styles.graphicContent}>
-        <View style={{alignItems: 'center'}}>
-          <Text style={styles.TextGraphic}>Now</Text>
-          <Text style={styles.tempValueleft}>20 C</Text>
+        <View style={styles.graphicContent}>
+          <View style={{alignItems: 'center'}}>
+            <Text style={styles.TextGraphic}>Now</Text>
+            <Text style={styles.tempValueleft}>
+              {(device.config?.temperature == 'C' ? device.current_temperature : device.current_temperature * 9/5 + 32).toFixed(1).toString()}°{device.config.temperature}
+            </Text>
+          </View>
+          <View>
+            <Text style={styles.TextGraphic}>Average for this period</Text>
+            <Text style={styles.tempValueRight}>
+              {(device.config?.temperature == 'C' ? averageTemperature : averageTemperature * 9/5 + 32).toFixed(1).toString()}°{device.config.temperature}
+            </Text>
+          </View>
         </View>
         <View>
-          <Text style={styles.TextGraphic}>Average for this 24h</Text>
-          <Text style={styles.tempValueRight}>19 C</Text>
+          <Text style={{paddingTop: 12}}></Text>
+          <LineChart
+            onDataPointClick={value => {
+              console.log('value', value);
+              setValue(value);
+
+              console.log('masoud');
+            }}
+            fromZero
+            getDotColor={(dataPoint, dataPointIndex) => {
+              if (dataPointIndex === 0) {
+                return COLORS.textLight;
+              }
+              return COLORS.textLight;
+            }}
+            data={{
+              labels: labels,
+              datasets: [
+                {
+                  data: array,
+                },
+                {
+                  data: [20], // min
+                  withDots: false,
+                },
+                {
+                  data: [30], // min
+                  withDots: false,
+                },
+              ],
+            }}
+            width={Dimensions.get('window').width} // from react-native
+            height={359}
+            // yAxisLabel="$"
+            // yAxisSuffix="k"
+            yAxisInterval={1} // optional, defaults to 1
+            chartConfig={{
+              backgroundColor: 'transparent',
+              backgroundGradientFrom: '#272854',
+              backgroundGradientTo: '#272854',
+              backgroundGradientFromOpacity: 0,
+              backgroundGradientToOpacity: 0,
+              decimalPlaces: 1, // optional, defaults to 2dp
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
+              propsForDots: {
+                r: '6',
+                strokeWidth: '2',
+                stroke: '#ffa726',
+              },
+            }}
+            //   bezier
+            style={{
+              marginVertical: 8,
+              borderRadius: 16,
+            }}
+          />
+          <ImageBackground
+            source={alertUp}
+            style={{
+              opacity: value.value,
+              position: 'absolute',
+              top: value.y - 10,
+              left: value.x - 20,
+              width: 40.25,
+              height: 32.97,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              paddingTop: 2,
+            }}>
+            <Text style={{color: COLORS.text}}>{value.value}</Text>
+          </ImageBackground>
+        </View>
+        <View style={styles.InputUnit}>
+          <Blog
+            styleText={styles.styleText}
+            styleImage={styles.styleImage}
+            style={styles.bottomButton}
+            title={'Sleep Diary'}
+            navigate={'Diary'}
+            rightEl={`${diary} entries`}
+            source={sleepDiary}
+          />
         </View>
       </View>
-      <View>
-        <Text style={{paddingTop: 12}}></Text>
-        <LineChart
-          onDataPointClick={value => {
-            console.log('value', value);
-            setValue(value);
-
-            console.log('masoud');
-          }}
-          fromZero
-          getDotColor={(dataPoint, dataPointIndex) => {
-            if (dataPointIndex === 0) {
-              return COLORS.textLight;
-            }
-            return COLORS.textLight;
-          }}
-          data={{
-            labels: labels,
-            datasets: [
-              {
-                data: array,
-              },
-              {
-                data: [20], // min
-                withDots: false,
-              },
-              {
-                data: [30], // min
-                withDots: false,
-              },
-            ],
-          }}
-          width={Dimensions.get('window').width} // from react-native
-          height={359}
-          // yAxisLabel="$"
-          // yAxisSuffix="k"
-          yAxisInterval={1} // optional, defaults to 1
-          chartConfig={{
-            backgroundColor: 'transparent',
-            backgroundGradientFrom: COLORS.back,
-            backgroundGradientTo: COLORS.backGround,
-            decimalPlaces: 1, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            style: {
-              borderRadius: 16,
-            },
-            propsForDots: {
-              r: '6',
-              strokeWidth: '2',
-              stroke: '#ffa726',
-            },
-          }}
-          //   bezier
-          style={{
-            marginVertical: 8,
-            borderRadius: 16,
-          }}
-        />
-        <ImageBackground
-          source={alertUp}
-          style={{
-            opacity: value.value,
-            position: 'absolute',
-            top: value.y - 10,
-            left: value.x - 20,
-            width: 40.25,
-            height: 32.97,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'flex-start',
-            paddingTop: 2,
-          }}>
-          <Text style={{color: COLORS.text}}>{value.value}</Text>
-        </ImageBackground>
-      </View>
-      <View style={styles.InputUnit}>
-        <Blog
-          styleText={styles.styleText}
-          styleImage={styles.styleImage}
-          style={styles.bottomButton}
-          title={'Sleep Diary'}
-          rightEl={`${diary} entries`}
-          source={sleepDiary}
-        />
-      </View>
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -275,7 +303,6 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 8,
     height: '100%',
-    backgroundColor: '#272854',
   },
   header: {
     justifyContent: 'center',
@@ -295,6 +322,7 @@ const styles = StyleSheet.create({
   },
   headerTextTime: {
     color: COLORS.text,
+    fontFamily: 'AntagometricaBT-Bold',
   },
   headerWraper: {
     paddingHorizontal: 17.27,
@@ -309,6 +337,7 @@ const styles = StyleSheet.create({
   TextGraphic: {
     color: COLORS.textLight,
     fontSize: 14,
+    fontFamily: 'AntagometricaBT-Bold',
   },
   tempValueleft: {
     fontSize: 19,

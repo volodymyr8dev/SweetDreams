@@ -1,5 +1,7 @@
 import React, {useEffect} from 'react';
 import { RootReducerState } from '../../../redux';
+import {useDispatch, useSelector}   from 'react-redux';
+
 import {
   TouchableOpacity,
   View,
@@ -14,9 +16,7 @@ import sad from '../../../assets/images/graph/iconList/sad.png';
 import tempretute from '../../../assets/images/graph/iconList/tempreture.png';
 import book from '../../../assets/images/graph/iconList/book.png';
 import arrowRight from '../../../assets/images/settings/arrowRight.png';
-import {useSelector} from 'react-redux';
 import {COLORS} from '../../../styles/Constants';
-import {RootState} from '../../../redux/interfaceRootState';
 interface IBlog {
   title: string;
   rightEl: any;
@@ -26,17 +26,25 @@ interface IBlog {
   height?: number;
 }
 const Blog = ({title, rightEl, source, subTitle, width, height}: IBlog) => {
-  const { loadingCheckLogin, user, verified } = useSelector((state: RootReducerState) => state.auth);
+  const dispatch = useDispatch();
+  const {user}   = useSelector((state: RootReducerState) => state.auth);
+  let device     = user.accounts[0]?.devices[0];
 
   const navigation = useNavigation();
   const accounts = user.accounts;
   const handleSettings = async () => {
     if (typeof rightEl !== 'object') {
-      console.log(title, 'title');
-        navigation.navigate(`${title}`, {
-          title: title,
+      if (title == 'Diary Entries') {
+        navigation.navigate(`Diary`, {
+          title:   title,
           childId: accounts[0].id,
         });
+      } else {
+        navigation.navigate(`${title}`, {
+          title:   title,
+          childId: accounts[0].id,
+        });
+      }
     }
   };
   return (
@@ -53,12 +61,12 @@ const Blog = ({title, rightEl, source, subTitle, width, height}: IBlog) => {
         />
         <View>
           <Text
-            style={{color: '#2371AB', fontSize: title.length > 20 ? 17 : 20}}>
+            style={{color: '#2371AB', fontSize: title.length > 20 ? 17 : 20, fontFamily: 'AntagometricaBT-Regular'}}>
             {title}
           </Text>
 
           {subTitle ? (
-            <Text style={{color: '#2371AB', fontSize: 12}}>{subTitle}</Text>
+            <Text style={{color: '#2371AB', fontSize: 12, fontFamily: 'AntagometricaBT-Regular'}}>{subTitle}</Text>
           ) : null}
         </View>
       </View>
@@ -67,7 +75,7 @@ const Blog = ({title, rightEl, source, subTitle, width, height}: IBlog) => {
           rightEl
         ) : (
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{color: COLORS.textLight, fontSize: 18}}>
+            <Text style={{color: COLORS.textLight, fontSize: 19, fontFamily: 'AntagometricaBT-Regular'}}>
               {rightEl}
             </Text>
             <Image
@@ -82,12 +90,29 @@ const Blog = ({title, rightEl, source, subTitle, width, height}: IBlog) => {
 };
 
 export const ContentNavigation = ({options, diaries, averageTemp}) => {
-  console.log('averageTemp', averageTemp);
-  const { loadingCheckLogin, user, verified } = useSelector((state: RootReducerState) => state.auth);
+  const dispatch = useDispatch();
+  const {user}   = useSelector((state: RootReducerState) => state.auth);
+  let device     = user.accounts[0]?.devices[0];
   
   useEffect(() => {}, [options]);
   return (
     <View style={styles.container}>
+      <Blog
+        title="Average Temperature"
+        subTitle={options.value5.subTitle}
+        source={tempretute}
+        rightEl={averageTemp+"°"+device.config.temperature}
+        width={30}
+        height={27}
+      />
+      <Blog
+        title="Diary Entries"
+        subTitle={options.value4.subTitle}
+        source={book}
+        rightEl={diaries}
+        width={30}
+        height={26}
+      />
       {user.accounts[0]?.devices[0]?.is_deluxe == false ? null : (
         <Blog
           title="Total Time Without Activation"
@@ -112,22 +137,6 @@ export const ContentNavigation = ({options, diaries, averageTemp}) => {
           rightEl={options.value3.value}
         />
       )}
-      <Blog
-        title="Average Temperature"
-        subTitle={options.value5.subTitle}
-        source={tempretute}
-        rightEl={averageTemp+"*C"}
-        width={30}
-        height={27}
-      />
-      <Blog
-        title="Diary Entries"
-        subTitle={options.value4.subTitle}
-        source={book}
-        rightEl={diaries}
-        width={30}
-        height={26}
-      />
     </View>
   );
 };

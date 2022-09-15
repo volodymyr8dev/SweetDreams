@@ -10,12 +10,12 @@ import { RootReducerState }                                            from '../
 import SearchBar                                                       from '../../../components/SearchBar';
 import {GetEventApi}                                                   from '../../../api/Diary/calendar';
 import {EventHtml}                                                     from './EventHtml';
-import backImg                                                         from '../../../assets/images/documents/background.png';
 import eventDateimportant                                              from '../../../assets/images/documents/dateEventVerticalImportant.png';
 import {COLORS}                                                        from '../../../styles/Constants';
 import { getCombinedNavigation }                                       from '../../../hooks/useUpdateNavigationHeaderOptions';
 import Plus                                                            from '../../../assets/images/svg/diary/Plus'
 import Search                                                          from '../../../assets/images/svg/diary/Search'
+import background                                                      from '../../../assets/backOrigin.png';
 interface IPoints {
   title: string;
   date: string;
@@ -100,25 +100,25 @@ export const Document = ({navigation,route}) => {
   const [searchPhrase, setSearchPhrase]     = useState('');
   const [clicked, setClicked]               = useState(true);
 
-    /* Set default navigation options */
-    useEffect(() => {
-      navigation.setOptions(
-        getCombinedNavigation({
-          title: global.baby_name?` baby's ${global.baby_name}`: "baby's diary",
-          // headerLeftMethod:()=>{navigation.goBack()},
-          headerRightText:         
-          <><TouchableOpacity style={{ paddingRight: 23.5, paddingLeft: 15, paddingVertical: 10 }}
-              onPress={() => {handleClicked()}}>
-              <Search style={{ width: 15, height: 15 }} />
-            </TouchableOpacity>
-            <TouchableOpacity style={{ paddingVertical: 10,paddingRight:15 }}
-              onPress={() => {handleAddEvent()}}>
-                <Plus style={undefined} />
-              </TouchableOpacity></>,
-          headerRightMethod: () => {},
-        }),
-      );
-    }, [navigation,selectedDate, isFocused]);
+  /* Set default navigation options */
+  useEffect(() => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title: global.baby_name ? `${global.baby_name.toLowerCase()}'s diary`: "baby's diary",
+        // headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
+        headerRightText:         
+        <><TouchableOpacity style={{ paddingRight: 23.5, paddingLeft: 15, paddingVertical: 10 }}
+            onPress={() => {handleClicked()}}>
+            <Search style={{ width: 15, height: 15 }} />
+          </TouchableOpacity>
+          <TouchableOpacity style={{ paddingVertical: 10,paddingRight:15 }}
+            onPress={() => {handleAddEvent()}}>
+              <Plus style={undefined} />
+            </TouchableOpacity></>,
+        headerRightMethod: () => {},
+      }),
+    );
+  }, [navigation,selectedDate, isFocused]);
 
   const handleClicked = () => { setShown(true); setClicked(false) };
 
@@ -161,7 +161,6 @@ export const Document = ({navigation,route}) => {
     navigation.navigate('addEvent', {selectedDate, global, type: 'regular'});
   };
 
-
   useEffect(() => {
     if (shown) {
       let res = points?.filter((item:any) => {
@@ -178,7 +177,7 @@ export const Document = ({navigation,route}) => {
   }, [shown]);
 
   return (
-    <ImageBackground source={backImg} style={styles.container}>
+    <ImageBackground source={background} style={styles.container}>
       <SafeAreaView style={{alignItems: 'center', marginTop: 10}}>
         <SearchBar
           searchPhrase={searchPhrase}

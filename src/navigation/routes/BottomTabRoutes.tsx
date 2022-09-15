@@ -25,8 +25,12 @@ const Tab = createBottomTabNavigator();
 const customTabBarStyle = {
   borderBottomWidth: 0,
   tabStyle: {
-    paddingTop: 25,
-    backgroundColor: 'rgba(52, 52, 90, 0.97)',
+    bottom: 10,
+    height: 50,
+    paddingTop: 20,
+    backgroundColor: 'rgba(52, 52, 90, 1)',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255, 255, 255, .4)'
   },
   labelStyle: {},
 };
@@ -39,7 +43,7 @@ export const MyTabs = ({navigation}) => {
       <Tab.Screen name="Nursery" component={Nursery} options={{
         tabBarLabel: '',
         tabBarStyle: {
-          backgroundColor: 'rgba(52, 52, 90, 0.97)',
+          backgroundColor: 'rgba(52, 52, 90, 1)',
         },
         tabBarIcon: ({focused}) => focused ? <NurseryActive /> : <NurseryInctive />,
       }} />
@@ -47,7 +51,7 @@ export const MyTabs = ({navigation}) => {
       <Tab.Screen name="Diary" component={Diary} options={{
         tabBarLabel: '',
         tabBarStyle: {
-          backgroundColor: 'rgba(52, 52, 90, 0.97)',
+          backgroundColor: 'rgba(52, 52, 90, 1)',
         },
         tabBarIcon: ({focused}) => (focused ? <DiaryActive /> : <DiaryInactive />),
       }} />
@@ -55,7 +59,7 @@ export const MyTabs = ({navigation}) => {
       <Tab.Screen name="Device" component={user.accounts[0]?.devices[0]?.is_connected ? ConnectedDevice : ConfirmConnection} options={{
         tabBarLabel: '',
         tabBarStyle: {
-          backgroundColor: 'rgba(52, 52, 90, 0.97)',
+          backgroundColor: 'rgba(52, 52, 90, 1)',
         },
         tabBarIcon: ({focused}) => (focused ? <ChildActive /> : <ChildInactive />),
       }} />
@@ -63,7 +67,7 @@ export const MyTabs = ({navigation}) => {
       <Tab.Screen name="Feed" component={Feed} options={{
         tabBarLabel: '',
         tabBarStyle: {
-          backgroundColor: 'rgba(52, 52, 90, 0.97)',
+          backgroundColor: 'rgba(52, 52, 90, 1)',
         },
         tabBarIcon: ({focused}) => (focused ? <FeedActive /> : <FeedInactive />),
       }} />
@@ -71,7 +75,7 @@ export const MyTabs = ({navigation}) => {
       <Tab.Screen name="ProfileSettings" component={ProfileSettings} options={{
         tabBarLabel: '',
         tabBarStyle: {
-          backgroundColor: 'rgba(52, 52, 90, 0.97)',
+          backgroundColor: 'rgba(52, 52, 90, 1)',
         },
         tabBarIcon: ({focused}) => focused ? <ProfileSettingsActive /> : <ProfileSettingsInactive />,
       }} />
