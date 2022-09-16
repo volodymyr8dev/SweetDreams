@@ -14,9 +14,6 @@ import book                                                    from '../../../as
 import arrowRight                                              from '../../../assets/images/settings/arrowRight.png';
 import back                                                    from '../../../assets/images/homeIcon/backgroundHome.png';
 
-//api
-import {NurseryTemperatureApi,NurseryTemperatureGetApi}        from '../../../api/Nursery/Nursery';
-
 //redux
 import {setNurseryId}                                          from '../../../redux/slice';
 import {RootState}                                             from '../../../redux/interfaceRootState';
