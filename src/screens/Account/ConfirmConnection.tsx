@@ -46,16 +46,16 @@ const ConfirmConnection = ({navigation, setToggleButton}) => {
         <View style={{top: 100}}>
           <View style={{alignItems: 'center'}}>
             <Sheep style={{bottom: 20}} />
-            <ConnectionCloud2 style={{top: '15%'}} />
-            <ConnectionCloud />
+            <ConnectionCloud2 style={{top: '10%'}} />
+            <ConnectionCloud style={{bottom: '10%'}}/>
           </View>
-          <View>
+          <View style={{bottom: '15%'}}>
             <Text
               style={{
                 color: '#fff',
                 fontSize: 24,
                 textAlign: 'center',
-                marginBottom: 15,
+                marginBottom: "5%",
                 fontFamily: 'AntagometricaBT-Regular',
               }}>
               confirm connection
@@ -80,7 +80,7 @@ const ConfirmConnection = ({navigation, setToggleButton}) => {
               Ensure you have a stable internet connection
             </Text>
           </View>
-          <View style={{marginTop: 35, alignItems: 'center'}}>
+          <View style={{bottom: '10%', alignItems: 'center'}}>
             <TouchableOpacity onPress={handleCheckInternet}>
               <View
                 style={{
