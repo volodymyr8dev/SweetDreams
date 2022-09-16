@@ -24,9 +24,11 @@ export const Blog = ({
   const navigation: any = useNavigation();
 
   const handleSettings = async title => {
+    let nav = ''
     if (typeof rightEl !== 'object') {
-      console.log(title, 'title');
-      navigation.navigate(`${navigate}`, {
+      if(title == 'Sleep Diary') nav = 'Diary'
+
+      navigation.navigate(`${nav?nav:title}`, {
         title: title,
         value: value,
       });

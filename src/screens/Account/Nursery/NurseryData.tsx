@@ -1,28 +1,32 @@
-import React, {useEffect, useState} from 'react';
-import { RootReducerState } from '../../../redux';
-import {TouchableOpacity} from 'react-native';
-import {View, Text, StyleSheet, Image, ImageBackground} from 'react-native';
-import {COLORS} from '../../../styles/Constants';
+import React, {useEffect, useState}                            from 'react';
+import {View,Text,StyleSheet,ImageBackground,TouchableOpacity} from 'react-native';
+import {useNavigation}                                         from '@react-navigation/native';
+import AsyncStorage                                            from '@react-native-async-storage/async-storage';
+import {useDispatch, useSelector}                              from 'react-redux';
+import moment                                                  from 'moment';
+import { RootReducerState }                                    from '../../../redux';
 
-import happy from '../../../assets/images/graph/iconList/happy.png';
-import sad from '../../../assets/images/graph/iconList/sad.png';
-import tempretute from '../../../assets/images/graph/iconList/tempreture.png';
-import book from '../../../assets/images/graph/iconList/book.png';
-import arrowRight from '../../../assets/images/settings/arrowRight.png';
-import {useNavigation} from '@react-navigation/native';
-import back from '../../../assets/images/homeIcon/backgroundHome.png';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import carousel from 'react-native-anchor-carousel/src/carousel';
-import {useDispatch, useSelector} from 'react-redux';
-import {
-  NurseryTemperatureApi,
-  NurseryTemperatureGetApi,
-} from '../../../api/Nursery/Nursery';
-import {setNurseryId} from '../../../redux/slice';
-import {ContentNavigation} from './ContentNavigation';
-import moment from 'moment';
-import {RootState} from '../../../redux/interfaceRootState';
-import {dateFormat, dateTimeFormat} from '../../../utils/time';
+//icons
+import happy                                                   from  '../../../assets/images/graph/iconList/happy.png';
+import sad                                                     from '../../../assets/images/graph/iconList/sad.png';
+import tempretute                                              from '../../../assets/images/graph/iconList/tempreture.png';
+import book                                                    from '../../../assets/images/graph/iconList/book.png';
+import arrowRight                                              from '../../../assets/images/settings/arrowRight.png';
+import back                                                    from '../../../assets/images/homeIcon/backgroundHome.png';
+
+//api
+import {NurseryTemperatureApi,NurseryTemperatureGetApi}        from '../../../api/Nursery/Nursery';
+
+//redux
+import {setNurseryId}                                          from '../../../redux/slice';
+import {RootState}                                             from '../../../redux/interfaceRootState';
+
+import {dateFormat, dateTimeFormat}                            from '../../../utils/time';
+import {ContentNavigation}                                     from './ContentNavigation';
+
+import {COLORS}                                                from '../../../styles/Constants';
+import { arrayHeader, HeaderNavigation }                       from './HeaderNavigation';
+import { useFetchTemperature }                                 from '../../../hooks/nursery/useFetchTemperature';
 
 const options24 = {
   value1: {
@@ -96,13 +100,6 @@ const startDate = [
   moment(new Date()).subtract(27, 'days').format('YYYY-MM-DD HH:mm:ss'),
 ];
 
-const arrayHeader = ['last 24 hours', 'last 7 days', 'last 28 days'];
-const averageTotaltemp = [
-  'average_over_24hours',
-  'average_over_7days',
-  'average_over_28days',
-];
-
 export const NurseryData = ({navigation}) => {
   /* Set default navigation options */
   useEffect(() => {
@@ -111,108 +108,27 @@ export const NurseryData = ({navigation}) => {
     })
   }, [navigation]);
 
-  const { loadingCheckLogin, user, verified } = useSelector((state: RootReducerState) => state.auth);
-
-const dispatch = useDispatch();
-  const [activeTime, setActiveTime] = useState('last 24 hours');
-  const [start, setStart] = useState('');
-  const [end, setEnd] = useState('');
-  const [diaries, setDiaries] = useState(0);
-  const [averageTemp, setAvarageTemp] = useState(0);
-  const [id, setId] = useState(null);
+  const {user} = useSelector((state: RootReducerState) => state.auth);
+  
+  
+  const device = user.accounts[0]?.devices[0];
   const accounts = user.accounts;
+  console.log('id',accounts)
+  
+  const [activeTime, setActiveTime]   = useState('last 24 hours');
+  const [start, setStart]             = useState(startDate[arrayHeader.indexOf(activeTime)]);
+  const [end, setEnd]                 = useState(dateTimeFormat(new Date()));
+  
+  const {data} = useFetchTemperature(accounts[0].id,device.id,start,end) 
 
-  const getToken = async () => {
-    const value = await AsyncStorage.getItem('@storage_Key');
-    console.log('valueeee', value);
-  };
-  console.log('avavavaav', averageTemp);
+  console.log('data-----------', data)
+  
   useEffect(() => {
-    if (accounts[0].id) {
-      console.log('id', accounts[0].id);
-      let dataStart = startDate[arrayHeader.indexOf(activeTime)];
-      let dataEnd = dateTimeFormat(new Date());
-      if (id) {
-        Promise.all([
-          NurseryTemperatureApi(accounts[0].id, dataStart, dataEnd),
-          NurseryTemperatureGetApi(accounts[0].id, id, dataStart, dataEnd),
-        ]).then((data) => {
-           setDiaries(data[0].data[0].diaries);
-               !Array.isArray(data[1].data)
-                 ? setAvarageTemp(
-                     data[1].data[
-                       `${dateFormat(dataStart)}_${dateFormat(dataEnd)}`
-                     ][averageTotaltemp[arrayHeader.indexOf(activeTime)]],
-                   )
-                 : setAvarageTemp(0);
-          console.log('dataPromiseAll', data);
-        }).catch((Err)=>console.log('Promise All',Err));
-      }else{
-      NurseryTemperatureApi(accounts[0].id, dataStart, dataEnd)
-        .then(({data}) => {
-          console.log('get nurseryId', data);
-          setId(data[1].id);
-          setDiaries(data[0].diaries);
-          dispatch(setNurseryId(data[1].id));
-          NurseryTemperatureGetApi(
-            accounts[0].id,
-            data[1].id,
-            dataStart,
-            dataEnd,
-          )
-            .then(({data}) => {
-              !Array.isArray(data)
-                ? setAvarageTemp(
-                    data[`${dateFormat(dataStart)}_${dateFormat(dataEnd)}`][
-                      averageTotaltemp[arrayHeader.indexOf(activeTime)]
-                    ],
-                  )
-                : setAvarageTemp(0);
-            })
-            .catch(err => console.log('finishedError', err));
-        })
-        .catch(err => console.log('ERR', err));
-      }
 
-    }
-  }, [activeTime, accounts[0].id]);
+    setStart(startDate[arrayHeader.indexOf(activeTime)])
+    setEnd(dateTimeFormat(new Date()))
 
-  const handleChangeTime = time => {
-    console.log(time);
-    setActiveTime(time);
-  };
-  const HeaderNavigation = () => {
-    return (
-      <View
-        style={{
-          justifyContent: 'space-evenly',
-          flexDirection: 'row',
-          paddingTop: '15%',
-        }}>
-        {arrayHeader.map(item => (
-          <TouchableOpacity onPress={() => handleChangeTime(item)}>
-            <View style={{}}>
-              <View style={{paddingHorizontal: 20}}>
-                <Text
-                  style={{
-                    color: activeTime == item ? '#CE9B51' : '#fff',
-                    paddingVertical: 4,
-                    fontFamily: 'AntagometricaBT-Bold',
-                  }}>
-                  {item}
-                </Text>
-              </View>
-              <View
-                style={[
-                  activeTime == item ? styles.borderActive : styles.border,
-                ]}
-              />
-            </View>
-          </TouchableOpacity>
-        ))}
-      </View>
-    );
-  };
+  },[activeTime,accounts[0].id]);
 
   const activeDay = () => {
     switch (activeTime) {
@@ -229,10 +145,10 @@ const dispatch = useDispatch();
     <ImageBackground
       source={back}
       style={{flex: 1, backgroundColor: COLORS.back}}>
-      <HeaderNavigation />
+      <HeaderNavigation  activeTime={activeTime} handleChangeTime={(time) => {setActiveTime(time)}}/>
       <ContentNavigation
-        averageTemp={averageTemp}
-        diaries={diaries}
+        diaries={data?.diaries}
+        activeTime={activeTime}
         options={activeDay()}
       />
     </ImageBackground>

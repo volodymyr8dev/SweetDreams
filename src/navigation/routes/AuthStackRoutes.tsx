@@ -61,7 +61,7 @@ const AuthStackRoutes = () => {
       {/* Complete registration */}
       <Stack.Screen name="Step3" component={Step3} />
       <Stack.Screen name="Step4" component={Step4} />
-      <Stack.Screen name="Step5" component={Step5} />
+      <Stack.Screen name="Step5" component={MyTabs} />
       
       {/* Initial connection */}
       <Stack.Screen name="Connection" component={Connection} options={{title: "connect misty"}} />

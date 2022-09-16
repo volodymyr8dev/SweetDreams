@@ -11,3 +11,7 @@ export const monthNameDate  = date =>{
 
 return monthNames[month] +" " + new Date(date).getFullYear()
 }
+export const monthDayFormat = date => moment(date).format('DD-MM');
+export const monthDayF2 = date => moment(date).format('DD/MM');
+export const dayFormat = date => moment(date).format('DD');
+export const timeFormat = date => moment(date).format('HH:mm');
