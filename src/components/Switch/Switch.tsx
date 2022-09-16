@@ -18,7 +18,7 @@ export const Switch = ({val, setVal, setData, valueSmart, title}: ISwitch) => {
       labelStyle={{color: 'black', fontWeight: '900'}}
       size="large"
       onToggle={() => {
-        setData(val);
+        setData(!val);
       }}
     />
   );

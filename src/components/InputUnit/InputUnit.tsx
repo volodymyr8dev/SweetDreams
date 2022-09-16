@@ -111,7 +111,7 @@ export const InputUnit = ({
           </TextInput>
           {rightContent == 'switch' ? (
             <View style={styles.rightContainerSwitch}>
-              <Switch val={value as any} setVal={setValueName} />
+              <Switch val={value as any} setData={setValueName} />
             </View>
           ) : (
             <View style={styles.rightContainer}>
@@ -156,7 +156,7 @@ export const InputUnit = ({
                   styles.customText,
                   {color: value == 'left' ? '#fff' : COLORS.text},
                 ]}>
-                Left 
+                Left
               </Text>
             </TouchableOpacity>
             <Text style={{color:"#fff",marginTop:2}}>  / </Text>

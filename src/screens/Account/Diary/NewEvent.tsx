@@ -50,7 +50,7 @@ export const NewEvent = ({navigation, route}) => {
 
   const addEvent = () => {
     let eventParams = {id,title,location,type: params.type,allDay,starts,ends,notes,breast};
-    
+
     setLoaderAddEVent(true);
 
     NewEventApi(eventParams)
@@ -101,7 +101,7 @@ export const NewEvent = ({navigation, route}) => {
 
     if (params.selectedDate && params.type == regType) {
       setStarts(params.selectedDate);
-      if (params.rightText == 'add')setEnds(moment(params.selectedDate).add(30,'minutes'));
+      setEnds(moment(params.selectedDate).add(30,'minutes'));
     }
   }, [params.selectedDate]);
 
@@ -113,7 +113,7 @@ export const NewEvent = ({navigation, route}) => {
   }, []);
 
   const handleSetLocation = loc => {setLocation(rest => ({locate:loc.location, name: loc.name}))};
-  
+
   return (
     <ImageBackground source={background} style={{backgroundColor: COLORS.back}}>
       <View style={styles.container}>
@@ -145,7 +145,7 @@ export const NewEvent = ({navigation, route}) => {
           value={
             params.type == regType
               ? allDay
-                ? moment(starts).format('YYYY-MM-DD'): dateTimeFormat(starts) 
+                ? moment(starts).format('YYYY-MM-DD'): dateTimeFormat(starts)
               : dateTimeFormat(starts)
           }
           changeDate={date => {
@@ -163,7 +163,7 @@ export const NewEvent = ({navigation, route}) => {
           value={
             params.type == regType
               ? allDay
-                ? moment(ends).format('YYYY-MM-DD')
+                ? moment(starts).format('YYYY-MM-DD')
                 : dateHMFormat(ends)
               : dateHMFormat(ends)
           }
@@ -172,12 +172,12 @@ export const NewEvent = ({navigation, route}) => {
         {params.type == feedType && (
           <InputUnit event={true} value={breast} style={styles.notes} setValueName={value => {
             value === breast ? setBreast(null): setBreast(value)
-          }} 
+          }}
           nameOfBox={'handleSwitch'} placeholder={'Breast'} multiline={true}
           />
         )}
 
-        <InputUnit event={true} value={notes} style={styles.notes} setValueName={value => setNotes(value)} 
+        <InputUnit event={true} value={notes} style={styles.notes} setValueName={value => setNotes(value)}
         nameOfBox={'input'} placeholder={'Notes'} multiline={true}
         />
         {loaderAddEvent && <Loader text={`adding new ${params.type}...`} />}
