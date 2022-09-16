@@ -7,6 +7,7 @@ interface ILocation {
   name: string;
   locate: string;
 }
+
 export const Feed = () => {
   const navigation = useNavigation<any>();
   const isFocused = useIsFocused();

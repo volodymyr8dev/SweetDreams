@@ -168,7 +168,7 @@ export default React.memo(function ShopCarousel(props) {
         onPress={() => {
           carouselRef.current.scrollToIndex(index);
         }}>
-        <View style={{paddingTop: 10, alignItems: 'center'}}>
+        <View style={{alignItems: 'center'}}>
           <ImageBackground style={styles.shadowImage} source={backUri}>
             {uri}
           </ImageBackground>
@@ -207,6 +207,7 @@ export default React.memo(function ShopCarousel(props) {
                         styles.contentText,
                         {
                           color: device.is_online && item.id == selectedLightShow ? '#000'  : 'rgba(255,255,255,1)',
+                          fontSize: Dimensions.get('window').width * 0.03
                         },
                       ]}>
                       {item.text}

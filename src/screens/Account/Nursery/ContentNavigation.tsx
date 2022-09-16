@@ -19,16 +19,18 @@ const Blog = ({title, rightEl, source, subTitle, width, height,option}: IBlog) =
   const navigation = useNavigation();
   const accounts = user.accounts;
   const handleSettings = async () => {
-    
+    let nav = ''
     if (typeof rightEl !== 'object') {
-      
-        navigation.navigate(`${title}`, {
+
+       if (title == 'Diary Entries') nav = 'Diary' 
+
+        navigation.navigate(`${nav?nav:title}`, {
           title,
           childId: accounts[0].id,
           option
         });
+      }
     }
-  };
   return (
     <TouchableOpacity onPress={handleSettings} style={styles.blog}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -43,12 +45,12 @@ const Blog = ({title, rightEl, source, subTitle, width, height,option}: IBlog) =
         />
         <View>
           <Text
-            style={{color: '#2371AB', fontSize: title.length > 20 ? 17 : 20}}>
+            style={{color: '#2371AB', fontSize: title.length > 20 ? 17 : 20, fontFamily: 'AntagometricaBT-Regular'}}>
             {title}
           </Text>
 
           {subTitle ? (
-            <Text style={{color: '#2371AB', fontSize: 12}}>{subTitle}</Text>
+            <Text style={{color: '#2371AB', fontSize: 12, fontFamily: 'AntagometricaBT-Regular'}}>{subTitle}</Text>
           ) : null}
         </View>
       </View>
@@ -57,7 +59,7 @@ const Blog = ({title, rightEl, source, subTitle, width, height,option}: IBlog) =
           rightEl
         ) : (
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{color: COLORS.textLight, fontSize: 18}}>
+            <Text style={{color: COLORS.textLight, fontSize: 19, fontFamily: 'AntagometricaBT-Regular'}}>
               {rightEl}
             </Text>
             <Image

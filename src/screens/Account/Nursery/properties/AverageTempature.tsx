@@ -36,8 +36,7 @@ export const AverageTempature = ({route}) => {
   const accounts = user.accounts;
   let   option   = route.params.option;
 
-
-  const {diaries,labels,temperatures}   = useFetchTemperature(accounts[0].id,device.id,start,end) 
+  const {diaries,labels,temperatures,data}   = useFetchTemperature(accounts[0].id,device.id,start,end) 
 
 
   console.log('[Average Temperature fetch]',diaries,labels,temperatures)
@@ -86,25 +85,25 @@ export const AverageTempature = ({route}) => {
     // }));
   }, []);
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.headerContent}>
-          <TouchableOpacity
-            style={{paddingHorizontal: 5, paddingVertical: 5}}
-            onPress={() => handleLeftData()}>
-            <Image style={{width: 10.77, height: 18.86}} source={arrowLeft} />
-          </TouchableOpacity>
-          <View style={styles.headerWraper}>
-            <Text style={styles.headerText}>{activeTime}</Text>
-            <Text style={styles.headerTextTime}>{`${start} - ${end}`}</Text>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.headerContent}>
+            <TouchableOpacity
+              style={{paddingHorizontal: 5, paddingVertical: 5}}
+              onPress={() => handleLeftData()}>
+              <Image style={{width: 10.77, height: 18.86}} source={arrowLeft} />
+            </TouchableOpacity>
+            <View style={styles.headerWraper}>
+              <Text style={styles.headerText}>{activeTime}</Text>
+              <Text style={styles.headerTextTime}>{`${start} - ${end}`}</Text>
+            </View>
+            <TouchableOpacity
+              style={{paddingHorizontal: 5, paddingVertical: 5}}
+              onPress={handleRightData}>
+              <Image style={{width: 10.77, height: 18.86}} source={arrowRight} />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={{paddingHorizontal: 5, paddingVertical: 5}}
-            onPress={handleRightData}>
-            <Image style={{width: 10.77, height: 18.86}} source={arrowRight} />
-          </TouchableOpacity>
         </View>
-      </View>
       {option == 'last 24 hours' ? (
         <View style={styles.graphicContent}>
           <View style={{alignItems: 'center'}}>
@@ -159,11 +158,12 @@ export const AverageTempature = ({route}) => {
           styleImage={styles.styleImage}
           style={styles.bottomButton}
           title={'Sleep Diary'}
-          rightEl={`${diaries} entries`}
+          rightEl={`${data?.diaries ? data?.diaries:0} entries`}
           source={sleepDiary}
         />
       </View>
-    </View>
+      </View>
+
   );
 };
 
@@ -191,6 +191,7 @@ const styles = StyleSheet.create({
   },
   headerTextTime: {
     color: COLORS.text,
+    fontFamily: 'AntagometricaBT-Bold',
   },
   headerWraper: {
     paddingHorizontal: 17.27,
@@ -205,6 +206,7 @@ const styles = StyleSheet.create({
   TextGraphic: {
     color: COLORS.textLight,
     fontSize: 14,
+    fontFamily: 'AntagometricaBT-Bold',
   },
   addInformation: {
     paddingTop: 43,

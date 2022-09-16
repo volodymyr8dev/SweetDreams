@@ -184,7 +184,6 @@ export const ProfileSettings = ({navigation}) => {
     if (user.email != email) {
       req.email = email
     }
-
     
     Promise.all([
       UpdateProfile(req),

@@ -33,3 +33,14 @@ export const getProfile = async () => {
 
   return await axiosInstance.get('api/me');
 };
+
+export const AddFamilyMember = async (accountId, name, email) => {
+  const body = {
+    name:  name,
+    email: email
+  };
+
+  console.log('[PROFILE] Add family member request', body);
+
+  return await axiosInstance.post(`api/accounts/${accountId}/members/invite`, body);
+};
