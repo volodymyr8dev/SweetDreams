@@ -8,7 +8,7 @@ import moment                                                          from 'mom
 import {useSelector}                                                   from 'react-redux';
 import { RootReducerState }                                            from '../../../redux';
 import SearchBar                                                       from '../../../components/SearchBar';
-import {GetEventApi}                                                   from '../../../api/Diary/calendar';
+import {RetrieveEvent}                                                 from '../../../api/Diary/Calendar';
 import {EventHtml}                                                     from './EventHtml';
 import eventDateimportant                                              from '../../../assets/images/documents/dateEventVerticalImportant.png';
 import {COLORS}                                                        from '../../../styles/Constants';
@@ -134,7 +134,7 @@ export const Document = ({navigation,route}) => {
   }
 
   useEffect(() => {
-    GetEventApi(global.id)
+    RetrieveEvent(global.id)
       .then(({data}) => {
 
         let res = data.map(item => {
@@ -142,8 +142,6 @@ export const Document = ({navigation,route}) => {
           if (isJsonString(item.location)) item.location = JSON.parse(item.location)
           item.date = item.starts_at;
           item.date = moment(item.date).format('YYYY-MM-DD');
-
-          if (item.type == 'feed') item.title = 'Feed';
 
           return item;
         });
@@ -158,7 +156,7 @@ export const Document = ({navigation,route}) => {
   }, [isFocused]);
 
   const handleAddEvent = () => {
-    navigation.navigate('addEvent', {selectedDate, global, type: 'regular'});
+    navigation.navigate('NewEvent', {selectedDate, global, type: 'regular'});
   };
 
   useEffect(() => {
@@ -231,7 +229,7 @@ export const Document = ({navigation,route}) => {
                     // backgroundColor: '#2A305A',
                     dayHeader: {marginTop: 2,marginBottom: 7,width: 30,textAlign: 'center',fontSize: 14,color: '#fff',},
                   },
-                  headerTitle: {color: COLORS.yellow},
+                  headerTitle: {color: COLORS.yellow, },
                 },
                 'stylesheet.calendar.main': {
                   monthView: {},
@@ -277,6 +275,7 @@ export const Document = ({navigation,route}) => {
                 monthTextColor: '#DBE9EE',
                 textMonthFontWeight: 'bold',
                 arrowColor: '#DBE9EE',
+                fontFamily: 'AntagometricaBT-Regular'
               }}
             />
           )}

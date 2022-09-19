@@ -42,9 +42,9 @@ export const getCombinedNavigation: (navigationHeader) => void = (navigationHead
       if (typeof navigationHeader.headerLeftMethod != 'undefined') {
         if (navigationHeader.headerRightText) {
           return (
-            <TouchableOpacity style={{flexDirection: 'row' ,alignItems: 'center'}} onPress={() => navigationHeader.headerLeftMethod() }>
+            <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', paddingRight: 30}} onPress={() => navigationHeader.headerLeftMethod() }>
               <Image style={{width: 12.3, height: 18.86}} source={backButton} />
-              <Text style={{color:"#fff", fontSize:19, fontFamily: 'AntagometricaBT-Regular', marginLeft:7.69, marginBottom:3}}> 
+              <Text style={{color:"#fff", fontSize: 19, fontFamily: 'AntagometricaBT-Regular', marginLeft:7.69, marginBottom:3}}> 
                 { navigationHeader.headerLeftText ? navigationHeader.headerLeftText : '' }
               </Text>
             </TouchableOpacity>

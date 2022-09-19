@@ -3,126 +3,48 @@ import {View, Text, Platform, StyleSheet, TouchableOpacity} from 'react-native';
 import {COLORS} from '../../styles/Constants';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
+
 export const DatePickerComponent = ({
   changeDate,
   value,
-  type,
-  mode,
-  time,
-  min,
-  allDay,
+  name,
+  mode
 }) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-  let dater = new Date(min);
 
   return (
     <>
-      {!time ? (
-        <TouchableOpacity
-          disabled={allDay}
-          onPress={() => {
-            setOpen(true);
-          }}>
-          <View style={styles.citizen}>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={styles.typeText}>{type}</Text>
-            </View>
-            <Text style={{color: '#fff', fontSize: 18, fontFamily: 'AntagometricaBT-Regular'}}>{value ? moment(value).format('DD MMMM YYYY') : 'Select'}</Text>
+      <TouchableOpacity
+        onPress={() => { setOpen(true); }}>
+        <View style={styles.citizen}>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.typeText}>{name}</Text>
           </View>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          disabled={allDay}
-          onPress={() => {
-            setOpen(true);
-          }}>
-          <View style={styles.citizen}>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={styles.typeText}>{type}</Text>
-            </View>
-            <View>
-              <View>
-                <Text style={{color: '#fff', fontSize: 18, fontFamily: 'AntagometricaBT-Regular'}}>{value ? moment(value).format('DD MMMM YYYY') : 'Select'}</Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
-      )}
+          <Text style={{color: '#fff', fontSize: 18, fontFamily: 'AntagometricaBT-Regular'}}>
+            {value ? moment(value).format(mode == 'date' ? 'DD MMMM YYYY' : 'DD MMMM YYYY hh:mm a') : 'Select'}
+          </Text>
+        </View>
+      </TouchableOpacity>
 
       <View style={{marginBottom: 8.3}}></View>
-      {min ? (
-        type !== 'Starts' ? (
-          <DatePicker
-            //fix here
-            minimumDate={
-              new Date(
-                `${dater.getFullYear()}-${dater.getMonth()}-${dater.getDate()}`,
-              )
-            }
-            maximumDate={
-              type == 'Starts'
-                ? new Date(
-                    `${dater.getFullYear()}-${
-                      dater.getMonth() + 1
-                    }-${dater.getDate()}`,
-                  )
-                : null
-            }
-            mode={mode}
-            theme="dark"
-            textColor={Platform.OS === 'ios' ? '#fff' : '#000'}
-            modal
-            open={open}
-            date={date}
-            onConfirm={date => {
-              setOpen(false);
-              setDate(date);
-              changeDate(date);
-            }}
-            onCancel={() => {
-              setOpen(false);
-            }}
-          />
-        ) : (
-          <DatePicker
-            mode={mode}
-            theme="dark"
-            textColor={Platform.OS === 'ios' ? '#fff' : '#000'}
-            modal
-            open={open}
-            date={date}
-            onConfirm={date => {
-              console.log('errror', date);
-              setOpen(false);
-              setDate(date);
-
-              changeDate(date);
-            }}
-            onCancel={() => {
-              setOpen(false);
-            }}
-          />
-        )
-      ) : (
-        <DatePicker
-          maximumDate={new Date()}
-          mode={mode}
-          theme="dark"
-          textColor={Platform.OS === 'ios' ? '#fff' : '#000'}
-          modal
-          open={open}
-          date={date}
-          onConfirm={date => {
-            setOpen(false);
-            setDate(date);
-            changeDate(date);
-          }}
-          onCancel={() => {
-            setOpen(false);
-          }}
-        />
-      )}
+      
+      <DatePicker
+        mode={mode}
+        theme="dark"
+        textColor={Platform.OS === 'ios' ? '#fff' : '#000'}
+        modal
+        open={open}
+        date={date}
+        onConfirm={date => {
+          setDate(date);
+          changeDate(date);
+          setOpen(false);
+        }}
+        onCancel={() => {
+          setOpen(false);
+        }}
+      />
     </>
   );
 };

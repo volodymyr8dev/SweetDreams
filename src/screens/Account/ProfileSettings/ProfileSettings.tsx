@@ -268,7 +268,7 @@ export const ProfileSettings = ({navigation}) => {
           />
           <DatePickerComponent
             mode="date"
-            type="Your Date of Birth"
+            name="Your Date of Birth"
             value={valueDate}
             changeDate={date => {
               setValueDate(moment(date).format('YYYY-MM-DD'));
