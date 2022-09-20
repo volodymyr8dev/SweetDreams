@@ -33,6 +33,7 @@ import {
   setTemperatureNotifications,
   setDeviceConfigChildLock
 } from '../../../redux/slices/auth';
+import moment from 'moment';
 
 export const SettingsAccount = ({navigation}) => {
   /* Set default navigation options */
@@ -121,7 +122,7 @@ export const SettingsAccount = ({navigation}) => {
           <Blog
             title="time"
             navigate="Time"
-            rightEl={device.config?.time}
+            rightEl={moment().format('HH:mm')}
             value={device.config?.time}
             source={clock}
           />

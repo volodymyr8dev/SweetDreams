@@ -120,7 +120,51 @@ export const Document = ({navigation,route}) => {
     );
   }, [navigation,selectedDate, isFocused]);
 
-  const handleClicked = () => { setShown(true); setClicked(false) };
+  const handleNavigationUpdate = () => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title: global.baby_name ? `search in ${global.baby_name.toLowerCase()}'s diary`: "search in baby's diary",
+        headerStyle: {
+          paddingLeft: 20,
+          backgroundColor: '#2A305A',
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        buttonPaddingLeft: 20,
+        headerLeftText: <></>,
+        headerLeftMethod: () => {
+          setClicked(true);
+          setShown(false);
+
+          navigation.setOptions(
+            getCombinedNavigation({
+              title: global.baby_name ? `${global.baby_name.toLowerCase()}'s diary`: "baby's diary",
+              // headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
+              headerRightText:         
+              <><TouchableOpacity style={{ paddingRight: 23.5, paddingLeft: 15, paddingVertical: 10 }}
+                  onPress={() => {handleClicked()}}>
+                  <Search style={{ width: 15, height: 15 }} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ paddingVertical: 10,paddingRight:15 }}
+                  onPress={() => {handleAddEvent()}}>
+                    <Plus style={undefined} />
+                  </TouchableOpacity></>,
+              headerRightMethod: () => {},
+            }),
+          );
+        },
+        headerRightText: <></>,
+        headerRightMethod: () => {},
+      }),
+    );
+  };
+
+  const handleClicked = () => {
+    setShown(true);
+    setClicked(false);
+    handleNavigationUpdate();
+  };
 
    useEffect(() => {
      if (route.params?.date) setSelectedDate(route?.params.date);

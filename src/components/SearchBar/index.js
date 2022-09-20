@@ -9,7 +9,13 @@ import {
   Keyboard,
   Button,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
+
+import { getCombinedNavigation } from '../../hooks/useUpdateNavigationHeaderOptions';
+import {useSelector}                                                   from 'react-redux';
+import { RootReducerState }                                            from '../../../redux';
+import Plus                                                            from '../../assets/images/svg/diary/Plus'
 
 const SearchBar = ({
   clicked,
@@ -19,27 +25,14 @@ const SearchBar = ({
   shown,
   setShown,
 }) => {
-  const navigation = useNavigation();
-  const handleClicked = () => {
-    setShown(true);
-    setClicked(false);
-  };
-  useEffect(() => {
-    console.log('clecked', clicked);
-    navigation.setParams({
-      headerShown: clicked,
-      searchClicked: handleClicked,
-    });
-  }, [clicked]);
+
   return shown ? (
     <View style={shown ? styles.container : styles.containerHide}>
       <View
         style={
           clicked ? styles.searchBar__clicked : styles.searchBar__unclicked
         }>
-        {/* search Icon */}
 
-        {/* Input field */}
         <TextInput
           style={styles.input}
           placeholder="Search"
@@ -49,16 +42,6 @@ const SearchBar = ({
             setClicked(true);
           }}
         />
-        <TouchableOpacity
-          onPress={() => {
-            Keyboard.dismiss();
-            setClicked(true);
-            setShown(false);
-          }}>
-          <View>
-            <Text>Cancel</Text>
-          </View>
-        </TouchableOpacity>
       </View>
     </View>
   ) : null;
@@ -67,35 +50,35 @@ export default SearchBar;
 
 // styles
 const styles = StyleSheet.create({
-
-  
   container: {
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    width: '93%',
+    width: '95%',
   },
   containerHide: {},
   searchBar__unclicked: {
     padding: 10,
     flexDirection: 'row',
-    width: '95%',
+    width: '100%',
     backgroundColor: '#d9dbda',
-    borderRadius: 15,
+    borderRadius: 30,
     alignItems: 'center',
   },
   searchBar__clicked: {
     padding: 10,
     flexDirection: 'row',
-    width: '95%',
+    width: '100%',
     backgroundColor: '#d9dbda',
-    borderRadius: 15,
+    borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'space-evenly',
   },
   input: {
     fontSize: 20,
-    marginLeft: 10,
-    width: '85%',
+    width: '100%',
+    paddingHorizontal: 10,
+    fontSize: 18,
+    fontFamily: 'AntagometricaBT-Regular',
   },
 });
