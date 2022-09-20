@@ -25,7 +25,7 @@ import {
 import {getCombinedNavigation}      from '../../hooks/useUpdateNavigationHeaderOptions';
 import {COLORS}                     from '../../styles/Constants';
 
-import background                   from '../../assets/images/homeIcon/backgroundHome.png';
+import background                   from '../../assets/backOrigin.png';
 
 export const ConnectionStep2 = ({navigation}) => {
   const { user } = useSelector((state: RootReducerState) => state.auth);
@@ -138,7 +138,7 @@ export const ConnectionStep2 = ({navigation}) => {
   };
 
   return (
-    <ImageBackground style={{backgroundColor: COLORS.backGround, height: '100%'}} source={background}>
+    <ImageBackground style={{backgroundColor: COLORS.backGround, height: '100%', flex: 1}} source={background}>
       <ScrollView>
         <View style={styles.container}>
           <StepIndicator stepCount={3} customStyles={customStyles} currentPosition={1} />
@@ -197,7 +197,7 @@ export const ConnectionStep2 = ({navigation}) => {
           </Text>
         </View>
       </TouchableOpacity>
-      {loader && (<Loader text={'taking misty online'} />)}
+      {loader && (<Loader text={'connecting your phone to the misty unit'} />)}
     </ImageBackground>
   );
 };

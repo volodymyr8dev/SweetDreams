@@ -15,7 +15,7 @@ import {ForgotPassword}           from '../../api/ForgotPassword/ForgotPassword'
 import {setEmail}                 from '../../redux/slices/forgotPassword';
 import {COLORS}                   from '../../styles/Constants';
 
-import background                 from '../../assets/images/homeIcon/backgroundHome.png';
+import background                 from '../../assets/backOrigin.png';
 
 export const ForgotPassword1 = ({navigation}) => {
   const dispatch = useDispatch();

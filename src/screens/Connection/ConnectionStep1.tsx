@@ -15,7 +15,7 @@ import {customStyles}          from '../../components/StepIndicator/StepIndicato
 import {getCombinedNavigation} from '../../hooks/useUpdateNavigationHeaderOptions';
 import {COLORS}                from '../../styles/Constants';
 
-import background              from '../../assets/images/homeIcon/backgroundHome.png';
+import background              from '../../assets/backOrigin.png';
 
 export const ConnectionStep1 = ({navigation}) => {
   /* Set default navigation options */
@@ -33,7 +33,7 @@ export const ConnectionStep1 = ({navigation}) => {
   };
 
   return (
-    <ImageBackground style={{backgroundColor: COLORS.backGround}} source={background}>
+    <ImageBackground style={{backgroundColor: COLORS.backGround, flex: 1}} source={background}>
       <ScrollView>
         <View style={styles.container}>
           <StepIndicator stepCount={3} customStyles={customStyles} currentPosition={0} />
@@ -125,6 +125,7 @@ export const ConnectionStep1 = ({navigation}) => {
               fontSize: 19,
               textAlign: 'center',
               fontWeight: 'bold',
+              fontFamily: 'AntagometricaBT-Regular'
             }}>
             next
           </Text>

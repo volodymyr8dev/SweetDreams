@@ -12,7 +12,7 @@ import sad                                                     from '../../../as
 import tempretute                                              from '../../../assets/images/graph/iconList/tempreture.png';
 import book                                                    from '../../../assets/images/graph/iconList/book.png';
 import arrowRight                                              from '../../../assets/images/settings/arrowRight.png';
-import back                                                    from '../../../assets/images/homeIcon/backgroundHome.png';
+import back                                                    from '../../../assets/backOrigin.png';
 
 //redux
 import {setNurseryId}                                          from '../../../redux/slice';
@@ -24,6 +24,7 @@ import {ContentNavigation}                                     from './ContentNa
 import {COLORS}                                                from '../../../styles/Constants';
 import { arrayHeader, HeaderNavigation }                       from './HeaderNavigation';
 import { useFetchTemperature }                                 from '../../../hooks/nursery/useFetchTemperature';
+import {getCombinedNavigation}                                 from '../../../hooks/useUpdateNavigationHeaderOptions';
 
 const options24 = {
   value1: {
@@ -102,48 +103,47 @@ export const NurseryData = ({navigation}) => {
   /* Set default navigation options */
   useEffect(() => {
     navigation.setOptions({
-      headerShown: false
+      headerShown: true
     })
   }, [navigation]);
 
-  const {user} = useSelector((state: RootReducerState) => state.auth);
+  useEffect(() => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title:             'nursery data',
+        headerLeftMethod:  undefined,
+        headerRightMethod: undefined
+      })
+    )
+  }, [navigation]);
+
+  const {user}   = useSelector((state: RootReducerState) => state.auth);
   
-  
-  const device = user.accounts[0]?.devices[0];
+  const device   = user.accounts[0]?.devices[0];
   const accounts = user.accounts;
   
   const [activeTime, setActiveTime]   = useState('last 24 hours');
   const [start, setStart]             = useState(startDate[arrayHeader.indexOf(activeTime)]);
   const [end, setEnd]                 = useState(dateTimeFormat(new Date()));
   
-  const {temperatures,options,diaries} = useFetchTemperature(accounts[0].id,device.id,start,end) 
+  const {
+    temperatures,
+    options,
+    diaries
+  } = useFetchTemperature(accounts[0].id, device.id, start, end) 
 
   console.log('data-----------', temperatures)
   console.log('options-----------', options)
   
   useEffect(() => {
-
     setStart(startDate[arrayHeader.indexOf(activeTime)])
     setEnd(dateTimeFormat(new Date()))
+  }, [activeTime, accounts[0].id]);
 
-  },[activeTime,accounts[0].id]);
-
-  const activeDay = () => {
-    switch (activeTime) {
-      case 'last 24 hours':
-        return options24;
-      case 'last 7 days':
-        return optionsD7;
-      case 'last 28 days':
-        return optionsD28;
-    }
-  };
 
   return (
-    <ImageBackground
-      source={back}
-      style={{flex: 1, backgroundColor: COLORS.back}}>
-      <HeaderNavigation  activeTime={activeTime} handleChangeTime={(time) => {setActiveTime(time)}}/>
+    <ImageBackground source={back} style={{flex: 1}}>
+      <HeaderNavigation activeTime={activeTime} handleChangeTime={(time) => {setActiveTime(time)}}/>
       <ContentNavigation
         diaries={diaries}
         activeTime={activeTime}

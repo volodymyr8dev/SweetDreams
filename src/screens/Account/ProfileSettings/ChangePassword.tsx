@@ -78,7 +78,7 @@ export const ChangePassword = ({navigation, route}) => {
   }
 
   return (
-    <ImageBackground source={background} style={{backgroundColor: COLORS.back}}>
+    <ImageBackground source={background} style={{backgroundColor: COLORS.back, flex: 1}}>
       <View style={styles.container}>
         <View style={{paddingHorizontal: 20, marginVertical: 15}}>
           <Text style={{color: COLORS.text, fontFamily: 'AntagometricaBT-Regular'}}>

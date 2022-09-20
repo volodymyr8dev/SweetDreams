@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux';
 import DisplayBrightnessBig from '../../../assets/images/settings/DomeBrightnessBig.png';
 import DisplayBrightnessSmall from '../../../assets/images/settings/DomeBrightnessSmall.png';
 import {SliderComp} from '../../../components/Slider/SliderComp';
-import background from '../../../assets/images/homeIcon/backgroundHome.png'
+import background from '../../../assets/backOrigin.png'
 
 export const SettingsDisplayBrightness = () => {
   const [value, setValue] = useState();

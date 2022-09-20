@@ -12,7 +12,7 @@ import {
 
 import DatePicker              from 'react-native-date-picker';
 
-import background              from '../../../assets/images/homeIcon/backgroundHome.png';
+import background              from '../../../assets/backOrigin.png';
 
 import {getCombinedNavigation} from '../../../hooks/useUpdateNavigationHeaderOptions';
 

@@ -89,7 +89,7 @@ export const ChangeFamilyMembers = ({navigation}) => {
   };
 
   return (
-    <ImageBackground source={background} style={{backgroundColor: COLORS.back}}>
+    <ImageBackground source={background} style={{backgroundColor: COLORS.back, flex: 1}}>
       <View style={styles.container}>
         <View style={{paddingHorizontal: 20, marginVertical: 20}}>
           <Text style={{color: COLORS.text}}>

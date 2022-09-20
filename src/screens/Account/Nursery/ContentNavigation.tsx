@@ -5,7 +5,7 @@ import {TouchableOpacity,View,Image,Text,
 import {useNavigation}                         from '@react-navigation/native';
 import happy                                   from '../../../assets/images/graph/iconList/happy.png';
 import sad                                     from '../../../assets/images/graph/iconList/sad.png';
-import tempretute                              from '../../../assets/images/graph/iconList/tempreture.png';
+import temperature                             from '../../../assets/images/graph/iconList/tempreture.png';
 import book                                    from '../../../assets/images/graph/iconList/book.png';
 import arrowRight                              from '../../../assets/images/settings/arrowRight.png';
 import {useSelector}                           from 'react-redux';
@@ -73,7 +73,7 @@ const Blog = ({title, rightEl, source, subTitle, width, height,option}: IBlog) =
   );
 };
 
-export const ContentNavigation = ({options, diaries,activeTime,temperatures}) => {
+export const ContentNavigation = ({options, diaries,activeTime, temperatures}) => {
 
   const {user} = useSelector((state: RootReducerState) => state.auth);
   
@@ -82,7 +82,6 @@ export const ContentNavigation = ({options, diaries,activeTime,temperatures}) =>
       {user.accounts[0]?.devices[0]?.is_deluxe == false ? null : (
         <Blog
           title="Total Time Without Activation"
-          // subTitle={options.value1.subTitle}
           source={happy}
           rightEl={options.value1.value}
           option={activeTime}
@@ -91,7 +90,6 @@ export const ContentNavigation = ({options, diaries,activeTime,temperatures}) =>
       {user.accounts[0]?.devices[0]?.is_deluxe == false ? null : (
         <Blog
           title="Longest Period Without Activation"
-          // subTitle={options.value2.subTitle}
           source={happy}
           rightEl={options.value2.value}
           option={activeTime}
@@ -100,7 +98,6 @@ export const ContentNavigation = ({options, diaries,activeTime,temperatures}) =>
       {user.accounts[0]?.devices[0]?.is_deluxe == false ? null : (
         <Blog
           title="Number of smartCRY Activations"
-          // subTitle={options.value3.subTitle}
           source={sad}
           rightEl={options.value3.value}
           option={activeTime}
@@ -108,8 +105,7 @@ export const ContentNavigation = ({options, diaries,activeTime,temperatures}) =>
       )}
       <Blog
         title="Average Temperature"
-        // subTitle={options.average}
-        source={temperatures}
+        source={temperature}
         rightEl={(options.average? options.average: 0) +"°C"}
         width={30}
         height={27}
@@ -117,7 +113,6 @@ export const ContentNavigation = ({options, diaries,activeTime,temperatures}) =>
       />
       <Blog
         title="Diary Entries"
-        // subTitle={options.value4.subTitle}
         source={book}
         rightEl={diaries}
         width={30}

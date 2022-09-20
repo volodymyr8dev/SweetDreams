@@ -36,6 +36,9 @@ export const getCombinedNavigation: (navigationHeader) => void = (navigationHead
     },
     headerStyle: {
       backgroundColor: '#2A305A',
+      elevation: 0,
+      shadowOpacity: 0,
+      borderBottomWidth: 0,
     },
     gestureEnabled: false,
     headerLeft: typeof navigationHeader.headerLeftMethod != 'undefined' ? () => {
