@@ -35,7 +35,7 @@ const AuthStackRoutes = () => {
   let account    = user && user.accounts ? user.accounts[0] : null;
   let device     = account && account.devices ? account.devices[0] : null;
 
-  let nextScreen = null;
+  let nextScreen :string|null = null;
   if (!account || !user.gender) {
     nextScreen = 'Step3';
   } else if (!account.baby_name || !account.baby_gender) {
@@ -61,7 +61,7 @@ const AuthStackRoutes = () => {
       {/* Complete registration */}
       <Stack.Screen name="Step3" component={Step3} />
       <Stack.Screen name="Step4" component={Step4} />
-      <Stack.Screen name="Step5" component={MyTabs} />
+      <Stack.Screen name="Step5" component={Step5} />
       
       {/* Initial connection */}
       <Stack.Screen name="Connection" component={Connection} options={{title: "connect misty"}} />

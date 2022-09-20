@@ -17,27 +17,45 @@ export const AverageGraph = ({option,labels,temperatures}: IAvrageGraph) => {
   const { user } = useSelector((state: RootReducerState) => state.auth);
   const {id}     = user.accounts[0];
 
-  const isFocused = useIsFocused();
-
-  const data = {
+  const [data,setData] = useState<any>({
     labels: labels,
     legend: ['L1', 'L2', 'L3', 'L4', 'L5'],
     datasets: [{data: temperatures}],
-  };
+  })
+
+  console.log('labels in Average Graph',labels)
+
+useEffect(() => {
+  setData({
+  labels,
+  datasets: [{data: temperatures}],
+  })
+},[labels,temperatures])
 
 
-  //days
-  const daysData = data => {
+const splitToChunks = (array:any, parts)=>{
+  let result = [];
+  for (let i = parts; i > 0; i--) {
+      result.push(array.splice(0, Math.ceil(array.length / i)));
+  }
+  return result;
+}
 
-  };
-
-  //weeks
-  const weekData = data => {
-   
-  };
 
   //monts
-  const monthsData = data => {
+  const monthsData = () => {
+   const tempLabels = splitToChunks(labels, 4)
+   const tempTemperatures = splitToChunks(temperatures, 4)
+
+   const arrayOfLabels = tempLabels.map((labelArray) => {
+     const { 0: first, length, [length -1]: last } = labelArray //getting first and last el from array
+     const obj = { first, last }
+
+    return obj
+   })
+
+console.log('obj^^^^^^^^^^^^',arrayOfLabels) 
+   return data
   };
 
   return (
@@ -71,7 +89,7 @@ export const AverageGraph = ({option,labels,temperatures}: IAvrageGraph) => {
           showValuesOnTopOfBars={true}
           withInnerLines={true}
           segments={5}
-          data={data}
+          data={temperatures.length > 8 ? monthsData(): data}
           width={Dimensions.get('window').width - 50}
           height={364.21}
           chartConfig={ option == 'last 7 days' ? chartConfigDays: chartConfigMonth}

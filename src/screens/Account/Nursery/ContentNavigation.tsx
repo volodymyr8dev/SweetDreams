@@ -73,17 +73,16 @@ const Blog = ({title, rightEl, source, subTitle, width, height,option}: IBlog) =
   );
 };
 
-export const ContentNavigation = ({options, diaries,activeTime}) => {
-  console.log('activeTime', activeTime);
-  const { loadingCheckLogin, user, verified } = useSelector((state: RootReducerState) => state.auth);
+export const ContentNavigation = ({options, diaries,activeTime,temperatures}) => {
+
+  const {user} = useSelector((state: RootReducerState) => state.auth);
   
-  useEffect(() => {}, [options]);
   return (
     <View style={styles.container}>
       {user.accounts[0]?.devices[0]?.is_deluxe == false ? null : (
         <Blog
           title="Total Time Without Activation"
-          subTitle={options.value1.subTitle}
+          // subTitle={options.value1.subTitle}
           source={happy}
           rightEl={options.value1.value}
           option={activeTime}
@@ -92,7 +91,7 @@ export const ContentNavigation = ({options, diaries,activeTime}) => {
       {user.accounts[0]?.devices[0]?.is_deluxe == false ? null : (
         <Blog
           title="Longest Period Without Activation"
-          subTitle={options.value2.subTitle}
+          // subTitle={options.value2.subTitle}
           source={happy}
           rightEl={options.value2.value}
           option={activeTime}
@@ -101,7 +100,7 @@ export const ContentNavigation = ({options, diaries,activeTime}) => {
       {user.accounts[0]?.devices[0]?.is_deluxe == false ? null : (
         <Blog
           title="Number of smartCRY Activations"
-          subTitle={options.value3.subTitle}
+          // subTitle={options.value3.subTitle}
           source={sad}
           rightEl={options.value3.value}
           option={activeTime}
@@ -109,16 +108,16 @@ export const ContentNavigation = ({options, diaries,activeTime}) => {
       )}
       <Blog
         title="Average Temperature"
-        subTitle={options.value5.subTitle}
-        source={tempretute}
-        rightEl={0+"°C"}
+        // subTitle={options.average}
+        source={temperatures}
+        rightEl={(options.average? options.average: 0) +"°C"}
         width={30}
         height={27}
         option={activeTime}
       />
       <Blog
         title="Diary Entries"
-        subTitle={options.value4.subTitle}
+        // subTitle={options.value4.subTitle}
         source={book}
         rightEl={diaries}
         width={30}

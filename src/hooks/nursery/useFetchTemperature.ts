@@ -1,50 +1,52 @@
+import moment from 'moment';
 import React, {useEffect, useState} from 'react';
 import {NurseryTemperatureApi}      from '../../api/Nursery/Nursery';
 import { dateTimeFormat}            from '../../utils/time';
 
 export const useFetchTemperature = (id, deviceId, dataStart,dataEnd) => {
 
-    const [data,setData]                  = useState()
-    const [labels,setLabels]              = useState<string[]>([])
-    const [temperatures,setTemperatures]  = useState<number[]>([])
+    const [labels,setLabels]              = useState<string[]>(['10/01'])
+    const [temperatures,setTemperatures]  = useState<number[]>([0])
+    const [options,setOptions]  = useState<any>([])
     const [diaries,setDiaries]            = useState<number>(0)
 
     useEffect(() => {
    
        let start = dateTimeFormat(dataStart)
        let end = dateTimeFormat(dataEnd)
-    
+
       NurseryTemperatureApi(id,deviceId, start,end)
         .then(({data}) => {
           console.log('[Average Temperature data resolved]', data);
-
-          setData(data)
           
-        //   let labels: string[] = [];
-        //   let points = data
-        //     .map(item => item.temperature[0])
-        //     .map(item => {
-        //       labels.push(item[0].time);
-        //       return item[0].temperature;
-        //     });
-        //   labels.sort(
-        //     (a: any, b: any) => a.replace(':', '') - b.replace(':', ''),
-        //   );
+          setDiaries(data.diaries)
 
-        //   setLabels(labels);
-        //   setTemperatures(points.sort((a, b) => a - b));
+          if(Object.keys(data.temperatures).length){
+            setOptions(data.temperatures)
+          }
+          if(data?.temperatures?.data){
+            
+            setTemperatures(Object.values(data?.temperatures?.data))
+
+            let labels: string[] = [];
+
+            Object.keys(data?.temperatures?.data).map((key)=>{
+              labels.push( moment(key).format('DD/MM'))
+            })
+
+            setLabels(labels)
+          };
         })
         .catch(err => {
           console.log('[Average Temperature switch data rejected]', err.response);
-
           setTemperatures([0]);
         });
   }, [dataStart]);
   return {
-    data,
     labels,
     temperatures,
-    diaries
+    diaries,
+    options
   }
 };
 

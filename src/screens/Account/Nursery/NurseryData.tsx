@@ -18,7 +18,7 @@ import back                                                    from '../../../as
 import {setNurseryId}                                          from '../../../redux/slice';
 import {RootState}                                             from '../../../redux/interfaceRootState';
 
-import {dateFormat, dateTimeFormat}                            from '../../../utils/time';
+import {dateTimeFormat}                                        from '../../../utils/time';
 import {ContentNavigation}                                     from './ContentNavigation';
 
 import {COLORS}                                                from '../../../styles/Constants';
@@ -91,6 +91,7 @@ const optionsD28 = {
     subTitle: '',
   },
 };
+
 const startDate = [
   moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss'),
   moment(new Date()).subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss'),
@@ -110,15 +111,15 @@ export const NurseryData = ({navigation}) => {
   
   const device = user.accounts[0]?.devices[0];
   const accounts = user.accounts;
-  console.log('id',accounts)
   
   const [activeTime, setActiveTime]   = useState('last 24 hours');
   const [start, setStart]             = useState(startDate[arrayHeader.indexOf(activeTime)]);
   const [end, setEnd]                 = useState(dateTimeFormat(new Date()));
   
-  const {data} = useFetchTemperature(accounts[0].id,device.id,start,end) 
+  const {temperatures,options,diaries} = useFetchTemperature(accounts[0].id,device.id,start,end) 
 
-  console.log('data-----------', data)
+  console.log('data-----------', temperatures)
+  console.log('options-----------', options)
   
   useEffect(() => {
 
@@ -144,9 +145,10 @@ export const NurseryData = ({navigation}) => {
       style={{flex: 1, backgroundColor: COLORS.back}}>
       <HeaderNavigation  activeTime={activeTime} handleChangeTime={(time) => {setActiveTime(time)}}/>
       <ContentNavigation
-        diaries={data?.diaries}
+        diaries={diaries}
         activeTime={activeTime}
-        options={activeDay()}
+        options={options}
+        temperatures={temperatures}
       />
     </ImageBackground>
   );

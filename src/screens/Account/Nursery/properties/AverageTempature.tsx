@@ -1,6 +1,6 @@
 import React, {useState, useEffect}                      from 'react';
-import {StyleSheet,Text,View,Image,Dimensions,
-          ImageBackground,  TouchableOpacity }           from 'react-native';
+import {StyleSheet,Text,View,Image,
+       ImageBackground,TouchableOpacity}                 from 'react-native';
 import { useSelector }                                   from 'react-redux';
 import { RootReducerState }                              from '../../../../redux';
 import moment                                            from 'moment';
@@ -17,58 +17,59 @@ import {Blog}                                            from '../../../../compo
 //hooks
 import { useFetchTemperature }                           from '../../../../hooks/nursery/useFetchTemperature';
 
-import {COLORS,time,chooseDate,chooseTimeOrIndex}        from '../../../../styles/Constants';
-import { dateFormat }                                    from '../../../../utils/time';
+import {COLORS,time,HandleStartTime,EndTime,startFirst}  from '../../../../styles/Constants';
 import { AverageGraph }                                  from './AverageGraph';
+import { dateFormat }                                    from '../../../../utils/time';
 
 
 export const AverageTempature = ({route}) => {
 
   const { user } = useSelector((state: RootReducerState) => state.auth);
 
-  const [activeTime, setActiveTime] = useState('last 24 hours');
-  const [start, setStart]           = useState(moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD'));
+  let option     = route.params.option
+  let timeArray  = time[option]
+
+  const [activeTime, setActiveTime] = useState(option);
+  const [start, setStart]           = useState(startFirst[option]);
   const [end, setEnd]               = useState(moment(new Date()).format('YYYY-MM-DD'));
   const [value, setValue]           = useState<any>({value: 0, y: 0, x: 0, yMax: 0, xMax: 0});
 
 
   const device   = user.accounts[0]?.devices[0];
   const accounts = user.accounts;
-  let   option   = route.params.option;
+  
+  
+  const {diaries,labels,temperatures}   = useFetchTemperature(accounts[0].id,device.id,start,end) 
 
-  const {diaries,labels,temperatures,data}   = useFetchTemperature(accounts[0].id,device.id,start,end) 
+  console.log('[Average Temperature fetch]',temperatures)
 
-
-  console.log('[Average Temperature fetch]',diaries,labels,temperatures)
-
-  //left arrow
-  const handleLeftData = () => {
+  //left right arrow
+  const handleSwitchData = (type) => {
     // setValue(data => ({...data, value: 0}));
+ let indexActiveT =  timeArray.indexOf(activeTime)
+ let start        =  '';
+ let tempActiveTime = '' 
+ 
+  if(type == 'left'){
 
-    time.indexOf(activeTime) == 0
-      ? setActiveTime(time[activeTime.length - 1])
-      : setActiveTime(time[time.indexOf(activeTime) - 1]);
+  timeArray.indexOf(activeTime) == 0
+  ? tempActiveTime =(timeArray[timeArray.length - 1])
+  : tempActiveTime =(timeArray[indexActiveT - 1]);
 
-    let start = chooseTimeOrIndex('timeIndex', 'left', activeTime);
-    let end = chooseDate(chooseTimeOrIndex('time', 'left', activeTime));
+   start = HandleStartTime('left',option,activeTime);
 
+  } else{
+
+  indexActiveT == timeArray.length - 1
+  ? tempActiveTime = (timeArray[0])
+  : tempActiveTime =(timeArray[indexActiveT + 1]);
+
+   start = HandleStartTime('right',option,activeTime);
+}
+    setActiveTime(tempActiveTime)
+    
     setStart(dateFormat(start));
-    setEnd(dateFormat(end));
-  };
-
-  //right arrow
-  const handleRightData = () => {
-    // setValue(data => ({...data, value: 0}));
-
-    time.indexOf(activeTime) == time.length - 1
-      ? setActiveTime(time[0])
-      : setActiveTime(time[time.indexOf(activeTime) + 1]);
-
-    let start = chooseTimeOrIndex('timeIndex', 'right', activeTime);
-    let end = chooseDate(chooseTimeOrIndex('time', 'right', activeTime));
-   
-    setStart(dateFormat(start));
-    setEnd(dateFormat(end));
+    setEnd(dateFormat(EndTime(tempActiveTime,option)));
   };
 
   useEffect(() => {
@@ -90,7 +91,7 @@ export const AverageTempature = ({route}) => {
           <View style={styles.headerContent}>
             <TouchableOpacity
               style={{paddingHorizontal: 5, paddingVertical: 5}}
-              onPress={() => handleLeftData()}>
+              onPress={() => handleSwitchData('left')}>
               <Image style={{width: 10.77, height: 18.86}} source={arrowLeft} />
             </TouchableOpacity>
             <View style={styles.headerWraper}>
@@ -99,12 +100,12 @@ export const AverageTempature = ({route}) => {
             </View>
             <TouchableOpacity
               style={{paddingHorizontal: 5, paddingVertical: 5}}
-              onPress={handleRightData}>
+              onPress={()=>handleSwitchData('right')}>
               <Image style={{width: 10.77, height: 18.86}} source={arrowRight} />
             </TouchableOpacity>
           </View>
         </View>
-      {option == 'last 24 hours' ? (
+      {route.params.option == 'last 24 hours' ? (
         <View style={styles.graphicContent}>
           <View style={{alignItems: 'center'}}>
             <Text style={styles.TextGraphic}>Now</Text>
@@ -129,7 +130,7 @@ export const AverageTempature = ({route}) => {
         </View>
       )}
       <AverageGraph
-          option={option}
+          option={route.params.option}
           labels={labels}
           temperatures={temperatures}
         />
@@ -158,7 +159,7 @@ export const AverageTempature = ({route}) => {
           styleImage={styles.styleImage}
           style={styles.bottomButton}
           title={'Sleep Diary'}
-          rightEl={`${data?.diaries ? data?.diaries:0} entries`}
+          rightEl={`${diaries ? diaries :0} entries`}
           source={sleepDiary}
         />
       </View>
@@ -251,3 +252,4 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
 });
+
