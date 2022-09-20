@@ -112,8 +112,8 @@ export const Feed = ({navigation, route}) => {
       setEnds(moment(new Date(params.event.ends_at)));
       setBreast(params.event.breast);
     } else {
-      setStarts(moment(new Date()).add(30, 'minutes'));
-      setEnds(moment());
+      setStarts(moment());
+      setEnds(moment(new Date()).add(30, 'minutes'));
     }
   }, []);
 
