@@ -35,7 +35,7 @@ const AuthStackRoutes = () => {
   let account    = user && user.accounts ? user.accounts[0] : null;
   let device     = account && account.devices ? account.devices[0] : null;
 
-  let nextScreen = null;
+  let nextScreen :string|null = null;
   if (!account || !user.gender) {
     nextScreen = 'Step3';
   } else if (!account.baby_name || !account.baby_gender) {

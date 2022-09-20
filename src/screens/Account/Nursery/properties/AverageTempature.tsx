@@ -1,167 +1,82 @@
-import React, {useState, useEffect} from 'react';
-import {useDispatch, useSelector}   from 'react-redux';
+import React, {useState, useEffect}                      from 'react';
+import {StyleSheet,Text,View,Image,
+       ImageBackground,TouchableOpacity}                 from 'react-native';
+import { useSelector }                                   from 'react-redux';
+import { RootReducerState }                              from '../../../../redux';
+import moment                                            from 'moment';
 
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Dimensions,
-  ImageBackground,
-  TouchableOpacity,
-} from 'react-native';
-import arrowLeft from '../../../../assets/images/nursery/arrowLeft.png';
-import arrowRight from '../../../../assets/images/nursery/arrowRight.png';
-import sleepDiary from '../../../../assets/images/nursery/sleepDiary.png';
-import alertUp from '../../../../assets/images/nursery/alertUp.png';
-import {
-  COLORS,
-  time,
-  chooseDate,
-  chooseTimeOrIndex,
-} from '../../../../styles/Constants';
-import {LineChart} from 'react-native-chart-kit';
-import {getCombinedNavigation} from '../../../../hooks/useUpdateNavigationHeaderOptions';
-import {Blog} from '../../../../components/Touchable/TouchableInput';
-import {NurseryTemperatureApi} from '../../../../api/Nursery/Nursery';
-import moment from 'moment';
-import background              from '../../../../assets/backOrigin.png';
+//icons
+import arrowLeft                                         from '../../../../assets/images/nursery/arrowLeft.png';
+import arrowRight                                        from '../../../../assets/images/nursery/arrowRight.png';
+import sleepDiary                                        from '../../../../assets/images/nursery/sleepDiary.png';
+import alertUp                                           from '../../../../assets/images/nursery/alertUp.png';
 
-export const AverageTempature = ({navigation, route}) => {
-  const dispatch = useDispatch();
-  const {user}   = useSelector((state: RootReducerState) => state.auth);
-  let device     = user.accounts[0]?.devices[0];
+//components
+import {Blog}                                            from '../../../../components/Touchable/TouchableInput';
 
-  let averageTemperature = 0
+//hooks
+import { useFetchTemperature }                           from '../../../../hooks/nursery/useFetchTemperature';
 
-  /* Set default navigation options */
-  useEffect(() => {
-    navigation.setOptions(
-      getCombinedNavigation({
-        title: 'average temperature',
-        headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
-      })
-    )
-  }, [navigation]);
+import {COLORS,time,HandleStartTime,EndTime,startFirst}  from '../../../../styles/Constants';
+import { AverageGraph }                                  from './AverageGraph';
+import { dateFormat }                                    from '../../../../utils/time';
 
-  const [array, setArray] = useState([0]);
-  const [labels, setLabels] = useState<string[]>(['']);
-  const [activeTime, setActiveTime] = useState('last 24 hours');
-  const [diary, setDiary] = useState(0);
-  const [start, setStart] = useState(
-    moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD'),
-  );
-  const [end, setEnd] = useState(moment(new Date()).format('YYYY-MM-DD'));
 
-  useEffect(() => {
-    setStart(moment(start).format('YYYY-MM-DD'));
-    setEnd(moment(end).format('YYYY-MM-DD'));
-    NurseryTemperatureApi(
-      route.params.childId,
-      moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss'),
-      moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-    )
-      .then(({data}) => {
-        console.log('success', data);
-        setDiary(data[0].diaries);
-        let labels: string[] = [];
-        let points = data
-          .map(item => item.temperature[0])
-          .map(item => {
-            labels.push(item[0].time);
-            return item[0].temperature;
-          });
-        labels.sort(
-          (a: any, b: any) => a.replace(':', '') - b.replace(':', ''),
-        );
-        setLabels(labels);
-        setArray(points.sort((a, b) => a - b));
-      })
-      .catch(err => {
-        console.log('err', err);
-        setArray([0]);
-      });
-  }, []);
+export const AverageTempature = ({route}) => {
 
-  //left arrow
-  const handleLeftData = () => {
-    setValue(data => ({...data, value: 0}));
+  const { user } = useSelector((state: RootReducerState) => state.auth);
 
-    time.indexOf(activeTime) == 0
-      ? setActiveTime(time[activeTime.length - 1])
-      : setActiveTime(time[time.indexOf(activeTime) - 1]);
+  let option     = route.params.option
+  let timeArray  = time[option]
 
-    let start = chooseTimeOrIndex('timeIndex', 'left', activeTime);
-    let end = chooseDate(chooseTimeOrIndex('time', 'left', activeTime));
-    setStart(moment(start).format('YYYY-MM-DD'));
-    setEnd(moment(end).format('YYYY-MM-DD'));
-    console.log('start', start);
-    console.log('end', end);
-    NurseryTemperatureApi(route.params.childId, start, end)
-      .then(({data}) => {
-        console.log('success', data);
-        let labels: string[] = [];
-        let points = data
-          .map(item => item.temperature[0])
-          .map(item => {
-            labels.push(item[0].time);
-            return item[0].temperature;
-          });
-        labels.sort(
-          (a: any, b: any) => a.replace(':', '') - b.replace(':', ''),
-        );
-        setLabels(labels);
-        setArray(points.sort((a, b) => a - b));
-      })
-      .catch(err => {
-        console.log('err', err.response);
-        setArray([0]);
-      });
+  const [activeTime, setActiveTime] = useState(option);
+  const [start, setStart]           = useState(startFirst[option]);
+  const [end, setEnd]               = useState(moment(new Date()).format('YYYY-MM-DD'));
+  const [value, setValue]           = useState<any>({value: 0, y: 0, x: 0, yMax: 0, xMax: 0});
+
+
+  const device   = user.accounts[0]?.devices[0];
+  const accounts = user.accounts;
+  
+  
+  const {diaries,labels,temperatures}   = useFetchTemperature(accounts[0].id,device.id,start,end) 
+
+  console.log('[Average Temperature fetch]',temperatures)
+
+  //left right arrow
+  const handleSwitchData = (type) => {
+    // setValue(data => ({...data, value: 0}));
+ let indexActiveT =  timeArray.indexOf(activeTime)
+ let start        =  '';
+ let tempActiveTime = '' 
+ 
+  if(type == 'left'){
+
+  timeArray.indexOf(activeTime) == 0
+  ? tempActiveTime =(timeArray[timeArray.length - 1])
+  : tempActiveTime =(timeArray[indexActiveT - 1]);
+
+   start = HandleStartTime('left',option,activeTime);
+
+  } else{
+
+  indexActiveT == timeArray.length - 1
+  ? tempActiveTime = (timeArray[0])
+  : tempActiveTime =(timeArray[indexActiveT + 1]);
+
+   start = HandleStartTime('right',option,activeTime);
+}
+    setActiveTime(tempActiveTime)
+    
+    setStart(dateFormat(start));
+    setEnd(dateFormat(EndTime(tempActiveTime,option)));
   };
 
-  //right arrow
-  const handleRightData = () => {
-    setValue(data => ({...data, value: 0}));
-    time.indexOf(activeTime) == time.length - 1
-      ? setActiveTime(time[0])
-      : setActiveTime(time[time.indexOf(activeTime) + 1]);
-
-    let start = chooseTimeOrIndex('timeIndex', 'right', activeTime);
-    let end = chooseDate(chooseTimeOrIndex('time', 'right', activeTime));
-    setStart(moment(start).format('YYYY-MM-DD'));
-    setEnd(moment(end).format('YYYY-MM-DD'));
-    console.log('start ', start);
-    console.log('end ', end);
-
-    NurseryTemperatureApi(route.params.childId, start, end)
-      .then(({data}) => {
-        console.log('success', data);
-        let labels: string[] = [];
-        let points = data
-          .map(item => item.temperature[0])
-          .map(item => {
-            labels.push(item[0].time);
-            return item[0].temperature;
-          });
-        labels.sort(
-          (a: any, b: any) => a.replace(':', '') - b.replace(':', ''),
-        ),
-          setLabels(labels);
-        setArray(points.sort((a, b) => a - b));
-      })
-      .catch(err => {
-        console.log('err', err);
-        setArray([0]);
-      });
-  };
-  const [value, setValue] = useState<any>({value: 0, y: 0, x: 0, yMax: 0, xMax: 0});
   useEffect(() => {
     // let min = Math.min(...array);
     // let max = Math.max(...array);
     // let indexMin = array.indexOf(min);
     // let indexMax = array.indexOf(max);
-    // console.log('min', min);
-    // console.log('--------------------', indexMax * 70 + 43);
     // setValue(prev => ({
     //   ...prev,
     //   y: min * 10 + 90,
@@ -171,13 +86,12 @@ export const AverageTempature = ({navigation, route}) => {
     // }));
   }, []);
   return (
-    <ImageBackground source={background} style={{backgroundColor: COLORS.back}}>
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.headerContent}>
             <TouchableOpacity
               style={{paddingHorizontal: 5, paddingVertical: 5}}
-              onPress={() => handleLeftData()}>
+              onPress={() => handleSwitchData('left')}>
               <Image style={{width: 10.77, height: 18.86}} source={arrowLeft} />
             </TouchableOpacity>
             <View style={styles.headerWraper}>
@@ -186,116 +100,71 @@ export const AverageTempature = ({navigation, route}) => {
             </View>
             <TouchableOpacity
               style={{paddingHorizontal: 5, paddingVertical: 5}}
-              onPress={handleRightData}>
+              onPress={()=>handleSwitchData('right')}>
               <Image style={{width: 10.77, height: 18.86}} source={arrowRight} />
             </TouchableOpacity>
           </View>
         </View>
+      {route.params.option == 'last 24 hours' ? (
         <View style={styles.graphicContent}>
           <View style={{alignItems: 'center'}}>
             <Text style={styles.TextGraphic}>Now</Text>
-            <Text style={styles.tempValueleft}>
-              {(device.config?.temperature == 'C' ? device.current_temperature : device.current_temperature * 9/5 + 32).toFixed(1).toString()}°{device.config.temperature}
-            </Text>
+            <Text style={styles.tempValueleft}>20°C</Text>
           </View>
           <View>
-            <Text style={styles.TextGraphic}>Average for this period</Text>
+            <Text style={styles.TextGraphic}>Average for this 24h</Text>
             <Text style={styles.tempValueRight}>
-              {(device.config?.temperature == 'C' ? averageTemperature : averageTemperature * 9/5 + 32).toFixed(1).toString()}°{device.config.temperature}
+              19°C
             </Text>
           </View>
         </View>
-        <View>
-          <Text style={{paddingTop: 12}}></Text>
-          <LineChart
-            onDataPointClick={value => {
-              console.log('value', value);
-              setValue(value);
-
-              console.log('masoud');
-            }}
-            fromZero
-            getDotColor={(dataPoint, dataPointIndex) => {
-              if (dataPointIndex === 0) {
-                return COLORS.textLight;
-              }
-              return COLORS.textLight;
-            }}
-            data={{
-              labels: labels,
-              datasets: [
-                {
-                  data: array,
-                },
-                {
-                  data: [20], // min
-                  withDots: false,
-                },
-                {
-                  data: [30], // min
-                  withDots: false,
-                },
-              ],
-            }}
-            width={Dimensions.get('window').width} // from react-native
-            height={359}
-            // yAxisLabel="$"
-            // yAxisSuffix="k"
-            yAxisInterval={1} // optional, defaults to 1
-            chartConfig={{
-              backgroundColor: 'transparent',
-              backgroundGradientFrom: '#272854',
-              backgroundGradientTo: '#272854',
-              backgroundGradientFromOpacity: 0,
-              backgroundGradientToOpacity: 0,
-              decimalPlaces: 1, // optional, defaults to 2dp
-              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              style: {
-                borderRadius: 16,
-              },
-              propsForDots: {
-                r: '6',
-                strokeWidth: '2',
-                stroke: '#ffa726',
-              },
-            }}
-            //   bezier
-            style={{
-              marginVertical: 8,
-              borderRadius: 16,
-            }}
-          />
-          <ImageBackground
-            source={alertUp}
-            style={{
-              opacity: value.value,
-              position: 'absolute',
-              top: value.y - 10,
-              left: value.x - 20,
-              width: 40.25,
-              height: 32.97,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-              paddingTop: 2,
-            }}>
-            <Text style={{color: COLORS.text}}>{value.value}</Text>
-          </ImageBackground>
+      ) : (
+        <View style={styles.addInformation}>
+          <Text style={styles.headerTextTime}>Total for these days</Text>
+          <Text style={styles.headerTextTime}>(average over 28 days)</Text>
+          <Text style={styles.addText}>
+            {/* {averageFor24 ? averageFor24.toFixed(2) : averageTemp} */}
+            19°C
+          </Text>
+          <Text></Text>
         </View>
-        <View style={styles.InputUnit}>
-          <Blog
-            styleText={styles.styleText}
-            styleImage={styles.styleImage}
-            style={styles.bottomButton}
-            title={'Sleep Diary'}
-            navigate={'Diary'}
-            rightEl={`${diary} entries`}
-            source={sleepDiary}
-          />
-        </View>
+      )}
+      <AverageGraph
+          option={route.params.option}
+          labels={labels}
+          temperatures={temperatures}
+        />
+      <View>
+        <Text style={{paddingTop: 12}}></Text>
+        <ImageBackground
+          source={alertUp}
+          style={{
+            opacity: value.value,
+            position: 'absolute',
+            top: value.y - 10,
+            left: value.x - 20,
+            width: 40.25,
+            height: 32.97,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            paddingTop: 2,
+          }}>
+          <Text style={{color: COLORS.text}}>{value.value}</Text>
+        </ImageBackground>
       </View>
-    </ImageBackground>
+      <View style={styles.InputUnit}>
+        <Blog
+          styleText={styles.styleText}
+          styleImage={styles.styleImage}
+          style={styles.bottomButton}
+          title={'Sleep Diary'}
+          rightEl={`${diaries ? diaries :0} entries`}
+          source={sleepDiary}
+        />
+      </View>
+      </View>
+
   );
 };
 
@@ -303,6 +172,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 8,
     height: '100%',
+    backgroundColor: '#272854',
   },
   header: {
     justifyContent: 'center',
@@ -339,6 +209,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'AntagometricaBT-Bold',
   },
+  addInformation: {
+    paddingTop: 43,
+    alignItems: 'center',
+  },
+  addText: {
+    paddingTop: 5.55,
+    color: COLORS.yellow,
+    fontSize: 20,
+    fontFamily: 'AntagometricaBT-Bold',
+  },
   tempValueleft: {
     fontSize: 19,
     paddingTop: 4,
@@ -372,3 +252,4 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
 });
+
