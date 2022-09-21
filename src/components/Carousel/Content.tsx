@@ -5,10 +5,10 @@ import {RootReducerState}         from '../../redux';
 import {
   Dimensions,
   Image,
-  StyleSheet,
+  StyleSheet, Text,
   TouchableOpacity,
-  View,
-} from 'react-native';
+  View
+} from "react-native";
 
 import ShopCarousel       from './Carousel';
 import {ControlCard}      from './ControlCard';
@@ -50,7 +50,7 @@ export const Content = props => {
     'SLEEP_TRAINER_IDLE':         CloudIdle,
     'SLEEP_TRAINER_ASLEEP':       CloudAsleepImg,
     'SLEEP_TRAINER_AWAKE':        CloudAwake,
-    
+
     'TEMPERATURE_THERMOMETER':    device.current_temperature > 22
                                       ? CloudHot
                                       : (device.current_temperature <= 17 ? CloudCold : CloudNormal),
@@ -65,12 +65,19 @@ export const Content = props => {
   return (
     <View>
       <View style={{alignItems: 'center'}}>
-        {device.is_online ? (
+        {device.is_online ? (<>
           <Image source={statuses[selectedLightShow]} style={{width: '100%', height: 350, bottom: Dimensions.get('window').height * 0.032 + '%'}} />
-        ) : (
+          {selectedLightShow ==  'SLEEP_TRAINER_AWAKE' ? (<Text style={{
+            position: "absolute",
+            top: "28.5%",
+            fontSize: 18,
+            color: "white",
+            fontFamily: "AntagometricaBT-Bold"
+          }}>{device.config.wake_up_time}</Text>) : null}
+        </>) : (
           <Image source={CloudOff} style={{width: '100%', height: 350, bottom: Dimensions.get('window').height * 0.032 + '%'}} />
         )}
-  
+
         <TouchableOpacity onPress={handlePower} style={{width: 50, bottom: Dimensions.get('window').height * 0.065 + '%', zIndex: 1}}>
           {device.is_online ? <PowerOn /> : <PowerOff />}
         </TouchableOpacity>
