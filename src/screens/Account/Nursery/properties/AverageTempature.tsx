@@ -33,14 +33,14 @@ export const AverageTempature = ({route}) => {
   const [start, setStart]           = useState(startFirst[option]);
   const [end, setEnd]               = useState(moment(new Date()).format('YYYY-MM-DD'));
   const [value, setValue]           = useState<any>({value: 0, y: 0, x: 0, yMax: 0, xMax: 0});
-
+  // const [fetchedTemp, setFetchedTemp] = useState<any>();
 
   const device   = user.accounts[0]?.devices[0];
   const accounts = user.accounts;
   
   
   const {diaries,labels,temperatures}   = useFetchTemperature(accounts[0].id,device.id,start,end) 
-
+  
   console.log('[Average Temperature fetch]',temperatures)
 
   //left right arrow
@@ -123,8 +123,7 @@ export const AverageTempature = ({route}) => {
           <Text style={styles.headerTextTime}>Total for these days</Text>
           <Text style={styles.headerTextTime}>(average over 28 days)</Text>
           <Text style={styles.addText}>
-            {/* {averageFor24 ? averageFor24.toFixed(2) : averageTemp} */}
-            19°C
+            {(temperatures.reduce((acc, val)=>acc+val,0)/temperatures.length).toFixed(2)}°C
           </Text>
           <Text></Text>
         </View>
