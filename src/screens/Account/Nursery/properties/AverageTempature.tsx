@@ -123,7 +123,7 @@ export const AverageTempature = ({route}) => {
           <Text style={styles.headerTextTime}>Total for these days</Text>
           <Text style={styles.headerTextTime}>(average over 28 days)</Text>
           <Text style={styles.addText}>
-            {(temperatures.reduce((acc, val)=>acc+val,0)/temperatures.length).toFixed(2)}°C
+            {temperatures.length?(temperatures.reduce((acc, val)=>acc+val,0)/temperatures.length).toFixed(2):0}°C
           </Text>
           <Text></Text>
         </View>
