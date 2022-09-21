@@ -4,7 +4,7 @@ import MapView, {Marker}                                                        
 import {useNavigation}                                                            from '@react-navigation/native';
 import {useSelector}                                                              from 'react-redux';
 
-import {DeleteEventApi}                                                           from '../../../api/Diary/calendar';
+import {DeleteEvent}                                                           from '../../../api/Diary/Calendar';
 import { ILocation }                                                              from './Location';
 
 import iconEue                                                                    from '../../../assets/images/documents/point.png';
@@ -31,7 +31,6 @@ export const EventInformation = ({route}) => {
   const [locationEvent, setLocationEvent] = useState<ILocation>({name: '',locate: {lat: null,lng: null}});
   const [event, setEvent]                 = useState(params.event);
   
-  
   useEffect(() => {
     params.event.location.name && setLocationEvent(params.event.location);
     setEvent(route.params.event);
@@ -50,27 +49,24 @@ export const EventInformation = ({route}) => {
   }, [navigation]);
   
   const goToEdit = () => {
-    navigation.navigate('addEvent', {
-          selectedDate: event.starts_at,
-          event: event, 
-          editable: true,
-        });
-      }
+    navigation.navigate('NewEvent', {
+        event: event, 
+    });
+  }
 
   const handleDeleteEvent = () => {
-    DeleteEventApi(id, event.id)
-      .then(data => {
-        console.log('[Delete Event successfully]', data);
-       
-        Alert.alert('event successfully deleted');
-       
-        navigation.goBack();
-      })
-      .catch(err => {
-        Alert.alert(err.response.data.message);
+    DeleteEvent(id, event.id).then(data => {
+      console.log('[Delete Event successfully]', data);
+      
+      Alert.alert('event successfully deleted');
+      
+      navigation.goBack();
+    })
+    .catch(err => {
+      Alert.alert(err.response.data.message);
 
-        console.log('[Delete Event reject]',err.response.data);
-      });
+      console.log('[Delete Event reject]',err.response.data);
+    });
   };
   return (
     <View style={styles.container}>
@@ -114,7 +110,7 @@ export const EventInformation = ({route}) => {
         <View style={styles.containerText}></View>
       </ScrollView>
       <TouchableOpacity onPress={handleDeleteEvent} style={styles.deleteTouch}>
-        <View><Text style={{color: '#CE9B51', fontSize: 20}}>delete entry</Text></View>
+        <View><Text style={{color: '#CE9B51', fontSize: 18, fontFamily: 'AntagometricaBT-Regular',}}>delete entry</Text></View>
       </TouchableOpacity>
     </View>
   );

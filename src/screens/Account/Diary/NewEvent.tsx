@@ -4,12 +4,12 @@ import moment, {Moment}                                   from 'moment';
 import {InputUnit}                                        from '../../../components/InputUnit/InputUnit';
 import {Loader}                                           from '../../../components/Loader/Loader';
 import {DatePickerComponent}                              from '../../../components/DatePicker/DatePicker';
-import {EditEventApi, NewEventApi}                        from '../../../api/Diary/calendar';
+import {UpdateEvent, CreateEvent}                        from '../../../api/Diary/Calendar';
 import {getCombinedNavigation}                            from '../../../hooks/useUpdateNavigationHeaderOptions';
 import {RootReducerState}                                 from '../../../redux';
 import {useSelector}                                      from 'react-redux';
 
-import {dateHMFormat, dateTimeFormat, monthNameDate}      from '../../../utils/time';
+import {dateHMFormat, dateTimeFormat, dateFormat}         from '../../../utils/time';
 import {COLORS}                                           from '../../../styles/Constants';
 
 import background                                         from '../../../assets/backOrigin.png';
@@ -20,10 +20,8 @@ interface ILocation {
 }
 export const NewEvent = ({navigation, route}) => {
   let params   = route.params;
-  let feedType = 'feed';
-  let regType  = 'regular';
 
-  const {id} = useSelector((state: RootReducerState) => state.auth.user.accounts[0]);
+  const {user} = useSelector((state: RootReducerState) => state.auth);
 
   const [title, setTitle]                   = useState('');
   const [location, setLocation]             = useState<ILocation | any>({name: '',locate: {lat: '',lng: ''}});
@@ -32,94 +30,101 @@ export const NewEvent = ({navigation, route}) => {
   const [ends, setEnds]                     = useState('');
   const [notes, setNotes]                   = useState('');
   const [breast, setBreast]                 = useState(null);
-  const [loaderAddEvent, setLoaderAddEVent] = useState(false);
+  const [loaderAddEvent, setLoaderAddEvent] = useState(false);
 
   /* Set default navigation options */
   useEffect(() => {
     navigation.setOptions(
       getCombinedNavigation({
-        title: 'new feed entry',
-        headerLeftMethod: () => {params.editable ?navigation.goBack() : navigation.navigate('Diary')},
-        headerRightText: params?.editable ? 'save' : 'add',
+        title: params.event?.id ? 'edit diary entry' : 'new diary entry',
+        headerLeftMethod: () => { navigation.goBack(); },
+        headerRightText: params.event?.id ? 'save' : 'add',
         headerRightMethod: () => {
-          params.editable ? hadleEditEvent() : addEvent();
+          params.event?.id ? hadleEditEvent() : addEvent();
         },
       }),
     );
-  }, [navigation, title, location, allDay, starts, ends, notes]);
+  }, [navigation, title, location, allDay, starts, ends, notes, breast]);
 
   const addEvent = () => {
-    let eventParams = {id,title,location,type: params.type,allDay,starts,ends,notes,breast};
-    
-    setLoaderAddEVent(true);
+    let eventParams = {
+      title,
+      location,
+      type: 'regular',
+      allDay,
+      starts,
+      ends,
+      notes,
+      breast
+    };
 
-    NewEventApi(eventParams)
-      .then(({data}: any) => {
-        console.log('[Feed] new feed response', data);
+    setLoaderAddEvent(true);
 
-        Alert.alert('Event successfully added');
+    CreateEvent(user.accounts[0].id, eventParams).then(({data}: any) => {
+      console.log('[EVENT] Create event response', data);
 
-        setLoaderAddEVent(false);
+      Alert.alert('Event successfully added');
 
-        navigation.navigate('Diary', {date: dateTimeFormat(starts)});
-      })
-      .catch(err => {
-        console.log('[Feed] new feed reject', err.response.data.message);
+      setLoaderAddEvent(false);
 
-        Alert.alert(err.response.data.message);
+      navigation.navigate('Diary', {date: dateTimeFormat(starts)});
+    })
+    .catch(err => {
+      console.error('[EVENT] Create event response', err.response);
 
-        setLoaderAddEVent(false);
-      });
+      Alert.alert(err.response.data.message);
+
+      setLoaderAddEvent(false);
+    });
   };
 
   const hadleEditEvent = () => {
+    setLoaderAddEvent(true);
+
     if (params?.event?.id) {
-      const newEVent = {title, location, allDay, starts, ends, notes, breast};
+      const newEvent = {title, location, allDay, starts, ends, notes, breast};
 
-      EditEventApi(id, params.event.id, newEVent)
-        .then(data => {
-          Alert.alert('event successfully updated');
+      UpdateEvent(user.accounts[0].id, params.event.id, newEvent).then(data => {
+        console.log('[EVENT] Update event response', data);
 
-          navigation.navigate('Diary');
-        })
-        .catch(Err => {
-          console.log('[Edit Event reject] ', Err.response.data.message);
+        Alert.alert('Event successfully added');
 
-          Alert.alert('event successfully updated');
-        });
+        setLoaderAddEvent(false);
+
+        navigation.navigate('Diary');
+      })
+      .catch(err => {
+        console.error('[EVENT] Update event response', err.response);
+
+        Alert.alert(err.response.data.message);
+
+        setLoaderAddEvent(false);
+      });
     }
   };
 
+  const handleSetLocation = loc => {setLocation(rest => ({locate: loc.location, name: loc.name}))};
+
   useEffect(() => {
-    if (params.event) {
+    if (params.event?.id) {
       setTitle(params.event.title);
       setLocation(params.event.location);
       setNotes(params.event.notes);
-      setStarts(dateTimeFormat(params.event.starts_at));
-      setEnds(dateTimeFormat(params.event.ends_at));
-    }
-
-    if (params.selectedDate && params.type == regType) {
-      setStarts(params.selectedDate);
-      if (params.rightText == 'add')setEnds(moment(params.selectedDate).add(30,'minutes'));
-    }
-  }, [params.selectedDate]);
-
-  useEffect(() => {
-    if (params.type == feedType) {
-      setStarts(dateTimeFormat(new Date()));
-      setEnds(dateTimeFormat(new Date()));
+      setStarts(moment(new Date(params.event.starts_at)));
+      setEnds(moment(new Date(params.event.ends_at)));
+      setAllDay(params.event.allDay);
+    } else {
+      setStarts(moment());
+      setEnds(moment());
     }
   }, []);
 
-  const handleSetLocation = loc => {setLocation(rest => ({locate:loc.location, name: loc.name}))};
-  
   return (
     <ImageBackground source={background} style={{backgroundColor: COLORS.back}}>
       <View style={styles.container}>
-        <InputUnit event={true} value={title} setValueName={value => setTitle(value)} nameOfBox={'input'}
-          placeholder={params.type == feedType ? 'Feed' : 'Title'}
-        />
+
+        <InputUnit event={true} value={title} setValueName={value => setTitle(value)} nameOfBox={'input'} placeholder={'Title'} />
+
         <TouchableOpacity
           style={styles.box}
           onPress={() => {
@@ -128,59 +133,40 @@ export const NewEvent = ({navigation, route}) => {
           <View style={styles.touchC}>
             <View><Text style={styles.touchT}>Location</Text></View>
             <View>
-              <Text style={{color: COLORS.text}}>
+              <Text style={{color: '#fff', fontSize: 18, fontFamily: 'AntagometricaBT-Regular', width: 300, right: 0, textAlign: 'right'}} numberOfLines={1}>
                 {location.name}
               </Text>
             </View>
           </View>
         </TouchableOpacity>
-        {params.type == regType ? (
+
+        {params.type == 'regular' ? (
           <InputUnit event={true} value={allDay} setValueName={value => setAllDay(value)} nameOfBox={'switch'}
             placeholder={'All-day'}
             rightContent="switch"
           />
         ) : null}
-        <DatePickerComponent min={starts} allDay={allDay} time={true} type="Starts"
-          mode={params.type == regType ? 'time' : 'datetime'}
-          value={
-            params.type == regType
-              ? allDay
-                ? moment(starts).format('YYYY-MM-DD'): dateTimeFormat(starts) 
-              : dateTimeFormat(starts)
-          }
-          changeDate={date => {
-            if (params.type == regType) {
-              let time = new Date(date);
-              let res = `${time.getHours()}:${time.getMinutes()}`;
-              let start = moment(starts).format('YYYY-MM-DD');
-              setStarts(moment(start + ' ' + res).format('YYYY-MM-DD hh:mm'));
-            } else {
-              setStarts(dateHMFormat(date));
-            }
-          }}
-        />
-        <DatePickerComponent mode="datetime" allDay={allDay} time={true} type="Ends" min={starts}
-          value={
-            params.type == regType
-              ? allDay
-                ? moment(ends).format('YYYY-MM-DD')
-                : dateHMFormat(ends)
-              : dateHMFormat(ends)
-          }
-          changeDate={date =>setEnds(dateHMFormat(date))}
-        />
-        {params.type == feedType && (
-          <InputUnit event={true} value={breast} style={styles.notes} setValueName={value => {
-            value === breast ? setBreast(null): setBreast(value)
-          }} 
-          nameOfBox={'handleSwitch'} placeholder={'Breast'} multiline={true}
-          />
-        )}
 
-        <InputUnit event={true} value={notes} style={styles.notes} setValueName={value => setNotes(value)} 
+        <DatePickerComponent
+          mode={allDay ? "date" : "datetime"}
+          name="Starts"
+          value={allDay ? dateFormat(starts) : dateTimeFormat(starts)}
+          changeDate={date => setStarts(moment(new Date(date)).format('YYYY-MM-DD hh:mm'))}
+        />
+
+        <DatePickerComponent
+          mode={allDay ? "date" : "datetime"}
+          name="Ends"
+          min={starts}
+          value={allDay ? moment(starts).format('YYYY-MM-DD') : dateHMFormat(ends)}
+          changeDate={date => setEnds(moment(new Date(date)).format('YYYY-MM-DD hh:mm'))}
+        />
+
+        <InputUnit event={true} value={notes} style={styles.notes} setValueName={value => setNotes(value)}
         nameOfBox={'input'} placeholder={'Notes'} multiline={true}
         />
-        {loaderAddEvent && <Loader text={`adding new ${params.type}...`} />}
+
+        {loaderAddEvent && <Loader text={`saving diary entry...`} />}
       </View>
     </ImageBackground>
   );

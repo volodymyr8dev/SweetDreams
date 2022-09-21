@@ -16,7 +16,7 @@ import {getCombinedNavigation} from '../../hooks/useUpdateNavigationHeaderOption
 import {COLORS}                from '../../styles/Constants';
 
 import owl                     from '../../assets/images/owl2.png';
-import background              from '../../assets/images/homeIcon/backgroundHome.png';
+import background              from '../../assets/backOrigin.png';
 
 export const Step5 = ({navigation}) => {
    /* Set default navigation options */

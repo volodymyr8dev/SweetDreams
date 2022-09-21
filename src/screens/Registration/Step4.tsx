@@ -24,7 +24,7 @@ import {Loader}                from '../../components/Loader/Loader';
 import {COLORS}                from '../../styles/Constants';
 
 import checkButton             from '../../assets/images/checkButton.png';
-import background              from '../../assets/images/homeIcon/backgroundHome.png';
+import background              from '../../assets/backOrigin.png';
 
 export const Step4 = ({navigation}) => {
   const {user} = useSelector((state: RootReducerState) => state.auth);

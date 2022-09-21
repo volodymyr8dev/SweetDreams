@@ -11,7 +11,7 @@ import {
 import {COLORS}         from '../../styles/Constants';
 import ConnectionCloud  from '../../assets/images/svg/ConnectionCloud';
 import ConnectionCloud2 from '../../assets/images/svg/ConnectionCloud2';
-import background       from '../../assets/images/homeIcon/backgroundHome.png';
+import background       from '../../assets/backOrigin.png';
 import Sheep            from '../../assets/images/svg/Sheep';
 
 const ConfirmConnection = ({navigation, setToggleButton}) => {
@@ -42,20 +42,21 @@ const ConfirmConnection = ({navigation, setToggleButton}) => {
           height: '110%',
           width: 500,
           alignItems: 'center',
+          flex: 1
         }}>
         <View style={{top: 100}}>
           <View style={{alignItems: 'center'}}>
             <Sheep style={{bottom: 20}} />
-            <ConnectionCloud2 style={{top: '15%'}} />
-            <ConnectionCloud />
+            <ConnectionCloud2 style={{top: '10%'}} />
+            <ConnectionCloud style={{bottom: '10%'}}/>
           </View>
-          <View>
+          <View style={{bottom: '15%'}}>
             <Text
               style={{
                 color: '#fff',
                 fontSize: 24,
                 textAlign: 'center',
-                marginBottom: 15,
+                marginBottom: "5%",
                 fontFamily: 'AntagometricaBT-Regular',
               }}>
               confirm connection
@@ -80,7 +81,7 @@ const ConfirmConnection = ({navigation, setToggleButton}) => {
               Ensure you have a stable internet connection
             </Text>
           </View>
-          <View style={{marginTop: 35, alignItems: 'center'}}>
+          <View style={{bottom: '10%', alignItems: 'center'}}>
             <TouchableOpacity onPress={handleCheckInternet}>
               <View
                 style={{

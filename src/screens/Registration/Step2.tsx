@@ -25,7 +25,7 @@ import {
 import {Loader}      from '../../components/Loader/Loader';
 import AsyncStorage  from '@react-native-async-storage/async-storage';
 import emailImage    from '../../assets/images/email.png';
-import background    from '../../assets/images/homeIcon/backgroundHome.png';
+import background    from '../../assets/backOrigin.png';
 
 export const Step2 = ({navigation, route}) => {
   const dispatch = useDispatch();

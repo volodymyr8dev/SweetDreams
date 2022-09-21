@@ -5,12 +5,7 @@ import { RootReducerState }                                    from '../../../re
 import moment                                                  from 'moment';
 
 //icons
-import happy                                                   from  '../../../assets/images/graph/iconList/happy.png';
-import sad                                                     from '../../../assets/images/graph/iconList/sad.png';
-import tempretute                                              from '../../../assets/images/graph/iconList/tempreture.png';
-import book                                                    from '../../../assets/images/graph/iconList/book.png';
-import arrowRight                                              from '../../../assets/images/settings/arrowRight.png';
-import back                                                    from '../../../assets/images/homeIcon/backgroundHome.png';
+import back                                                    from '../../../assets/backOrigin.png';
 
 import {dateTimeFormat}                                        from '../../../utils/time';
 import {ContentNavigation}                                     from './ContentNavigation';
@@ -18,6 +13,7 @@ import {ContentNavigation}                                     from './ContentNa
 import {COLORS}                                                from '../../../styles/Constants';
 import { arrayHeader, HeaderNavigation }                       from './HeaderNavigation';
 import { useFetchTemperature }                                 from '../../../hooks/nursery/useFetchTemperature';
+import {getCombinedNavigation}                                 from '../../../hooks/useUpdateNavigationHeaderOptions';
 
 const options24 = {
   value1: {
@@ -96,14 +92,23 @@ export const NurseryData = ({navigation}) => {
   /* Set default navigation options */
   useEffect(() => {
     navigation.setOptions({
-      headerShown: false
+      headerShown: true
     })
   }, [navigation]);
 
-  const {user} = useSelector((state: RootReducerState) => state.auth);
+  useEffect(() => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title:             'nursery data',
+        headerLeftMethod:  undefined,
+        headerRightMethod: undefined
+      })
+    )
+  }, [navigation]);
+
+  const {user}   = useSelector((state: RootReducerState) => state.auth);
   
-  
-  const device = user.accounts[0]?.devices[0];
+  const device   = user.accounts[0]?.devices[0];
   const accounts = user.accounts;
   
   const [activeTime, setActiveTime]   = useState('last 24 hours');
@@ -112,9 +117,6 @@ export const NurseryData = ({navigation}) => {
   
   const {temperatures,options,diaries} = useFetchTemperature(accounts[0].id,device.id,start,end);
 
-  console.log('data-----------', temperatures)
-  console.log('options-----------', options)
-  
   useEffect(() => { 
   if(accounts[0].id){
     setStart(startDate[arrayHeader.indexOf(activeTime)])
@@ -133,11 +135,10 @@ export const NurseryData = ({navigation}) => {
   //   }
   // };
 
+
   return (
-    <ImageBackground
-      source={back}
-      style={{flex: 1, backgroundColor: COLORS.back}}>
-      <HeaderNavigation  activeTime={activeTime} handleChangeTime={(time) => {setActiveTime(time)}}/>
+    <ImageBackground source={back} style={{flex: 1}}>
+      <HeaderNavigation activeTime={activeTime} handleChangeTime={(time) => {setActiveTime(time)}}/>
       <ContentNavigation
         diaries={diaries}
         activeTime={activeTime}

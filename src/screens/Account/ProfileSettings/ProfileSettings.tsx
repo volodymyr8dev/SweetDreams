@@ -209,7 +209,7 @@ export const ProfileSettings = ({navigation}) => {
   };
 
   return (
-    <ImageBackground source={background} style={{backgroundColor: COLORS.back}}>
+    <ImageBackground source={background} style={{backgroundColor: COLORS.back, flex: 1}}>
       <View style={styles.container}>
         <ScrollView style={{paddingTop: 20}}>
           <View style={{paddingHorizontal: 20}}>
@@ -268,7 +268,7 @@ export const ProfileSettings = ({navigation}) => {
           />
           <DatePickerComponent
             mode="date"
-            type="Your Date of Birth"
+            name="Your Date of Birth"
             value={valueDate}
             changeDate={date => {
               setValueDate(moment(date).format('YYYY-MM-DD'));

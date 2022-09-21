@@ -15,7 +15,7 @@ import {
 import {Switch}   from '../../../components/Switch/Switch';
 import {COLORS}   from '../../../styles/Constants';
 import DatePicker from 'react-native-date-picker';
-import background from '../../../assets/images/homeIcon/backgroundHome.png';
+import background from '../../../assets/backOrigin.png';
 
 import {getCombinedNavigation} from '../../../hooks/useUpdateNavigationHeaderOptions';
 

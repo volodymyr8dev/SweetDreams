@@ -8,7 +8,7 @@ import moment                                                          from 'mom
 import {useSelector}                                                   from 'react-redux';
 import { RootReducerState }                                            from '../../../redux';
 import SearchBar                                                       from '../../../components/SearchBar';
-import {GetEventApi}                                                   from '../../../api/Diary/calendar';
+import {RetrieveEvent}                                                 from '../../../api/Diary/Calendar';
 import {EventHtml}                                                     from './EventHtml';
 import eventDateimportant                                              from '../../../assets/images/documents/dateEventVerticalImportant.png';
 import {COLORS}                                                        from '../../../styles/Constants';
@@ -120,7 +120,51 @@ export const Document = ({navigation,route}) => {
     );
   }, [navigation,selectedDate, isFocused]);
 
-  const handleClicked = () => { setShown(true); setClicked(false) };
+  const handleNavigationUpdate = () => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title: global.baby_name ? `search in ${global.baby_name.toLowerCase()}'s diary`: "search in baby's diary",
+        headerStyle: {
+          paddingLeft: 20,
+          backgroundColor: '#2A305A',
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        buttonPaddingLeft: 20,
+        headerLeftText: <></>,
+        headerLeftMethod: () => {
+          setClicked(true);
+          setShown(false);
+
+          navigation.setOptions(
+            getCombinedNavigation({
+              title: global.baby_name ? `${global.baby_name.toLowerCase()}'s diary`: "baby's diary",
+              // headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
+              headerRightText:         
+              <><TouchableOpacity style={{ paddingRight: 23.5, paddingLeft: 15, paddingVertical: 10 }}
+                  onPress={() => {handleClicked()}}>
+                  <Search style={{ width: 15, height: 15 }} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ paddingVertical: 10,paddingRight:15 }}
+                  onPress={() => {handleAddEvent()}}>
+                    <Plus style={undefined} />
+                  </TouchableOpacity></>,
+              headerRightMethod: () => {},
+            }),
+          );
+        },
+        headerRightText: <></>,
+        headerRightMethod: () => {},
+      }),
+    );
+  };
+
+  const handleClicked = () => {
+    setShown(true);
+    setClicked(false);
+    handleNavigationUpdate();
+  };
 
    useEffect(() => {
      if (route.params?.date) setSelectedDate(route?.params.date);
@@ -134,7 +178,7 @@ export const Document = ({navigation,route}) => {
   }
 
   useEffect(() => {
-    GetEventApi(global.id)
+    RetrieveEvent(global.id)
       .then(({data}) => {
 
         let res = data.map(item => {
@@ -142,8 +186,6 @@ export const Document = ({navigation,route}) => {
           if (isJsonString(item.location)) item.location = JSON.parse(item.location)
           item.date = item.starts_at;
           item.date = moment(item.date).format('YYYY-MM-DD');
-
-          if (item.type == 'feed') item.title = 'Feed';
 
           return item;
         });
@@ -158,7 +200,7 @@ export const Document = ({navigation,route}) => {
   }, [isFocused]);
 
   const handleAddEvent = () => {
-    navigation.navigate('addEvent', {selectedDate, global, type: 'regular'});
+    navigation.navigate('NewEvent', {selectedDate, global, type: 'regular'});
   };
 
   useEffect(() => {
@@ -197,9 +239,6 @@ export const Document = ({navigation,route}) => {
               showScrollIndicator={true}
               enableSwipeMonths={true}
               current={formatDate(selectedDate)}
-              // hideExtraDays={true}
-              // minDate={subWeeks(baseDate, 1)}
-              // maxDate={addWeeks(baseDate, 1)}
               onDayPress={day => {setSelectedDate(new Date(day.year, day.month - 1, day.day))}}
               markedDates={getMarkedDates(selectedDate, points)}
               disabledDaysIndexes={[1, 6]}
@@ -209,42 +248,47 @@ export const Document = ({navigation,route}) => {
                 textDefaultColor: COLORS.yellow,
                 //@ts-ignore
                 'stylesheet.calendar.header': {
+                  monthText: {
+                    fontSize: 22,
+                    fontFamily: 'AntagometricaBT-Bold',
+                    color: COLORS.yellow,
+                    paddingHorizontal: 15,
+                    paddingVertical: 10,
+                  },
+
                   week: {
                     color: COLORS.yellow,
                     flexDirection: 'row',
-                    // backgroundColor: '#000',
                     justifyContent: 'space-between',
                     paddingHorizontal: 14,
                     paddingTop: 9.23,
                     paddingBottom: 6.97,
                   },
+                  
                   header: {
                     flexDirection: 'row',
                     marginLeft: -30,
-                    // justifyContent: 'flex-start',
                     alignItems: 'center',
                     color: COLORS.yellow,
                     width: '120%',
                     borderBottomWidth: 0.4,
                     borderBottomColor: 'rgba(35, 113, 171, .4)',
                     marginBottom: 4,
-                    // backgroundColor: '#2A305A',
                     dayHeader: {marginTop: 2,marginBottom: 7,width: 30,textAlign: 'center',fontSize: 14,color: '#fff',},
                   },
-                  headerTitle: {color: COLORS.yellow},
+                  headerTitle: {color: COLORS.yellow },
                 },
                 'stylesheet.calendar.main': {
-                  monthView: {},
+                  monthView: {
+                  },
                   dayContainer: {justifyContent: 'space-between'},
 
                   week: {
                     height: 60,
                     width: '100%',
-                    // borderBottomWidth: 0.4,
                     borderTopColor: 'rgba(35, 113, 171, .4)',
                     borderTopWidth: 0.4,
                     flexDirection: 'row',
-                    // borderBottomColor: 'rgba(35, 113, 171, .4)',
                     alignItems: 'flex-start',
                     justifyContent: 'space-around',
                     paddingTop: 7,
@@ -260,13 +304,14 @@ export const Document = ({navigation,route}) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   textAlign: 'center',
+                  paddingTop: -1,
                 },
                 selectedStyle: {alignItems: 'center',justifyContent: 'center'},
                 dotStyle: {marginTop: 11,width: 5.76, height: 5.76, borderRadius: 50},
                 todayTextColor: '#CE9B51',
-                calendarBackground: '#1F1933',
+                calendarBackground: 'rgba(255, 255, 255, .0)',
                 backgroundColor: '#ffffff',
-                selectedDayBackgroundColor: '#2371AB',
+                selectedDayBackgroundColor: COLORS.yellow,
                 selectedDayTextColor: '#fff',
                 selectedDotColor: '#fff',
                 textSectionTitleColor: '#2371AB',
@@ -277,6 +322,7 @@ export const Document = ({navigation,route}) => {
                 monthTextColor: '#DBE9EE',
                 textMonthFontWeight: 'bold',
                 arrowColor: '#DBE9EE',
+                fontFamily: 'AntagometricaBT-Regular'
               }}
             />
           )}

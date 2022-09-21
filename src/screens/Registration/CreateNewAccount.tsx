@@ -19,7 +19,7 @@ import {Loader}                               from '../../components/Loader/Load
 import {COLORS}                               from '../../styles/Constants';
 import {RegistrationUser}                     from '../../api/CreateAccount/CreateAccount';
 import checkButton                            from '../../assets/images/checkButton.png';
-import background                             from '../../assets/images/homeIcon/backgroundHome.png';
+import background                             from '../../assets/backOrigin.png';
 
 export const CreateNewAccount = ({navigation}) => {
   const verticalStaticData = [

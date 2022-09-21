@@ -12,7 +12,7 @@ import BouncyCheckboxGroup, {
   ICheckboxButton,
 } from 'react-native-bouncy-checkbox-group';
 import {COLORS}                 from '../../../styles/Constants';
-import background               from '../../../assets/images/homeIcon/backgroundHome.png';
+import background               from '../../../assets/backOrigin.png';
 
 import {getCombinedNavigation}  from '../../../hooks/useUpdateNavigationHeaderOptions';
 

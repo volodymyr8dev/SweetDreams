@@ -12,7 +12,7 @@ import {
   Dimensions
 } from 'react-native';
 
-import background from '../../assets/images/homeIcon/backgroundHome.png';
+import background from '../../assets/backOrigin.png';
 import line from '../../assets/images/homeIcon/line.png';
 import {COLORS} from '../../styles/Constants';
 import backgroundGrey from '../../assets/backGrey.png';
@@ -28,7 +28,7 @@ export const ConnectedDevice = ({navigation}) => {
   const {user}   = useSelector((state: RootReducerState) => state.auth);
   let device     = user.accounts[0]?.devices[0];
 
-  /* Refresh data x 1.5 seconds */
+  /* Refresh data x 5 seconds */
   useEffect(() => {
     const interval = setInterval(
       () => {
@@ -55,7 +55,6 @@ export const ConnectedDevice = ({navigation}) => {
       headerShown: false
     });
   }, [navigation]);
-
 
   const openSettings = async (e) => {
     navigation.navigate('DeviceSettings');
@@ -128,11 +127,11 @@ export const ConnectedDevice = ({navigation}) => {
   };
 
   return (
-    <ImageBackground style={{backgroundColor: COLORS.backGround}} source={device.is_online ? background : backgroundGrey}>
+    <ImageBackground style={{backgroundColor: COLORS.backGround, flex: 1}} source={device.is_online ? background : backgroundGrey}>
       <View style={styles.container}>
         <View style={{zIndex:1}}>
-        <TouchableOpacity style={{position:'absolute',top:2,right:-7,width:40,height:40}} onPress={openSettings} >
-              <TopGear />
+          <TouchableOpacity style={{position:'absolute',top:2,right:-7,width:40,height:40}} onPress={openSettings} >
+            <TopGear />
           </TouchableOpacity>
         </View>
         <HeaderUI />
