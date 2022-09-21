@@ -68,7 +68,7 @@ export const Content = props => {
       <View style={{alignItems: 'center'}}>
         {device.is_online ? (
           <>
-          <Image source={statuses[selectedLightShow]} style={{width: '100%', height: 350, bottom: '25%'}} />
+            <Image source={statuses[selectedLightShow]} style={{width: '100%', height: 350, bottom: '25%'}} />
             {device.config?.light_show === 'SLEEP_TRAINER_ASLEEP' ? (
               <Text style={{position: 'absolute', top: '31%' + '%', color: '#fff', fontSize: 24, fontFamily: 'Digital-7'}}>
                 {device.config.wake_up_time}

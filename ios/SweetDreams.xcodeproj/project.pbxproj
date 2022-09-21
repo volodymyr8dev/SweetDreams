@@ -20,6 +20,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8214585707664372967A3CFB /* antagobd.otf in Resources */ = {isa = PBXBuildFile; fileRef = A3F387B95E9C468E89380E3B /* antagobd.otf */; };
 		84A5BC1028DB0E4600DD1161 /* digital-7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84A5BC0F28DB0E2300DD1161 /* digital-7.ttf */; };
+		84E3B86F28D9FA0900918389 /* DigitalMono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84E3B86E28D9FA0900918389 /* DigitalMono.ttf */; };
 		84F8E49C28893CB100AABB25 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F8E49B28893CB100AABB25 /* ExternalAccessory.framework */; };
 		84F8E49E28893CCF00AABB25 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F8E49D28893CCF00AABB25 /* NetworkExtension.framework */; };
 		91838237883248539B590ECE /* antagolt.otf in Resources */ = {isa = PBXBuildFile; fileRef = D198655F40214BF58FAB7732 /* antagolt.otf */; };
@@ -65,6 +66,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SweetDreams/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		82A5668C02FD46AF9F627EB6 /* Nuosu SIL.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nuosu SIL.ttf"; path = "../src/assets/fonts/Nuosu SIL.ttf"; sourceTree = "<group>"; };
 		84A5BC0F28DB0E2300DD1161 /* digital-7.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "digital-7.ttf"; sourceTree = "<group>"; };
+		84E3B86E28D9FA0900918389 /* DigitalMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DigitalMono.ttf; sourceTree = "<group>"; };
 		84F8E49A28893CB000AABB25 /* SweetDreams.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SweetDreams.entitlements; path = SweetDreams/SweetDreams.entitlements; sourceTree = "<group>"; };
 		84F8E49B28893CB100AABB25 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		84F8E49D28893CCF00AABB25 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
@@ -200,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				84A5BC0F28DB0E2300DD1161 /* digital-7.ttf */,
+				84E3B86E28D9FA0900918389 /* DigitalMono.ttf */,
 				B8FF7BCC33F0433CA446A89E /* AntDesign.ttf */,
 				7E060C0DE8BB45869EB0EFEB /* Entypo.ttf */,
 				2933DF6EA2B54F808A885318 /* EvilIcons.ttf */,
@@ -329,6 +332,7 @@
 				8214585707664372967A3CFB /* antagobd.otf in Resources */,
 				91838237883248539B590ECE /* antagolt.otf in Resources */,
 				18CB0A8FAD0D493CB0E2BF99 /* AntagometricaBT-Bold.ttf in Resources */,
+				84E3B86F28D9FA0900918389 /* DigitalMono.ttf in Resources */,
 				55960B8AEAFB4285A43E92BC /* AntagometricaBT-Regular.ttf in Resources */,
 				48C1EDCC5248406E86F1FCFA /* antagorg.otf in Resources */,
 				9312D8D861FC47B09D3CAA5A /* DuffyScript_Bold.otf in Resources */,

@@ -55,6 +55,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>digital-7.ttf</string>
+		<string>DigitalMono.ttf</string>
 		<string>JosefinSans.ttf</string>
 		<string>antagobd.otf</string>
 		<string>antagolt.otf</string>
