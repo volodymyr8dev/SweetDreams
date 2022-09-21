@@ -62,22 +62,12 @@ export const Content = props => {
     'LIGHT_SHOW_COLOUR_PICKER':   CloudColourPicker,
   };
 
-  const handleSelectedImage = () => {
-    if (device.current_temperature !== undefined){
-      return device.current_temperature <= 18 ? statuses['SLEEP_TRAINER_IDLE'] : statuses['SLEEP_TRAINER_ASLEEP']
-    } else {
-       return statuses[selectedLightShow]
-    }
-  }
-
-  console.log(device.config.wake_up_time, 'devicedevice');
-
   return (
     <View>
       <View style={{alignItems: 'center'}}>
         {device.is_online ? (<>
-          <Image source={handleSelectedImage()} style={{width: '100%', height: 350, bottom: Dimensions.get('window').height * 0.032 + '%'}} />
-          {statuses['SLEEP_TRAINER_ASLEEP'] ? (<Text style={{
+          <Image source={statuses[selectedLightShow]} style={{width: '100%', height: 350, bottom: Dimensions.get('window').height * 0.032 + '%'}} />
+          {selectedLightShow ==  'SLEEP_TRAINER_AWAKE' ? (<Text style={{
             position: "absolute",
             top: "28.5%",
             fontSize: 18,

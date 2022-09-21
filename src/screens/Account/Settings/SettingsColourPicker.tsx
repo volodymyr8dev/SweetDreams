@@ -4,7 +4,7 @@ import {ColorWheel} from 'react-native-color-wheel';
 // import { ColorPicker } from 'react-native-color-picker'
 import ColorPicker from 'react-native-wheel-color-picker';
 import {COLORS} from '../../../styles/Constants';
-import background from '../../../assets/images/homeIcon/backgroundHome.png'
+import background from '../../../assets/backOrigin.png'
 
 export const SettingsColourPicker = () => {
   const [color, setColor] = useState('#ddd');

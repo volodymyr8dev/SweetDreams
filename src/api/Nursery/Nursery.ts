@@ -7,14 +7,14 @@ export const NurseryGetChartsApi = (account, nursery, start, end) => {
   return axiosInstance.get(`/api/accounts/${account}/nursery/${nursery}/temperature/charts?start=${start}&end=${end}`);
 };
 
-export const NurseryTemperatureApi = (accountId, start?, end?) => {
-  console.log('[NURSERY] Retrieve temperature request', accountId, start, end);
+export const NurseryTemperatureApi = (accountId,deviceId, start?, end?) => {
+  console.log('[NURSERY] Retrieve temperature request', accountId, deviceId,start, end);
 
   if (start) {
-    return axiosInstance.get(`/api/accounts/${accountId}/nursery?starts_at=${start}&ends_at=${end}`);
+    return axiosInstance.get(`/api/accounts/${accountId}/device/${deviceId}/temperature/?starts_at=${start}&ends_at=${end}`);
   }
 
-  return axiosInstance.get(`/api/accounts/${accountId}/nursery`);
+  return axiosInstance.get(`/api/accounts/${accountId}/device/${deviceId}/temperature`);
 };
 
 export const NurseryTemperatureGetApi = (accountId, nurseryId, start, end) => {

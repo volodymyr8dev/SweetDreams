@@ -7,7 +7,7 @@ import volumeSmall from '../../../assets/images/settings/volumeSmall.png';
 import volumeBig from '../../../assets/images/settings/volumeBig.png';
 import {SettingsDevice} from '../../../api/Settings/Settings';
 import {RootState} from '../../../redux/configureStore';
-import background from '../../../assets/images/homeIcon/backgroundHome.png';
+import background from '../../../assets/backOrigin.png';
 
 export const SettingsVolume = ({route}) => {
   const [active, setActive] = useState();

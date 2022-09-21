@@ -1,8 +1,18 @@
 package com.sweetdreams;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
+import androidx.annotation.NonNull;
+
+import com.facebook.react.ReactPackage;
+import com.facebook.react.bridge.NativeModule;
+import com.facebook.react.bridge.ReactApplicationContext;
+
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
+import com.reactlibrary.rnwifi.RNWifiModule;
 import com.reactlibrary.rnwifi.RNWifiPackage;
 
 public class MainActivity extends ReactActivity {
@@ -22,10 +32,10 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected ReactActivityDelegate createReactActivityDelegate()  {
-    return new MainActivityDelegate(this, getMainComponentName());
+    return new RNWifiPackage.MainActivityDelegate(this, getMainComponentName());
   }
 
-  public class RNWifiPackage implements ReactPackage {
+  public abstract static class RNWifiPackage implements ReactPackage {
       @Override
       public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
           List<NativeModule> modules = new ArrayList<>();
@@ -46,4 +56,5 @@ public class MainActivity extends ReactActivity {
       return reactRootView;
     }
   }
+}
 }

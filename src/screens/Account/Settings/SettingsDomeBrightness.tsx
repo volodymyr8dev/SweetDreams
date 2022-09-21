@@ -13,7 +13,7 @@ import {COLORS}                from '../../../styles/Constants';
 import DomeBrightnessBig       from '../../../assets/images/settings/DomeBrightnessBig.png';
 import DomeBrightnessSmall     from '../../../assets/images/settings/DomeBrightnessSmall.png';
 import {SliderComp}            from '../../../components/Slider/SliderComp';
-import background              from '../../../assets/images/homeIcon/backgroundHome.png';
+import background              from '../../../assets/backOrigin.png';
 
 import {getCombinedNavigation} from '../../../hooks/useUpdateNavigationHeaderOptions';
 

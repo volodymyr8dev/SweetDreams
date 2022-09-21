@@ -15,7 +15,7 @@ import {getCombinedNavigation} from '../../hooks/useUpdateNavigationHeaderOption
 import {CustomButton}          from '../../components/CustomButton/CustomButton';
 import {COLORS}                from '../../styles/Constants';
 
-import background              from '../../assets/images/homeIcon/backgroundHome.png';
+import background              from '../../assets/backOrigin.png';
 import {DisconnectDevice}      from '../../api/Device/Device';
 import {checkLogin}            from '../../redux/slices/auth';
 
@@ -55,7 +55,7 @@ export const Connection = ({navigation}) => {
   };
 
   return (
-    <ImageBackground style={{backgroundColor: COLORS.backGround}} source={background}>
+    <ImageBackground style={{backgroundColor: COLORS.backGround, flex: 1}} source={background}>
       <View style={{paddingTop: 19, paddingLeft: 19, paddingRight: 19, height: '100%'}}>
         <View style={styles.card}>
           <View style={{marginBottom: 5}}>

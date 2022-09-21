@@ -26,13 +26,14 @@ import music from '../../../assets/images/settings/music.png';
 import musicTime from '../../../assets/images/settings/musicTime.png';
 import volumeImg from '../../../assets/images/settings/volume.png';
 import {Switch} from '../../../components/Switch/Switch';
-import background from '../../../assets/images/homeIcon/backgroundHome.png';
+import background from '../../../assets/backOrigin.png';
 import {getCombinedNavigation}      from '../../../hooks/useUpdateNavigationHeaderOptions';
 
 import {
   setTemperatureNotifications,
   setDeviceConfigChildLock
 } from '../../../redux/slices/auth';
+import moment from 'moment';
 
 export const SettingsAccount = ({navigation}) => {
   /* Set default navigation options */
@@ -121,7 +122,7 @@ export const SettingsAccount = ({navigation}) => {
           <Blog
             title="time"
             navigate="Time"
-            rightEl={device.config?.time}
+            rightEl={moment().format('HH:mm')}
             value={device.config?.time}
             source={clock}
           />

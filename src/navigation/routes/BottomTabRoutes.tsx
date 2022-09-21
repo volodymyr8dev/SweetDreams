@@ -28,9 +28,10 @@ const customTabBarStyle = {
     bottom: 10,
     height: 50,
     paddingTop: 20,
-    borderTopWidth:  1,
+    borderTopWidth:  0,
     backgroundColor: 'rgba(52, 52, 90, 1)',
-    borderTopColor:  'rgba(255, 255, 255, .4)'
+    elevation: 0,
+    shadowOpacity: 0,
   },
   labelStyle: {},
 };

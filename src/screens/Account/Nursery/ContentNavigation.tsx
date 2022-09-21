@@ -1,52 +1,36 @@
-import React, {useEffect} from 'react';
-import { RootReducerState } from '../../../redux';
-import {useDispatch, useSelector}   from 'react-redux';
+import React, {useEffect}                      from 'react';
+import { RootReducerState }                    from '../../../redux';
+import {TouchableOpacity,View,Image,Text,
+        StyleSheet,ImageSourcePropType,}       from 'react-native';
+import {useNavigation}                         from '@react-navigation/native';
+import happy                                   from '../../../assets/images/graph/iconList/happy.png';
+import sad                                     from '../../../assets/images/graph/iconList/sad.png';
+import temperature                             from '../../../assets/images/graph/iconList/tempreture.png';
+import book                                    from '../../../assets/images/graph/iconList/book.png';
+import arrowRight                              from '../../../assets/images/settings/arrowRight.png';
+import {useSelector}                           from 'react-redux';
+import {COLORS}                                from '../../../styles/Constants';
+import { IBlog }                               from './properties/interface';
 
-import {
-  TouchableOpacity,
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  ImageSourcePropType,
-} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import happy from '../../../assets/images/graph/iconList/happy.png';
-import sad from '../../../assets/images/graph/iconList/sad.png';
-import tempretute from '../../../assets/images/graph/iconList/tempreture.png';
-import book from '../../../assets/images/graph/iconList/book.png';
-import arrowRight from '../../../assets/images/settings/arrowRight.png';
-import {COLORS} from '../../../styles/Constants';
-interface IBlog {
-  title: string;
-  rightEl: any;
-  source: ImageSourcePropType;
-  subTitle: string;
-  width?: number;
-  height?: number;
-}
-const Blog = ({title, rightEl, source, subTitle, width, height}: IBlog) => {
-  const dispatch = useDispatch();
-  const {user}   = useSelector((state: RootReducerState) => state.auth);
-  let device     = user.accounts[0]?.devices[0];
+const Blog = ({title, rightEl, source, subTitle, width, height,option}: IBlog) => {
+  
+  const { user } = useSelector((state: RootReducerState) => state.auth);
 
   const navigation = useNavigation();
   const accounts = user.accounts;
   const handleSettings = async () => {
+    let nav = ''
     if (typeof rightEl !== 'object') {
-      if (title == 'Diary Entries') {
-        navigation.navigate(`Diary`, {
-          title:   title,
+
+       if (title == 'Diary Entries') nav = 'Diary' 
+
+        navigation.navigate(`${nav?nav:title}`, {
+          title,
           childId: accounts[0].id,
-        });
-      } else {
-        navigation.navigate(`${title}`, {
-          title:   title,
-          childId: accounts[0].id,
+          option
         });
       }
     }
-  };
   return (
     <TouchableOpacity onPress={handleSettings} style={styles.blog}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -89,54 +73,52 @@ const Blog = ({title, rightEl, source, subTitle, width, height}: IBlog) => {
   );
 };
 
-export const ContentNavigation = ({options, diaries, averageTemp}) => {
-  const dispatch = useDispatch();
-  const {user}   = useSelector((state: RootReducerState) => state.auth);
-  let device     = user.accounts[0]?.devices[0];
+export const ContentNavigation = ({options, diaries,activeTime, temperatures}) => {
+
+  const {user} = useSelector((state: RootReducerState) => state.auth);
   
-  useEffect(() => {}, [options]);
   return (
     <View style={styles.container}>
-      <Blog
-        title="Average Temperature"
-        subTitle={options.value5.subTitle}
-        source={tempretute}
-        rightEl={averageTemp+"°"+device.config.temperature}
-        width={30}
-        height={27}
-      />
-      <Blog
-        title="Diary Entries"
-        subTitle={options.value4.subTitle}
-        source={book}
-        rightEl={diaries}
-        width={30}
-        height={26}
-      />
       {user.accounts[0]?.devices[0]?.is_deluxe == false ? null : (
         <Blog
           title="Total Time Without Activation"
-          subTitle={options.value1.subTitle}
           source={happy}
           rightEl={options.value1.value}
+          option={activeTime}
         />
       )}
       {user.accounts[0]?.devices[0]?.is_deluxe == false ? null : (
         <Blog
           title="Longest Period Without Activation"
-          subTitle={options.value2.subTitle}
           source={happy}
           rightEl={options.value2.value}
+          option={activeTime}
         />
       )}
       {user.accounts[0]?.devices[0]?.is_deluxe == false ? null : (
         <Blog
           title="Number of smartCRY Activations"
-          subTitle={options.value3.subTitle}
           source={sad}
           rightEl={options.value3.value}
+          option={activeTime}
         />
       )}
+      <Blog
+        title="Average Temperature"
+        source={temperature}
+        rightEl={(options.average? options.average: 0) +"°C"}
+        width={30}
+        height={27}
+        option={activeTime}
+      />
+      <Blog
+        title="Diary Entries"
+        source={book}
+        rightEl={diaries}
+        width={30}
+        height={26}
+        option={activeTime}
+      />
     </View>
   );
 };

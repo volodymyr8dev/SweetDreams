@@ -10,7 +10,7 @@ import { getCombinedNavigation } from '../../../hooks/useUpdateNavigationHeaderO
 import {getPrivacyPolicy}        from '../../../api/CreateAccount/CreateAccount';
 import {COLORS}                  from '../../../styles/Constants';
 import {Loader}                  from '../../../components/Loader/Loader';
-import background                from '../../../assets/images/homeIcon/backgroundHome.png';
+import background                from '../../../assets/backOrigin.png';
 
 export const PrivacyPolicy = ({navigation}) => {
   const [content, setContent]             = useState('');

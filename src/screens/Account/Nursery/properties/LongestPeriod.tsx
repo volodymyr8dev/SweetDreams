@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState}                                 from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -6,18 +6,18 @@ import {
   TouchableOpacity,
   View,
   Image,
-} from 'react-native';
+}                                                                   from 'react-native';
 import {
   chooseDate,
   chooseTimeOrIndex,
   COLORS,
   time,
-} from '../../../../styles/Constants';
-import {BarChart} from 'react-native-chart-kit';
-import arrowLeft from '../../../../assets/images/nursery/arrowLeft.png';
-import {Blog} from '../../../../components/Touchable/TouchableInput';
-import sleepDiary from '../../../../assets/images/nursery/sleepDiary.png';
-import moment from 'moment';
+}                                                                   from '../../../../styles/Constants';
+import {BarChart}                                                   from 'react-native-chart-kit';
+import arrowLeft                                                    from '../../../../assets/images/nursery/arrowLeft.png';
+import {Blog}                                                       from '../../../../components/Touchable/TouchableInput';
+import sleepDiary                                                   from '../../../../assets/images/nursery/sleepDiary.png';
+import moment                                                       from 'moment';
 
 const chartConfig = {
   topRadius: 8,

@@ -110,7 +110,7 @@ export const EventInformation = ({route}) => {
         <View style={styles.containerText}></View>
       </ScrollView>
       <TouchableOpacity onPress={handleDeleteEvent} style={styles.deleteTouch}>
-        <View><Text style={{color: '#CE9B51', fontSize: 20}}>delete entry</Text></View>
+        <View><Text style={{color: '#CE9B51', fontSize: 18, fontFamily: 'AntagometricaBT-Regular',}}>delete entry</Text></View>
       </TouchableOpacity>
     </View>
   );

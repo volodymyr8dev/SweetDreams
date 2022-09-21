@@ -15,7 +15,7 @@ import {Loader}                from '../../components/Loader/Loader';
 import {ChangePassword}        from '../../api/ForgotPassword/ForgotPassword';
 import {COLORS}                from '../../styles/Constants';
 
-import background              from '../../assets/images/homeIcon/backgroundHome.png';
+import background              from '../../assets/backOrigin.png';
 
 export const ForgotPassword2 = ({navigation}) => {
   const {forgotPassword} = useSelector((state: RootReducerState) => state);
