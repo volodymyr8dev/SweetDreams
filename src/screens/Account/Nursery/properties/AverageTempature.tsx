@@ -109,7 +109,7 @@ export const AverageTempature = ({route}) => {
         <View style={styles.graphicContent}>
           <View style={{alignItems: 'center'}}>
             <Text style={styles.TextGraphic}>Now</Text>
-            <Text style={styles.tempValueleft}>{options.average? options.average:0}°C</Text>
+            <Text style={styles.tempValueleft}>{options ? options.average:0}°C</Text>
           </View>
           <View>
             <Text style={styles.TextGraphic}>Average for this 24h</Text>
