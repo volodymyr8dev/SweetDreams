@@ -54,6 +54,7 @@
 	<string>Give permission to use your microphone. Your record wont be shared without your permission.</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>DigitalMono.ttf</string>
 		<string>JosefinSans.ttf</string>
 		<string>antagobd.otf</string>
 		<string>antagolt.otf</string>
