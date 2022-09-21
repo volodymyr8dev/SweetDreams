@@ -12,7 +12,7 @@ import {useSelector}                           from 'react-redux';
 import {COLORS}                                from '../../../styles/Constants';
 import { IBlog }                               from './properties/interface';
 
-const Blog = ({title, rightEl, source, subTitle, width, height,option}: IBlog) => {
+const Blog = ({title, rightEl, source, subTitle, width, height,option,temperature}: IBlog) => {
   
   const { user } = useSelector((state: RootReducerState) => state.auth);
 
@@ -28,6 +28,7 @@ const Blog = ({title, rightEl, source, subTitle, width, height,option}: IBlog) =
           title,
           childId: accounts[0].id,
           option
+
         });
       }
     }
@@ -109,7 +110,7 @@ export const ContentNavigation = ({options, diaries,activeTime,temperatures}) =>
       <Blog
         title="Average Temperature"
         // subTitle={options.average}
-        source={temperatures}
+        source={tempretute}
         rightEl={(options.average? options.average: 0) +"°C"}
         width={30}
         height={27}

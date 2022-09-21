@@ -31,7 +31,6 @@ export const AverageGraph = React.memo(({option, labels, temperatures}: IAvrageG
 
   
   const monthsData = () => {
-    // setAverageOver(temperatures.reduce((acc, item) =>acc+item,0).toFixed(2))
     
     const tempLabels       = splitToChunks(labels, 4);
     const tempTemperatures = [...chunks(temperatures, 7)]

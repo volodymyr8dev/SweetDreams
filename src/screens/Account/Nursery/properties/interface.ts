@@ -15,7 +15,7 @@ export interface IBlog {
     title: string;
     rightEl: any;
     source: ImageSourcePropType;
-    subTitle: string;
+    subTitle?: string;
     width?: number;
     height?: number;
     option:string

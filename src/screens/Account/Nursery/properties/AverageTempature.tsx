@@ -46,8 +46,8 @@ export const AverageTempature = ({route}) => {
   //left right arrow
   const handleSwitchData = (type) => {
     // setValue(data => ({...data, value: 0}));
- let indexActiveT =  timeArray.indexOf(activeTime)
- let start        =  '';
+ let indexActiveT   =  timeArray.indexOf(activeTime)
+ let start          =  '';
  let tempActiveTime = '' 
  
   if(type == 'left'){
@@ -237,9 +237,7 @@ const styles = StyleSheet.create({
     height: 'auto',
     bottom: 10,
   },
-  bottomButton: {
-    height: 76,
-  },
+  bottomButton: {height: 76},
   styleText: {
     fontSize: 19,
     color: COLORS.textLight,

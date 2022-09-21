@@ -5,18 +5,15 @@ import { dateTimeFormat}            from '../../utils/time';
 
 export const useFetchTemperature = (id, deviceId, dataStart,dataEnd) => {
 
-    const [labels,setLabels]              = useState<any[]>([])
-    const [temperatures,setTemperatures]  = useState<any[]>([])
-    const [options,setOptions]  = useState<any>([])
-    const [diaries,setDiaries]            = useState<any>(0)
+    const [labels,setLabels]              = useState<string[]>([])
+    const [temperatures,setTemperatures]  = useState<number[]>([])
+    const [options,setOptions]            = useState<any>([])
+    const [diaries,setDiaries]            = useState<number>(0)
 
     useEffect(() => {
    
        let start = dateTimeFormat(dataStart)
        let end = dateTimeFormat(dataEnd)
-
-       console.log('start',start)
-       console.log('end',end)
        
       NurseryTemperatureApi(id,deviceId, start,end)
         .then(({data}) => {
@@ -28,7 +25,6 @@ export const useFetchTemperature = (id, deviceId, dataStart,dataEnd) => {
             setOptions(data.temperatures)
           }
           if(data?.temperatures?.data){
-            console.log('data?.temperatures?.data',data?.temperatures?.data)
             setTemperatures(Object.values(data?.temperatures?.data))
 
             let labels: string[] = [];
@@ -40,13 +36,17 @@ export const useFetchTemperature = (id, deviceId, dataStart,dataEnd) => {
             setLabels(labels)
           }else{
             setTemperatures([])
+            setLabels([])
           };
         })
         .catch(err => {
           console.log('[Average Temperature switch data rejected]', err.response);
+
+          setLabels([])
           setTemperatures([0]);
         });
-  }, [dataStart]);
+  }, [dataStart, id]);
+  
   return {
     labels,
     temperatures,
