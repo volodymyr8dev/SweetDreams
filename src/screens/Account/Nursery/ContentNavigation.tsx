@@ -1,14 +1,15 @@
-import React, {useEffect}                      from 'react';
+import React                                   from 'react';
 import { RootReducerState }                    from '../../../redux';
 import {TouchableOpacity,View,Image,Text,
-        StyleSheet,ImageSourcePropType,}       from 'react-native';
+        StyleSheet,}                           from 'react-native';
 import {useNavigation}                         from '@react-navigation/native';
+import {useSelector}                           from 'react-redux';
+
 import happy                                   from '../../../assets/images/graph/iconList/happy.png';
 import sad                                     from '../../../assets/images/graph/iconList/sad.png';
 import temperature                             from '../../../assets/images/graph/iconList/tempreture.png';
 import book                                    from '../../../assets/images/graph/iconList/book.png';
 import arrowRight                              from '../../../assets/images/settings/arrowRight.png';
-import {useSelector}                           from 'react-redux';
 import {COLORS}                                from '../../../styles/Constants';
 import { IBlog }                               from './properties/interface';
 
@@ -16,8 +17,9 @@ const Blog = ({title, rightEl, source, subTitle, width, height,option}: IBlog) =
   
   const { user } = useSelector((state: RootReducerState) => state.auth);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const accounts = user.accounts;
+
   const handleSettings = async () => {
     let nav = ''
     if (typeof rightEl !== 'object') {
@@ -28,6 +30,7 @@ const Blog = ({title, rightEl, source, subTitle, width, height,option}: IBlog) =
           title,
           childId: accounts[0].id,
           option
+
         });
       }
     }
@@ -73,7 +76,7 @@ const Blog = ({title, rightEl, source, subTitle, width, height,option}: IBlog) =
   );
 };
 
-export const ContentNavigation = ({options, diaries,activeTime, temperatures}) => {
+export const ContentNavigation = ({options, diaries,activeTime}) => {
 
   const {user} = useSelector((state: RootReducerState) => state.auth);
   
@@ -105,8 +108,9 @@ export const ContentNavigation = ({options, diaries,activeTime, temperatures}) =
       )}
       <Blog
         title="Average Temperature"
+        // subTitle={options.average}
         source={temperature}
-        rightEl={(options.average? options.average: 0) +"°C"}
+        rightEl={(options ? options.average: 0) +"°C"}
         width={30}
         height={27}
         option={activeTime}

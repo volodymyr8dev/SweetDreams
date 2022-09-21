@@ -71,8 +71,7 @@ export const LongestPeriod = () => {
     let end = chooseDate(chooseTimeOrIndex('time', 'left', activeTime));
     setStart(moment(start).format('YYYY-MM-DD'));
     setEnd(moment(end).format('YYYY-MM-DD'));
-    console.log('start', start);
-    console.log('end', end);
+
   };
   const handleChangeRight = () => {
     time.indexOf(activeTime) == time.length - 1
@@ -81,10 +80,10 @@ export const LongestPeriod = () => {
 
     let start = chooseTimeOrIndex('timeIndex', 'right', activeTime);
     let end = chooseDate(chooseTimeOrIndex('time', 'right', activeTime));
+
     setStart(moment(start).format('YYYY-MM-DD'));
     setEnd(moment(end).format('YYYY-MM-DD'));
-    console.log('start ', start);
-    console.log('end ', end);
+
   };
   return (
     <View style={styles.container}>

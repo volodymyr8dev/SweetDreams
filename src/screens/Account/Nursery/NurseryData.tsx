@@ -1,22 +1,11 @@
-import React, {useEffect, useState}                            from 'react';
-import {View,Text,StyleSheet,ImageBackground,TouchableOpacity} from 'react-native';
-import {useNavigation}                                         from '@react-navigation/native';
-import AsyncStorage                                            from '@react-native-async-storage/async-storage';
-import {useDispatch, useSelector}                              from 'react-redux';
-import moment                                                  from 'moment';
+import React, {useEffect,useState}                             from 'react';
+import {ImageBackground}                                       from 'react-native';
+import {useSelector}                                           from 'react-redux';
 import { RootReducerState }                                    from '../../../redux';
+import moment                                                  from 'moment';
 
 //icons
-import happy                                                   from  '../../../assets/images/graph/iconList/happy.png';
-import sad                                                     from '../../../assets/images/graph/iconList/sad.png';
-import tempretute                                              from '../../../assets/images/graph/iconList/tempreture.png';
-import book                                                    from '../../../assets/images/graph/iconList/book.png';
-import arrowRight                                              from '../../../assets/images/settings/arrowRight.png';
 import back                                                    from '../../../assets/backOrigin.png';
-
-//redux
-import {setNurseryId}                                          from '../../../redux/slice';
-import {RootState}                                             from '../../../redux/interfaceRootState';
 
 import {dateTimeFormat}                                        from '../../../utils/time';
 import {ContentNavigation}                                     from './ContentNavigation';
@@ -126,19 +115,25 @@ export const NurseryData = ({navigation}) => {
   const [start, setStart]             = useState(startDate[arrayHeader.indexOf(activeTime)]);
   const [end, setEnd]                 = useState(dateTimeFormat(new Date()));
   
-  const {
-    temperatures,
-    options,
-    diaries
-  } = useFetchTemperature(accounts[0].id, device.id, start, end) 
+  const {temperatures,options,diaries} = useFetchTemperature(accounts[0].id,device.id,start,end);
 
-  console.log('data-----------', temperatures)
-  console.log('options-----------', options)
-  
-  useEffect(() => {
+  useEffect(() => { 
+  if(accounts[0].id){
     setStart(startDate[arrayHeader.indexOf(activeTime)])
     setEnd(dateTimeFormat(new Date()))
-  }, [activeTime, accounts[0].id]);
+  }
+  },[activeTime,accounts[0].id]);
+
+  // const activeDay = () => {
+  //   switch (activeTime) {
+  //     case 'last 24 hours':
+  //       return options24;
+  //     case 'last 7 days':
+  //       return optionsD7;
+  //     case 'last 28 days':
+  //       return optionsD28;
+  //   }
+  // };
 
 
   return (
@@ -153,21 +148,3 @@ export const NurseryData = ({navigation}) => {
     </ImageBackground>
   );
 };
-
-const styles = StyleSheet.create({
-  text: {
-    color: COLORS.text,
-  },
-  blog: {
-    paddingHorizontal: 10,
-    marginVertical: 5,
-    width: '100%',
-    height: 70,
-    backgroundColor: '#1A172D',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-  },
-  border: {backgroundColor: '#292C62', height: 4},
-  borderActive: {backgroundColor: '#CE9B51', height: 4},
-});
