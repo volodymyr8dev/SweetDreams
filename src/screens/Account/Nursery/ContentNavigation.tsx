@@ -111,7 +111,7 @@ export const ContentNavigation = ({options, diaries,activeTime,temperatures}) =>
         title="Average Temperature"
         // subTitle={options.average}
         source={tempretute}
-        rightEl={(options.average? options.average: 0) +"°C"}
+        rightEl={(options ? options.average: 0) +"°C"}
         width={30}
         height={27}
         option={activeTime}
