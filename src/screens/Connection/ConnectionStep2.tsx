@@ -11,7 +11,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  ImageBackground
+  ImageBackground,
+  Platform,
 } from 'react-native';
 
 import {useSelector}                from 'react-redux';
@@ -24,6 +25,8 @@ import {
 } from '../../api/Device/Device';
 import {getCombinedNavigation}      from '../../hooks/useUpdateNavigationHeaderOptions';
 import {COLORS}                     from '../../styles/Constants';
+
+import { PermissionsAndroid }       from 'react-native';
 
 import background                   from '../../assets/backOrigin.png';
 
@@ -43,6 +46,33 @@ export const ConnectionStep2 = ({navigation}) => {
   const [serialNumber, setSerialNumber] = useState('');
 
   const [loader, setLoader] = useState(false);
+
+  const checkAndroidPermission = async () => {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Location permission is required for WiFi connections',
+        message:
+          'This app needs location permission as this is required  ' +
+          'to scan for wifi networks.',
+        buttonNegative: 'DENY',
+        buttonPositive: 'ALLOW',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      handleGoToStep3();
+    } else {
+      Alert.alert('Permission denied');
+    }
+  };
+
+  const checkDevise = () => {
+    if (Platform.OS === 'android') {
+      checkAndroidPermission();
+    } else {
+      handleGoToStep3();
+    }
+  };
 
   const handleGoToStep3 = () => {
     let certificate,
@@ -70,22 +100,22 @@ export const ConnectionStep2 = ({navigation}) => {
             mqttPort     = res.data?.credentials?.port;
 
             console.log('[DEVICE CONFIGURATION] Retrieved the device configuration', res.data);
-                  
+
             sha256(res.data.wifi_salt).then(hash1 => {
               console.log('[DEVICE CONFIGURATION] Hash 1', hash1);
-    
+
               sha256(`Misty-${serialNumber}`).then(hash2 => {
                 console.log('[DEVICE CONFIGURATION] Hash 2', hash2);
-    
+
                 let hashString = hash1.toUpperCase() + hash2.toUpperCase();
-    
+
                 console.log('[DEVICE CONFIGURATION] Hash 3', hashString);
-                
+
                 sha256(hashString).then(hash => {
                   let passphrase = hash.toUpperCase().slice(0, 32)
-                  
+
                   console.log('[DEVICE CONFIGURATION] Connecting to the device network', `Misty-${serialNumber}`, `${passphrase}`)
-                
+
                   WifiManager.connectToProtectedSSID(
                     `Misty-${serialNumber}`,
                     `${passphrase}`,
@@ -95,7 +125,7 @@ export const ConnectionStep2 = ({navigation}) => {
                       console.log('[DEVICE CONFIGURATION] Connected to the device network', res);
 
                       setLoader(false);
-    
+
                       navigation.navigate('ConnectionStep3', {
                         serial_number:     serialNumber,
                         home_network_ssid: homeNetworkSSID,
@@ -108,9 +138,9 @@ export const ConnectionStep2 = ({navigation}) => {
                     },
                     rej => {
                       Alert.alert('There is a problem with connecting to the device network');
-    
+
                       console.error('[DEVICE CONFIGURATION] Error while connecting to the device network', rej);
-                      
+
                       setLoader(false);
                     },
                   );
@@ -120,7 +150,7 @@ export const ConnectionStep2 = ({navigation}) => {
           })
           .catch(rej => {
             Alert.alert('This device is already added to another account or there is a problem with retrieving its credentials');
-  
+
             console.error('[DEVICE CONFIGURATION] Error while requesting credentials', rej.response.data);
 
             setLoader(false);
@@ -128,7 +158,7 @@ export const ConnectionStep2 = ({navigation}) => {
         },
         () => {
           Alert.alert('There is a problem with your home network. Please, check your Wi-Fi connection.');
-    
+
           console.error('[DEVICE CONFIGURATION] Error while getting the home network details');
 
           setLoader(false);
@@ -183,7 +213,7 @@ export const ConnectionStep2 = ({navigation}) => {
         </View>
       </ScrollView>
 
-      <TouchableOpacity onPress={handleGoToStep3} style={styles.buttonDown}>
+      <TouchableOpacity onPress={checkDevise} style={styles.buttonDown}>
         <View>
           <Text
             style={{

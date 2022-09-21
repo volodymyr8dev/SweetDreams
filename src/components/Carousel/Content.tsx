@@ -62,23 +62,24 @@ export const Content = props => {
     'LIGHT_SHOW_COLOUR_PICKER':   CloudColourPicker,
   };
 
+
   return (
     <View>
       <View style={{alignItems: 'center'}}>
-        {device.is_online ? (<>
-          <Image source={statuses[selectedLightShow]} style={{width: '100%', height: 350, bottom: Dimensions.get('window').height * 0.032 + '%'}} />
-          {selectedLightShow ==  'SLEEP_TRAINER_AWAKE' ? (<Text style={{
-            position: "absolute",
-            top: "28.5%",
-            fontSize: 18,
-            color: "white",
-            fontFamily: "AntagometricaBT-Bold"
-          }}>{device.config.wake_up_time}</Text>) : null}
-        </>) : (
-          <Image source={CloudOff} style={{width: '100%', height: 350, bottom: Dimensions.get('window').height * 0.032 + '%'}} />
+        {device.is_online ? (
+          <>
+            <Image source={statuses[selectedLightShow]} style={{width: '100%', height: 350, bottom: '25%'}} />
+            {device.config?.light_show === 'SLEEP_TRAINER_ASLEEP' ? (
+              <Text style={{position: 'absolute', top: '31%' + '%', color: '#fff', fontSize: 24, fontFamily: 'Digital-7'}}>
+                {device.config.wake_up_time}
+              </Text>
+            ) : null}
+          </>
+        ) : (
+          <Image source={CloudOff} style={{width: '100%', height: 350, bottom: '25%'}} />
         )}
 
-        <TouchableOpacity onPress={handlePower} style={{width: 50, bottom: Dimensions.get('window').height * 0.065 + '%', zIndex: 1}}>
+        <TouchableOpacity onPress={handlePower} style={{width: 50, bottom: '51%', zIndex: 1}}>
           {device.is_online ? <PowerOn /> : <PowerOff />}
         </TouchableOpacity>
       </View>
