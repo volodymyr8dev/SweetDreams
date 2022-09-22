@@ -4,7 +4,7 @@ import MapView, {Marker}                                                        
 import {useNavigation}                                                            from '@react-navigation/native';
 import {useSelector}                                                              from 'react-redux';
 
-import {DeleteEvent}                                                           from '../../../api/Diary/Calendar';
+import {DeleteEvent}                                                              from '../../../api/Diary/Calendar';
 import { ILocation }                                                              from './Location';
 
 import iconEue                                                                    from '../../../assets/images/documents/point.png';
@@ -12,7 +12,7 @@ import iconEue                                                                  
 import {COLORS}                                                                   from '../../../styles/Constants';
 import { RootReducerState }                                                       from '../../../redux/store';
 import { getCombinedNavigation }                                                  from '../../../hooks/useUpdateNavigationHeaderOptions';
-
+import moment                                                                     from 'moment';
 
 type Nav = {
   navigate: (value: string, obj?: any) => void;
@@ -49,7 +49,7 @@ export const EventInformation = ({route}) => {
   }, [navigation]);
   
   const goToEdit = () => {
-    navigation.navigate('NewEvent', {
+    navigation.navigate(event.type == 'feed' ? 'Feed' : 'NewEvent', {
         event: event, 
     });
   }
@@ -74,8 +74,10 @@ export const EventInformation = ({route}) => {
         <View style={styles.topBox}>
           <View style={styles.containerText}><Text style={styles.textTitle}>{event.title}</Text></View>
           <View style={styles.containerText}><Text style={styles.subTitle}>{locationEvent?.name}</Text></View>
-          <View style={styles.containerTime}><Text style={styles.subTitle}>{event.starts_at}</Text></View>
-          <View style={styles.containerTime}><Text style={styles.subTitle}>{event.ends_at}</Text></View>
+          <View style={styles.containerTime}><Text style={styles.subTitle}>Starts at: {moment(event.starts_at).format(event.type == 'feed' ? 'DD MMMM YYYY hh:mm a' : 'DD MMMM YYYY') + (event.all_day ? ' - All day' : '')}</Text></View>
+          {!event.all_day && (
+          <View style={styles.containerTime}><Text style={styles.subTitle}>Ends at: {moment(event.ends_at).format(event.type == 'feed' ? 'DD MMMM YYYY hh:mm a' : 'DD MMMM YYYY')}</Text></View>
+          )}
         </View>
         <View style={styles.containerTextNotes}>
           <View style={{flexDirection: 'row'}}>

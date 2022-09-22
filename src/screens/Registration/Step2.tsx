@@ -132,7 +132,7 @@ export const Step2 = ({navigation, route}) => {
           <View style={styles.buttonDown}>
             <View style={{marginTop: 20}}>
               <Text style={{color: '#fff', fontSize: 18, fontWeight: 'bold', textAlign: 'center', fontFamily: 'AntagometricaBT-Bold'}}>
-                Resend
+                resend
               </Text>
             </View>
           </View>

@@ -4,7 +4,7 @@ import {StyleSheet,Text,View,Image,
 import { useSelector }                                   from 'react-redux';
 import { RootReducerState }                              from '../../../../redux';
 import moment                                            from 'moment';
-
+import {getCombinedNavigation}                           from '../../../../hooks/useUpdateNavigationHeaderOptions';
 //icons
 import arrowLeft                                         from '../../../../assets/images/nursery/arrowLeft.png';
 import arrowRight                                        from '../../../../assets/images/nursery/arrowRight.png';
@@ -22,9 +22,17 @@ import { AverageGraph }                                  from './AverageGraph';
 import { dateFormat }                                    from '../../../../utils/time';
 
 
-export const AverageTempature = ({route}) => {
-
+export const AverageTempature = ({route, navigation}) => {
   const { user } = useSelector((state: RootReducerState) => state.auth);
+
+  useEffect(() => {
+    navigation.setOptions(
+      getCombinedNavigation({
+        title: 'average temperature',
+        headerLeftMethod: navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
+      })
+    )
+  }, [navigation]);
 
   let option     = route.params.option
   let timeArray  = time[option]
@@ -40,13 +48,14 @@ export const AverageTempature = ({route}) => {
   
   const {diaries,labels,temperatures,options}   = useFetchTemperature(accounts[0].id,device.id,start,end) 
   
+  console.log('[Average Temperature fetch]', temperatures)
 
   //left right arrow
   const handleSwitchData = (type) => {
-    // setValue(data => ({...data, value: 0}));
-    let indexActiveT   =  timeArray.indexOf(activeTime)
-    let start          =  '';
-    let tempActiveTime = '' 
+
+ let indexActiveT   =  timeArray.indexOf(activeTime)
+ let start          =  '';
+ let tempActiveTime = '' 
  
   if(type == 'left'){
 
@@ -70,19 +79,6 @@ export const AverageTempature = ({route}) => {
     setEnd(dateFormat(EndTime(tempActiveTime,option)));
   };
 
-  useEffect(() => {
-    // let min = Math.min(...array);
-    // let max = Math.max(...array);
-    // let indexMin = array.indexOf(min);
-    // let indexMax = array.indexOf(max);
-    // setValue(prev => ({
-    //   ...prev,
-    //   y: min * 10 + 90,
-    //   x: indexMin * 100 + 43,
-    //   xMax: indexMax * 70 + 43,
-    //   yMax: (max * 8.97501) / array.length + 90,
-    // }));
-  }, []);
   return (
       <View style={styles.container}>
         <View style={styles.header}>

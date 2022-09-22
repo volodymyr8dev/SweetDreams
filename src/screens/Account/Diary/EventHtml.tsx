@@ -36,16 +36,25 @@ export const EventHtml = (item, selectedDate, points) => {
       onPress={() => goToEvent(item)}
       style={styles.eventContainer}>
       <View style={styles.eventLeftC}>
+        {!item.all_day && (
+          <>
+            <View style={styles.eventDate}>
+              <Text style={{color: COLORS.textLight, fontSize: 10}}>
+                {moment(item.starts_at).format('hh:mm a').trim()}
+              </Text>
+            </View>
+            <View style={styles.eventDate}>
+              <Text style={{color: COLORS.textLight, fontSize: 10}}>
+                {moment(item.ends_at).format('hh:mm a').trim()}
+              </Text>
+            </View>
+          </>) }
+        {item.all_day && (
         <View style={styles.eventDate}>
           <Text style={{color: COLORS.textLight, fontSize: 10}}>
-            {moment(item.starts_at).format('hh:mm').trim()}
+            All day
           </Text>
-        </View>
-        <View style={styles.eventDate}>
-          <Text style={{color: COLORS.textLight, fontSize: 10}}>
-            {moment(item.ends_at).format('hh:mm').trim()}
-          </Text>
-        </View>
+        </View> )}
       </View>
       <View>
         <Image
