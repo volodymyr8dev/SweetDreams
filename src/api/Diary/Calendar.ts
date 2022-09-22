@@ -22,8 +22,11 @@ export const CreateEvent = async (accountId, event): Promise<IEvent> => {
     ends_at:   moment(event.ends).format('YYYY-MM-DD HH:mm:00'),
     notes:     event.notes,
     ...(event.type == 'regular' && {all_day: event.allDay}),
-    ...(event.type == 'feed' && {albreast_day: event.breast}),
   };
+
+  if (event.type == 'feed' && event.breast) {
+    body['breast'] = event.breast;
+  }
 
   console.log('[EVENT] Create event request', accountId, event, body);
 
@@ -43,7 +46,7 @@ export const UpdateEvent = async (accountId, eventId, event) => {
     ends_at:   moment(event.ends).format('YYYY-MM-DD HH:mm:00'),
     notes:     event.notes,
     ...(event.type == 'regular' && {all_day: event.allDay}),
-    ...(event.type == 'feed' && {albreast_day: event.breast}),
+    ...(event.type == 'feed' && {breast: event.breast}),
   };
 
   console.log('[EVENT] Update event request', accountId, eventId, event, body);

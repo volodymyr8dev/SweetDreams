@@ -146,10 +146,10 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#36365D',
     borderRadius: 13,
-    height: 250,
+    height: '19%',
     padding: 15,
     marginTop: 30,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   button: {
     width: 200,
