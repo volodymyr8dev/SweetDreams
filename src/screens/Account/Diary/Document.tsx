@@ -180,7 +180,7 @@ export const Document = ({navigation,route}) => {
   useEffect(() => {
     RetrieveEvent(global.id)
       .then(({data}) => {
-
+console.log('ite,',data)
         let res = data.map(item => {
 
           if (isJsonString(item.location)) item.location = JSON.parse(item.location)

@@ -1,5 +1,6 @@
-import moment from 'moment';
 import React, {useEffect, useState} from 'react';
+import moment                       from 'moment';
+import { Alert }                    from 'react-native';
 import {NurseryTemperatureApi}      from '../../api/Nursery/Nursery';
 import { dateTimeFormat}            from '../../utils/time';
 
@@ -11,12 +12,13 @@ export const useFetchTemperature = (id, deviceId, dataStart,dataEnd) => {
     const [diaries,setDiaries]            = useState<number>(0)
 
     useEffect(() => {
-   
+      let isMounted = true; 
        let start = dateTimeFormat(dataStart)
        let end = dateTimeFormat(dataEnd)
        
        console.log('start',start)
        console.log('end',end)
+if(isMounted){
 
       NurseryTemperatureApi(id,deviceId, start,end)
         .then(({data}) => {
@@ -31,7 +33,10 @@ export const useFetchTemperature = (id, deviceId, dataStart,dataEnd) => {
             let labels: string[] = [];
 
             Object.keys(data?.temperatures?.data).map((key)=>{
-              labels.push( moment(key).format('DD/MM'))
+              
+              moment(end).diff(moment(start),'days') == 1 ?  
+              labels.push((String(key))) :
+              labels.push(moment(key).format('DD/MM'))
             })
 
             setOptions(data.temperatures)
@@ -45,10 +50,15 @@ export const useFetchTemperature = (id, deviceId, dataStart,dataEnd) => {
         })
         .catch(err => {
           console.log('[Average Temperature switch data rejected]', err.response);
-
+         
+          Alert.alert(err.response._response)
+         
           setLabels([])
           setTemperatures([0]);
+          
         });
+}
+        return () => { isMounted = false };
   }, [dataStart, id]);
   
   return {
