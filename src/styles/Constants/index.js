@@ -28,7 +28,7 @@ export const monthNames = [
 export const startFirst = {
 'last 24 hours': moment(new Date()).subtract(1,'days').format('YYYY-MM-DD'),
 'last 7 days':   moment(new Date()).subtract(7,'days').format('YYYY-MM-DD'),
-'last 28 days':  moment(new Date()).subtract(28,'days').format('YYYY-MM-DD'),
+'last 28 days':  moment(new Date()).subtract(27,'days').format('YYYY-MM-DD'),
 }
 
 export const time = {

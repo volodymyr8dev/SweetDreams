@@ -69,6 +69,7 @@ export const LongestPeriod = () => {
 
     let start = chooseTimeOrIndex('timeIndex', 'left', activeTime);
     let end = chooseDate(chooseTimeOrIndex('time', 'left', activeTime));
+    
     setStart(moment(start).format('YYYY-MM-DD'));
     setEnd(moment(end).format('YYYY-MM-DD'));
 

@@ -9,7 +9,7 @@ export const arrayHeader = ['last 24 hours', 'last 7 days', 'last 28 days'];
         style={{
           justifyContent: 'space-evenly',
           flexDirection: 'row',
-          paddingTop: '15%',
+          paddingTop: '4%',
         }}>
         {arrayHeader.map(item => (
           <TouchableOpacity onPress={()=>handleChangeTime(item)}>

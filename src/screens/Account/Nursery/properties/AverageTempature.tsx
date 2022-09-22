@@ -33,7 +33,6 @@ export const AverageTempature = ({route}) => {
   const [start, setStart]           = useState(startFirst[option]);
   const [end, setEnd]               = useState(moment(new Date()).format('YYYY-MM-DD'));
   const [value, setValue]           = useState<any>({value: 0, y: 0, x: 0, yMax: 0, xMax: 0});
-  // const [fetchedTemp, setFetchedTemp] = useState<any>();
 
   const device   = user.accounts[0]?.devices[0];
   const accounts = user.accounts;
@@ -41,14 +40,13 @@ export const AverageTempature = ({route}) => {
   
   const {diaries,labels,temperatures,options}   = useFetchTemperature(accounts[0].id,device.id,start,end) 
   
-  console.log('[Average Temperature fetch]',temperatures)
 
   //left right arrow
   const handleSwitchData = (type) => {
     // setValue(data => ({...data, value: 0}));
- let indexActiveT   =  timeArray.indexOf(activeTime)
- let start          =  '';
- let tempActiveTime = '' 
+    let indexActiveT   =  timeArray.indexOf(activeTime)
+    let start          =  '';
+    let tempActiveTime = '' 
  
   if(type == 'left'){
 
