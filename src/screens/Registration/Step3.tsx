@@ -22,7 +22,7 @@ import {Loader}                from '../../components/Loader/Loader';
 import {COLORS}                from '../../styles/Constants';
 
 import checkButton             from '../../assets/images/checkButton.png';
-import background              from '../../assets/backOrigin.png';
+import background              from '../../assets/images/homeIcon/backgroundHome.png';
 
 export const Step3 = ({navigation}) => {
   const [name, setName] = useState('');
