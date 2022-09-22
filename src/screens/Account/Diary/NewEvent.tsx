@@ -72,7 +72,7 @@ export const NewEvent = ({navigation, route}) => {
     .catch(err => {
       console.error('[EVENT] Create event response', err.response);
 
-      Alert.alert(err.response.data.message);
+      Alert.alert('A title is required please');
 
       setLoaderAddEvent(false);
     });
