@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { dateTimeFormat } from '../../utils/time';
 
 export const COLORS = {
   backGround: 'rgba(26, 23, 45, .75)',
@@ -26,20 +27,22 @@ export const monthNames = [
 ];
 
 export const startFirst = {
-'last 24 hours': moment(new Date()).subtract(1,'days').format('YYYY-MM-DD'),
-'last 7 days':   moment(new Date()).subtract(7,'days').format('YYYY-MM-DD'),
-'last 28 days':  moment(new Date()).subtract(27,'days').format('YYYY-MM-DD'),
+'last 24 hours': moment(new Date()).subtract(1,'days').format('YYYY-MM-DD HH:mm:ss'),
+'last 7 days':   moment(new Date()).subtract(7,'days').format('YYYY-MM-DD HH:mm:ss'),
+'last 28 days':  moment(new Date()).subtract(27,'days').format('YYYY-MM-DD HH:mm:ss'),
 }
 
 export const time = {
   'last 24 hours': [
-    'last 24 hours',
-    '24 hours -1 day',
-    '24 hours -2 day',
-    '24 hours -3 day',
-    '24 hours -4 day',
-    '24 hours -5 day',
     '24 hours -6 day',
+    '24 hours -5 day',
+    '24 hours -4 day',
+    '24 hours -3 day',
+    '24 hours -2 day',
+    '24 hours -1 day',
+    'last 24 hours',
+    
+   
   ],
   'last 7 days': ['last 7 days', '7 days - 7', '7 days - 14', '7 days - 21'],
   'last 28 days': ['last 28 days', '28 days -28'],
@@ -59,74 +62,45 @@ export const timeWithoutActivation = {
   'last 28 days': ['last 28 days', '2 month ago'],
 };
 
-const date = new Date();
-export const startDate = {
+
+export const startDate = () => {
+  return {
   'last 24 hours': [
-    moment(date).subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(2, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(3, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(4, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(5, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(6, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(14, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(21, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(14, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(21, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(28, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(2, 'months').format('YYYY-MM-DD HH:mm:ss'),
+    dateTimeFormat(moment(new Date()).subtract(7, 'days')),
+    dateTimeFormat(moment(new Date()).subtract(6, 'days')),
+    dateTimeFormat(moment(new Date()).subtract(5, 'days')),
+    dateTimeFormat(moment(new Date()).subtract(4, 'days')),
+    dateTimeFormat(moment(new Date()).subtract(3, 'days')),
+    dateTimeFormat(moment(new Date()).subtract(2, 'days')),
+    dateTimeFormat(moment(new Date()).subtract(1, 'days')),
   ],
   'last 7 days': [
-    moment(date).subtract(6, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(13, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(20, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(27, 'days').format('YYYY-MM-DD HH:mm:ss'),
+   dateTimeFormat( moment(new Date()).subtract(6, 'days')),
+    dateTimeFormat(moment(new Date()).subtract(13, 'days')),
+    dateTimeFormat(moment(new Date()).subtract(20, 'days')),
+    dateTimeFormat(moment(new Date()).subtract(27, 'days')),
   ],
   'last 28 days': [
-    moment(date).subtract(27, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    moment(date).subtract(55, 'days').format('YYYY-MM-DD HH:mm:ss'),
+    dateTimeFormat(moment(new Date()).subtract(27, 'days')),
+    dateTimeFormat(moment(new Date()).subtract(55, 'days')),
   ],
+ } 
 };
 
-export const EndTime = (activeTime, option) => {
-  let date = new Date();
-  console.log('activeTime',activeTime)
-  console.log('option',option)
+export const EndTime = (option,start) => {
+
   if (option == 'last 24 hours') {
-    switch (activeTime) {
-      case 'last 24 hours':
-        return moment(date).format('YYYY-MM-DD HH:mm:ss');
-      case '24 hours -1 day':
-        return moment(date).subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '24 hours -2 day':
-        return moment(date).subtract(2, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '24 hours -3 day':
-        return moment(date).subtract(3, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '24 hours -4 day':
-        return moment(date).subtract(4, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '24 hours -5 day':
-        return moment(date).subtract(5, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '24 hours -6 day':
-        return moment(date).subtract(6, 'days').format('YYYY-MM-DD HH:mm:ss');
-    }
+     return dateTimeFormat(moment(start).add(1,'day'));
   } else if (option == 'last 7 days') {
-    switch (activeTime) {
-      case 'last 7 days':
-        return moment(date).format('YYYY-MM-DD HH:mm:ss');
-      case '7 days - 7':
-        return moment(date).subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '7 days - 14':
-        return moment(date).subtract(14, 'days').format('YYYY-MM-DD HH:mm:ss');
-      case '7 days - 21':
-        return moment(date).subtract(21, 'days').format('YYYY-MM-DD HH:mm:ss');
-    }
+
+    return dateTimeFormat(moment(start).add(7,'day'));
+  
   } else if (option == 'last 28 days') {
-    switch (activeTime) {
-      case 'last 28 days':
-        return moment(date).format('YYYY-MM-DD HH:mm:ss');
-      case '28 days -28':
-        return moment(date).subtract(28, 'days').format('YYYY-MM-DD HH:mm:ss');
-    }
+    
+    return dateTimeFormat(moment(start).add(28,'day'));
+  }else{
+
+    return  dateTimeFormat(moment(start).add(1,'day'));
   }
 };
 
@@ -138,14 +112,14 @@ export const HandleStartTime = (direction, option, activeTime) =>{
   if(direction === 'left'){
   
     return indexActiveTime == 0
-    ? startDate[option][time[option].length - 1]
-    : startDate[option][indexActiveTime - 1];
+    ? startDate()[option][time[option].length - 1]
+    : startDate()[option][indexActiveTime - 1];
  
 }else{
   
   return indexActiveTime == time[option].length - 1
-  ? startDate[option][0]
-  : startDate[option][indexActiveTime + 1];
+  ? startDate()[option][0]
+  : startDate()[option][indexActiveTime + 1];
 }}
 
 //end Date

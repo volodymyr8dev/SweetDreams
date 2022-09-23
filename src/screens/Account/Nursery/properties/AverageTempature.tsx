@@ -19,7 +19,7 @@ import { useFetchTemperature }                           from '../../../../hooks
 
 import {COLORS,time,HandleStartTime,EndTime,startFirst}  from '../../../../styles/Constants';
 import { AverageGraph }                                  from './AverageGraph';
-import { dateFormat }                                    from '../../../../utils/time';
+import { dateFormat, dateTimeFormat }                                    from '../../../../utils/time';
 
 
 export const AverageTempature = ({route}) => {
@@ -31,22 +31,22 @@ export const AverageTempature = ({route}) => {
 
   const [activeTime, setActiveTime] = useState(option);
   const [start, setStart]           = useState(startFirst[option]);
-  const [end, setEnd]               = useState(moment(new Date()).format('YYYY-MM-DD'));
+  const [end, setEnd]               = useState(moment(startFirst[option]).add('1','days').format("YYYY-MM-DD HH:mm:ss"));
   const [value, setValue]           = useState<any>({value: 0, y: 0, x: 0, yMax: 0, xMax: 0});
 
   const device   = user.accounts[0]?.devices[0];
   const accounts = user.accounts;
   
+  console.log('device',device)
   
-  const {diaries,labels,temperatures,options}   = useFetchTemperature(accounts[0].id,device.id,start,end) 
+  const {diaries,labels,temperatures,options} = useFetchTemperature(accounts[0].id,device.id,start,end,device.config.temperature) 
   
-
-  //left right arrow
+   //left right arrow
   const handleSwitchData = (type) => {
     // setValue(data => ({...data, value: 0}));
     let indexActiveT   =  timeArray.indexOf(activeTime)
     let start          =  '';
-    let tempActiveTime = '' 
+    let tempActiveTime =  ''; 
  
   if(type == 'left'){
 
@@ -54,7 +54,7 @@ export const AverageTempature = ({route}) => {
   ? tempActiveTime =(timeArray[timeArray.length - 1])
   : tempActiveTime =(timeArray[indexActiveT - 1]);
 
-   start = HandleStartTime('left',option,activeTime);
+   start = dateTimeFormat(HandleStartTime('left',option,activeTime));
 
   } else{
 
@@ -62,12 +62,12 @@ export const AverageTempature = ({route}) => {
   ? tempActiveTime = (timeArray[0])
   : tempActiveTime =(timeArray[indexActiveT + 1]);
 
-   start = HandleStartTime('right',option,activeTime);
+   start = dateTimeFormat(HandleStartTime('right',option,activeTime));
 }
     setActiveTime(tempActiveTime)
     
-    setStart(dateFormat(start));
-    setEnd(dateFormat(EndTime(tempActiveTime,option)));
+    setStart(start);
+    setEnd(EndTime(option, start));
   };
 
   useEffect(() => {
@@ -94,11 +94,11 @@ export const AverageTempature = ({route}) => {
             </TouchableOpacity>
             <View style={styles.headerWraper}>
               <Text style={styles.headerText}>{activeTime}</Text>
-              <Text style={styles.headerTextTime}>{`${start} - ${end}`}</Text>
+              <Text style={styles.headerTextTime}>{`${start.split(' ')[0]} - ${end.split(' ')[0]}`}</Text>
             </View>
             <TouchableOpacity
               style={{paddingHorizontal: 5, paddingVertical: 5}}
-              onPress={()=>handleSwitchData('right')}>
+              onPress={() => handleSwitchData('right')}>
               <Image style={{width: 10.77, height: 18.86}} source={arrowRight} />
             </TouchableOpacity>
           </View>
@@ -119,7 +119,7 @@ export const AverageTempature = ({route}) => {
       ) : (
         <View style={styles.addInformation}>
           <Text style={styles.headerTextTime}>Total for these days</Text>
-          <Text style={styles.headerTextTime}>(average over 28 days)</Text>
+          <Text style={styles.headerTextTime}>(average over {route.params.option == 'last 7 days' ? 7 : 28} days)</Text>
           <Text style={styles.addText}>
             {temperatures.length?(temperatures.reduce((acc, val)=>acc+val,0)/temperatures.length).toFixed(2):0}°C
           </Text>
@@ -247,4 +247,3 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
 });
-

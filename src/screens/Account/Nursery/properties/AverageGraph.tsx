@@ -29,13 +29,9 @@ export const AverageGraph = React.memo(
       const chunkLabels = _.chunk(labels, 4);
       const chunkTemperatures = _.chunk(temperatures, 4);
      
-      const arrayTemperatures = chunkTemperatures.map(array => {
-        return array.length ? array[0] : null;
-      });
+      const arrayTemperatures = chunkTemperatures.map(array =>  array.length ? array[0] : null);
      
-      const arrayOfLabels = chunkLabels.map(array => {
-        return array.length ? array[0] : null;
-      });
+      const arrayOfLabels = chunkLabels.map(array => array.length ? array[0] : null);
 
       return {
         labels: arrayOfLabels,

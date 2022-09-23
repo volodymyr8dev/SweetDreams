@@ -45,7 +45,7 @@ export const NurseryData = ({navigation}) => {
   
   const [activeTime, setActiveTime]   = useState('last 24 hours');
   const [start, setStart]             = useState(startDate[arrayHeader.indexOf(activeTime)]);
-  const [end, setEnd]                 = useState(dateTimeFormat(new Date()));
+  const [end, setEnd]                 = useState(dateTimeFormat(moment((startDate[0])).add('1','days')));
   
   const {temperatures,options,diaries} = useFetchTemperature(accounts[0].id,device.id,start,end);
 

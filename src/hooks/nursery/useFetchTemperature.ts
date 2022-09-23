@@ -4,7 +4,7 @@ import { Alert }                    from 'react-native';
 import {NurseryTemperatureApi}      from '../../api/Nursery/Nursery';
 import { dateTimeFormat}            from '../../utils/time';
 
-export const useFetchTemperature = (id, deviceId, dataStart,dataEnd) => {
+export const useFetchTemperature = (id, deviceId, dataStart,dataEnd, deviceType) => {
 
     const [labels,setLabels]              = useState<string[]>([])
     const [temperatures,setTemperatures]  = useState<number[]>([])
@@ -13,12 +13,11 @@ export const useFetchTemperature = (id, deviceId, dataStart,dataEnd) => {
 
     useEffect(() => {
       let isMounted = true; 
-       let start = dateTimeFormat(dataStart)
-       let end = dateTimeFormat(dataEnd)
+      let start     = dateTimeFormat(dataStart)
+      let end       = dateTimeFormat(dataEnd)
        
-       console.log('start',start)
-       console.log('end',end)
-if(isMounted){
+
+    if( isMounted ){
 
       NurseryTemperatureApi(id,deviceId, start,end)
         .then(({data}) => {
