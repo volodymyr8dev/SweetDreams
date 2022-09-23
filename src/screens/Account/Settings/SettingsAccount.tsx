@@ -28,6 +28,7 @@ import volumeImg from '../../../assets/images/settings/volume.png';
 import {Switch} from '../../../components/Switch/Switch';
 import background from '../../../assets/backOrigin.png';
 import {getCombinedNavigation}      from '../../../hooks/useUpdateNavigationHeaderOptions';
+import { Blog } from '../../../components/Blog/Blog';
 
 import {
   setTemperatureNotifications,
@@ -63,32 +64,6 @@ export const SettingsAccount = ({navigation}) => {
       navigation.navigate(`${title}`, {title: title});
     }
   };
-  
-  const Blog = ({title, rightEl, source, value, navigate}) => {
-    return (
-      <TouchableOpacity onPress={() => handleSettings(navigate)} style={styles.blog}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image style={{width: 24, height: 24, marginRight: 10}} source={source} resizeMode="contain" />
-          <Text style={{color: '#2371AB', fontSize: 19, fontFamily: 'AntagometricaBT-Regular'}}>
-            {navigate}
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {typeof rightEl === 'object' ? (
-            rightEl
-          ) : (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{color: '#2371AB', fontSize: 19, fontFamily: 'AntagometricaBT-Regular'}}>{rightEl}</Text>
-              <Image
-                style={{width: 10, height: 10, marginLeft: 10}}
-                source={arrowRight}
-              />
-            </View>
-          )}
-        </View>
-      </TouchableOpacity>
-    );
-  };
 
   return (
     <ImageBackground source={background}>
@@ -99,6 +74,7 @@ export const SettingsAccount = ({navigation}) => {
             navigate="Connection"
             rightEl="Connected"
             source={connection}
+            handleSettings={handleSettings}
           />
           <Blog
             title="child lock"
@@ -107,6 +83,7 @@ export const SettingsAccount = ({navigation}) => {
               <Switch val={device.config?.child_lock} setData={toggleChildLock} />
             }
             source={lock}
+            handleSettings={handleSettings}
           />
           <View style={{paddingLeft: 15, marginVertical: 15}}>
             <Text
@@ -125,6 +102,7 @@ export const SettingsAccount = ({navigation}) => {
             rightEl={moment().format('HH:mm')}
             value={device.config?.time}
             source={clock}
+            handleSettings={handleSettings}
           />
           <Blog
             title="wake up time"
@@ -132,6 +110,7 @@ export const SettingsAccount = ({navigation}) => {
             value={device.config?.wake_up_time}
             source={wakeUp}
             rightEl={device.config?.wake_up_time}
+            handleSettings={handleSettings}
           />
           {device.is_deluxe == false ? null : (
             <Blog
@@ -146,6 +125,7 @@ export const SettingsAccount = ({navigation}) => {
             navigate="Dome Brightness"
             source={brightness}
             rightEl={Number(device.config?.dome_brightness / 255 * 100).toFixed(0) + '%'}
+            handleSettings={handleSettings}
           />
           {device.is_deluxe == false ? null : (
           <Blog
@@ -161,6 +141,7 @@ export const SettingsAccount = ({navigation}) => {
             source={Temperature}
             rightEl={`°${device.config?.temperature}`}
             value={device.config?.temperature}
+            handleSettings={handleSettings}
           />
           {device.is_deluxe == false ? null : (
             <View style={{paddingLeft: 15, marginVertical: 15}}>
@@ -251,12 +232,12 @@ export const SettingsAccount = ({navigation}) => {
             />
           )}
           <Blog
-            title="temperature"
-            navigate="Temperature"
+            title="Temperature"
             source={Temperature}
             rightEl={
               <Switch val={device.has_temperature_notifications_enabled} setData={toggleNotificationSettings} />
             }
+            handleSettings={handleSettings}
           />
         </View>
       </ScrollView>

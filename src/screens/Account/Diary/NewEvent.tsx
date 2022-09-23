@@ -63,7 +63,7 @@ export const NewEvent = ({navigation, route}) => {
     CreateEvent(user.accounts[0].id, eventParams).then(({data}: any) => {
       console.log('[EVENT] Create event response', data);
 
-      Alert.alert('Event successfully added');
+      Alert.alert('Event has been added successfully');
 
       setLoaderAddEvent(false);
 
@@ -82,12 +82,12 @@ export const NewEvent = ({navigation, route}) => {
     setLoaderAddEvent(true);
 
     if (params?.event?.id) {
-      const newEvent = {title, location, allDay, starts, ends, notes, breast};
+      const newEvent = {title, type: 'regular', location, allDay, starts, ends, notes};
 
       UpdateEvent(user.accounts[0].id, params.event.id, newEvent).then(data => {
         console.log('[EVENT] Update event response', data);
 
-        Alert.alert('Event successfully added');
+        Alert.alert('Event has been updated successfully');
 
         setLoaderAddEvent(false);
 
@@ -110,9 +110,9 @@ export const NewEvent = ({navigation, route}) => {
       setTitle(params.event.title);
       setLocation(params.event.location);
       setNotes(params.event.notes);
-      setStarts(moment(new Date(params.event.starts_at)));
-      setEnds(moment(new Date(params.event.ends_at)));
-      setAllDay(params.event.allDay);
+      setStarts(moment(params.event.starts_at));
+      setEnds(moment(params.event.ends_at));
+      setAllDay(params.event.all_day);
     } else {
       setStarts(moment());
       setEnds(moment());
@@ -140,17 +140,15 @@ export const NewEvent = ({navigation, route}) => {
           </View>
         </TouchableOpacity>
 
-        {params.type == 'regular' ? (
-          <InputUnit event={true} value={allDay} setValueName={value => setAllDay(value)} nameOfBox={'switch'}
-            placeholder={'All-day'}
-            rightContent="switch"
-          />
-        ) : null}
+        <InputUnit event={true} value={allDay} setValueName={value => setAllDay(value)} nameOfBox={'switch'}
+          placeholder={'All-day'}
+          rightContent="switch"
+        />
 
         <DatePickerComponent
           mode={allDay ? "date" : "datetime"}
           name="Starts"
-          value={allDay ? dateFormat(starts) : dateTimeFormat(starts)}
+          value={allDay ? moment(starts).format('YYYY-MM-DD hh:mm') : moment(starts).format('YYYY-MM-DD hh:mm')}
           changeDate={date => setStarts(moment(new Date(date)).format('YYYY-MM-DD hh:mm'))}
         />
 
@@ -158,7 +156,7 @@ export const NewEvent = ({navigation, route}) => {
           mode={allDay ? "date" : "datetime"}
           name="Ends"
           min={starts}
-          value={allDay ? moment(starts).format('YYYY-MM-DD') : dateHMFormat(ends)}
+          value={allDay ? moment(ends).format('YYYY-MM-DD hh:mm') : moment(ends).format('YYYY-MM-DD hh:mm')}
           changeDate={date => setEnds(moment(new Date(date)).format('YYYY-MM-DD hh:mm'))}
         />
 

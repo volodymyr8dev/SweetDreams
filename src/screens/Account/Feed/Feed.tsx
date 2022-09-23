@@ -23,7 +23,7 @@ export const Feed = ({navigation, route}) => {
 
   const {user} = useSelector((state: RootReducerState) => state.auth);
 
-  const [title, setTitle]                   = useState('');
+  const [title, setTitle]                   = useState('Feed');
   const [location, setLocation]             = useState<ILocation | any>({name: '',locate: {lat: '',lng: ''}});
   const [starts, setStarts]                 = useState('');
   const [ends, setEnds]                     = useState('');
@@ -35,9 +35,9 @@ export const Feed = ({navigation, route}) => {
   useEffect(() => {
     navigation.setOptions(
       getCombinedNavigation({
-        title: params?.event?.id ? 'edit feed entry' : 'new feed entry',
-        headerLeftMethod: params?.event?.id ? () => { navigation.goBack(); } : undefined,
-        headerRightText: params?.event?.id ? 'save' : 'add   ',
+        title: params?.event?.id ? 'edit entry' : 'new entry',
+        headerLeftMethod: params?.event?.id || navigation.canGoBack() ? () => { navigation.goBack(); } : undefined,
+        headerRightText: params?.event?.id ? 'save    ' : 'add   ',
         headerRightMethod: () => {
           params?.event?.id ? hadleEditEvent() : addEvent();
         },
@@ -61,7 +61,7 @@ export const Feed = ({navigation, route}) => {
     CreateEvent(user.accounts[0].id, eventParams).then(({data}: any) => {
       console.log('[EVENT] Create feed response received', data);
 
-      Alert.alert('Event successfully added');
+      Alert.alert('Event has been added successfully');
 
       setLoaderAddEvent(false);
 
@@ -80,12 +80,12 @@ export const Feed = ({navigation, route}) => {
     setLoaderAddEvent(true);
 
     if (params?.event?.id) {
-      const newEvent = {title, location, starts, ends, notes, breast};
+      const newEvent = {title, type: 'feed', location, starts, ends, notes, breast};
 
       UpdateEvent(user.accounts[0].id, params.event.id, newEvent).then(data => {
         console.log('[EVENT] Update event response', data);
 
-        Alert.alert('Event successfully added');
+        Alert.alert('Event has been updated successfully');
 
         setLoaderAddEvent(false);
 
@@ -108,8 +108,8 @@ export const Feed = ({navigation, route}) => {
       setTitle(params.event.title);
       setLocation(params.event.location);
       setNotes(params.event.notes);
-      setStarts(moment(new Date(params.event.starts_at)));
-      setEnds(moment(new Date(params.event.ends_at)));
+      setStarts(moment(params.event.starts_at));
+      setEnds(moment(params.event.ends_at));
       setBreast(params.event.breast);
     } else {
       setStarts(moment());

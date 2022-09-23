@@ -117,7 +117,7 @@ export const ConnectionStep3 = ({navigation, route}) => {
     .catch(rej => {
       console.error('[DEVICE CONFIGURATION] Error while sending configuration request', rej);
 
-      Alert.alert('There is a problem with pushing a configuration to the device');
+      Alert.alert('Oops, something went wrong (Code 00). Please try again');
 
       setLoader(false);
     });

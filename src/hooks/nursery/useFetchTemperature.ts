@@ -8,7 +8,7 @@ export const useFetchTemperature = (id, deviceId, dataStart,dataEnd, deviceType)
 
     const [labels,setLabels]              = useState<string[]>([])
     const [temperatures,setTemperatures]  = useState<number[]>([])
-    const [options,setOptions]            = useState<any>()
+    const [options,setOptions]            = useState<any>({average:0})
     const [diaries,setDiaries]            = useState<number>(0)
 
     useEffect(() => {

@@ -51,9 +51,9 @@ export const Content = props => {
     'SLEEP_TRAINER_ASLEEP':       CloudAsleepImg,
     'SLEEP_TRAINER_AWAKE':        CloudAwake,
 
-    'TEMPERATURE_THERMOMETER':    device.current_temperature > 22
+    'TEMPERATURE_THERMOMETER':    device.current_temperature > 25
                                       ? CloudHot
-                                      : (device.current_temperature <= 17 ? CloudCold : CloudNormal),
+                                      : (device.current_temperature < 16 ? CloudCold : CloudNormal),
 
     'LIGHT_SHOW_SUNSET':          CloudSunset,
     'LIGHT_SHOW_NORTHERN_LIGHTS': CloudNothernLights,

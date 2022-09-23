@@ -20,6 +20,7 @@ import { useFetchTemperature }                           from '../../../../hooks
 import {COLORS,time,HandleStartTime,EndTime,startFirst}  from '../../../../styles/Constants';
 import { AverageGraph }                                  from './AverageGraph';
 import { dateFormat, dateTimeFormat }                                    from '../../../../utils/time';
+import { calcTemp } from '../../../../utils/helper';
 
 
 export const AverageTempature = ({route}) => {
@@ -69,7 +70,10 @@ export const AverageTempature = ({route}) => {
     setStart(start);
     setEnd(EndTime(option, start));
   };
-
+  
+const getAverageTemp = ()=> {
+return ""
+}
   useEffect(() => {
     // let min = Math.min(...array);
     // let max = Math.max(...array);
@@ -107,12 +111,12 @@ export const AverageTempature = ({route}) => {
         <View style={styles.graphicContent}>
           <View style={{alignItems: 'center'}}>
             <Text style={styles.TextGraphic}>Now</Text>
-            <Text style={styles.tempValueleft}>{options ? options.average:0}°C</Text>
+            <Text style={styles.tempValueleft}>{options ? (device?.config?.temperature == "F" ? calcTemp(options.average).toFixed(2)+"°F": options.average + "°C"): " - "}</Text>
           </View>
           <View>
             <Text style={styles.TextGraphic}>Average for this 24h</Text>
             <Text style={styles.tempValueRight}>
-            {temperatures.length?(temperatures.reduce((acc, val)=>acc+val,0)/temperatures.length).toFixed(2):0}°C
+            {temperatures.length?  getAverageTemp():" - "}
             </Text>
           </View>
         </View>
@@ -121,7 +125,7 @@ export const AverageTempature = ({route}) => {
           <Text style={styles.headerTextTime}>Total for these days</Text>
           <Text style={styles.headerTextTime}>(average over {route.params.option == 'last 7 days' ? 7 : 28} days)</Text>
           <Text style={styles.addText}>
-            {temperatures.length?(temperatures.reduce((acc, val)=>acc+val,0)/temperatures.length).toFixed(2):0}°C
+            {temperatures.length? getAverageTemp():" - "}
           </Text>
           <Text></Text>
         </View>

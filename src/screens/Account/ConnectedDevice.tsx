@@ -81,7 +81,7 @@ export const ConnectedDevice = ({navigation}) => {
                     : styles.contentDeluxeTemperature
                 }>
 
-                {device.current_temperature >= 18 ? <ThermometerYellow/> : <Thermometer/>}
+                {device.current_temperature > 25 || device.current_temperature < 16 ? <ThermometerYellow/> : <Thermometer/>}
 
                 {!device.is_online ? (
                   <Text

@@ -6,3 +6,5 @@ export const splitToChunks = (array: any, parts) => {
   }
   return result;
 };
+
+export const calcTemp = (temp) => temp*9.5+32
