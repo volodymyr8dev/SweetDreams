@@ -232,8 +232,7 @@ export const SettingsAccount = ({navigation}) => {
             />
           )}
           <Blog
-            title="temperature"
-            navigate="temperature"
+            title="Temperature"
             source={Temperature}
             rightEl={
               <Switch val={device.has_temperature_notifications_enabled} setData={toggleNotificationSettings} />

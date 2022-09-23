@@ -63,7 +63,7 @@ export const NewEvent = ({navigation, route}) => {
     CreateEvent(user.accounts[0].id, eventParams).then(({data}: any) => {
       console.log('[EVENT] Create event response', data);
 
-      Alert.alert('Event successfully added');
+      Alert.alert('Event has been added successfully');
 
       setLoaderAddEvent(false);
 
@@ -87,7 +87,7 @@ export const NewEvent = ({navigation, route}) => {
       UpdateEvent(user.accounts[0].id, params.event.id, newEvent).then(data => {
         console.log('[EVENT] Update event response', data);
 
-        Alert.alert('Event successfully added');
+        Alert.alert('Event has been updated successfully');
 
         setLoaderAddEvent(false);
 
