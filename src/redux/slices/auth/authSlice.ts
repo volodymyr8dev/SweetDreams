@@ -205,6 +205,8 @@ export const authSlice = createSlice({
   },
 });
 
+
+
 const checkLogin = createAsyncThunk('auth/checkLogin', async (_params, { rejectWithValue }) => {
   let token = AsyncStorage.getItem('_login_token');
 
